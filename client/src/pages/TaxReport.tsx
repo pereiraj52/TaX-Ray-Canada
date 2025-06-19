@@ -109,23 +109,123 @@ export default function TaxReport() {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total Income:</span>
-                    <span className="font-medium">$0</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
+                            const data = t1Return.extractedData as any;
+                            if (data.formFields && Array.isArray(data.formFields)) {
+                              const incomeField = data.formFields.find((field: any) => 
+                                field.fieldCode === 'total_income' || field.fieldCode === 'employment_income'
+                              );
+                              if (incomeField?.fieldValue) {
+                                const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
+                                if (!isNaN(value)) total += value;
+                              }
+                            }
+                          }
+                        });
+                        return total.toLocaleString();
+                      })()}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total CPP Contributions:</span>
-                    <span className="font-medium">$0</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
+                            const data = t1Return.extractedData as any;
+                            if (data.formFields && Array.isArray(data.formFields)) {
+                              const cppField = data.formFields.find((field: any) => 
+                                field.fieldCode === 'cpp_qpp_contributions' || field.fieldName?.toLowerCase().includes('cpp')
+                              );
+                              if (cppField?.fieldValue) {
+                                const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
+                                if (!isNaN(value)) total += value;
+                              }
+                            }
+                          }
+                        });
+                        return total.toLocaleString();
+                      })()}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total EI Premiums:</span>
-                    <span className="font-medium">$0</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
+                            const data = t1Return.extractedData as any;
+                            if (data.formFields && Array.isArray(data.formFields)) {
+                              const eiField = data.formFields.find((field: any) => 
+                                field.fieldCode === 'employment_insurance_premiums' || 
+                                field.fieldName?.toLowerCase().includes('employment insurance')
+                              );
+                              if (eiField?.fieldValue) {
+                                const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
+                                if (!isNaN(value)) total += value;
+                              }
+                            }
+                          }
+                        });
+                        return total.toLocaleString();
+                      })()}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total Tax Bill:</span>
-                    <span className="font-medium">$0</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
+                            const data = t1Return.extractedData as any;
+                            if (data.formFields && Array.isArray(data.formFields)) {
+                              const taxField = data.formFields.find((field: any) => 
+                                field.fieldCode === 'net_federal_tax' || 
+                                field.fieldCode === 'federal_tax' ||
+                                field.fieldName?.toLowerCase().includes('federal tax')
+                              );
+                              if (taxField?.fieldValue) {
+                                const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
+                                if (!isNaN(value)) total += value;
+                              }
+                            }
+                          }
+                        });
+                        return total.toLocaleString();
+                      })()}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Net Income:</span>
-                    <span className="font-medium">$0</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
+                            const data = t1Return.extractedData as any;
+                            if (data.formFields && Array.isArray(data.formFields)) {
+                              const netIncomeField = data.formFields.find((field: any) => 
+                                field.fieldCode === 'taxable_income' || 
+                                field.fieldName?.toLowerCase().includes('taxable income') ||
+                                field.fieldName?.toLowerCase().includes('net income')
+                              );
+                              if (netIncomeField?.fieldValue) {
+                                const value = parseFloat(String(netIncomeField.fieldValue).replace(/[,$\s]/g, ''));
+                                if (!isNaN(value)) total += value;
+                              }
+                            }
+                          }
+                        });
+                        return total.toLocaleString();
+                      })()}
+                    </span>
                   </div>
                 </div>
               </CardContent>
