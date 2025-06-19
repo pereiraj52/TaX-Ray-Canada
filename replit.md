@@ -107,6 +107,7 @@ Changelog:
 - June 19, 2025. Replaced eye icon with "Launch" button for opening household details
 - June 19, 2025. Removed provinces dropdown from search filters to simplify interface
 - June 19, 2025. Eliminated page header section to create cleaner homepage interface
+- June 19, 2025. Updated primary color theme to #006226 dark green for professional tax application branding
 ```
 
 ## User Preferences
