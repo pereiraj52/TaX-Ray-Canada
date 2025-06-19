@@ -63,21 +63,19 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
   }
 
   // Collect all T1 returns from all clients
-  const allReturns = household.clients.flatMap(client => {
-    console.log(`Processing client: ${client.firstName} ${client.lastName}, T1 Returns:`, client.t1Returns?.length || 0);
-    return client.t1Returns?.map(t1Return => ({
+  const allReturns = household.clients.flatMap(client => 
+    client.t1Returns?.map(t1Return => ({
       ...t1Return,
       clientName: `${client.firstName} ${client.lastName}`,
       clientId: client.id
-    })) || [];
-  });
+    })) || []
+  );
 
 
 
   // Group returns by year, then by client
   const returnsByYear = allReturns.reduce((acc, t1Return) => {
     const year = t1Return.taxYear;
-    console.log(`Grouping T1 return: ID ${t1Return.id}, Client: "${t1Return.clientName}", Year: ${year}`);
     if (!acc[year]) {
       acc[year] = {};
     }
@@ -87,8 +85,6 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
     acc[year][t1Return.clientName].push(t1Return);
     return acc;
   }, {} as Record<number, Record<string, typeof allReturns>>);
-
-  console.log('Returns grouped by year:', returnsByYear);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -145,7 +141,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5" />
-          Processed T1 Returns
+          Processed T1 Returns ({allReturns.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
