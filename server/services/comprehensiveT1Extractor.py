@@ -261,54 +261,48 @@ class ComprehensiveT1Extractor:
         """Extract personal information from text"""
         info = PersonalInfo()
         
-        # Extract SIN
-        sin_match = re.search(self.field_patterns['sin'], text, re.IGNORECASE)
+        # Extract First Name - specific T1 format: "First name" followed by "Jason"
+        first_name_match = re.search(r'First name\s+([A-Za-z]+)', text, re.IGNORECASE)
+        if first_name_match:
+            info.first_name = first_name_match.group(1).strip()
+        
+        # Extract Last Name - specific T1 format: "Last name" followed by "Pereira"  
+        last_name_match = re.search(r'Last name\s+([A-Za-z]+)', text, re.IGNORECASE)
+        if last_name_match:
+            info.last_name = last_name_match.group(1).strip()
+        
+        # Extract SIN - specific T1 format: "XXX XX1 481"
+        sin_match = re.search(r'(?:XXX\s+)?([A-Z0-9]{3}\s+[A-Z0-9]{3}\s+[A-Z0-9]{3})', text)
         if sin_match:
-            info.sin = re.sub(r'[\s-]', '', sin_match.group(1))
+            info.sin = sin_match.group(1).replace(' ', '')
         
-        # Extract postal code
-        postal_match = re.search(self.field_patterns['postal_code'], text)
-        if postal_match:
-            info.postal_code = postal_match.group(1).upper()
-        
-        # Extract province
-        prov_match = re.search(self.field_patterns['province'], text)
-        if prov_match:
-            info.province = prov_match.group(1)
-        
-        # Extract date of birth
-        dob_match = re.search(self.field_patterns['date_of_birth'], text, re.IGNORECASE)
+        # Extract Date of Birth - specific T1 format: "1979-06-18"
+        dob_match = re.search(r'(\d{4}-\d{2}-\d{2})', text)
         if dob_match:
             info.date_of_birth = dob_match.group(1)
         
-        # Extract names
-        name_patterns = [
-            r'(?:First name|Given name)[:\s]+([A-Za-z\s]+?)(?:\n|Last name|Family name)',
-            r'(?:Last name|Family name)[:\s]+([A-Za-z\s]+?)(?:\n|First name|Given name)',
-            r'(?:Last name|Surname)[:\s]+([A-Za-z\s]+)',
-            r'(?:First name)[:\s]+([A-Za-z\s]+)'
-        ]
+        # Extract Marital Status - specific T1 format: "1 X Married"
+        marital_match = re.search(r'1\s+X\s+(Married|Living common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
+        if marital_match:
+            info.marital_status = marital_match.group(1)
         
-        for pattern in name_patterns:
-            match = re.search(pattern, text, re.IGNORECASE)
-            if match:
-                name = match.group(1).strip()
-                if 'first' in pattern.lower() or 'given' in pattern.lower():
-                    info.first_name = name
-                elif 'last' in pattern.lower() or 'family' in pattern.lower() or 'surname' in pattern.lower():
-                    info.last_name = name
+        # Extract Address - specific T1 format: "2 Neilor Crescent"
+        address_match = re.search(r'Mailing address.*?\n\s+(.+)', text, re.IGNORECASE | re.DOTALL)
+        if address_match:
+            address_line = address_match.group(1).strip()
+            if address_line and not address_line.startswith('Date of birth'):
+                info.address_line1 = address_line
         
-        # Extract marital status
-        marital_patterns = [
-            r'Marital status[:\s]+([A-Za-z\s]+)',
-            r'Status[:\s]+([A-Za-z\s]+)',
-        ]
+        # Extract City - specific T1 format: "Toronto"
+        city_match = re.search(r'City\s+([A-Za-z\s]+)', text, re.IGNORECASE)
+        if city_match:
+            info.city = city_match.group(1).strip()
         
-        for pattern in marital_patterns:
-            match = re.search(pattern, text, re.IGNORECASE)
-            if match:
-                info.marital_status = match.group(1).strip()
-                break
+        # Extract Province and Postal Code - specific T1 format: "ON    M9C 1K4"
+        prov_postal_match = re.search(r'Prov\./Terr\.\s+Postal code\s+([A-Z]{2})\s+([A-Z0-9]{3}\s+[A-Z0-9]{3})', text)
+        if prov_postal_match:
+            info.province = prov_postal_match.group(1)
+            info.postal_code = prov_postal_match.group(2).replace(' ', '')
         
         return info
     
