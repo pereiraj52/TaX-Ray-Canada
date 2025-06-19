@@ -161,19 +161,17 @@ export default function Dashboard() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {household.clients.map((client) => (
-                        <span key={client.id}>{getClientStatusBadge(client)}</span>
-                      ))}
+                      {household.clients.map((client) => getClientStatusBadge(client))}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(household.updatedAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/household/${household.id}`}>
+                      <Link href={`/household/${household.id}`}>
+                        <Button variant="outline" size="sm">
                           Launch
-                        </Link>
-                      </Button>
+                        </Button>
+                      </Link>
                     </td>
                   </tr>
                 ))}
