@@ -151,11 +151,11 @@ class RefundFields:
 class ComprehensiveT1Return:
     """Complete T1 Tax Return with all schedules and provincial forms"""
     tax_year: Optional[int] = None
-    personal_info: PersonalInfo = None
-    income: IncomeFields = None
-    deductions: DeductionFields = None
-    federal_tax: FederalTaxFields = None
-    refund: RefundFields = None
+    personal_info: PersonalInfo = field(default_factory=PersonalInfo)
+    income: IncomeFields = field(default_factory=IncomeFields)
+    deductions: DeductionFields = field(default_factory=DeductionFields)
+    federal_tax: FederalTaxFields = field(default_factory=FederalTaxFields)
+    refund: RefundFields = field(default_factory=RefundFields)
     
     def __post_init__(self):
         if self.personal_info is None:
@@ -261,15 +261,25 @@ class ComprehensiveT1Extractor:
         """Extract personal information from text"""
         info = PersonalInfo()
         
-        # Extract First Name - line 20: "  Jason"
-        first_name_match = re.search(r'First name.*?Last name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
-        if first_name_match:
-            info.first_name = first_name_match.group(1).strip()
-        
-        # Extract Last Name - line 20: "Pereira" (appears after first name on same line)
-        last_name_match = re.search(r'First name.*?Last name.*?\n\s+[A-Za-z]+\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
-        if last_name_match:
-            info.last_name = last_name_match.group(1).strip()
+        # Extract First Name and Last Name from the same line
+        # Looking for pattern: "First name Last name" followed by line with names
+        name_pattern = re.search(r'First name\s+Last name.*?\n\s*([A-Za-z]+)\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
+        if name_pattern:
+            info.first_name = name_pattern.group(1).strip()
+            info.last_name = name_pattern.group(2).strip()
+            print(f"DEBUG: Found names - First: {info.first_name}, Last: {info.last_name}")
+        else:
+            print("DEBUG: Name pattern not found")
+            # Fallback patterns
+            first_name_match = re.search(r'First name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
+            if first_name_match:
+                info.first_name = first_name_match.group(1).strip()
+                print(f"DEBUG: Found first name: {info.first_name}")
+            
+            last_name_match = re.search(r'Last name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
+            if last_name_match:
+                info.last_name = last_name_match.group(1).strip()
+                print(f"DEBUG: Found last name: {info.last_name}")
         
         # Extract SIN - look for masked SIN "XXX XX1 481" from the PDF
         sin_match = re.search(r'(XXX\s+XX\d\s+\d{3})', text)

@@ -178,6 +178,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 <span className="field-value">{getTextFieldValue('sin')}</span>
               </div>
               <div className="field-row">
+                <span className="field-label">Date of Birth:</span>
+                <span className="field-value">{getTextFieldValue('date_of_birth')}</span>
+              </div>
+              <div className="field-row">
                 <span className="field-label">Marital Status:</span>
                 <span className="field-value">{getTextFieldValue('marital_status')}</span>
               </div>
@@ -185,7 +189,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             <div className="space-y-4">
               <div className="field-row">
                 <span className="field-label">Address:</span>
-                <span className="field-value">{getTextFieldValue('address')}</span>
+                <span className="field-value">{getTextFieldValue('address_line1')}</span>
               </div>
               <div className="field-row">
                 <span className="field-label">City:</span>
