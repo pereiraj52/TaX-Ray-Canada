@@ -113,6 +113,7 @@ Changelog:
 - June 19, 2025. Added Report button next to tax years in Processed T1 Returns with dedicated tax report page
 - June 19, 2025. Updated Report button labels to show year and "Report" (e.g., "2024 Report")
 - June 19, 2025. Fixed nested anchor tag error in HouseholdDetail breadcrumb navigation
+- June 19, 2025. Removed widget elements from TaxReport page for cleaner minimal layout
 ```
 
 ## User Preferences
