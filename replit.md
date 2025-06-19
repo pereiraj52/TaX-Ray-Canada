@@ -87,6 +87,10 @@ This is a full-stack tax management application built for handling T1 tax return
 ```
 Changelog:
 - June 19, 2025. Initial setup
+- June 19, 2025. Enhanced PDF extraction with comprehensive Python-based T1 extractor
+- June 19, 2025. Added background processing and real-time status indicators
+- June 19, 2025. Improved UI with compact upload areas and processing status display
+- June 19, 2025. Fixed audit report to show only most recent tax year data
 ```
 
 ## User Preferences

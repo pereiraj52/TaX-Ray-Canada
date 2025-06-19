@@ -223,20 +223,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Get all T1 returns for clients in this household
-      const t1Returns = [];
+      const allT1Returns = [];
       for (const client of household.clients) {
         const clientReturns = await storage.getT1ReturnsByClient(client.id);
         for (const returnRecord of clientReturns) {
           const fullReturn = await storage.getT1Return(returnRecord.id);
-          if (fullReturn) {
-            t1Returns.push(fullReturn);
+          if (fullReturn && fullReturn.processingStatus === 'completed') {
+            allT1Returns.push(fullReturn);
           }
         }
       }
 
-      if (t1Returns.length === 0) {
-        return res.status(400).json({ message: "No T1 returns found for this household" });
+      if (allT1Returns.length === 0) {
+        return res.status(400).json({ message: "No completed T1 returns found for this household" });
       }
+
+      // Filter to only include the most recent tax year
+      const mostRecentYear = Math.max(...allT1Returns.map(t1 => t1.taxYear));
+      const t1Returns = allT1Returns.filter(t1 => t1.taxYear === mostRecentYear);
 
       const reportBuffer = await T1AuditReportGenerator.generateAuditReport(household, t1Returns);
 

@@ -15,9 +15,14 @@ export class T1AuditReportGenerator {
         doc.on('end', () => resolve(Buffer.concat(chunks)));
         doc.on('error', reject);
 
+        // Determine the tax year being reported
+        const reportYear = t1Returns.length > 0 ? t1Returns[0].taxYear : new Date().getFullYear();
+
         // Header
         doc.fontSize(20).font('Helvetica-Bold');
         doc.text('T1 Tax Return Audit Report', { align: 'center' });
+        doc.fontSize(14).font('Helvetica');
+        doc.text(`Tax Year ${reportYear} - Most Recent Filing`, { align: 'center' });
         doc.moveDown();
 
         // Household Information
@@ -25,6 +30,7 @@ export class T1AuditReportGenerator {
         doc.text('Household Information');
         doc.fontSize(12).font('Helvetica');
         doc.text(`Household Name: ${household.name}`);
+        doc.text(`Report Tax Year: ${reportYear}`);
         doc.text(`Generated: ${new Date().toLocaleDateString()}`);
         doc.moveDown();
 
