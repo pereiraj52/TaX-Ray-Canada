@@ -108,7 +108,6 @@ Changelog:
 - June 19, 2025. Removed provinces dropdown from search filters to simplify interface
 - June 19, 2025. Eliminated page header section to create cleaner homepage interface
 - June 19, 2025. Updated primary color theme to #006226 dark green for professional tax application branding
-- June 19, 2025. Removed T1 returns section from household detail page for simplified interface
 ```
 
 ## User Preferences

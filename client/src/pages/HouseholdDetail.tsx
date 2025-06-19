@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI, T1API } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { HouseholdWithClients } from "@shared/schema";
+import { HouseholdWithClients, T1ReturnWithFields } from "@shared/schema";
 
 export default function HouseholdDetail() {
   const params = useParams();
