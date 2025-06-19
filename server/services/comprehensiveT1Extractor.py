@@ -271,10 +271,15 @@ class ComprehensiveT1Extractor:
         if last_name_match:
             info.last_name = last_name_match.group(1).strip()
         
-        # Extract SIN - line 20: "XXX XX1 481"
-        sin_match = re.search(r'Social insurance.*?\n.*?([A-Z0-9]{3}\s+[A-Z0-9]{2,3}\s+[A-Z0-9]{3})', text, re.IGNORECASE | re.DOTALL)
+        # Extract SIN - look for actual SIN number "509 441 481"
+        sin_match = re.search(r'(\d{3}\s+\d{3}\s+\d{3})', text)
         if sin_match:
             info.sin = sin_match.group(1).replace(' ', '')
+        else:
+            # Fallback: look for masked SIN "XXX XX1 481"
+            sin_match = re.search(r'([A-Z0-9]{3}\s+[A-Z0-9]{2,3}\s+[A-Z0-9]{3})', text)
+            if sin_match:
+                info.sin = sin_match.group(1).replace(' ', '')
         
         # Extract Date of Birth - line 24: "1979-06-18" (appears after address)
         dob_match = re.search(r'2 Neilor Crescent.*?(\d{4}-\d{2}-\d{2})', text, re.DOTALL)
