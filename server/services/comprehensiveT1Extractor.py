@@ -445,7 +445,7 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in refund_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None:
+            if amount is not None and amount > 0:  # Only set non-zero amounts
                 setattr(refund, field_name, amount)
         
         return refund
