@@ -17,6 +17,7 @@ export default function HouseholdDetail() {
   const householdId = parseInt(params.id || "0");
   const { toast } = useToast();
   const [selectedT1ReturnId, setSelectedT1ReturnId] = useState<number | null>(null);
+  const [processingT1Returns, setProcessingT1Returns] = useState<Set<number>>(new Set());
 
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
@@ -28,10 +29,6 @@ export default function HouseholdDetail() {
     queryKey: ["/api/t1-returns", selectedT1ReturnId],
     queryFn: () => T1API.getT1Return(selectedT1ReturnId!),
     enabled: selectedT1ReturnId !== null,
-    refetchInterval: (data) => {
-      // Keep refetching if still processing
-      return data?.processingStatus === 'processing' ? 2000 : false;
-    },
   });
 
   const generateReportMutation = useMutation({
@@ -61,6 +58,7 @@ export default function HouseholdDetail() {
 
   const handleT1UploadSuccess = (t1ReturnId: number) => {
     setSelectedT1ReturnId(t1ReturnId);
+    setProcessingT1Returns(prev => new Set(prev).add(t1ReturnId));
   };
 
   const getClientAvatarColor = (index: number) => {
@@ -192,6 +190,25 @@ export default function HouseholdDetail() {
                         <span className={status.class}>{status.status}</span>
                       </div>
                     </div>
+                    
+                    {/* Show processing status if a T1 is being processed for this client */}
+                    {processingT1Returns.size > 0 && (
+                      <div className="mt-3">
+                        <ProcessingStatus 
+                          t1ReturnId={Array.from(processingT1Returns)[0]} // Use the first processing T1 for now
+                          onStatusChange={(status) => {
+                            if (status === "completed" || status === "failed") {
+                              setProcessingT1Returns(prev => {
+                                const newSet = new Set(prev);
+                                newSet.delete(Array.from(processingT1Returns)[0]);
+                                return newSet;
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                    )}
+
                   </div>
                 );
               })}
