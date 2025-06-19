@@ -255,6 +255,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="field-row">
+                    <span className="field-label">Registered Pension Plan Deduction (Line 20700):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
+                  </div>
+                  <div className="field-row">
                     <span className="field-label">RRSP Deduction (Line 20800):</span>
                     <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
                   </div>

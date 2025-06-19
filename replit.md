@@ -101,6 +101,8 @@ Changelog:
 - June 19, 2025. Updated application branding from "Tax Manager Pro" to "Tax-Ray Canada"
 - June 19, 2025. Fixed RRSP deduction field extraction to correctly separate RPP (20700) and RRSP (20800) amounts
 - June 19, 2025. Enhanced reprocess functionality with proper file path storage and debugging capabilities
+- June 19, 2025. Added Registered Pension Plan Deduction (Line 20700) to deductions display section
+- June 19, 2025. Eliminated stats cards from homepage for cleaner interface focused on household management
 ```
 
 ## User Preferences

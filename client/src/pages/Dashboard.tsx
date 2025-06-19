@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Plus, Home, FileText, Clock, Calendar, Search, Eye } from "lucide-react";
+import { Plus, Search, Eye } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import HouseholdForm from "@/components/HouseholdForm";
@@ -34,18 +34,7 @@ export default function Dashboard() {
     return matchesSearch && matchesProvince;
   });
 
-  const stats = {
-    totalHouseholds: households.length,
-    t1Returns: households.reduce((total, h) => 
-      total + h.clients.reduce((clientTotal, c) => clientTotal + (c.t1Returns?.length || 0), 0), 0
-    ),
-    pendingReviews: households.reduce((total, h) => 
-      total + h.clients.reduce((clientTotal, c) => 
-        clientTotal + (c.t1Returns?.filter(t => t.processingStatus === 'processing').length || 0), 0
-      ), 0
-    ),
-    currentYear: new Date().getFullYear(),
-  };
+
 
   const getClientStatusBadge = (client: any) => {
     const t1Count = client.t1Returns?.length || 0;
@@ -81,19 +70,7 @@ export default function Dashboard() {
         actions={headerActions}
       >
         <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="stats-card animate-pulse">
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
-                  <div className="ml-4">
-                    <div className="h-4 bg-gray-200 rounded w-20 mb-2"></div>
-                    <div className="h-6 bg-gray-200 rounded w-12"></div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          Loading households...
         </div>
       </Layout>
     );
@@ -106,56 +83,6 @@ export default function Dashboard() {
       actions={headerActions}
     >
       <div className="p-6">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="stats-card">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Home className="text-primary text-xl h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Households</p>
-                <p className="text-2xl font-bold text-secondary">{stats.totalHouseholds}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="stats-card">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <FileText className="text-accent text-xl h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">T1 Returns Processed</p>
-                <p className="text-2xl font-bold text-secondary">{stats.t1Returns}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="stats-card">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <Clock className="text-warning text-xl h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pending Reviews</p>
-                <p className="text-2xl font-bold text-secondary">{stats.pendingReviews}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="stats-card">
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Calendar className="text-purple-600 text-xl h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Tax Year {stats.currentYear}</p>
-                <p className="text-2xl font-bold text-secondary">Active</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Search and Filter Bar */}
         <Card className="mb-6">
