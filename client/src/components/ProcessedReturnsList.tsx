@@ -120,12 +120,12 @@ export default function ProcessedReturnsList({ householdId }: ProcessedReturnsLi
                         <div key={t1Return.id} className="flex items-center justify-between bg-gray-50 p-2 rounded text-sm">
                           <div className="flex items-center gap-2">
                             <FileText className="h-3 w-3 text-gray-400" />
-                            <span className="text-gray-700">{t1Return.fileName}</span>
+                            <span className="text-gray-700">{t1Return.fileName || 'Unknown file'}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            {getStatusIcon(t1Return.processingStatus)}
+                            {getStatusIcon(t1Return.processingStatus || 'pending')}
                             <span className="text-xs text-gray-600">
-                              {getStatusText(t1Return.processingStatus)}
+                              {getStatusText(t1Return.processingStatus || 'pending')}
                             </span>
                           </div>
                         </div>

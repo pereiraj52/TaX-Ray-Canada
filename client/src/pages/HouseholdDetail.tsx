@@ -225,6 +225,11 @@ export default function HouseholdDetail() {
           />
         </div>
 
+        {/* Processed Returns List */}
+        <div className="mb-6">
+          <ProcessedReturnsList householdId={householdId} />
+        </div>
+
         {/* Extracted Data Display */}
         {t1Return && (
           <ExtractedDataDisplay t1Return={t1Return} />
