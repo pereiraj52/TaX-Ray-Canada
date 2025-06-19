@@ -59,7 +59,8 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground bg-background-alt;
+    @apply font-sans antialiased bg-background text-foreground;
+    background-color: var(--background-alt);
   }
 }
 
