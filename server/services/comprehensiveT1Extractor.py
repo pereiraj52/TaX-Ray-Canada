@@ -282,10 +282,13 @@ class ComprehensiveT1Extractor:
         if sin_match:
             info.sin = sin_match.group(1)
         
-        # Extract Date of Birth - line 24: "1979-06-18" (appears after address)
-        dob_match = re.search(r'2 Neilor Crescent.*?(\d{4}-\d{2}-\d{2})', text, re.DOTALL)
+        # Extract Date of Birth - line 24: "1979-06-18" (appears near "Date of birth")
+        dob_match = re.search(r'Date of birth.*?\n.*?(\d{4}-\d{2}-\d{2})', text, re.IGNORECASE | re.DOTALL)
         if dob_match:
-            info.date_of_birth = dob_match.group(1)
+            # Ensure it's a reasonable birth year (not future dates or document timestamps)
+            year = int(dob_match.group(1)[:4])
+            if 1900 <= year <= 2010:  # Reasonable birth year range
+                info.date_of_birth = dob_match.group(1)
         
         # Extract Marital Status - line 20: "1 X Married"
         marital_match = re.search(r'(\d+)\s+X\s+(Married|Living common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
