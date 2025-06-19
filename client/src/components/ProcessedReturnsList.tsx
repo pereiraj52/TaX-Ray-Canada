@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -146,9 +147,16 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
         <div className="space-y-4">
           {sortedYears.map(year => (
             <div key={year} className="border-l-2 border-gray-200 pl-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Calendar className="h-4 w-4 text-gray-600" />
-                <h3 className="font-semibold text-gray-900">Tax Year {year}</h3>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-gray-600" />
+                  <h3 className="font-semibold text-gray-900">Tax Year {year}</h3>
+                </div>
+                <Link href={`/household/${householdId}/report/${year}`}>
+                  <Button variant="outline" size="sm">
+                    Report
+                  </Button>
+                </Link>
               </div>
               
               <div className="space-y-2">
