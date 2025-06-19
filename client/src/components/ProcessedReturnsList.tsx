@@ -71,6 +71,14 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
     })) || []
   );
 
+  // Debug logging
+  console.log('ProcessedReturnsList Debug:', {
+    householdId,
+    clientsCount: household.clients.length,
+    allReturnsCount: allReturns.length,
+    allReturns: allReturns
+  });
+
   // Group returns by year, then by client
   const returnsByYear = allReturns.reduce((acc, t1Return) => {
     const year = t1Return.taxYear;
