@@ -1,17 +1,41 @@
-import { useQuery } from "@tanstack/react-query";
-import { FileText, Calendar, User, CheckCircle, XCircle, Clock } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { HouseholdAPI } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { HouseholdAPI, T1API } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProcessedReturnsListProps {
   householdId: number;
 }
 
 export default function ProcessedReturnsList({ householdId }: ProcessedReturnsListProps) {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data: household } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
     queryFn: () => HouseholdAPI.getHousehold(householdId),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: T1API.deleteT1Return,
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "T1 return deleted successfully",
+      });
+      // Invalidate household data to refresh the list
+      queryClient.invalidateQueries({ queryKey: ["/api/households"] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete T1 return",
+        variant: "destructive",
+      });
+    },
   });
 
   if (!household) {
@@ -127,6 +151,15 @@ export default function ProcessedReturnsList({ householdId }: ProcessedReturnsLi
                             <span className="text-xs text-gray-600">
                               {getStatusText(t1Return.processingStatus || 'pending')}
                             </span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => deleteMutation.mutate(t1Return.id)}
+                              disabled={deleteMutation.isPending}
+                              className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
                           </div>
                         </div>
                       ))}

@@ -34,6 +34,7 @@ export interface IStorage {
   getT1ReturnsByClient(clientId: number): Promise<T1Return[]>;
   createT1Return(t1Return: InsertT1Return): Promise<T1Return>;
   updateT1Return(id: number, updates: Partial<InsertT1Return>): Promise<T1Return | undefined>;
+  deleteT1Return(id: number): Promise<void>;
   
   // T1 Form Field operations
   createT1FormField(field: InsertT1FormField): Promise<T1FormField>;
@@ -158,6 +159,14 @@ export class DatabaseStorage implements IStorage {
 
   async getT1FormFieldsByReturn(t1ReturnId: number): Promise<T1FormField[]> {
     return await db.select().from(t1FormFields).where(eq(t1FormFields.t1ReturnId, t1ReturnId));
+  }
+
+  async deleteT1Return(id: number): Promise<void> {
+    // Delete form fields first (foreign key constraint)
+    await db.delete(t1FormFields).where(eq(t1FormFields.t1ReturnId, id));
+    
+    // Delete the T1 return
+    await db.delete(t1Returns).where(eq(t1Returns.id, id));
   }
 }
 

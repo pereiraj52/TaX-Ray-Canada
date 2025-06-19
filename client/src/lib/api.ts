@@ -57,4 +57,8 @@ export class T1API {
     const response = await apiRequest("GET", `/api/t1-returns/${id}`);
     return response.json();
   }
+
+  static async deleteT1Return(id: number): Promise<void> {
+    await apiRequest("DELETE", `/api/t1-returns/${id}`);
+  }
 }

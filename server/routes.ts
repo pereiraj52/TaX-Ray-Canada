@@ -253,6 +253,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete T1 return
+  app.delete("/api/t1-returns/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid T1 return ID" });
+      }
+
+      // Check if T1 return exists
+      const t1Return = await storage.getT1Return(id);
+      if (!t1Return) {
+        return res.status(404).json({ message: "T1 return not found" });
+      }
+
+      // Delete the T1 return and associated form fields
+      await storage.deleteT1Return(id);
+
+      res.json({ message: "T1 return deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting T1 return:", error);
+      res.status(500).json({ message: "Failed to delete T1 return" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
