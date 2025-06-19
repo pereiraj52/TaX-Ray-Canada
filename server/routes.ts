@@ -306,9 +306,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           // Extract data from the existing PDF file
           const extractedData = await T1PDFParser.extractT1Data(fullPath);
+          console.log(`Extracted ${extractedData.formFields?.length || 0} form fields`);
           
           // Delete existing form fields for this T1 return
           await db.delete(t1FormFields).where(eq(t1FormFields.t1ReturnId, id));
+          console.log(`Deleted existing form fields for T1 return ${id}`);
           
           // Insert new form fields
           if (extractedData.formFields && extractedData.formFields.length > 0) {
@@ -316,7 +318,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
               ...field,
               t1ReturnId: id
             }));
+            console.log(`Inserting ${fieldsWithT1ReturnId.length} form fields`);
             await storage.createT1FormFields(fieldsWithT1ReturnId);
+            console.log(`Successfully inserted form fields`);
+          } else {
+            console.log(`No form fields to insert`);
           }
 
           // Update T1 return with new extracted data and mark as completed
