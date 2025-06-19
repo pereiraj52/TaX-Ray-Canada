@@ -239,9 +239,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       for (const client of household.clients) {
         const clientReturns = await storage.getT1ReturnsByClient(client.id);
         for (const returnRecord of clientReturns) {
-          const fullReturn = await storage.getT1Return(returnRecord.id);
-          if (fullReturn && fullReturn.processingStatus === 'completed') {
-            allT1Returns.push(fullReturn);
+          if (returnRecord.processingStatus === 'completed') {
+            const fullReturn = await storage.getT1Return(returnRecord.id);
+            if (fullReturn && fullReturn.formFields) {
+              allT1Returns.push(fullReturn);
+            }
           }
         }
       }
@@ -253,6 +255,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Filter to only include the most recent tax year
       const mostRecentYear = Math.max(...allT1Returns.map(t1 => t1.taxYear));
       const t1Returns = allT1Returns.filter(t1 => t1.taxYear === mostRecentYear);
+
+      // Debug: log what data is being passed to the report generator
+      console.log("Report generation debug:");
+      console.log(`- Household: ${household.name}`);
+      console.log(`- T1 Returns count: ${t1Returns.length}`);
+      for (const t1Return of t1Returns) {
+        console.log(`- T1 ${t1Return.id}: ${t1Return.client.firstName} ${t1Return.client.lastName}`);
+        console.log(`  - Form fields count: ${t1Return.formFields?.length || 0}`);
+        const totalIncomeField = t1Return.formFields?.find(f => f.fieldCode === '15000');
+        console.log(`  - Total income field: ${totalIncomeField ? totalIncomeField.fieldValue : 'NOT FOUND'}`);
+      }
 
       const reportBuffer = await T1AuditReportGenerator.generateAuditReport(household, t1Returns);
 
