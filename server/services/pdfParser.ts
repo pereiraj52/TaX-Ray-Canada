@@ -85,6 +85,33 @@ export class T1PDFParser {
 
     const formFields: Omit<InsertT1FormField, 't1ReturnId'>[] = [];
 
+    // Add personal information fields
+    if (comprehensiveData.personal_info) {
+      const personalFields = [
+        { key: 'first_name', name: 'First Name', type: 'text' },
+        { key: 'last_name', name: 'Last Name', type: 'text' },
+        { key: 'sin', name: 'Social Insurance Number', type: 'text' },
+        { key: 'date_of_birth', name: 'Date of Birth', type: 'text' },
+        { key: 'marital_status', name: 'Marital Status', type: 'text' },
+        { key: 'address_line1', name: 'Address', type: 'text' },
+        { key: 'city', name: 'City', type: 'text' },
+        { key: 'province', name: 'Province', type: 'text' },
+        { key: 'postal_code', name: 'Postal Code', type: 'text' },
+      ];
+
+      for (const field of personalFields) {
+        const value = comprehensiveData.personal_info[field.key];
+        if (value) {
+          formFields.push({
+            fieldName: field.name,
+            fieldCode: field.key,
+            fieldValue: value.toString(),
+            fieldType: field.type,
+          });
+        }
+      }
+    }
+
     // Extract income fields
     if (comprehensiveData.income) {
       const incomeMapping = {
