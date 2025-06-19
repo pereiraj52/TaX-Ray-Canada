@@ -1,0 +1,94 @@
+# Tax Management Application
+
+## Overview
+
+This is a full-stack tax management application built for handling T1 tax returns. The application allows users to manage households, upload T1 PDF files, extract tax data, and generate audit reports. It's designed as a comprehensive tool for tax professionals to organize client information and process tax documents efficiently.
+
+## System Architecture
+
+### Frontend Architecture
+- **Framework**: React with TypeScript
+- **Build Tool**: Vite for fast development and optimized builds
+- **Routing**: Wouter for lightweight client-side routing
+- **State Management**: TanStack Query (React Query) for server state management
+- **UI Components**: Shadcn/ui component library built on Radix UI primitives
+- **Styling**: Tailwind CSS with custom design tokens and theme support
+
+### Backend Architecture
+- **Runtime**: Node.js with Express.js server
+- **Language**: TypeScript with ES modules
+- **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
+- **File Processing**: PDF parsing capabilities for T1 tax documents
+- **Report Generation**: PDFKit for generating audit reports
+
+## Key Components
+
+### Database Layer
+- **ORM**: Drizzle ORM with PostgreSQL dialect
+- **Connection**: Neon serverless PostgreSQL with connection pooling
+- **Schema**: Strongly typed schema definitions shared between client and server
+
+### File Processing System
+- **PDF Parser**: Custom T1PDFParser class for extracting tax data from PDF documents
+- **File Upload**: Multer middleware for handling PDF file uploads with validation
+- **Data Extraction**: Pattern-based extraction of tax form fields and personal information
+
+### Authentication & Security
+- Session-based authentication with PostgreSQL session storage
+- File type validation (PDF only)
+- File size limits (10MB)
+- CORS configuration for cross-origin requests
+
+## Data Flow
+
+1. **Household Creation**: Users create households with one or two clients
+2. **File Upload**: T1 PDF files are uploaded and associated with specific clients
+3. **Data Processing**: PDF content is parsed and tax data is extracted into structured format
+4. **Data Storage**: Extracted data is stored in normalized database tables
+5. **Report Generation**: Audit reports are generated combining household and tax data
+
+## External Dependencies
+
+### Database
+- **Neon Database**: Serverless PostgreSQL hosting
+- **Connection**: Uses connection pooling for optimal performance
+
+### UI Libraries
+- **Radix UI**: Accessible component primitives
+- **Lucide React**: Icon library
+- **Tailwind CSS**: Utility-first CSS framework
+
+### File Processing
+- **pdf-parse**: PDF text extraction
+- **PDFKit**: PDF generation for reports
+- **multer**: File upload handling
+
+## Deployment Strategy
+
+### Development Environment
+- **Runtime**: Node.js 20
+- **Database**: PostgreSQL 16
+- **Hot Reload**: Vite development server with HMR
+- **Build Process**: Vite for frontend, ESBuild for backend
+
+### Production Build
+- **Frontend**: Static assets built with Vite
+- **Backend**: Compiled TypeScript bundle with ESBuild
+- **Database**: Drizzle migrations for schema management
+- **Deployment**: Configured for autoscale deployment target
+
+### Configuration
+- Environment variables for database connection
+- Separate development and production configurations
+- Build optimization for production deployments
+
+## Changelog
+
+```
+Changelog:
+- June 19, 2025. Initial setup
+```
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.

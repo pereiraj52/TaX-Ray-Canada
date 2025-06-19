@@ -1,0 +1,254 @@
+import type { Express } from "express";
+import { createServer, type Server } from "http";
+import multer from "multer";
+import path from "path";
+import { storage } from "./storage";
+import { T1PDFParser } from "./services/pdfParser";
+import { T1AuditReportGenerator } from "./services/reportGenerator";
+import { insertHouseholdSchema, insertClientSchema } from "@shared/schema";
+import { z } from "zod";
+
+const upload = multer({
+  dest: 'uploads/',
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed'));
+    }
+  },
+});
+
+export async function registerRoutes(app: Express): Promise<Server> {
+  
+  // Get all households
+  app.get("/api/households", async (req, res) => {
+    try {
+      const households = await storage.getHouseholds();
+      res.json(households);
+    } catch (error) {
+      console.error("Error fetching households:", error);
+      res.status(500).json({ message: "Failed to fetch households" });
+    }
+  });
+
+  // Get specific household
+  app.get("/api/households/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid household ID" });
+      }
+
+      const household = await storage.getHousehold(id);
+      if (!household) {
+        return res.status(404).json({ message: "Household not found" });
+      }
+
+      res.json(household);
+    } catch (error) {
+      console.error("Error fetching household:", error);
+      res.status(500).json({ message: "Failed to fetch household" });
+    }
+  });
+
+  // Create household with clients
+  app.post("/api/households", async (req, res) => {
+    try {
+      const createHouseholdRequest = z.object({
+        client1: z.object({
+          firstName: z.string().min(1),
+          lastName: z.string().min(1),
+        }),
+        client2: z.object({
+          firstName: z.string().min(1),
+          lastName: z.string().min(1),
+        }).optional(),
+      });
+
+      const data = createHouseholdRequest.parse(req.body);
+      
+      // Generate household name based on logic
+      let householdName = '';
+      if (data.client2) {
+        if (data.client1.lastName === data.client2.lastName) {
+          householdName = `${data.client1.lastName}, ${data.client1.firstName} & ${data.client2.firstName}`;
+        } else {
+          householdName = `${data.client1.lastName} & ${data.client2.lastName}, ${data.client1.firstName} & ${data.client2.firstName}`;
+        }
+      } else {
+        householdName = `${data.client1.lastName}, ${data.client1.firstName}`;
+      }
+
+      // Create household
+      const household = await storage.createHousehold({ name: householdName });
+
+      // Create primary client
+      await storage.createClient({
+        householdId: household.id,
+        firstName: data.client1.firstName,
+        lastName: data.client1.lastName,
+        isPrimary: true,
+      });
+
+      // Create secondary client if provided
+      if (data.client2) {
+        await storage.createClient({
+          householdId: household.id,
+          firstName: data.client2.firstName,
+          lastName: data.client2.lastName,
+          isPrimary: false,
+        });
+      }
+
+      // Return the complete household with clients
+      const completeHousehold = await storage.getHousehold(household.id);
+      res.status(201).json(completeHousehold);
+    } catch (error) {
+      console.error("Error creating household:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create household" });
+    }
+  });
+
+  // Upload T1 PDF
+  app.post("/api/clients/:clientId/t1-upload", upload.single('t1File'), async (req, res) => {
+    try {
+      const clientId = parseInt(req.params.clientId);
+      if (isNaN(clientId)) {
+        return res.status(400).json({ message: "Invalid client ID" });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const client = await storage.getClient(clientId);
+      if (!client) {
+        return res.status(404).json({ message: "Client not found" });
+      }
+
+      // Create T1 return record
+      const t1Return = await storage.createT1Return({
+        clientId: clientId,
+        taxYear: 2024, // Will be updated after extraction
+        fileName: req.file.originalname,
+        fileSize: req.file.size,
+        processingStatus: "processing",
+      });
+
+      // Process the PDF in the background
+      setTimeout(async () => {
+        try {
+          const extractedData = await T1PDFParser.extractT1Data(req.file!.path);
+          
+          // Update T1 return with extracted data
+          await storage.updateT1Return(t1Return.id, {
+            taxYear: extractedData.taxYear,
+            extractedData: extractedData as any,
+            processingStatus: "completed",
+          });
+
+          // Update client with extracted personal info
+          await storage.updateClient(clientId, {
+            sin: extractedData.sin,
+            dateOfBirth: extractedData.dateOfBirth,
+            province: extractedData.province,
+          });
+
+          // Create form fields
+          const formFields = extractedData.formFields.map(field => ({
+            ...field,
+            t1ReturnId: t1Return.id,
+          }));
+
+          await storage.createT1FormFields(formFields);
+
+          // Clean up uploaded file
+          await T1PDFParser.cleanupFile(req.file!.path);
+        } catch (error) {
+          console.error("Error processing T1 PDF:", error);
+          await storage.updateT1Return(t1Return.id, {
+            processingStatus: "failed",
+          });
+        }
+      }, 100);
+
+      res.json({ 
+        message: "File uploaded successfully, processing started",
+        t1ReturnId: t1Return.id 
+      });
+    } catch (error) {
+      console.error("Error uploading T1 file:", error);
+      res.status(500).json({ message: "Failed to upload T1 file" });
+    }
+  });
+
+  // Get T1 return details
+  app.get("/api/t1-returns/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid T1 return ID" });
+      }
+
+      const t1Return = await storage.getT1Return(id);
+      if (!t1Return) {
+        return res.status(404).json({ message: "T1 return not found" });
+      }
+
+      res.json(t1Return);
+    } catch (error) {
+      console.error("Error fetching T1 return:", error);
+      res.status(500).json({ message: "Failed to fetch T1 return" });
+    }
+  });
+
+  // Generate audit report
+  app.post("/api/households/:id/audit-report", async (req, res) => {
+    try {
+      const householdId = parseInt(req.params.id);
+      if (isNaN(householdId)) {
+        return res.status(400).json({ message: "Invalid household ID" });
+      }
+
+      const household = await storage.getHousehold(householdId);
+      if (!household) {
+        return res.status(404).json({ message: "Household not found" });
+      }
+
+      // Get all T1 returns for clients in this household
+      const t1Returns = [];
+      for (const client of household.clients) {
+        const clientReturns = await storage.getT1ReturnsByClient(client.id);
+        for (const returnRecord of clientReturns) {
+          const fullReturn = await storage.getT1Return(returnRecord.id);
+          if (fullReturn) {
+            t1Returns.push(fullReturn);
+          }
+        }
+      }
+
+      if (t1Returns.length === 0) {
+        return res.status(400).json({ message: "No T1 returns found for this household" });
+      }
+
+      const reportBuffer = await T1AuditReportGenerator.generateAuditReport(household, t1Returns);
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="audit-report-${household.name.replace(/[^a-zA-Z0-9]/g, '-')}.pdf"`);
+      res.send(reportBuffer);
+    } catch (error) {
+      console.error("Error generating audit report:", error);
+      res.status(500).json({ message: "Failed to generate audit report" });
+    }
+  });
+
+  const httpServer = createServer(app);
+  return httpServer;
+}

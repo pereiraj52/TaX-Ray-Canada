@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --primary-dark: hsl(221, 83%, 53%);
+  --secondary: hsl(218, 11%, 65%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(142, 76%, 36%);
+  --accent-light: hsl(138, 76%, 97%);
+  --accent-foreground: hsl(355, 7%, 97%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  --warning: hsl(38, 92%, 50%);
+  --error: hsl(0, 72%, 51%);
+  --background-alt: hsl(210, 20%, 98%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(142, 76%, 36%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground bg-background-alt;
+  }
+}
+
+/* Custom utility classes for the tax management system */
+.stats-card {
+  @apply bg-white p-6 rounded-xl shadow-sm border border-gray-200;
+}
+
+.client-avatar {
+  @apply w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium border-2 border-white;
+}
+
+.status-badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.status-complete {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-pending {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-failed {
+  @apply bg-red-100 text-red-800;
+}
+
+.upload-area {
+  @apply border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer;
+}
+
+.upload-area.dragover {
+  @apply border-primary bg-blue-50;
+}
+
+.field-row {
+  @apply flex justify-between py-2 border-b border-gray-100;
+}
+
+.field-label {
+  @apply text-gray-600;
+}
+
+.field-value {
+  @apply font-medium;
+}
+
+.currency-value {
+  @apply font-medium text-accent;
+}
+
+.tab-button {
+  @apply border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium;
+}
+
+.tab-button.active {
+  @apply border-b-2 border-primary text-primary;
+}
+
+.sidebar-nav-item {
+  @apply flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-primary transition-colors;
+}
+
+.sidebar-nav-item.active {
+  @apply text-primary bg-blue-50 border-r-2 border-primary;
+}
