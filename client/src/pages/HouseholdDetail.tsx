@@ -4,9 +4,9 @@ import { useParams, Link } from "wouter";
 import { ChevronRight, Home, File, User } from "lucide-react";
 import Layout from "@/components/Layout";
 import T1UploadArea from "@/components/T1UploadArea";
-
+import ExtractedDataDisplay from "@/components/ExtractedDataDisplay";
 import ProcessingStatus from "@/components/ProcessingStatus";
-
+import ProcessedReturnsList from "@/components/ProcessedReturnsList";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI, T1API } from "@/lib/api";
@@ -17,6 +17,7 @@ export default function HouseholdDetail() {
   const params = useParams();
   const householdId = parseInt(params.id || "0");
   const { toast } = useToast();
+  const [selectedT1ReturnId, setSelectedT1ReturnId] = useState<number | null>(null);
   const [processingT1Returns, setProcessingT1Returns] = useState<Set<number>>(new Set());
 
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
@@ -25,11 +26,16 @@ export default function HouseholdDetail() {
     enabled: !isNaN(householdId) && householdId > 0,
   });
 
-
+  const { data: t1Return } = useQuery<T1ReturnWithFields>({
+    queryKey: ["/api/t1-returns", selectedT1ReturnId],
+    queryFn: () => T1API.getT1Return(selectedT1ReturnId!),
+    enabled: selectedT1ReturnId !== null,
+  });
 
 
 
   const handleT1UploadSuccess = (t1ReturnId: number) => {
+    setSelectedT1ReturnId(t1ReturnId);
     setProcessingT1Returns(prev => new Set(prev).add(t1ReturnId));
   };
 
@@ -199,9 +205,18 @@ export default function HouseholdDetail() {
 
 
 
+        {/* Processed Returns List */}
+        <div className="mb-6">
+          <ProcessedReturnsList 
+            householdId={householdId} 
+            onT1ReturnClick={(t1ReturnId) => setSelectedT1ReturnId(t1ReturnId)}
+          />
+        </div>
 
-
-
+        {/* Extracted Data Display */}
+        {t1Return && (
+          <ExtractedDataDisplay t1Return={t1Return} />
+        )}
       </div>
     </Layout>
   );
