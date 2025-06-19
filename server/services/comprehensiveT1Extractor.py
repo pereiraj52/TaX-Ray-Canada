@@ -343,7 +343,7 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in income_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None and amount > 0:  # Only set non-zero amounts
+            if amount is not None:  # Set any legitimately extracted amount (including zero)
                 current_value = getattr(income, field_name)
                 if current_value is None:
                     setattr(income, field_name, amount)
@@ -375,7 +375,7 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in deduction_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None and amount > 0:  # Only set non-zero amounts
+            if amount is not None:  # Set any legitimately extracted amount (including zero)
                 current_value = getattr(deductions, field_name)
                 if current_value is None:
                     setattr(deductions, field_name, amount)
@@ -420,7 +420,7 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in federal_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None and amount > 0:  # Only set non-zero amounts
+            if amount is not None:  # Set any legitimately extracted amount (including zero)
                 setattr(federal_tax, field_name, amount)
         
         return federal_tax
@@ -445,44 +445,39 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in refund_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None and amount > 0:  # Only set non-zero amounts
+            if amount is not None:  # Set any legitimately extracted amount (including zero)
                 setattr(refund, field_name, amount)
         
         return refund
     
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
+        # More precise patterns that require the line number to be followed by actual amounts
         patterns = [
-            # Pattern for amounts with space-separated cents like "360,261 63"
-            rf'(?:Line\s+)?{line_num}[:\s]*\$?\s*([\d,]+)\s+(\d{{2}})',
-            # Pattern for traditional decimal amounts like "360,261.63"
-            rf'(?:Line\s+)?{line_num}[:\s]*\$?\s*([\d,]+\.?\d*)',
-            rf'{line_num}[:\s]*\$?\s*([\d,]+)\s+(\d{{2}})',
-            rf'{line_num}[:\s]*\$?\s*([\d,]+\.?\d*)',
-            rf'Line\s+{line_num}.*?\$?\s*([\d,]+)\s+(\d{{2}})',
-            rf'Line\s+{line_num}.*?\$?\s*([\d,]+\.?\d*)',
+            # Pattern for space-separated format with proper context: "10100          360,261 63     1"
+            rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})\s+\d+',
+            # Pattern for decimal format with proper context: "10100          360,261.63"
+            rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\.(\d{{2}})',
+            # More restrictive patterns that require whitespace context
+            rf'{line_num}\s{{10,}}(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})',
+            rf'{line_num}\s{{10,}}(\d{{1,3}}(?:,\d{{3}})*)\.(\d{{2}})',
         ]
         
         for pattern in patterns:
-            matches = re.findall(pattern, text, re.IGNORECASE)
+            matches = re.findall(pattern, text)
             for match in matches:
                 try:
                     if isinstance(match, tuple) and len(match) == 2:
-                        # Handle space-separated format: dollars and cents
                         dollars, cents = match
-                        cleaned_dollars = dollars.replace(',', '').strip()
-                        if cleaned_dollars and cents:
-                            amount_str = f"{cleaned_dollars}.{cents}"
+                        # Validate that we have reasonable amounts (not sequential small numbers)
+                        dollars_cleaned = dollars.replace(',', '').strip()
+                        if dollars_cleaned and cents and int(dollars_cleaned) >= 100:  # At least $1.00
+                            amount_str = f"{dollars_cleaned}.{cents}"
                             return Decimal(amount_str)
-                    else:
-                        # Handle traditional decimal format
-                        if isinstance(match, str):
-                            cleaned = match.replace(',', '').strip()
-                            if cleaned and cleaned != '0':
-                                return Decimal(cleaned)
                 except (InvalidOperation, ValueError):
                     continue
         
+        # If no amount found with strict patterns, return None (blank field)
         return None
 
 def decimal_serializer(obj):
