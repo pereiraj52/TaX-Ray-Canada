@@ -241,11 +241,11 @@ class ComprehensiveT1Extractor:
     def _extract_tax_year(self, text: str) -> Optional[int]:
         """Extract tax year from text"""
         patterns = [
-            r'(?:Tax Year|Year)\s*:?\s*(\d{4})',
+            r'T1\s+(\d{4})',  # "T1 2024" pattern from top right
             r'(\d{4})\s*T1\s*General',
             r'T1\s*General.*?(\d{4})',
             r'Income Tax.*?(\d{4})',
-            r'T1\s+(\d{4})',
+            r'(?:Tax Year|Year)\s*:?\s*(\d{4})',
         ]
         
         for pattern in patterns:
@@ -343,7 +343,7 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in income_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None:
+            if amount is not None and amount > 0:  # Only set non-zero amounts
                 current_value = getattr(income, field_name)
                 if current_value is None:
                     setattr(income, field_name, amount)
@@ -375,7 +375,7 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in deduction_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None:
+            if amount is not None and amount > 0:  # Only set non-zero amounts
                 current_value = getattr(deductions, field_name)
                 if current_value is None:
                     setattr(deductions, field_name, amount)
@@ -420,7 +420,7 @@ class ComprehensiveT1Extractor:
         
         for line_num, field_name in federal_lines.items():
             amount = self._extract_line_amount(text, line_num)
-            if amount is not None:
+            if amount is not None and amount > 0:  # Only set non-zero amounts
                 setattr(federal_tax, field_name, amount)
         
         return federal_tax
@@ -453,8 +453,13 @@ class ComprehensiveT1Extractor:
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
         patterns = [
+            # Pattern for amounts with space-separated cents like "360,261 63"
+            rf'(?:Line\s+)?{line_num}[:\s]*\$?\s*([\d,]+)\s+(\d{{2}})',
+            # Pattern for traditional decimal amounts like "360,261.63"
             rf'(?:Line\s+)?{line_num}[:\s]*\$?\s*([\d,]+\.?\d*)',
+            rf'{line_num}[:\s]*\$?\s*([\d,]+)\s+(\d{{2}})',
             rf'{line_num}[:\s]*\$?\s*([\d,]+\.?\d*)',
+            rf'Line\s+{line_num}.*?\$?\s*([\d,]+)\s+(\d{{2}})',
             rf'Line\s+{line_num}.*?\$?\s*([\d,]+\.?\d*)',
         ]
         
@@ -462,11 +467,20 @@ class ComprehensiveT1Extractor:
             matches = re.findall(pattern, text, re.IGNORECASE)
             for match in matches:
                 try:
-                    # Clean up the amount string
-                    cleaned = match.replace(',', '').strip()
-                    if cleaned:
-                        return Decimal(cleaned)
-                except InvalidOperation:
+                    if isinstance(match, tuple) and len(match) == 2:
+                        # Handle space-separated format: dollars and cents
+                        dollars, cents = match
+                        cleaned_dollars = dollars.replace(',', '').strip()
+                        if cleaned_dollars and cents:
+                            amount_str = f"{cleaned_dollars}.{cents}"
+                            return Decimal(amount_str)
+                    else:
+                        # Handle traditional decimal format
+                        if isinstance(match, str):
+                            cleaned = match.replace(',', '').strip()
+                            if cleaned and cleaned != '0':
+                                return Decimal(cleaned)
+                except (InvalidOperation, ValueError):
                     continue
         
         return None
