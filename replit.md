@@ -105,6 +105,8 @@ Changelog:
 - June 19, 2025. Eliminated stats cards from homepage for cleaner interface focused on household management
 - June 19, 2025. Changed "Actions" column label to "Launch" in households table
 - June 19, 2025. Replaced eye icon with "Launch" button for opening household details
+- June 19, 2025. Removed provinces dropdown from search filters to simplify interface
+- June 19, 2025. Eliminated page header section to create cleaner homepage interface
 ```
 
 ## User Preferences

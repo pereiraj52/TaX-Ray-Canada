@@ -33,14 +33,16 @@ export default function Layout({ children, title, subtitle, actions }: LayoutPro
       </div>
 
       {/* Page Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-secondary">{title}</h2>
-            <p className="text-gray-600 mt-1">{subtitle}</p>
+      {(title || subtitle) && (
+        <div className="bg-white border-b border-gray-200 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              {title && <h2 className="text-2xl font-bold text-secondary">{title}</h2>}
+              {subtitle && <p className="text-gray-600 mt-1">{subtitle}</p>}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Content */}
       <main className="flex-1">

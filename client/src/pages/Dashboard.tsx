@@ -62,8 +62,8 @@ export default function Dashboard() {
   if (isLoading) {
     return (
       <Layout 
-        title="Household Management" 
-        subtitle="Manage client households and T1 tax returns"
+        title="" 
+        subtitle=""
         actions={headerActions}
       >
         <div className="p-6">
@@ -75,8 +75,8 @@ export default function Dashboard() {
 
   return (
     <Layout 
-      title="Household Management" 
-      subtitle="Manage client households and T1 tax returns"
+      title="" 
+      subtitle=""
       actions={headerActions}
     >
       <div className="p-6">
