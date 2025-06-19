@@ -27,6 +27,7 @@ export const t1Returns = pgTable("t1_returns", {
   clientId: integer("client_id").references(() => clients.id).notNull(),
   taxYear: integer("tax_year").notNull(),
   fileName: text("file_name").notNull(),
+  filePath: text("file_path"), // Store the actual file path for reprocessing
   fileSize: integer("file_size").notNull(),
   extractedData: jsonb("extracted_data"),
   processingStatus: text("processing_status").default("pending"), // pending, processing, completed, failed

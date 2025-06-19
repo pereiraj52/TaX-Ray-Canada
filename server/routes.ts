@@ -135,11 +135,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Client not found" });
       }
 
-      // Create T1 return record
+      // Create T1 return record with both original name and file path
       const t1Return = await storage.createT1Return({
         clientId: clientId,
         taxYear: 2024, // Will be updated after extraction
         fileName: req.file.originalname,
+        filePath: req.file.path, // Store the actual file path for reprocessing
         fileSize: req.file.size,
         processingStatus: "processing",
       });
@@ -171,8 +172,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           await storage.createT1FormFields(formFields);
 
-          // Clean up uploaded file
-          await T1PDFParser.cleanupFile(req.file!.path);
+          // Don't clean up uploaded file - keep it for reprocessing
+          // await T1PDFParser.cleanupFile(req.file!.path);
         } catch (error) {
           console.error("Error processing T1 PDF:", error);
           await storage.updateT1Return(t1Return.id, {
