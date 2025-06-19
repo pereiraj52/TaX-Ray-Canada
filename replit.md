@@ -91,6 +91,8 @@ Changelog:
 - June 19, 2025. Added background processing and real-time status indicators
 - June 19, 2025. Improved UI with compact upload areas and processing status display
 - June 19, 2025. Fixed audit report to show only most recent tax year data
+- June 19, 2025. Fixed personal information extraction patterns for accurate field capture
+- June 19, 2025. Implemented proper database cleanup for T1 return deletions with cascading field removal
 ```
 
 ## User Preferences
