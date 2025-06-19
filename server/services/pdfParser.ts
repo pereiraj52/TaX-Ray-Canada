@@ -170,6 +170,7 @@ export class T1PDFParser {
         clergy_residence: { code: '23100', name: 'Clergy Residence' },
         other_deductions: { code: '23200', name: 'Other Deductions' },
         total_deductions: { code: '23300', name: 'Total Deductions' },
+        net_income: { code: '23600', name: 'Net Income' },
       };
 
       for (const [fieldKey, mapping] of Object.entries(deductionMapping)) {

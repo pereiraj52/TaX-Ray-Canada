@@ -96,6 +96,7 @@ class DeductionFields:
     clergy_residence: Optional[Decimal] = None  # Line 23100
     other_deductions: Optional[Decimal] = None  # Line 23200
     total_deductions: Optional[Decimal] = None  # Line 23300
+    net_income: Optional[Decimal] = None  # Line 23600
 
 @dataclass
 class FederalTaxFields:
@@ -371,7 +372,8 @@ class ComprehensiveT1Extractor:
             '22900': 'other_employment_expenses',
             '23100': 'clergy_residence',
             '23200': 'other_deductions',
-            '23300': 'total_deductions'
+            '23300': 'total_deductions',
+            '23600': 'net_income'
         }
         
         for line_num, field_name in deduction_lines.items():
