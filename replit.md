@@ -109,6 +109,7 @@ Changelog:
 - June 19, 2025. Eliminated page header section to create cleaner homepage interface
 - June 19, 2025. Updated primary color theme to #006226 dark green for professional tax application branding
 - June 19, 2025. Fixed React console errors including missing keys and nested anchor tag validation issues
+- June 19, 2025. Removed T1 Returns column from households table for cleaner dashboard layout
 ```
 
 ## User Preferences
