@@ -118,6 +118,8 @@ Changelog:
 - June 19, 2025. Replaced household info with financial summary calculating combined totals (income, CPP, EI, tax) for all household members
 - June 19, 2025. Added Net Income field to household financial summary section and positioned it last in the list
 - June 19, 2025. Implemented calculations to sum financial values across all household members for the corresponding tax year
+- June 19, 2025. Fixed application startup failures with improved database connection configuration and error handling
+- June 19, 2025. Resolved total income generation issue in audit reports by fixing form field data access and adding Net Income field extraction
 ```
 
 ## User Preferences
