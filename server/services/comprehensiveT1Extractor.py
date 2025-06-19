@@ -261,48 +261,51 @@ class ComprehensiveT1Extractor:
         """Extract personal information from text"""
         info = PersonalInfo()
         
-        # Extract First Name - specific T1 format: "First name" followed by "Jason"
-        first_name_match = re.search(r'First name\s+([A-Za-z]+)', text, re.IGNORECASE)
+        # Extract First Name - line 20: "  Jason"
+        first_name_match = re.search(r'First name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
         if first_name_match:
             info.first_name = first_name_match.group(1).strip()
         
-        # Extract Last Name - specific T1 format: "Last name" followed by "Pereira"  
-        last_name_match = re.search(r'Last name\s+([A-Za-z]+)', text, re.IGNORECASE)
+        # Extract Last Name - line 20: "Pereira" 
+        last_name_match = re.search(r'Last name.*?\n\s+\w+\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
         if last_name_match:
             info.last_name = last_name_match.group(1).strip()
         
-        # Extract SIN - specific T1 format: "XXX XX1 481"
-        sin_match = re.search(r'(?:XXX\s+)?([A-Z0-9]{3}\s+[A-Z0-9]{3}\s+[A-Z0-9]{3})', text)
+        # Extract SIN - line 20: "XXX XX1 481"
+        sin_match = re.search(r'Social insurance.*?\n.*?([A-Z0-9]{3}\s+[A-Z0-9]{2,3}\s+[A-Z0-9]{3})', text, re.IGNORECASE | re.DOTALL)
         if sin_match:
             info.sin = sin_match.group(1).replace(' ', '')
         
-        # Extract Date of Birth - specific T1 format: "1979-06-18"
-        dob_match = re.search(r'(\d{4}-\d{2}-\d{2})', text)
+        # Extract Date of Birth - line 24: "1979-06-18" (appears after address)
+        dob_match = re.search(r'2 Neilor Crescent.*?(\d{4}-\d{2}-\d{2})', text, re.DOTALL)
         if dob_match:
             info.date_of_birth = dob_match.group(1)
         
-        # Extract Marital Status - specific T1 format: "1 X Married"
-        marital_match = re.search(r'1\s+X\s+(Married|Living common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
+        # Extract Marital Status - line 20: "1 X Married"
+        marital_match = re.search(r'(\d+)\s+X\s+(Married|Living common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
         if marital_match:
-            info.marital_status = marital_match.group(1)
+            info.marital_status = marital_match.group(2)
         
-        # Extract Address - specific T1 format: "2 Neilor Crescent"
-        address_match = re.search(r'Mailing address.*?\n\s+(.+)', text, re.IGNORECASE | re.DOTALL)
+        # Extract Address - line 24: "2 Neilor Crescent"
+        address_match = re.search(r'Mailing address.*?\n\s+([^\n]+)', text, re.IGNORECASE | re.DOTALL)
         if address_match:
             address_line = address_match.group(1).strip()
-            if address_line and not address_line.startswith('Date of birth'):
+            if not re.search(r'\d{4}-\d{2}-\d{2}', address_line):  # Skip if it contains date
                 info.address_line1 = address_line
         
-        # Extract City - specific T1 format: "Toronto"
-        city_match = re.search(r'City\s+([A-Za-z\s]+)', text, re.IGNORECASE)
+        # Extract City - line 31: "Toronto"
+        city_match = re.search(r'City\s*\n\s+([A-Za-z\s]+)', text, re.IGNORECASE)
         if city_match:
             info.city = city_match.group(1).strip()
         
-        # Extract Province and Postal Code - specific T1 format: "ON    M9C 1K4"
-        prov_postal_match = re.search(r'Prov\./Terr\.\s+Postal code\s+([A-Z]{2})\s+([A-Z0-9]{3}\s+[A-Z0-9]{3})', text)
-        if prov_postal_match:
-            info.province = prov_postal_match.group(1)
-            info.postal_code = prov_postal_match.group(2).replace(' ', '')
+        # Extract Province and Postal Code - line 33: "ON" and "M9C 1K4"
+        prov_match = re.search(r'Prov\./Terr\.\s+Postal code\s*\n\s+([A-Z]{2})', text, re.IGNORECASE)
+        if prov_match:
+            info.province = prov_match.group(1)
+        
+        postal_match = re.search(r'Prov\./Terr\.\s+Postal code\s*\n\s+[A-Z]{2}\s+([A-Z0-9]{3}\s+[A-Z0-9]{3})', text, re.IGNORECASE)
+        if postal_match:
+            info.postal_code = postal_match.group(1).replace(' ', '')
         
         return info
     
