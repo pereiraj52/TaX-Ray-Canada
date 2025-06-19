@@ -103,6 +103,8 @@ Changelog:
 - June 19, 2025. Enhanced reprocess functionality with proper file path storage and debugging capabilities
 - June 19, 2025. Added Registered Pension Plan Deduction (Line 20700) to deductions display section
 - June 19, 2025. Eliminated stats cards from homepage for cleaner interface focused on household management
+- June 19, 2025. Changed "Actions" column label to "Launch" in households table
+- June 19, 2025. Replaced eye icon with "Launch" button for opening household details
 ```
 
 ## User Preferences

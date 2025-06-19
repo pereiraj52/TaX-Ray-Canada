@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Plus, Search, Eye } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import HouseholdForm from "@/components/HouseholdForm";
@@ -14,7 +14,7 @@ import { HouseholdWithClients } from "@shared/schema";
 export default function Dashboard() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [provinceFilter, setProvinceFilter] = useState("all");
+
   const [yearFilter, setYearFilter] = useState("all");
 
   const { data: households = [], isLoading } = useQuery<HouseholdWithClients[]>({
@@ -28,10 +28,7 @@ export default function Dashboard() {
                            `${client.firstName} ${client.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
                          );
     
-    const matchesProvince = provinceFilter === "all" || 
-                           household.clients.some(client => client.province === provinceFilter);
-    
-    return matchesSearch && matchesProvince;
+    return matchesSearch;
   });
 
 
@@ -100,18 +97,6 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex items-center space-x-4">
-                <Select value={provinceFilter} onValueChange={setProvinceFilter}>
-                  <SelectTrigger className="w-40">
-                    <SelectValue placeholder="All Provinces" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Provinces</SelectItem>
-                    <SelectItem value="Ontario">Ontario</SelectItem>
-                    <SelectItem value="Quebec">Quebec</SelectItem>
-                    <SelectItem value="British Columbia">British Columbia</SelectItem>
-                    <SelectItem value="Alberta">Alberta</SelectItem>
-                  </SelectContent>
-                </Select>
                 <Select value={yearFilter} onValueChange={setYearFilter}>
                   <SelectTrigger className="w-32">
                     <SelectValue placeholder="All Years" />
@@ -151,7 +136,7 @@ export default function Dashboard() {
                     Last Updated
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Launch
                   </th>
                 </tr>
               </thead>
@@ -183,8 +168,8 @@ export default function Dashboard() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link href={`/household/${household.id}`}>
-                        <Button variant="ghost" size="sm">
-                          <Eye className="h-4 w-4" />
+                        <Button variant="outline" size="sm">
+                          Launch
                         </Button>
                       </Link>
                     </td>
