@@ -80,8 +80,9 @@ class IncomeFields:
 @dataclass
 class DeductionFields:
     """T1 Deduction fields (Lines 20600-23300)"""
-    rrsp_deduction: Optional[Decimal] = None  # Line 20800
     pension_adjustment: Optional[Decimal] = None  # Line 20600
+    rpp_deduction: Optional[Decimal] = None  # Line 20700
+    rrsp_deduction: Optional[Decimal] = None  # Line 20800
     annual_union_dues: Optional[Decimal] = None  # Line 21200
     child_care_expenses: Optional[Decimal] = None  # Line 21400
     disability_supports: Optional[Decimal] = None  # Line 21500
@@ -356,7 +357,7 @@ class ComprehensiveT1Extractor:
         
         deduction_lines = {
             '20600': 'pension_adjustment',
-            '20700': 'rrsp_deduction',
+            '20700': 'rpp_deduction',
             '20800': 'rrsp_deduction',
             '21200': 'annual_union_dues',
             '21400': 'child_care_expenses',

@@ -19,7 +19,7 @@ export default function Layout({ children, title, subtitle, actions }: LayoutPro
               <Link href="/">
                 <a className="flex items-center">
                   <Home className="h-6 w-6 text-primary mr-3" />
-                  <h1 className="text-xl font-bold text-secondary">Tax Manager Pro</h1>
+                  <h1 className="text-xl font-bold text-secondary">Tax-Ray Canada</h1>
                 </a>
               </Link>
             </div>

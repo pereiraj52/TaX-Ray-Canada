@@ -151,8 +151,9 @@ export class T1PDFParser {
     // Extract deduction fields
     if (comprehensiveData.deductions) {
       const deductionMapping = {
-        rrsp_deduction: { code: '20800', name: 'RRSP Deduction' },
         pension_adjustment: { code: '20600', name: 'Pension Adjustment' },
+        rpp_deduction: { code: '20700', name: 'Registered Pension Plan Deduction' },
+        rrsp_deduction: { code: '20800', name: 'RRSP Deduction' },
         annual_union_dues: { code: '21200', name: 'Annual Union Dues' },
         child_care_expenses: { code: '21400', name: 'Child Care Expenses' },
         disability_supports: { code: '21500', name: 'Disability Supports' },
