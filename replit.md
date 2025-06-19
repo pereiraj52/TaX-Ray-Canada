@@ -115,6 +115,7 @@ Changelog:
 - June 19, 2025. Fixed nested anchor tag error in HouseholdDetail breadcrumb navigation
 - June 19, 2025. Removed widget elements from TaxReport page for cleaner minimal layout
 - June 19, 2025. Added "Key Household Data" section with 2-column layout showing household info and processing summary
+- June 19, 2025. Replaced household info with financial summary calculating combined totals (income, CPP, EI, tax) for all household members
 ```
 
 ## User Preferences

@@ -105,23 +105,23 @@ export default function TaxReport() {
             {/* Column 1 */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-medium text-gray-900 mb-4">Household Information</h3>
+                <h3 className="font-medium text-gray-900 mb-4">Household Financial Summary</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Household Name:</span>
-                    <span className="font-medium">{household.name}</span>
+                    <span className="text-gray-600">Total Income:</span>
+                    <span className="font-medium">$0</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Created:</span>
-                    <span className="font-medium">{new Date(household.createdAt).toLocaleDateString()}</span>
+                    <span className="text-gray-600">Total CPP Contributions:</span>
+                    <span className="font-medium">$0</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Total Clients:</span>
-                    <span className="font-medium">{household.clients.length}</span>
+                    <span className="text-gray-600">Total EI Premiums:</span>
+                    <span className="font-medium">$0</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Tax Year:</span>
-                    <span className="font-medium">{taxYear}</span>
+                    <span className="text-gray-600">Total Tax Bill:</span>
+                    <span className="font-medium">$0</span>
                   </div>
                 </div>
               </CardContent>
