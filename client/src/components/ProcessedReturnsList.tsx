@@ -77,6 +77,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
   // Group returns by year, then by client
   const returnsByYear = allReturns.reduce((acc, t1Return) => {
     const year = t1Return.taxYear;
+    console.log(`Grouping T1 return: ID ${t1Return.id}, Client: "${t1Return.clientName}", Year: ${year}`);
     if (!acc[year]) {
       acc[year] = {};
     }
