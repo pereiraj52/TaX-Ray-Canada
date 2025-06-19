@@ -115,10 +115,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
     }
   };
 
-  console.log('Render check - returnsByYear keys:', Object.keys(returnsByYear), 'length:', Object.keys(returnsByYear).length);
-  
   if (Object.keys(returnsByYear).length === 0) {
-    console.log('Showing no returns message because returnsByYear is empty');
     return (
       <Card>
         <CardHeader>
