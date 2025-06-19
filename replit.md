@@ -97,6 +97,7 @@ Changelog:
 - June 19, 2025. Modified upload areas to appear individually under each client's T1 status field
 - June 19, 2025. Fixed date of birth extraction to prevent document timestamp interference
 - June 19, 2025. Added reprocess button to re-extract data from existing T1 PDFs
+- June 19, 2025. Eliminated left sidebar menu and converted to clean top header layout
 ```
 
 ## User Preferences
