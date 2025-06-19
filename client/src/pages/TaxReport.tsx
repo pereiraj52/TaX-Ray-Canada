@@ -117,7 +117,7 @@ export default function TaxReport() {
                             const data = t1Return.extractedData as any;
                             if (data.formFields && Array.isArray(data.formFields)) {
                               const incomeField = data.formFields.find((field: any) => 
-                                field.fieldCode === 'total_income' || field.fieldCode === 'employment_income'
+                                field.fieldCode === '15000'
                               );
                               if (incomeField?.fieldValue) {
                                 const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
@@ -140,7 +140,7 @@ export default function TaxReport() {
                             const data = t1Return.extractedData as any;
                             if (data.formFields && Array.isArray(data.formFields)) {
                               const cppField = data.formFields.find((field: any) => 
-                                field.fieldCode === 'cpp_qpp_contributions' || field.fieldName?.toLowerCase().includes('cpp')
+                                field.fieldCode === '30800'
                               );
                               if (cppField?.fieldValue) {
                                 const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
@@ -163,8 +163,7 @@ export default function TaxReport() {
                             const data = t1Return.extractedData as any;
                             if (data.formFields && Array.isArray(data.formFields)) {
                               const eiField = data.formFields.find((field: any) => 
-                                field.fieldCode === 'employment_insurance_premiums' || 
-                                field.fieldName?.toLowerCase().includes('employment insurance')
+                                field.fieldCode === '31200'
                               );
                               if (eiField?.fieldValue) {
                                 const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
@@ -187,9 +186,7 @@ export default function TaxReport() {
                             const data = t1Return.extractedData as any;
                             if (data.formFields && Array.isArray(data.formFields)) {
                               const taxField = data.formFields.find((field: any) => 
-                                field.fieldCode === 'net_federal_tax' || 
-                                field.fieldCode === 'federal_tax' ||
-                                field.fieldName?.toLowerCase().includes('federal tax')
+                                field.fieldCode === '42000'
                               );
                               if (taxField?.fieldValue) {
                                 const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
@@ -212,9 +209,7 @@ export default function TaxReport() {
                             const data = t1Return.extractedData as any;
                             if (data.formFields && Array.isArray(data.formFields)) {
                               const netIncomeField = data.formFields.find((field: any) => 
-                                field.fieldCode === 'taxable_income' || 
-                                field.fieldName?.toLowerCase().includes('taxable income') ||
-                                field.fieldName?.toLowerCase().includes('net income')
+                                field.fieldCode === '23600'
                               );
                               if (netIncomeField?.fieldValue) {
                                 const value = parseFloat(String(netIncomeField.fieldValue).replace(/[,$\s]/g, ''));
