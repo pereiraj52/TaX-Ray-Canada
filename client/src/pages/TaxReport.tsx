@@ -126,7 +126,10 @@ export default function TaxReport() {
                             }
                           }
                         });
-                        return total.toLocaleString();
+                        return total.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
                       })()}
                     </span>
                   </div>
@@ -149,7 +152,10 @@ export default function TaxReport() {
                             }
                           }
                         });
-                        return total.toLocaleString();
+                        return total.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
                       })()}
                     </span>
                   </div>
@@ -172,7 +178,10 @@ export default function TaxReport() {
                             }
                           }
                         });
-                        return total.toLocaleString();
+                        return total.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
                       })()}
                     </span>
                   </div>
@@ -195,7 +204,10 @@ export default function TaxReport() {
                             }
                           }
                         });
-                        return total.toLocaleString();
+                        return total.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
                       })()}
                     </span>
                   </div>
