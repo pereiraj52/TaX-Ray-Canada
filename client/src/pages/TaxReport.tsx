@@ -112,6 +112,10 @@ export default function TaxReport() {
                     <span className="font-medium">$0</span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-gray-600">Net Income:</span>
+                    <span className="font-medium">$0</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Total CPP Contributions:</span>
                     <span className="font-medium">$0</span>
                   </div>
