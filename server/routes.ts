@@ -302,11 +302,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
           console.log(`Starting reprocessing for T1 return ${id}`);
           
-          // Construct the full file path using the saved fileName  
-          const fullPath = path.resolve('uploads', t1Return.fileName);
+          // Use the stored file path for reprocessing
+          const filePath = t1Return.filePath || path.resolve('uploads', t1Return.fileName);
           
           // Extract data from the existing PDF file
-          const extractedData = await T1PDFParser.extractT1Data(fullPath);
+          const extractedData = await T1PDFParser.extractT1Data(filePath);
           console.log(`Extracted ${extractedData.formFields?.length || 0} form fields`);
           
           // Delete existing form fields for this T1 return

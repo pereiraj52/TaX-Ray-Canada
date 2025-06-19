@@ -28,9 +28,12 @@ export class T1PDFParser {
       
       // Parse the JSON result
       const comprehensiveData = JSON.parse(result);
+      console.log('Python extraction successful, converting to T1ExtractedData...');
       
       // Convert comprehensive data to our format
-      return this.convertToT1ExtractedData(comprehensiveData);
+      const extractedData = this.convertToT1ExtractedData(comprehensiveData);
+      console.log(`Conversion complete: ${extractedData.formFields.length} form fields generated`);
+      return extractedData;
       
     } catch (error) {
       console.error('Error parsing T1 PDF:', error);
