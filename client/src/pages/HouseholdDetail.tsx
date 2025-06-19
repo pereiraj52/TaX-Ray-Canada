@@ -159,16 +159,35 @@ export default function HouseholdDetail() {
                       </div>
                     </div>
                     
+                    {/* T1 Upload Area for this client */}
+                    <div className="mt-4">
+                      <T1UploadArea
+                        clientId={client.id}
+                        onUploadSuccess={handleT1UploadSuccess}
+                      />
+                    </div>
+                    
                     {/* Show processing status if a T1 is being processed for this client */}
-                    {processingT1Returns.size > 0 && (
+                    {Array.from(processingT1Returns).some(t1Id => {
+                      // Check if any processing T1 belongs to this client
+                      const t1Returns = client.t1Returns || [];
+                      return t1Returns.some((t: any) => t.id === t1Id);
+                    }) && (
                       <div className="mt-3">
                         <ProcessingStatus 
-                          t1ReturnId={Array.from(processingT1Returns)[0]} // Use the first processing T1 for now
+                          t1ReturnId={Array.from(processingT1Returns).find(t1Id => {
+                            const t1Returns = client.t1Returns || [];
+                            return t1Returns.some((t: any) => t.id === t1Id);
+                          }) || Array.from(processingT1Returns)[0]}
                           onStatusChange={(status) => {
                             if (status === "completed" || status === "failed") {
                               setProcessingT1Returns(prev => {
                                 const newSet = new Set(prev);
-                                newSet.delete(Array.from(processingT1Returns)[0]);
+                                const t1Id = Array.from(processingT1Returns).find(t1Id => {
+                                  const t1Returns = client.t1Returns || [];
+                                  return t1Returns.some((t: any) => t.id === t1Id);
+                                });
+                                if (t1Id) newSet.delete(t1Id);
                                 return newSet;
                               });
                             }
@@ -184,13 +203,7 @@ export default function HouseholdDetail() {
           </CardContent>
         </Card>
 
-        {/* T1 Upload Section */}
-        <div className="mb-6">
-          <T1UploadArea
-            clientId={household.clients[0]?.id}
-            onUploadSuccess={handleT1UploadSuccess}
-          />
-        </div>
+
 
         {/* Processed Returns List */}
         <div className="mb-6">

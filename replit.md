@@ -93,6 +93,8 @@ Changelog:
 - June 19, 2025. Fixed audit report to show only most recent tax year data
 - June 19, 2025. Fixed personal information extraction patterns for accurate field capture
 - June 19, 2025. Implemented proper database cleanup for T1 return deletions with cascading field removal
+- June 19, 2025. Reorganized T1 data tabs to combine deductions and credits while keeping taxes separate
+- June 19, 2025. Modified upload areas to appear individually under each client's T1 status field
 ```
 
 ## User Preferences
