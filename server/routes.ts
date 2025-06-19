@@ -26,6 +26,15 @@ const upload = multer({
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
+  // Test database connection on startup
+  try {
+    await storage.getHouseholds();
+    console.log("Database connection established successfully");
+  } catch (error) {
+    console.error("Failed to connect to database:", error);
+    process.exit(1);
+  }
+  
   // Get all households
   app.get("/api/households", async (req, res) => {
     try {
