@@ -32,30 +32,7 @@ export default function HouseholdDetail() {
     enabled: selectedT1ReturnId !== null,
   });
 
-  const generateReportMutation = useMutation({
-    mutationFn: () => HouseholdAPI.generateAuditReport(householdId),
-    onSuccess: (blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `audit-report-${household?.name.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      toast({
-        title: "Success",
-        description: "Audit report generated successfully",
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to generate audit report",
-        variant: "destructive",
-      });
-    },
-  });
+
 
   const handleT1UploadSuccess = (t1ReturnId: number) => {
     setSelectedT1ReturnId(t1ReturnId);
@@ -112,22 +89,12 @@ export default function HouseholdDetail() {
     );
   }
 
-  const headerActions = (
-    <Button 
-      onClick={() => generateReportMutation.mutate()}
-      disabled={generateReportMutation.isPending}
-      className="bg-accent text-white hover:bg-green-600"
-    >
-      <File className="mr-2 h-4 w-4" />
-      {generateReportMutation.isPending ? "Generating..." : "Generate Audit Report"}
-    </Button>
-  );
+
 
   return (
     <Layout 
       title={household.name} 
       subtitle={`Created on ${new Date(household.createdAt).toLocaleDateString()}`}
-      actions={headerActions}
     >
       <div className="p-6">
         {/* Breadcrumb */}

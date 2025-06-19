@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { CheckCircle, Edit, FileText, DollarSign, Calculator, User } from "lucide-react";
+import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { T1ReturnWithFields } from "@shared/schema";
+import { useMutation } from "@tanstack/react-query";
+import { HouseholdAPI } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
@@ -11,6 +14,32 @@ type TabType = 'identification' | 'income' | 'deductions' | 'taxes';
 
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('identification');
+  const { toast } = useToast();
+
+  const generateReportMutation = useMutation({
+    mutationFn: () => HouseholdAPI.generateAuditReport(t1Return.client.householdId),
+    onSuccess: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit-report-${t1Return.client.firstName}-${t1Return.client.lastName}-${t1Return.taxYear}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast({
+        title: "Success",
+        description: "Audit report generated successfully",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to generate audit report",
+        variant: "destructive",
+      });
+    },
+  });
 
   if (t1Return.processingStatus === 'processing') {
     return (
@@ -79,6 +108,15 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           <Button variant="outline" size="sm">
             <Edit className="mr-1 h-4 w-4" />
             Edit Data
+          </Button>
+          <Button 
+            onClick={() => generateReportMutation.mutate()}
+            disabled={generateReportMutation.isPending}
+            className="bg-accent text-white hover:bg-green-600"
+            size="sm"
+          >
+            <File className="mr-1 h-4 w-4" />
+            {generateReportMutation.isPending ? "Generating..." : "Generate Audit Report"}
           </Button>
         </div>
       </div>
