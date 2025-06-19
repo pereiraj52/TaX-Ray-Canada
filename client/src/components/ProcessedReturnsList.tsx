@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2 } from "lucide-react";
+import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { HouseholdAPI, T1API } from "@/lib/api";
@@ -34,6 +34,25 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
       toast({
         title: "Error",
         description: error.message || "Failed to delete T1 return",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const reprocessMutation = useMutation({
+    mutationFn: T1API.reprocessT1Return,
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "T1 return is being reprocessed",
+      });
+      // Invalidate household data to refresh the list
+      queryClient.invalidateQueries({ queryKey: ["/api/households"] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to reprocess T1 return",
         variant: "destructive",
       });
     },
@@ -161,9 +180,20 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
                             <Button
                               variant="ghost"
                               size="sm"
+                              onClick={() => reprocessMutation.mutate(t1Return.id)}
+                              disabled={reprocessMutation.isPending}
+                              className="h-6 w-6 p-0 text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+                              title="Reprocess T1 return"
+                            >
+                              <RefreshCw className="h-3 w-3" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               onClick={() => deleteMutation.mutate(t1Return.id)}
                               disabled={deleteMutation.isPending}
                               className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                              title="Delete T1 return"
                             >
                               <Trash2 className="h-3 w-3" />
                             </Button>

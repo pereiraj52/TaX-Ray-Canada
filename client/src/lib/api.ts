@@ -61,4 +61,8 @@ export class T1API {
   static async deleteT1Return(id: number): Promise<void> {
     await apiRequest("DELETE", `/api/t1-returns/${id}`);
   }
+
+  static async reprocessT1Return(id: number): Promise<void> {
+    await apiRequest("POST", `/api/t1-returns/${id}/reprocess`);
+  }
 }

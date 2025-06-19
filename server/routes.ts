@@ -5,8 +5,10 @@ import path from "path";
 import { storage } from "./storage";
 import { T1PDFParser } from "./services/pdfParser";
 import { T1AuditReportGenerator } from "./services/reportGenerator";
-import { insertHouseholdSchema, insertClientSchema } from "@shared/schema";
+import { insertHouseholdSchema, insertClientSchema, t1FormFields } from "@shared/schema";
 import { z } from "zod";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 const upload = multer({
   dest: 'uploads/',
@@ -274,6 +276,73 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting T1 return:", error);
       res.status(500).json({ message: "Failed to delete T1 return" });
+    }
+  });
+
+  // Reprocess T1 return
+  app.post("/api/t1-returns/:id/reprocess", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid T1 return ID" });
+      }
+
+      // Check if T1 return exists
+      const t1Return = await storage.getT1Return(id);
+      if (!t1Return) {
+        return res.status(404).json({ message: "T1 return not found" });
+      }
+
+      // Update status to processing
+      await storage.updateT1Return(id, { processingStatus: "processing" });
+
+      // Start reprocessing in background
+      setTimeout(async () => {
+        try {
+          console.log(`Starting reprocessing for T1 return ${id}`);
+          
+          // Extract data from the existing PDF file
+          const extractedData = await T1PDFParser.extractT1Data(t1Return.filePath);
+          
+          // Delete existing form fields for this T1 return
+          await db.delete(t1FormFields).where(eq(t1FormFields.t1ReturnId, id));
+          
+          // Insert new form fields
+          if (extractedData.formFields && extractedData.formFields.length > 0) {
+            const fieldsWithT1ReturnId = extractedData.formFields.map(field => ({
+              ...field,
+              t1ReturnId: id
+            }));
+            await storage.createT1FormFields(fieldsWithT1ReturnId);
+          }
+
+          // Update T1 return with new extracted data and mark as completed
+          await storage.updateT1Return(id, {
+            processingStatus: "completed",
+            taxYear: extractedData.taxYear,
+            firstName: extractedData.firstName,
+            lastName: extractedData.lastName,
+            sin: extractedData.sin,
+            dateOfBirth: extractedData.dateOfBirth,
+            province: extractedData.province,
+            maritalStatus: extractedData.maritalStatus,
+            address: extractedData.address,
+            city: extractedData.city,
+            postalCode: extractedData.postalCode,
+            spouseSin: extractedData.spouseSin
+          });
+
+          console.log(`Reprocessing completed for T1 return ${id}`);
+        } catch (error) {
+          console.error(`Error reprocessing T1 return ${id}:`, error);
+          await storage.updateT1Return(id, { processingStatus: "failed" });
+        }
+      }, 100);
+
+      res.json({ message: "T1 return reprocessing started" });
+    } catch (error) {
+      console.error("Error starting T1 reprocessing:", error);
+      res.status(500).json({ message: "Failed to start T1 reprocessing" });
     }
   });
 
