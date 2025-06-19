@@ -98,8 +98,73 @@ export default function TaxReport() {
           </Button>
         </div>
 
+        {/* Key Household Data */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Key household data</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Column 1 */}
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="font-medium text-gray-900 mb-4">Household Information</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Household Name:</span>
+                    <span className="font-medium">{household.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Created:</span>
+                    <span className="font-medium">{new Date(household.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Total Clients:</span>
+                    <span className="font-medium">{household.clients.length}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Tax Year:</span>
+                    <span className="font-medium">{taxYear}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-
+            {/* Column 2 */}
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="font-medium text-gray-900 mb-4">Processing Summary</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">T1 Returns Processed:</span>
+                    <span className="font-medium">{taxYearReturns.length}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Completed Returns:</span>
+                    <span className="font-medium">
+                      {taxYearReturns.filter(t => t.processingStatus === 'completed').length}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Processing Status:</span>
+                    <span className="font-medium">
+                      {taxYearReturns.length > 0 && taxYearReturns.every(t => t.processingStatus === 'completed') 
+                        ? 'Complete' 
+                        : 'In Progress'
+                      }
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Last Updated:</span>
+                    <span className="font-medium">
+                      {taxYearReturns.length > 0 
+                        ? new Date(Math.max(...taxYearReturns.map(t => new Date(t.updatedAt).getTime()))).toLocaleDateString()
+                        : 'N/A'
+                      }
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
       </div>
     </Layout>
