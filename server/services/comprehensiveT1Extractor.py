@@ -262,12 +262,12 @@ class ComprehensiveT1Extractor:
         info = PersonalInfo()
         
         # Extract First Name - line 20: "  Jason"
-        first_name_match = re.search(r'First name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
+        first_name_match = re.search(r'First name.*?Last name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
         if first_name_match:
             info.first_name = first_name_match.group(1).strip()
         
-        # Extract Last Name - line 20: "Pereira" 
-        last_name_match = re.search(r'Last name.*?\n\s+\w+\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
+        # Extract Last Name - line 20: "Pereira" (appears after first name on same line)
+        last_name_match = re.search(r'First name.*?Last name.*?\n\s+[A-Za-z]+\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
         if last_name_match:
             info.last_name = last_name_match.group(1).strip()
         
@@ -287,25 +287,25 @@ class ComprehensiveT1Extractor:
             info.marital_status = marital_match.group(2)
         
         # Extract Address - line 24: "2 Neilor Crescent"
-        address_match = re.search(r'Mailing address.*?\n\s+([^\n]+)', text, re.IGNORECASE | re.DOTALL)
+        address_match = re.search(r'Mailing address.*?\n.*?\n\s+(.+)', text, re.IGNORECASE | re.DOTALL)
         if address_match:
             address_line = address_match.group(1).strip()
-            if not re.search(r'\d{4}-\d{2}-\d{2}', address_line):  # Skip if it contains date
+            # Make sure it's not the date of birth line
+            if not re.search(r'\d{4}-\d{2}-\d{2}', address_line) and len(address_line) > 3:
                 info.address_line1 = address_line
         
-        # Extract City - line 31: "Toronto"
-        city_match = re.search(r'City\s*\n\s+([A-Za-z\s]+)', text, re.IGNORECASE)
+        # Extract City - line 31: "Toronto"  
+        city_match = re.search(r'City.*?\n\s+([A-Za-z\s]+)', text, re.IGNORECASE | re.DOTALL)
         if city_match:
-            info.city = city_match.group(1).strip()
+            city_value = city_match.group(1).strip()
+            if city_value and not city_value.startswith('Prov'):
+                info.city = city_value
         
         # Extract Province and Postal Code - line 33: "ON" and "M9C 1K4"
-        prov_match = re.search(r'Prov\./Terr\.\s+Postal code\s*\n\s+([A-Z]{2})', text, re.IGNORECASE)
-        if prov_match:
-            info.province = prov_match.group(1)
-        
-        postal_match = re.search(r'Prov\./Terr\.\s+Postal code\s*\n\s+[A-Z]{2}\s+([A-Z0-9]{3}\s+[A-Z0-9]{3})', text, re.IGNORECASE)
-        if postal_match:
-            info.postal_code = postal_match.group(1).replace(' ', '')
+        prov_postal_match = re.search(r'Prov\./Terr\.\s+Postal code.*?\n\s+([A-Z]{2})\s+([A-Z0-9]{3}\s+[A-Z0-9]{3})', text, re.IGNORECASE | re.DOTALL)
+        if prov_postal_match:
+            info.province = prov_postal_match.group(1)
+            info.postal_code = prov_postal_match.group(2).replace(' ', '')
         
         return info
     
