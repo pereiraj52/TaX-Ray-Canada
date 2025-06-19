@@ -101,11 +101,9 @@ export default function HouseholdDetail() {
         <nav className="flex mb-6" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
-              <Link href="/">
-                <a className="text-gray-500 hover:text-primary">
-                  <Home className="mr-2 h-4 w-4" />
-                  Households
-                </a>
+              <Link href="/" className="text-gray-500 hover:text-primary inline-flex items-center">
+                <Home className="mr-2 h-4 w-4" />
+                Households
               </Link>
             </li>
             <li>
