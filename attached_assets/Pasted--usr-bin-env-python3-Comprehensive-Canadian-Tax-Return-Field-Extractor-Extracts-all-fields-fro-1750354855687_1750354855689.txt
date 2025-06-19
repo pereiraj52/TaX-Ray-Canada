@@ -1,0 +1,1499 @@
+#!/usr/bin/env python3
+"""
+Comprehensive Canadian Tax Return Field Extractor
+Extracts all fields from T1 General, Provincial forms, and all Schedules
+Covers all provinces/territories and comprehensive schedule coverage
+"""
+
+import re
+import json
+from typing import Dict, Any, Optional, List, Union
+from dataclasses import dataclass, asdict, field
+from decimal import Decimal, InvalidOperation
+from enum import Enum
+import logging
+
+# Required libraries (install with: pip install PyPDF2 pdfplumber)
+try:
+    import PyPDF2
+    import pdfplumber
+except ImportError:
+    print("Required libraries not installed. Run: pip install PyPDF2 pdfplumber")
+
+class Province(Enum):
+    """Canadian provinces and territories"""
+    AB = "Alberta"
+    BC = "British Columbia"
+    MB = "Manitoba"
+    NB = "New Brunswick"
+    NL = "Newfoundland and Labrador"
+    NT = "Northwest Territories"
+    NS = "Nova Scotia"
+    NU = "Nunavut"
+    ON = "Ontario"
+    PE = "Prince Edward Island"
+    QC = "Quebec"
+    SK = "Saskatchewan"
+    YT = "Yukon"
+
+@dataclass
+class PersonalInfo:
+    """Personal identification information"""
+    sin: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    initial: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    marital_status: Optional[str] = None
+    spouse_sin: Optional[str] = None
+    spouse_first_name: Optional[str] = None
+    spouse_last_name: Optional[str] = None
+    address_line1: Optional[str] = None
+    address_line2: Optional[str] = None
+    city: Optional[str] = None
+    province: Optional[str] = None
+    postal_code: Optional[str] = None
+    home_phone: Optional[str] = None
+    language_preference: Optional[str] = None
+
+@dataclass
+class IncomeFields:
+    """T1 Income fields (Lines 10000-14700)"""
+    employment_income: Optional[Decimal] = None  # Line 10100
+    commissions: Optional[Decimal] = None  # Line 10200
+    other_employment_income: Optional[Decimal] = None  # Line 10400
+    old_age_security: Optional[Decimal] = None  # Line 11300
+    cpp_qpp_benefits: Optional[Decimal] = None  # Line 11400
+    other_pensions: Optional[Decimal] = None  # Line 11500
+    elected_split_pension: Optional[Decimal] = None  # Line 11600
+    employment_insurance: Optional[Decimal] = None  # Line 11900
+    taxable_dividends: Optional[Decimal] = None  # Line 12000
+    interest_investment_income: Optional[Decimal] = None  # Line 12100
+    partnership_income: Optional[Decimal] = None  # Line 12200
+    rental_income: Optional[Decimal] = None  # Line 12600
+    capital_gains: Optional[Decimal] = None  # Line 12700
+    rrsp_income: Optional[Decimal] = None  # Line 12900
+    other_income: Optional[Decimal] = None  # Line 13000
+    self_employment_income: Optional[Decimal] = None  # Line 13500
+    workers_compensation: Optional[Decimal] = None  # Line 14400
+    social_assistance: Optional[Decimal] = None  # Line 14500
+    total_income: Optional[Decimal] = None  # Line 15000
+
+@dataclass
+class DeductionFields:
+    """T1 Deduction fields (Lines 20600-23300)"""
+    rrsp_deduction: Optional[Decimal] = None  # Line 20800
+    pension_adjustment: Optional[Decimal] = None  # Line 20600
+    annual_union_dues: Optional[Decimal] = None  # Line 21200
+    child_care_expenses: Optional[Decimal] = None  # Line 21400
+    disability_supports: Optional[Decimal] = None  # Line 21500
+    business_investment_loss: Optional[Decimal] = None  # Line 21700
+    moving_expenses: Optional[Decimal] = None  # Line 21900
+    support_payments: Optional[Decimal] = None  # Line 22000
+    carrying_charges: Optional[Decimal] = None  # Line 22100
+    deduction_cpp_qpp: Optional[Decimal] = None  # Line 22200
+    exploration_development: Optional[Decimal] = None  # Line 22400
+    other_employment_expenses: Optional[Decimal] = None  # Line 22900
+    clergy_residence: Optional[Decimal] = None  # Line 23100
+    other_deductions: Optional[Decimal] = None  # Line 23200
+    total_deductions: Optional[Decimal] = None  # Line 23300
+
+@dataclass
+class FederalTaxFields:
+    """Schedule 1 - Federal Tax Calculation fields"""
+    taxable_income: Optional[Decimal] = None  # Line 26000
+    basic_personal_amount: Optional[Decimal] = None  # Line 30000
+    age_amount: Optional[Decimal] = None  # Line 30100
+    spouse_amount: Optional[Decimal] = None  # Line 30300
+    eligible_dependant: Optional[Decimal] = None  # Line 30400
+    cpp_qpp_contributions: Optional[Decimal] = None  # Line 30800
+    employment_insurance_premiums: Optional[Decimal] = None  # Line 31200
+    canada_employment_amount: Optional[Decimal] = None  # Line 31220
+    public_transit_amount: Optional[Decimal] = None  # Line 31270
+    children_fitness_amount: Optional[Decimal] = None  # Line 31300
+    children_arts_amount: Optional[Decimal] = None  # Line 31350
+    home_buyers_amount: Optional[Decimal] = None  # Line 31900
+    adoption_expenses: Optional[Decimal] = None  # Line 31300
+    pension_income_amount: Optional[Decimal] = None  # Line 31400
+    caregiver_amount: Optional[Decimal] = None  # Line 31500
+    disability_amount: Optional[Decimal] = None  # Line 31600
+    interest_student_loans: Optional[Decimal] = None  # Line 31900
+    tuition_education_amounts: Optional[Decimal] = None  # Line 32300
+    medical_expenses: Optional[Decimal] = None  # Line 33000
+    donations_gifts: Optional[Decimal] = None  # Line 34900
+    total_tax_credits: Optional[Decimal] = None  # Line 35000
+    federal_tax: Optional[Decimal] = None  # Line 40400
+    federal_dividend_tax_credit: Optional[Decimal] = None  # Line 40425
+    overseas_employment_tax_credit: Optional[Decimal] = None  # Line 40700
+    minimum_tax_carryover: Optional[Decimal] = None  # Line 40900
+    basic_federal_tax: Optional[Decimal] = None  # Line 41000
+    federal_foreign_tax_credit: Optional[Decimal] = None  # Line 40500
+    federal_political_contribution_tax_credit: Optional[Decimal] = None  # Line 41000
+    investment_tax_credit: Optional[Decimal] = None  # Line 41200
+    labour_sponsored_funds_tax_credit: Optional[Decimal] = None  # Line 41300
+    alternative_minimum_tax: Optional[Decimal] = None  # Line 41700
+    net_federal_tax: Optional[Decimal] = None  # Line 42000
+
+@dataclass
+class ProvincialTaxFields:
+    """Provincial/Territorial Tax fields (Form 428)"""
+    province_code: Optional[str] = None
+    provincial_taxable_income: Optional[Decimal] = None
+    provincial_tax: Optional[Decimal] = None
+    provincial_basic_personal_amount: Optional[Decimal] = None
+    provincial_age_amount: Optional[Decimal] = None
+    provincial_spouse_amount: Optional[Decimal] = None
+    provincial_eligible_dependant: Optional[Decimal] = None
+    provincial_cpp_qpp_contributions: Optional[Decimal] = None
+    provincial_employment_insurance: Optional[Decimal] = None
+    provincial_pension_income_amount: Optional[Decimal] = None
+    provincial_caregiver_amount: Optional[Decimal] = None
+    provincial_disability_amount: Optional[Decimal] = None
+    provincial_medical_expenses: Optional[Decimal] = None
+    provincial_donations: Optional[Decimal] = None
+    provincial_political_contributions: Optional[Decimal] = None
+    provincial_total_credits: Optional[Decimal] = None
+    provincial_dividend_tax_credit: Optional[Decimal] = None
+    provincial_foreign_tax_credit: Optional[Decimal] = None
+    provincial_additional_tax: Optional[Decimal] = None
+    provincial_surtax: Optional[Decimal] = None
+    net_provincial_tax: Optional[Decimal] = None
+
+@dataclass
+class Schedule1Fields:
+    """Schedule 1 - Federal Tax detailed calculation"""
+    line_300: Optional[Decimal] = None  # Basic personal amount
+    line_301: Optional[Decimal] = None  # Age amount
+    line_303: Optional[Decimal] = None  # Spouse or common-law partner amount
+    line_304: Optional[Decimal] = None  # Amount for eligible dependant
+    line_305: Optional[Decimal] = None  # Amount for children born in 1998 or later
+    line_306: Optional[Decimal] = None  # Amount for infirm dependants age 18 or older
+    line_308: Optional[Decimal] = None  # CPP or QPP contributions
+    line_309: Optional[Decimal] = None  # Maximum CPP or QPP contributions
+    line_310: Optional[Decimal] = None  # Employment insurance premiums
+    line_311: Optional[Decimal] = None  # Maximum employment insurance premiums
+    line_312: Optional[Decimal] = None  # Canada employment amount
+    line_313: Optional[Decimal] = None  # Adoption expenses
+    line_314: Optional[Decimal] = None  # Pension income amount
+    line_315: Optional[Decimal] = None  # Caregiver amount
+    line_316: Optional[Decimal] = None  # Disability amount (for self)
+    line_318: Optional[Decimal] = None  # Disability amount transferred from dependant
+    line_319: Optional[Decimal] = None  # Interest paid on student loans
+    line_323: Optional[Decimal] = None  # Tuition, education, and textbook amounts
+    line_324: Optional[Decimal] = None  # Tuition and education amounts transferred
+    line_326: Optional[Decimal] = None  # Amounts transferred from spouse
+    line_330: Optional[Decimal] = None  # Medical expenses
+    line_331: Optional[Decimal] = None  # Allowable amount of medical expenses
+    line_332: Optional[Decimal] = None  # Other deductions
+    line_335: Optional[Decimal] = None  # Total tax credits
+    line_338: Optional[Decimal] = None  # Total income tax deducted
+    line_339: Optional[Decimal] = None  # Total payable
+    line_349: Optional[Decimal] = None  # Donations and gifts
+    line_350: Optional[Decimal] = None  # Total non-refundable tax credits
+
+@dataclass
+class Schedule2Fields:
+    """Schedule 2 - Provincial/Territorial Tax Credits"""
+    provincial_non_refundable_credits: Dict[str, Optional[Decimal]] = field(default_factory=dict)
+    provincial_refundable_credits: Dict[str, Optional[Decimal]] = field(default_factory=dict)
+
+@dataclass
+class Schedule3Fields:
+    """Schedule 3 - Capital Gains (or Losses)"""
+    capital_gains_summary: Optional[Decimal] = None
+    capital_losses_summary: Optional[Decimal] = None
+    net_capital_gains: Optional[Decimal] = None
+    capital_gains_deduction: Optional[Decimal] = None
+    taxable_capital_gains: Optional[Decimal] = None
+    capital_gains_details: List[Dict[str, Any]] = field(default_factory=list)
+
+@dataclass
+class Schedule4Fields:
+    """Schedule 4 - Statement of Investment Income"""
+    canadian_interest: Optional[Decimal] = None
+    foreign_interest: Optional[Decimal] = None
+    canadian_dividends: Optional[Decimal] = None
+    foreign_dividends: Optional[Decimal] = None
+    rental_income_detail: Optional[Decimal] = None
+    other_investment_income: Optional[Decimal] = None
+    total_investment_income: Optional[Decimal] = None
+
+@dataclass
+class Schedule5Fields:
+    """Schedule 5 - Amounts for Spouse or Common-law Partner"""
+    spouse_net_income: Optional[Decimal] = None
+    spouse_basic_personal_amount: Optional[Decimal] = None
+    spouse_age_amount: Optional[Decimal] = None
+    spouse_pension_income_amount: Optional[Decimal] = None
+    spouse_caregiver_amount: Optional[Decimal] = None
+    spouse_disability_amount: Optional[Decimal] = None
+    spouse_tuition_transferred: Optional[Decimal] = None
+    total_spouse_amounts: Optional[Decimal] = None
+
+@dataclass
+class Schedule6Fields:
+    """Schedule 6 - Working Income Tax Benefit"""
+    working_income: Optional[Decimal] = None
+    family_net_income: Optional[Decimal] = None
+    witb_base_amount: Optional[Decimal] = None
+    witb_supplement: Optional[Decimal] = None
+    total_witb: Optional[Decimal] = None
+
+@dataclass
+class Schedule7Fields:
+    """Schedule 7 - RRSP and PRPP Contributions"""
+    rrsp_deduction_limit: Optional[Decimal] = None
+    rrsp_contributions: Optional[Decimal] = None
+    spouse_rrsp_contributions: Optional[Decimal] = None
+    prpp_contributions: Optional[Decimal] = None
+    total_rrsp_prpp_deduction: Optional[Decimal] = None
+    unused_rrsp_contributions: Optional[Decimal] = None
+
+@dataclass
+class Schedule8Fields:
+    """Schedule 8 - CPP Contributions on Self-Employment and Other Earnings"""
+    self_employment_earnings: Optional[Decimal] = None
+    cpp_pensionable_earnings: Optional[Decimal] = None
+    cpp_contributions_payable: Optional[Decimal] = None
+    cpp_overpayment: Optional[Decimal] = None
+
+@dataclass
+class Schedule9Fields:
+    """Schedule 9 - Donations and Gifts"""
+    total_donations: Optional[Decimal] = None
+    donations_15_percent: Optional[Decimal] = None
+    donations_29_percent: Optional[Decimal] = None
+    donations_33_percent: Optional[Decimal] = None
+    cultural_gifts: Optional[Decimal] = None
+    ecological_gifts: Optional[Decimal] = None
+    total_donations_credit: Optional[Decimal] = None
+
+@dataclass
+class Schedule11Fields:
+    """Schedule 11 - Tuition, Education, and Textbook Amounts"""
+    tuition_fees: Optional[Decimal] = None
+    education_amount: Optional[Decimal] = None
+    textbook_amount: Optional[Decimal] = None
+    total_tuition_education: Optional[Decimal] = None
+    transferred_to_spouse: Optional[Decimal] = None
+    transferred_to_parent: Optional[Decimal] = None
+    carried_forward: Optional[Decimal] = None
+
+@dataclass
+class RefundFields:
+    """T1 Refund/Balance owing fields"""
+    total_income_tax_deducted: Optional[Decimal] = None  # Line 43700
+    cpp_overpayment: Optional[Decimal] = None  # Line 44800
+    ei_overpayment: Optional[Decimal] = None  # Line 45000
+    working_income_tax_benefit: Optional[Decimal] = None  # Line 45300
+    climate_action_incentive: Optional[Decimal] = None  # Line 44900
+    gst_hst_credit: Optional[Decimal] = None  # Line 45350
+    canada_child_benefit: Optional[Decimal] = None  # Line 45400
+    provincial_credits: Optional[Decimal] = None  # Line 47900
+    total_credits: Optional[Decimal] = None  # Line 48200
+    refund_or_balance_owing: Optional[Decimal] = None  # Line 48400
+    amount_enclosed: Optional[Decimal] = None  # Line 48500
+
+@dataclass
+class AllSchedules:
+    """Container for all schedule data"""
+    schedule_1: Optional[Schedule1Fields] = None
+    schedule_2: Optional[Schedule2Fields] = None
+    schedule_3: Optional[Schedule3Fields] = None
+    schedule_4: Optional[Schedule4Fields] = None
+    schedule_5: Optional[Schedule5Fields] = None
+    schedule_6: Optional[Schedule6Fields] = None
+    schedule_7: Optional[Schedule7Fields] = None
+    schedule_8: Optional[Schedule8Fields] = None
+    schedule_9: Optional[Schedule9Fields] = None
+    schedule_11: Optional[Schedule11Fields] = None
+    
+    def __post_init__(self):
+        if self.schedule_1 is None:
+            self.schedule_1 = Schedule1Fields()
+        if self.schedule_2 is None:
+            self.schedule_2 = Schedule2Fields()
+        if self.schedule_3 is None:
+            self.schedule_3 = Schedule3Fields()
+        if self.schedule_4 is None:
+            self.schedule_4 = Schedule4Fields()
+        if self.schedule_5 is None:
+            self.schedule_5 = Schedule5Fields()
+        if self.schedule_6 is None:
+            self.schedule_6 = Schedule6Fields()
+        if self.schedule_7 is None:
+            self.schedule_7 = Schedule7Fields()
+        if self.schedule_8 is None:
+            self.schedule_8 = Schedule8Fields()
+        if self.schedule_9 is None:
+            self.schedule_9 = Schedule9Fields()
+        if self.schedule_11 is None:
+            self.schedule_11 = Schedule11Fields()
+
+@dataclass
+class ComprehensiveT1Return:
+    """Complete T1 Tax Return with all schedules and provincial forms"""
+    tax_year: Optional[int] = None
+    personal_info: PersonalInfo = None
+    income: IncomeFields = None
+    deductions: DeductionFields = None
+    federal_tax: FederalTaxFields = None
+    provincial_tax: ProvincialTaxFields = None
+    schedules: AllSchedules = None
+    refund: RefundFields = None
+    
+    def __post_init__(self):
+        if self.personal_info is None:
+            self.personal_info = PersonalInfo()
+        if self.income is None:
+            self.income = IncomeFields()
+        if self.deductions is None:
+            self.deductions = DeductionFields()
+        if self.federal_tax is None:
+            self.federal_tax = FederalTaxFields()
+        if self.provincial_tax is None:
+            self.provincial_tax = ProvincialTaxFields()
+        if self.schedules is None:
+            self.schedules = AllSchedules()
+        if self.refund is None:
+            self.refund = RefundFields()
+
+class ComprehensiveT1Extractor:
+    """Comprehensive T1 extractor with all schedules and provincial forms"""
+    
+    def __init__(self):
+        self.setup_logging()
+        self.field_patterns = self._setup_comprehensive_patterns()
+        self.provincial_patterns = self._setup_provincial_patterns()
+        self.schedule_patterns = self._setup_schedule_patterns()
+    
+    def setup_logging(self):
+        """Setup logging configuration"""
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s'
+        )
+        self.logger = logging.getLogger(__name__)
+    
+    def _setup_comprehensive_patterns(self) -> Dict[str, str]:
+        """Setup comprehensive regex patterns for field extraction"""
+        return {
+            # Personal Information
+            'sin': r'(?:Social Insurance Number|SIN)[:\s]*(\d{3}[\s-]?\d{3}[\s-]?\d{3})',
+            'postal_code': r'([A-Z]\d[A-Z][\s-]?\d[A-Z]\d)',
+            'date_of_birth': r'Date of birth[:\s]*(\d{4}[-/]\d{2}[-/]\d{2}|\d{2}[-/]\d{2}[-/]\d{4})',
+            'province': r'(?:Province|Prov)[:\s]*([A-Z]{2})',
+            
+            # Enhanced line patterns
+            'line_pattern': r'(?:Line\s+)?(\d{3,5})[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'schedule_line': r'(?:Schedule\s+\d+\s+)?(?:Line\s+)?(\d{3,5})[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'provincial_line': r'(?:Form\s+[A-Z]{2}\d+\s+)?(?:Line\s+)?(\d{3,5})[:\s]*\$?\s*([\d,]+\.?\d*)',
+            
+            # Form identifiers
+            'schedule_identifier': r'(?:Schedule\s+(\d+))|(?:Form\s+T1\s+Schedule\s+(\d+))',
+            'provincial_form': r'Form\s+([A-Z]{2})\d+',
+            'form_428': r'Form\s+([A-Z]{2})428',
+        }
+    
+    def _setup_provincial_patterns(self) -> Dict[str, Dict[str, str]]:
+        """Setup patterns for all provincial forms"""
+        provincial_patterns = {}
+        
+        # Common provincial form patterns for all provinces
+        provinces = ['AB', 'BC', 'MB', 'NB', 'NL', 'NT', 'NS', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT']
+        
+        for prov in provinces:
+            provincial_patterns[prov] = {
+                'form_identifier': rf'Form\s+{prov}428',
+                'provincial_tax': rf'Form\s+{prov}428.*?(?:Line\s+)?428[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'basic_personal': rf'{prov}.*?(?:Line\s+)?5804[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'age_amount': rf'{prov}.*?(?:Line\s+)?5808[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'spouse_amount': rf'{prov}.*?(?:Line\s+)?5812[:\s]*\$?\s*([\d,]+\.?\d*)',
+            }
+        
+        # Quebec-specific patterns (they use different forms)
+        provincial_patterns['QC'] = {
+            'form_identifier': r'TP-1\.V',
+            'quebec_tax': r'TP-1\.V.*?(?:Line\s+)?430[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'quebec_basic_personal': r'TP-1\.V.*?(?:Line\s+)?750[:\s]*\$?\s*([\d,]+\.?\d*)',
+        }
+        
+        return provincial_patterns
+    
+    def _setup_schedule_patterns(self) -> Dict[str, Dict[str, str]]:
+        """Setup patterns for all schedules"""
+        return {
+            'schedule_1': {
+                'basic_personal': r'(?:Schedule\s+1.*?)?(?:Line\s+)?300[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'age_amount': r'(?:Schedule\s+1.*?)?(?:Line\s+)?301[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'spouse_amount': r'(?:Schedule\s+1.*?)?(?:Line\s+)?303[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'cpp_contributions': r'(?:Schedule\s+1.*?)?(?:Line\s+)?308[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'ei_premiums': r'(?:Schedule\s+1.*?)?(?:Line\s+)?310[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'medical_expenses': r'(?:Schedule\s+1.*?)?(?:Line\s+)?330[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'donations': r'(?:Schedule\s+1.*?)?(?:Line\s+)?349[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'total_credits': r'(?:Schedule\s+1.*?)?(?:Line\s+)?350[:\s]*\$?\s*([\d,]+\.?\d*)',
+            },
+            'schedule_3': {
+                'capital_gains': r'(?:Schedule\s+3.*?)?(?:Line\s+)?127[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'capital_losses': r'(?:Schedule\s+3.*?)?(?:Line\s+)?(?:losses|loss)[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'net_gains': r'(?:Schedule\s+3.*?)?(?:Line\s+)?(?:net.*gains)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            },
+            'schedule_4': {
+                'canadian_interest': r'(?:Schedule\s+4.*?)?(?:Line\s+)?(?:canadian.*interest)[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'foreign_interest': r'(?:Schedule\s+4.*?)?(?:Line\s+)?(?:foreign.*interest)[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'canadian_dividends': r'(?:Schedule\s+4.*?)?(?:Line\s+)?(?:canadian.*dividend)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            },
+            'schedule_7': {
+                'rrsp_limit': r'(?:Schedule\s+7.*?)?(?:Line\s+)?(?:rrsp.*limit)[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'rrsp_contributions': r'(?:Schedule\s+7.*?)?(?:Line\s+)?(?:rrsp.*contrib)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            },
+            'schedule_8': {
+                'self_employment': r'(?:Schedule\s+8.*?)?(?:Line\s+)?(?:self.*employ)[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'cpp_contributions': r'(?:Schedule\s+8.*?)?(?:Line\s+)?(?:cpp.*contrib)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            },
+            'schedule_9': {
+                'total_donations': r'(?:Schedule\s+9.*?)?(?:Line\s+)?(?:total.*donation)[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'charitable_donations': r'(?:Schedule\s+9.*?)?(?:Line\s+)?(?:charitable)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            },
+            'schedule_11': {
+                'tuition_fees': r'(?:Schedule\s+11.*?)?(?:Line\s+)?(?:tuition)[:\s]*\$?\s*([\d,]+\.?\d*)',
+                'education_amount': r'(?:Schedule\s+11.*?)?(?:Line\s+)?(?:education)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            }
+        }
+    
+    def extract_from_pdf(self, pdf_path: str) -> ComprehensiveT1Return:
+        """Extract comprehensive T1 data from PDF file"""
+        try:
+            with pdfplumber.open(pdf_path) as pdf:
+                text = ""
+                page_texts = []
+                for page in pdf.pages:
+                    page_text = page.extract_text() or ""
+                    text += page_text
+                    page_texts.append(page_text)
+            
+            return self.extract_from_text(text, page_texts)
+        
+        except Exception as e:
+            self.logger.error(f"Error extracting from PDF: {e}")
+            return ComprehensiveT1Return()
+    
+    def extract_from_text(self, text: str, page_texts: List[str] = None) -> ComprehensiveT1Return:
+        """Extract comprehensive T1 data from text content"""
+        if page_texts is None:
+            page_texts = [text]
+        
+        t1_return = ComprehensiveT1Return()
+        
+        # Extract tax year
+        t1_return.tax_year = self._extract_tax_year(text)
+        
+        # Extract personal information
+        t1_return.personal_info = self._extract_personal_info(text)
+        
+        # Extract income fields
+        t1_return.income = self._extract_income_fields(text)
+        
+        # Extract deduction fields
+        t1_return.deductions = self._extract_deduction_fields(text)
+        
+        # Extract federal tax fields
+        t1_return.federal_tax = self._extract_federal_tax_fields(text)
+        
+        # Extract provincial tax fields
+        t1_return.provincial_tax = self._extract_provincial_tax_fields(text)
+        
+        # Extract all schedules
+        t1_return.schedules = self._extract_all_schedules(text, page_texts)
+        
+        # Extract refund fields
+        t1_return.refund = self._extract_refund_fields(text)
+        
+        return t1_return
+    
+    def _extract_tax_year(self, text: str) -> Optional[int]:
+        """Extract tax year from text - enhanced version"""
+        patterns = [
+            r'(?:Tax Year|Year)\s*:?\s*(\d{4})',
+            r'(\d{4})\s*T1\s*General',
+            r'T1\s*General.*?(\d{4})',
+            r'Income Tax.*?(\d{4})',
+            r'Return.*?(\d{4})',
+            r'(\d{4})\s*Income\s*Tax'
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                year = int(match.group(1))
+                if 2000 <= year <= 2030:
+                    return year
+        
+        return None
+    
+    def _extract_personal_info(self, text: str) -> PersonalInfo:
+        """Extract personal information from text - enhanced version"""
+        info = PersonalInfo()
+        
+        # Extract SIN
+        sin_match = re.search(self.field_patterns['sin'], text, re.IGNORECASE)
+        if sin_match:
+            info.sin = re.sub(r'[\s-]', '', sin_match.group(1))
+        
+        # Extract postal code
+        postal_match = re.search(self.field_patterns['postal_code'], text)
+        if postal_match:
+            info.postal_code = postal_match.group(1).upper()
+        
+        # Extract province
+        prov_match = re.search(self.field_patterns['province'], text)
+        if prov_match:
+            info.province = prov_match.group(1)
+        
+        # Extract date of birth
+        dob_match = re.search(self.field_patterns['date_of_birth'], text, re.IGNORECASE)
+        if dob_match:
+            info.date_of_birth = dob_match.group(1)
+        
+        # Extract names with multiple patterns
+        name_patterns = [
+            r'(?:First name|Given name)[:\s]+([A-Za-z\s]+?)(?:\n|Last name|Family name)',
+            r'(?:Last name|Family name)[:\s]+([A-Za-z\s]+?)(?:\n|First name|Given name)',
+            r'(?:Last name|Surname)[:\s]+([A-Za-z\s]+)',
+            r'(?:First name)[:\s]+([A-Za-z\s]+)'
+        ]
+        
+        for pattern in name_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                name = match.group(1).strip()
+                if 'first' in pattern.lower() or 'given' in pattern.lower():
+                    info.first_name = name
+                elif 'last' in pattern.lower() or 'family' in pattern.lower() or 'surname' in pattern.lower():
+                    info.last_name = name
+        
+        # Extract marital status
+        marital_patterns = [
+            r'Marital status[:\s]+([A-Za-z\s]+)',
+            r'Status[:\s]+([A-Za-z\s]+)',
+        ]
+        
+        for pattern in marital_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                info.marital_status = match.group(1).strip()
+                break
+        
+        # Extract address components
+        address_patterns = {
+            'address_line1': r'(?:Address|Street)[:\s]+([A-Za-z0-9\s,.-]+?)(?:\n|City|Province)',
+            'city': r'City[:\s]+([A-Za-z\s]+?)(?:\n|Province|Postal)',
+            'phone': r'(?:Phone|Tel)[:\s]+([0-9\s\-\(\)]+)'
+        }
+        
+        for field, pattern in address_patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                setattr(info, field if field != 'phone' else 'home_phone', match.group(1).strip())
+        
+        return info
+    
+    def _extract_income_fields(self, text: str) -> IncomeFields:
+        """Extract income fields from text - enhanced version"""
+        income = IncomeFields()
+        
+        # Enhanced line number to field mapping
+        income_lines = {
+            '10100': 'employment_income',
+            '10120': 'commissions',  # Alternative line for commissions
+            '10200': 'commissions',
+            '10400': 'other_employment_income',
+            '11300': 'old_age_security',
+            '11400': 'cpp_qpp_benefits',
+            '11500': 'other_pensions',
+            '11600': 'elected_split_pension',
+            '11700': 'employment_insurance',  # Alternative EI line
+            '11900': 'employment_insurance',
+            '12000': 'taxable_dividends',
+            '12100': 'interest_investment_income',
+            '12200': 'partnership_income',
+            '12600': 'rental_income',
+            '12700': 'capital_gains',
+            '12900': 'rrsp_income',
+            '13000': 'other_income',
+            '13500': 'self_employment_income',
+            '13700': 'workers_compensation',  # Alternative line
+            '14400': 'workers_compensation',
+            '14500': 'social_assistance',
+            '15000': 'total_income'
+        }
+        
+        # Extract each income line with multiple pattern attempts
+        for line_num, field_name in income_lines.items():
+            amount = self._extract_line_amount_comprehensive(text, line_num)
+            if amount is not None:
+                current_value = getattr(income, field_name)
+                if current_value is None:
+                    setattr(income, field_name, amount)
+        
+        return income
+    
+    def _extract_deduction_fields(self, text: str) -> DeductionFields:
+        """Extract deduction fields from text - enhanced version"""
+        deductions = DeductionFields()
+        
+        deduction_lines = {
+            '20600': 'pension_adjustment',
+            '20700': 'rrsp_deduction',  # Alternative RRSP line
+            '20800': 'rrsp_deduction',
+            '21200': 'annual_union_dues',
+            '21400': 'child_care_expenses',
+            '21500': 'disability_supports',
+            '21700': 'business_investment_loss',
+            '21900': 'moving_expenses',
+            '22000': 'support_payments',
+            '22100': 'carrying_charges',
+            '22200': 'deduction_cpp_qpp',
+            '22400': 'exploration_development',
+            '22900': 'other_employment_expenses',
+            '23100': 'clergy_residence',
+            '23200': 'other_deductions',
+            '23300': 'total_deductions'
+        }
+        
+        for line_num, field_name in deduction_lines.items():
+            amount = self._extract_line_amount_comprehensive(text, line_num)
+            if amount is not None:
+                current_value = getattr(deductions, field_name)
+                if current_value is None:
+                    setattr(deductions, field_name, amount)
+        
+        return deductions
+    
+    def _extract_federal_tax_fields(self, text: str) -> FederalTaxFields:
+        """Extract federal tax fields from text"""
+        federal_tax = FederalTaxFields()
+        
+        federal_lines = {
+            '26000': 'taxable_income',
+            '30000': 'basic_personal_amount',
+            '30100': 'age_amount',
+            '30300': 'spouse_amount',
+            '30400': 'eligible_dependant',
+            '30800': 'cpp_qpp_contributions',
+            '31200': 'employment_insurance_premiums',
+            '31220': 'canada_employment_amount',
+            '31270': 'public_transit_amount',
+            '31300': 'children_fitness_amount',
+            '31350': 'children_arts_amount',
+            '31400': 'pension_income_amount',
+            '31500': 'caregiver_amount',
+            '31600': 'disability_amount',
+            '31900': 'interest_student_loans',
+            '32300': 'tuition_education_amounts',
+            '33000': 'medical_expenses',
+            '34900': 'donations_gifts',
+            '35000': 'total_tax_credits',
+            '40400': 'federal_tax',
+            '40425': 'federal_dividend_tax_credit',
+            '40500': 'federal_foreign_tax_credit',
+            '40700': 'overseas_employment_tax_credit',
+            '40900': 'minimum_tax_carryover',
+            '41000': 'basic_federal_tax',
+            '41200': 'investment_tax_credit',
+            '41300': 'labour_sponsored_funds_tax_credit',
+            '41700': 'alternative_minimum_tax',
+            '42000': 'net_federal_tax'
+        }
+        
+        for line_num, field_name in federal_lines.items():
+            amount = self._extract_line_amount_comprehensive(text, line_num)
+            if amount is not None:
+                setattr(federal_tax, field_name, amount)
+        
+        return federal_tax
+    
+    def _extract_provincial_tax_fields(self, text: str) -> ProvincialTaxFields:
+        """Extract provincial tax fields from text"""
+        provincial_tax = ProvincialTaxFields()
+        
+        # Detect which province
+        for prov_code, patterns in self.provincial_patterns.items():
+            if re.search(patterns['form_identifier'], text, re.IGNORECASE):
+                provincial_tax.province_code = prov_code
+                break
+        
+        # Extract common provincial fields
+        provincial_lines = {
+            '428': 'provincial_tax',
+            '5804': 'provincial_basic_personal_amount',
+            '5808': 'provincial_age_amount',
+            '5812': 'provincial_spouse_amount',
+            '5816': 'provincial_eligible_dependant',
+            '5832': 'provincial_cpp_qpp_contributions',
+            '5844': 'provincial_employment_insurance',
+            '5848': 'provincial_pension_income_amount',
+            '5860': 'provincial_caregiver_amount',
+            '5864': 'provincial_disability_amount',
+            '5896': 'provincial_medical_expenses',
+            '5900': 'provincial_donations',
+            '5904': 'provincial_total_credits',
+            '6150': 'provincial_dividend_tax_credit',
+            '6180': 'provincial_foreign_tax_credit',
+            '6190': 'provincial_additional_tax'
+        }
+        
+        for line_num, field_name in provincial_lines.items():
+            amount = self._extract_line_amount_comprehensive(text, line_num)
+            if amount is not None:
+                setattr(provincial_tax, field_name, amount)
+        
+        return provincial_tax
+    
+    def _extract_all_schedules(self, text: str, page_texts: List[str]) -> AllSchedules:
+        """Extract all schedule data from text"""
+        schedules = AllSchedules()
+        
+        # Extract Schedule 1
+        schedules.schedule_1 = self._extract_schedule_1(text)
+        
+        # Extract Schedule 2
+        schedules.schedule_2 = self._extract_schedule_2(text)
+        
+        # Extract Schedule 3
+        schedules.schedule_3 = self._extract_schedule_3(text)
+        
+        # Extract Schedule 4
+        schedules.schedule_4 = self._extract_schedule_4(text)
+        
+        # Extract Schedule 5
+        schedules.schedule_5 = self._extract_schedule_5(text)
+        
+        # Extract Schedule 6
+        schedules.schedule_6 = self._extract_schedule_6(text)
+        
+        # Extract Schedule 7
+        schedules.schedule_7 = self._extract_schedule_7(text)
+        
+        # Extract Schedule 8
+        schedules.schedule_8 = self._extract_schedule_8(text)
+        
+        # Extract Schedule 9
+        schedules.schedule_9 = self._extract_schedule_9(text)
+        
+        # Extract Schedule 11
+        schedules.schedule_11 = self._extract_schedule_11(text)
+        
+        return schedules
+    
+    def _extract_schedule_1(self, text: str) -> Schedule1Fields:
+        """Extract Schedule 1 fields"""
+        schedule_1 = Schedule1Fields()
+        
+        schedule_1_lines = {
+            '300': 'line_300',  # Basic personal amount
+            '301': 'line_301',  # Age amount
+            '303': 'line_303',  # Spouse amount
+            '304': 'line_304',  # Eligible dependant
+            '305': 'line_305',  # Children amount
+            '306': 'line_306',  # Infirm dependants
+            '308': 'line_308',  # CPP contributions
+            '309': 'line_309',  # Max CPP
+            '310': 'line_310',  # EI premiums
+            '311': 'line_311',  # Max EI
+            '312': 'line_312',  # Canada employment amount
+            '313': 'line_313',  # Adoption expenses
+            '314': 'line_314',  # Pension income amount
+            '315': 'line_315',  # Caregiver amount
+            '316': 'line_316',  # Disability amount
+            '318': 'line_318',  # Disability transferred
+            '319': 'line_319',  # Student loan interest
+            '323': 'line_323',  # Tuition amounts
+            '324': 'line_324',  # Tuition transferred
+            '326': 'line_326',  # Amounts from spouse
+            '330': 'line_330',  # Medical expenses
+            '331': 'line_331',  # Allowable medical
+            '335': 'line_335',  # Total credits
+            '349': 'line_349',  # Donations
+            '350': 'line_350'   # Total non-refundable credits
+        }
+        
+        for line_num, field_name in schedule_1_lines.items():
+            amount = self._extract_schedule_line_amount(text, '1', line_num)
+            if amount is not None:
+                setattr(schedule_1, field_name, amount)
+        
+        return schedule_1
+    
+    def _extract_schedule_2(self, text: str) -> Schedule2Fields:
+        """Extract Schedule 2 fields"""
+        schedule_2 = Schedule2Fields()
+        
+        # Provincial non-refundable credits vary by province
+        # This is a simplified extraction
+        provincial_credits = {}
+        refundable_credits = {}
+        
+        # Look for common provincial credit patterns
+        credit_patterns = [
+            r'(?:Provincial|Territorial).*?credit[:\s]*\$?\s*([\d,]+\.?\d*)',
+            r'(?:Line\s+)?(?:58\d{2})[:\s]*\$?\s*([\d,]+\.?\d*)',
+            r'(?:Line\s+)?(?:59\d{2})[:\s]*\$?\s*([\d,]+\.?\d*)'
+        ]
+        
+        for i, pattern in enumerate(credit_patterns):
+            matches = re.findall(pattern, text, re.IGNORECASE)
+            for match in matches:
+                try:
+                    amount = Decimal(match.replace(',', ''))
+                    if 'refundable' in pattern.lower():
+                        refundable_credits[f'credit_{i}'] = amount
+                    else:
+                        provincial_credits[f'credit_{i}'] = amount
+                except InvalidOperation:
+                    continue
+        
+        schedule_2.provincial_non_refundable_credits = provincial_credits
+        schedule_2.provincial_refundable_credits = refundable_credits
+        
+        return schedule_2
+    
+    def _extract_schedule_3(self, text: str) -> Schedule3Fields:
+        """Extract Schedule 3 - Capital Gains fields"""
+        schedule_3 = Schedule3Fields()
+        
+        # Capital gains patterns
+        patterns = {
+            'capital_gains_summary': r'(?:Schedule\s+3.*?)?(?:Total.*?capital.*?gains?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'capital_losses_summary': r'(?:Schedule\s+3.*?)?(?:Total.*?capital.*?losses?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'net_capital_gains': r'(?:Schedule\s+3.*?)?(?:Net.*?capital.*?gains?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'capital_gains_deduction': r'(?:Schedule\s+3.*?)?(?:Capital.*?gains.*?deduction)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'taxable_capital_gains': r'(?:Schedule\s+3.*?)?(?:Taxable.*?capital.*?gains?)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_3, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_3
+    
+    def _extract_schedule_4(self, text: str) -> Schedule4Fields:
+        """Extract Schedule 4 - Investment Income fields"""
+        schedule_4 = Schedule4Fields()
+        
+        patterns = {
+            'canadian_interest': r'(?:Schedule\s+4.*?)?(?:Canadian.*?interest)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'foreign_interest': r'(?:Schedule\s+4.*?)?(?:Foreign.*?interest)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'canadian_dividends': r'(?:Schedule\s+4.*?)?(?:Canadian.*?dividend)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'foreign_dividends': r'(?:Schedule\s+4.*?)?(?:Foreign.*?dividend)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'rental_income_detail': r'(?:Schedule\s+4.*?)?(?:Rental.*?income)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'other_investment_income': r'(?:Schedule\s+4.*?)?(?:Other.*?investment)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'total_investment_income': r'(?:Schedule\s+4.*?)?(?:Total.*?investment)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_4, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_4
+    
+    def _extract_schedule_5(self, text: str) -> Schedule5Fields:
+        """Extract Schedule 5 - Spouse amounts"""
+        schedule_5 = Schedule5Fields()
+        
+        patterns = {
+            'spouse_net_income': r'(?:Schedule\s+5.*?)?(?:Spouse.*?net.*?income)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'spouse_basic_personal_amount': r'(?:Schedule\s+5.*?)?(?:Spouse.*?basic.*?personal)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'spouse_age_amount': r'(?:Schedule\s+5.*?)?(?:Spouse.*?age.*?amount)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'total_spouse_amounts': r'(?:Schedule\s+5.*?)?(?:Total.*?spouse)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_5, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_5
+    
+    def _extract_schedule_6(self, text: str) -> Schedule6Fields:
+        """Extract Schedule 6 - Working Income Tax Benefit"""
+        schedule_6 = Schedule6Fields()
+        
+        patterns = {
+            'working_income': r'(?:Schedule\s+6.*?)?(?:Working.*?income)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'family_net_income': r'(?:Schedule\s+6.*?)?(?:Family.*?net.*?income)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'witb_base_amount': r'(?:Schedule\s+6.*?)?(?:WITB.*?base)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'witb_supplement': r'(?:Schedule\s+6.*?)?(?:WITB.*?supplement)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'total_witb': r'(?:Schedule\s+6.*?)?(?:Total.*?WITB)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_6, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_6
+    
+    def _extract_schedule_7(self, text: str) -> Schedule7Fields:
+        """Extract Schedule 7 - RRSP contributions"""
+        schedule_7 = Schedule7Fields()
+        
+        patterns = {
+            'rrsp_deduction_limit': r'(?:Schedule\s+7.*?)?(?:RRSP.*?deduction.*?limit)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'rrsp_contributions': r'(?:Schedule\s+7.*?)?(?:RRSP.*?contributions?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'spouse_rrsp_contributions': r'(?:Schedule\s+7.*?)?(?:Spouse.*?RRSP)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'prpp_contributions': r'(?:Schedule\s+7.*?)?(?:PRPP.*?contributions?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'total_rrsp_prpp_deduction': r'(?:Schedule\s+7.*?)?(?:Total.*?RRSP.*?PRPP)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'unused_rrsp_contributions': r'(?:Schedule\s+7.*?)?(?:Unused.*?RRSP)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_7, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_7
+    
+    def _extract_schedule_8(self, text: str) -> Schedule8Fields:
+        """Extract Schedule 8 - CPP contributions"""
+        schedule_8 = Schedule8Fields()
+        
+        patterns = {
+            'self_employment_earnings': r'(?:Schedule\s+8.*?)?(?:Self.*?employment.*?earnings?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'cpp_pensionable_earnings': r'(?:Schedule\s+8.*?)?(?:CPP.*?pensionable)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'cpp_contributions_payable': r'(?:Schedule\s+8.*?)?(?:CPP.*?contributions?.*?payable)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'cpp_overpayment': r'(?:Schedule\s+8.*?)?(?:CPP.*?overpayment)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_8, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_8
+    
+    def _extract_schedule_9(self, text: str) -> Schedule9Fields:
+        """Extract Schedule 9 - Donations"""
+        schedule_9 = Schedule9Fields()
+        
+        patterns = {
+            'total_donations': r'(?:Schedule\s+9.*?)?(?:Total.*?donations?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'donations_15_percent': r'(?:Schedule\s+9.*?)?(?:15%.*?donations?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'donations_29_percent': r'(?:Schedule\s+9.*?)?(?:29%.*?donations?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'donations_33_percent': r'(?:Schedule\s+9.*?)?(?:33%.*?donations?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'cultural_gifts': r'(?:Schedule\s+9.*?)?(?:Cultural.*?gifts?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'ecological_gifts': r'(?:Schedule\s+9.*?)?(?:Ecological.*?gifts?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'total_donations_credit': r'(?:Schedule\s+9.*?)?(?:Total.*?donations?.*?credit)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_9, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_9
+    
+    def _extract_schedule_11(self, text: str) -> Schedule11Fields:
+        """Extract Schedule 11 - Tuition amounts"""
+        schedule_11 = Schedule11Fields()
+        
+        patterns = {
+            'tuition_fees': r'(?:Schedule\s+11.*?)?(?:Tuition.*?fees?)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'education_amount': r'(?:Schedule\s+11.*?)?(?:Education.*?amount)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'textbook_amount': r'(?:Schedule\s+11.*?)?(?:Textbook.*?amount)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'total_tuition_education': r'(?:Schedule\s+11.*?)?(?:Total.*?tuition.*?education)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'transferred_to_spouse': r'(?:Schedule\s+11.*?)?(?:Transferred.*?spouse)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'transferred_to_parent': r'(?:Schedule\s+11.*?)?(?:Transferred.*?parent)[:\s]*\$?\s*([\d,]+\.?\d*)',
+            'carried_forward': r'(?:Schedule\s+11.*?)?(?:Carried.*?forward)[:\s]*\$?\s*([\d,]+\.?\d*)'
+        }
+        
+        for field_name, pattern in patterns.items():
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    amount = Decimal(match.group(1).replace(',', ''))
+                    setattr(schedule_11, field_name, amount)
+                except InvalidOperation:
+                    continue
+        
+        return schedule_11
+    
+    def _extract_refund_fields(self, text: str) -> RefundFields:
+        """Extract refund/balance fields from text - enhanced version"""
+        refund = RefundFields()
+        
+        refund_lines = {
+            '43700': 'total_income_tax_deducted',
+            '44800': 'cpp_overpayment',
+            '44900': 'climate_action_incentive',
+            '45000': 'ei_overpayment',
+            '45300': 'working_income_tax_benefit',
+            '45350': 'gst_hst_credit',
+            '45400': 'canada_child_benefit',
+            '47900': 'provincial_credits',
+            '48200': 'total_credits',
+            '48400': 'refund_or_balance_owing',
+            '48500': 'amount_enclosed'
+        }
+        
+        for line_num, field_name in refund_lines.items():
+            amount = self._extract_line_amount_comprehensive(text, line_num)
+            if amount is not None:
+                setattr(refund, field_name, amount)
+        
+        return refund
+    
+    def _extract_line_amount_comprehensive(self, text: str, line_number: str) -> Optional[Decimal]:
+        """Enhanced line amount extraction with multiple pattern attempts"""
+        patterns = [
+            rf'(?:Line\s+)?{line_number}[:\s]*\$?\s*([\d,]+\.?\d*)(?:\s|$|\n)',
+            rf'{line_number}[:\s]*\$?\s*([\d,]+\.?\d*)(?:\s|$|\n)',
+            rf'Line\s+{line_number}[:\s]*\$?\s*([\d,]+\.?\d*)(?:\s|$|\n)',
+            rf'(?:Line\s+{line_number}.*?)\$\s*([\d,]+\.?\d*)',
+            rf'{line_number}.*?\$\s*([\d,]+\.?\d*)',
+            rf'(?:^|\s){line_number}(?:\s|:)+\$?\s*([\d,]+\.?\d*)'
+        ]
+        
+        for pattern in patterns:
+            matches = re.findall(pattern, text, re.MULTILINE)
+            if matches:
+                for match in matches:
+                    amount_str = match.replace(',', '').strip()
+                    if amount_str and amount_str != '0' and amount_str != '0.00':
+                        try:
+                            return Decimal(amount_str)
+                        except InvalidOperation:
+                            continue
+        
+        return None
+    
+    def _extract_schedule_line_amount(self, text: str, schedule_num: str, line_number: str) -> Optional[Decimal]:
+        """Extract amount from a specific schedule line"""
+        patterns = [
+            rf'Schedule\s+{schedule_num}.*?(?:Line\s+)?{line_number}[:\s]*\$?\s*([\d,]+\.?\d*)',
+            rf'(?:Line\s+)?{line_number}[:\s]*\$?\s*([\d,]+\.?\d*)(?=.*Schedule\s+{schedule_num})',
+            rf'S{schedule_num}.*?{line_number}[:\s]*\$?\s*([\d,]+\.?\d*)',
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE | re.DOTALL)
+            if match:
+                amount_str = match.group(1).replace(',', '')
+                try:
+                    return Decimal(amount_str)
+                except InvalidOperation:
+                    continue
+        
+        return None
+    
+    def validate_comprehensive_extraction(self, t1_return: ComprehensiveT1Return) -> Dict[str, List[str]]:
+        """Comprehensive validation of extracted data"""
+        issues = {'errors': [], 'warnings': [], 'info': []}
+        
+        # Validate SIN format
+        if t1_return.personal_info.sin:
+            if not re.match(r'^\d{9}, t1_return.personal_info.sin):
+                issues['errors'].append("Invalid SIN format - must be 9 digits")
+        
+        # Validate postal code
+        if t1_return.personal_info.postal_code:
+            if not re.match(r'^[A-Z]\d[A-Z]\d[A-Z]\d, t1_return.personal_info.postal_code):
+                issues['warnings'].append("Postal code format may be incorrect")
+        
+        # Validate tax year
+        if t1_return.tax_year:
+            if not (2000 <= t1_return.tax_year <= 2030):
+                issues['warnings'].append("Tax year seems out of reasonable range")
+        
+        # Validate province code
+        if t1_return.provincial_tax.province_code:
+            valid_provinces = [p.name for p in Province]
+            if t1_return.provincial_tax.province_code not in valid_provinces:
+                issues['warnings'].append(f"Unknown province code: {t1_return.provincial_tax.province_code}")
+        
+        # Income validation
+        if t1_return.income.total_income and t1_return.income.employment_income:
+            if t1_return.income.total_income < t1_return.income.employment_income:
+                issues['warnings'].append("Total income is less than employment income")
+        
+        # Tax calculation validation
+        if (t1_return.federal_tax.taxable_income and 
+            t1_return.income.total_income and
+            t1_return.deductions.total_deductions):
+            calculated_taxable = t1_return.income.total_income - t1_return.deductions.total_deductions
+            if abs(calculated_taxable - t1_return.federal_tax.taxable_income) > 1:
+                issues['warnings'].append("Taxable income calculation may be incorrect")
+        
+        # Provincial vs Federal validation
+        if (t1_return.federal_tax.taxable_income and 
+            t1_return.provincial_tax.provincial_taxable_income and
+            t1_return.federal_tax.taxable_income != t1_return.provincial_tax.provincial_taxable_income):
+            issues['info'].append("Federal and provincial taxable income differ")
+        
+        # Schedule consistency checks
+        if t1_return.schedules:
+            # Schedule 1 vs main form
+            if (t1_return.schedules.schedule_1.line_300 and 
+                t1_return.federal_tax.basic_personal_amount and
+                t1_return.schedules.schedule_1.line_300 != t1_return.federal_tax.basic_personal_amount):
+                issues['warnings'].append("Schedule 1 basic personal amount differs from main form")
+            
+            # Schedule 3 vs Line 12700
+            if (t1_return.schedules.schedule_3.taxable_capital_gains and
+                t1_return.income.capital_gains and
+                t1_return.schedules.schedule_3.taxable_capital_gains != t1_return.income.capital_gains):
+                issues['warnings'].append("Schedule 3 capital gains differ from Line 12700")
+        
+        # Count extracted fields for completeness assessment
+        total_fields = 0
+        extracted_fields = 0
+        
+        for section in [t1_return.personal_info, t1_return.income, t1_return.deductions, 
+                       t1_return.federal_tax, t1_return.provincial_tax, t1_return.refund]:
+            section_dict = asdict(section) if section else {}
+            for value in section_dict.values():
+                total_fields += 1
+                if value is not None:
+                    extracted_fields += 1
+        
+        completion_rate = (extracted_fields / total_fields) * 100 if total_fields > 0 else 0
+        issues['info'].append(f"Extraction completeness: {completion_rate:.1f}% ({extracted_fields}/{total_fields} fields)")
+        
+        return issues
+    
+    def export_comprehensive_to_json(self, t1_return: ComprehensiveT1Return, output_path: str):
+        """Export comprehensive data to JSON file"""
+        def decimal_serializer(obj):
+            if isinstance(obj, Decimal):
+                return float(obj)
+            raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+        
+        data = asdict(t1_return)
+        
+        with open(output_path, 'w') as f:
+            json.dump(data, f, indent=2, default=decimal_serializer)
+    
+    def export_comprehensive_to_csv(self, t1_return: ComprehensiveT1Return, output_path: str):
+        """Export comprehensive data to CSV format"""
+        import csv
+        
+        # Flatten the comprehensive data structure
+        flattened_data = {}
+        
+        # Add tax year
+        flattened_data['tax_year'] = t1_return.tax_year
+        
+        # Add personal info
+        if t1_return.personal_info:
+            for key, value in asdict(t1_return.personal_info).items():
+                flattened_data[f"personal_{key}"] = value
+        
+        # Add income fields
+        if t1_return.income:
+            for key, value in asdict(t1_return.income).items():
+                flattened_data[f"income_{key}"] = value
+        
+        # Add deduction fields
+        if t1_return.deductions:
+            for key, value in asdict(t1_return.deductions).items():
+                flattened_data[f"deduction_{key}"] = value
+        
+        # Add federal tax fields
+        if t1_return.federal_tax:
+            for key, value in asdict(t1_return.federal_tax).items():
+                flattened_data[f"federal_tax_{key}"] = value
+        
+        # Add provincial tax fields
+        if t1_return.provincial_tax:
+            for key, value in asdict(t1_return.provincial_tax).items():
+                flattened_data[f"provincial_tax_{key}"] = value
+        
+        # Add schedule fields
+        if t1_return.schedules:
+            schedules_dict = asdict(t1_return.schedules)
+            for schedule_name, schedule_data in schedules_dict.items():
+                if schedule_data:
+                    for key, value in schedule_data.items():
+                        flattened_data[f"{schedule_name}_{key}"] = value
+        
+        # Add refund fields
+        if t1_return.refund:
+            for key, value in asdict(t1_return.refund).items():
+                flattened_data[f"refund_{key}"] = value
+        
+        with open(output_path, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=flattened_data.keys())
+            writer.writeheader()
+            writer.writerow(flattened_data)
+    
+    def export_to_excel(self, t1_return: ComprehensiveT1Return, output_path: str):
+        """Export comprehensive data to Excel with multiple sheets"""
+        try:
+            import pandas as pd
+            
+            # Create dataframes for each section
+            dataframes = {}
+            
+            # Personal Information
+            if t1_return.personal_info:
+                personal_data = asdict(t1_return.personal_info)
+                personal_df = pd.DataFrame([personal_data])
+                dataframes['Personal_Info'] = personal_df
+            
+            # Income
+            if t1_return.income:
+                income_data = asdict(t1_return.income)
+                income_df = pd.DataFrame([income_data])
+                dataframes['Income'] = income_df
+            
+            # Deductions
+            if t1_return.deductions:
+                deduction_data = asdict(t1_return.deductions)
+                deduction_df = pd.DataFrame([deduction_data])
+                dataframes['Deductions'] = deduction_df
+            
+            # Federal Tax
+            if t1_return.federal_tax:
+                federal_data = asdict(t1_return.federal_tax)
+                federal_df = pd.DataFrame([federal_data])
+                dataframes['Federal_Tax'] = federal_df
+            
+            # Provincial Tax
+            if t1_return.provincial_tax:
+                provincial_data = asdict(t1_return.provincial_tax)
+                provincial_df = pd.DataFrame([provincial_data])
+                dataframes['Provincial_Tax'] = provincial_df
+            
+            # Schedules (each schedule as separate sheet)
+            if t1_return.schedules:
+                schedules_dict = asdict(t1_return.schedules)
+                for schedule_name, schedule_data in schedules_dict.items():
+                    if schedule_data:
+                        schedule_df = pd.DataFrame([schedule_data])
+                        dataframes[schedule_name.title()] = schedule_df
+            
+            # Refund
+            if t1_return.refund:
+                refund_data = asdict(t1_return.refund)
+                refund_df = pd.DataFrame([refund_data])
+                dataframes['Refund'] = refund_df
+            
+            # Write to Excel with multiple sheets
+            with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
+                for sheet_name, df in dataframes.items():
+                    df.to_excel(writer, sheet_name=sheet_name, index=False)
+            
+            self.logger.info(f"Excel export completed: {output_path}")
+            
+        except ImportError:
+            self.logger.warning("pandas and openpyxl required for Excel export. Install with: pip install pandas openpyxl")
+            # Fallback to CSV
+            self.export_comprehensive_to_csv(t1_return, output_path.replace('.xlsx', '.csv'))
+    
+    def generate_summary_report(self, t1_return: ComprehensiveT1Return) -> str:
+        """Generate a human-readable summary report"""
+        report = []
+        report.append("=" * 60)
+        report.append("CANADIAN T1 TAX RETURN EXTRACTION SUMMARY")
+        report.append("=" * 60)
+        report.append("")
+        
+        # Basic Information
+        report.append("BASIC INFORMATION:")
+        report.append(f"Tax Year: {t1_return.tax_year or 'Not found'}")
+        if t1_return.personal_info:
+            report.append(f"Name: {t1_return.personal_info.first_name or ''} {t1_return.personal_info.last_name or ''}")
+            report.append(f"SIN: {t1_return.personal_info.sin or 'Not found'}")
+            report.append(f"Province: {t1_return.personal_info.province or 'Not found'}")
+        report.append("")
+        
+        # Income Summary
+        report.append("INCOME SUMMARY:")
+        if t1_return.income:
+            if t1_return.income.employment_income:
+                report.append(f"Employment Income: ${t1_return.income.employment_income:,.2f}")
+            if t1_return.income.self_employment_income:
+                report.append(f"Self-Employment Income: ${t1_return.income.self_employment_income:,.2f}")
+            if t1_return.income.total_income:
+                report.append(f"Total Income: ${t1_return.income.total_income:,.2f}")
+        report.append("")
+        
+        # Tax Summary
+        report.append("TAX SUMMARY:")
+        if t1_return.federal_tax:
+            if t1_return.federal_tax.taxable_income:
+                report.append(f"Taxable Income: ${t1_return.federal_tax.taxable_income:,.2f}")
+            if t1_return.federal_tax.federal_tax:
+                report.append(f"Federal Tax: ${t1_return.federal_tax.federal_tax:,.2f}")
+        if t1_return.provincial_tax and t1_return.provincial_tax.provincial_tax:
+            report.append(f"Provincial Tax: ${t1_return.provincial_tax.provincial_tax:,.2f}")
+        report.append("")
+        
+        # Refund/Balance
+        report.append("REFUND/BALANCE:")
+        if t1_return.refund and t1_return.refund.refund_or_balance_owing:
+            amount = t1_return.refund.refund_or_balance_owing
+            if amount > 0:
+                report.append(f"Refund: ${amount:,.2f}")
+            else:
+                report.append(f"Balance Owing: ${abs(amount):,.2f}")
+        report.append("")
+        
+        # Schedules Found
+        report.append("SCHEDULES DETECTED:")
+        if t1_return.schedules:
+            schedules_found = []
+            schedules_dict = asdict(t1_return.schedules)
+            for schedule_name, schedule_data in schedules_dict.items():
+                if schedule_data:
+                    # Check if any fields have values
+                    has_data = any(v is not None for v in schedule_data.values() if not isinstance(v, (dict, list)))
+                    if has_data:
+                        schedules_found.append(schedule_name.replace('_', ' ').title())
+            
+            if schedules_found:
+                for schedule in schedules_found:
+                    report.append(f"- {schedule}")
+            else:
+                report.append("No schedules with data found")
+        report.append("")
+        
+        # Provincial Form
+        if t1_return.provincial_tax and t1_return.provincial_tax.province_code:
+            report.append("PROVINCIAL FORM:")
+            prov_name = Province[t1_return.provincial_tax.province_code].value if t1_return.provincial_tax.province_code in [p.name for p in Province] else "Unknown"
+            report.append(f"Form {t1_return.provincial_tax.province_code}428 - {prov_name}")
+            report.append("")
+        
+        return "\n".join(report)
+
+def main():
+    """Example usage of the comprehensive T1 extractor"""
+    extractor = ComprehensiveT1Extractor()
+    
+    # Example: Extract from PDF
+    pdf_path = "sample_t1_comprehensive.pdf"  # Replace with actual path
+    try:
+        t1_data = extractor.extract_from_pdf(pdf_path)
+        
+        # Validate the extraction
+        issues = extractor.validate_comprehensive_extraction(t1_data)
+        
+        print("Extraction completed!")
+        print("\nValidation Results:")
+        if issues['errors']:
+            print("ERRORS:", issues['errors'])
+        if issues['warnings']:
+            print("WARNINGS:", issues['warnings'])
+        if issues['info']:
+            print("INFO:", issues['info'])
+        
+        # Generate and print summary report
+        summary = extractor.generate_summary_report(t1_data)
+        print("\n" + summary)
+        
+        # Export results in multiple formats
+        extractor.export_comprehensive_to_json(t1_data, "comprehensive_t1_data.json")
+        extractor.export_comprehensive_to_csv(t1_data, "comprehensive_t1_data.csv")
+        extractor.export_to_excel(t1_data, "comprehensive_t1_data.xlsx")
+        
+        print("\nExports completed:")
+        print("- comprehensive_t1_data.json")
+        print("- comprehensive_t1_data.csv") 
+        print("- comprehensive_t1_data.xlsx")
+        
+    except FileNotFoundError:
+        print(f"PDF file not found: {pdf_path}")
+        
+        # Example with comprehensive sample text
+        sample_text = """
+        T1 General 2024 Income Tax and Benefit Return
+        
+        IDENTIFICATION
+        Social Insurance Number: 123-456-789
+        First name: John
+        Last name: Smith
+        Province: ON
+        Postal Code: K1A 0A6
+        
+        INCOME
+        Line 10100 Employment income: $85,000.00
+        Line 12000 Taxable dividends: $2,500.00
+        Line 12100 Interest and other investment income: $750.00
+        Line 15000 Total income: $88,250.00
+        
+        DEDUCTIONS
+        Line 20800 RRSP deduction: $5,000.00
+        Line 23300 Total deductions: $5,000.00
+        
+        FEDERAL TAX - Schedule 1
+        Line 26000 Taxable income: $83,250.00
+        Line 300 Basic personal amount: $15,000.00
+        Line 308 CPP contributions: $3,754.45
+        Line 310 Employment insurance premiums: $1,049.12
+        Line 350 Total non-refundable tax credits: $4,280.83
+        Line 40400 Federal tax: $12,487.50
+        
+        ONTARIO TAX - Form ON428
+        Line ON428 Ontario tax: $6,791.25
+        Line 5804 Basic personal amount: $11,865.00
+        
+        Schedule 3 - Capital Gains
+        Total capital gains: $1,000.00
+        Taxable capital gains: $500.00
+        
+        Schedule 7 - RRSP
+        RRSP deduction limit: $15,300.00
+        RRSP contributions: $5,000.00
+        
+        REFUND OR BALANCE OWING
+        Line 43700 Total income tax deducted: $18,500.00
+        Line 48400 Refund: $1,221.25
+        """
+        
+        print("Using comprehensive sample text for demonstration:")
+        t1_data = extractor.extract_from_text(sample_text)
+        
+        # Print summary
+        summary = extractor.generate_summary_report(t1_data)
+        print(summary)
+        
+        # Show validation
+        issues = extractor.validate_comprehensive_extraction(t1_data)
+        print("\nValidation Results:")
+        for category, issue_list in issues.items():
+            if issue_list:
+                print(f"{category.upper()}: {issue_list}")
+
+if __name__ == "__main__":
+    main()
