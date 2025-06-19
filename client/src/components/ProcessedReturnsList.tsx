@@ -71,8 +71,6 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
     })) || []
   );
 
-
-
   // Group returns by year, then by client
   const returnsByYear = allReturns.reduce((acc, t1Return) => {
     const year = t1Return.taxYear;
@@ -136,14 +134,12 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
     .map(Number)
     .sort((a, b) => b - a);
 
-
-
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5" />
-          Processed T1 Returns ({allReturns.length})
+          Processed T1 Returns
         </CardTitle>
       </CardHeader>
       <CardContent>

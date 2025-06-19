@@ -16,9 +16,11 @@ export default function Layout({ children, title, subtitle, actions }: LayoutPro
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Link href="/" className="flex items-center">
-                <Home className="h-6 w-6 text-primary mr-3" />
-                <h1 className="text-xl font-bold text-secondary">Tax-Ray Canada</h1>
+              <Link href="/">
+                <a className="flex items-center">
+                  <Home className="h-6 w-6 text-primary mr-3" />
+                  <h1 className="text-xl font-bold text-secondary">Tax-Ray Canada</h1>
+                </a>
               </Link>
             </div>
             {actions && (
