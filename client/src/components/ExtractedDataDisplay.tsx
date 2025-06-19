@@ -90,8 +90,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   const tabs = [
     { id: 'identification' as TabType, label: 'Identification', icon: User },
     { id: 'income' as TabType, label: 'Income', icon: DollarSign },
-    { id: 'deductions' as TabType, label: 'Deductions', icon: FileText },
-    { id: 'taxes' as TabType, label: 'Taxes & Credits', icon: Calculator },
+    { id: 'deductions' as TabType, label: 'Deductions & Credits', icon: FileText },
+    { id: 'taxes' as TabType, label: 'Taxes', icon: Calculator },
   ];
 
   return (
@@ -249,18 +249,136 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         )}
 
         {activeTab === 'deductions' && (
-          <div className="text-center py-8 text-gray-500">
-            <FileText className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-            <p>Deduction data will be displayed here after processing</p>
-            <p className="text-sm">This section shows all deduction line items from the T1 return</p>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-secondary mb-4">Deductions</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="field-row">
+                    <span className="field-label">RRSP Deduction (Line 20800):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Union Dues (Line 21200):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Child Care Expenses (Line 21400):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Moving Expenses (Line 21900):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="field-row">
+                    <span className="field-label">Support Payments (Line 22000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Carrying Charges (Line 22100):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Other Deductions (Line 23200):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
+                  </div>
+                  <div className="field-row font-semibold border-t pt-2">
+                    <span className="field-label">Total Deductions (Line 23300):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('23300'))}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold text-secondary mb-4">Tax Credits</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="field-row">
+                    <span className="field-label">Basic Personal Amount (Line 30000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Spouse Amount (Line 30300):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">CPP/QPP Contributions (Line 30800):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">EI Premiums (Line 31200):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="field-row">
+                    <span className="field-label">Medical Expenses (Line 33000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('33000'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Donations & Gifts (Line 34900):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Tuition Amounts (Line 32300):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('32300'))}</span>
+                  </div>
+                  <div className="field-row font-semibold border-t pt-2">
+                    <span className="field-label">Total Tax Credits (Line 35000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('35000'))}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
         {activeTab === 'taxes' && (
-          <div className="text-center py-8 text-gray-500">
-            <Calculator className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-            <p>Tax calculation data will be displayed here after processing</p>
-            <p className="text-sm">This section shows tax calculations and credits from the T1 return</p>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-secondary mb-4">Federal Tax Calculation</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="field-row">
+                    <span className="field-label">Taxable Income (Line 26000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('26000'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Federal Tax (Line 40400):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('40400'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">Basic Federal Tax (Line 41000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('41000'))}</span>
+                  </div>
+                  <div className="field-row font-semibold border-t pt-2">
+                    <span className="field-label">Net Federal Tax (Line 42000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('42000'))}</span>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="field-row">
+                    <span className="field-label">Total Income Tax Deducted (Line 43700):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('43700'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">CPP Overpayment (Line 44800):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('44800'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-label">EI Overpayment (Line 45000):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
+                  </div>
+                  <div className="field-row font-semibold border-t pt-2 text-lg">
+                    <span className="field-label">Refund/Balance Owing (Line 48400):</span>
+                    <span className="field-value">{formatCurrency(getFieldValue('48400'))}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
