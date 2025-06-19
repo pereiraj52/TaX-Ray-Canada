@@ -22,7 +22,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `audit-report-${t1Return.client.firstName}-${t1Return.client.lastName}-${t1Return.taxYear}.pdf`;
+      a.download = `audit-report-${t1Return.taxYear}.pdf`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
