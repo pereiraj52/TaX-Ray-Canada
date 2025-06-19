@@ -99,6 +99,8 @@ Changelog:
 - June 19, 2025. Added reprocess button to re-extract data from existing T1 PDFs
 - June 19, 2025. Eliminated left sidebar menu and converted to clean top header layout
 - June 19, 2025. Updated application branding from "Tax Manager Pro" to "Tax-Ray Canada"
+- June 19, 2025. Fixed RRSP deduction field extraction to correctly separate RPP (20700) and RRSP (20800) amounts
+- June 19, 2025. Enhanced reprocess functionality with proper file path storage and debugging capabilities
 ```
 
 ## User Preferences
