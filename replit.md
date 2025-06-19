@@ -111,6 +111,7 @@ Changelog:
 - June 19, 2025. Fixed React console errors including missing keys and nested anchor tag validation issues
 - June 19, 2025. Removed T1 Returns column from households table for cleaner dashboard layout
 - June 19, 2025. Added Report button next to tax years in Processed T1 Returns with dedicated tax report page
+- June 19, 2025. Updated Report button labels to show year and "Report" (e.g., "2024 Report")
 ```
 
 ## User Preferences

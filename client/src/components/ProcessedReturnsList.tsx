@@ -154,7 +154,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
                 </div>
                 <Link href={`/household/${householdId}/report/${year}`}>
                   <Button variant="outline" size="sm">
-                    Report
+                    {year} Report
                   </Button>
                 </Link>
               </div>
