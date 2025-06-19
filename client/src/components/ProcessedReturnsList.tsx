@@ -8,9 +8,10 @@ import { useToast } from "@/hooks/use-toast";
 
 interface ProcessedReturnsListProps {
   householdId: number;
+  onT1ReturnClick?: (t1ReturnId: number) => void;
 }
 
-export default function ProcessedReturnsList({ householdId }: ProcessedReturnsListProps) {
+export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: ProcessedReturnsListProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -144,7 +145,13 @@ export default function ProcessedReturnsList({ householdId }: ProcessedReturnsLi
                         <div key={t1Return.id} className="flex items-center justify-between bg-gray-50 p-2 rounded text-sm">
                           <div className="flex items-center gap-2">
                             <FileText className="h-3 w-3 text-gray-400" />
-                            <span className="text-gray-700">{t1Return.fileName || 'Unknown file'}</span>
+                            <button
+                              onClick={() => onT1ReturnClick?.(t1Return.id)}
+                              className="text-gray-700 hover:text-blue-600 hover:underline text-left"
+                              disabled={t1Return.processingStatus !== 'completed'}
+                            >
+                              {t1Return.fileName || 'Unknown file'}
+                            </button>
                           </div>
                           <div className="flex items-center gap-2">
                             {getStatusIcon(t1Return.processingStatus || 'pending')}

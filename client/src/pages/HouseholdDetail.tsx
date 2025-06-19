@@ -194,7 +194,10 @@ export default function HouseholdDetail() {
 
         {/* Processed Returns List */}
         <div className="mb-6">
-          <ProcessedReturnsList householdId={householdId} />
+          <ProcessedReturnsList 
+            householdId={householdId} 
+            onT1ReturnClick={(t1ReturnId) => setSelectedT1ReturnId(t1ReturnId)}
+          />
         </div>
 
         {/* Extracted Data Display */}
