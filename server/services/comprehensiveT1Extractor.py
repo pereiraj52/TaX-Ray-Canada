@@ -271,21 +271,10 @@ class ComprehensiveT1Extractor:
         if last_name_match:
             info.last_name = last_name_match.group(1).strip()
         
-        # Extract SIN - look for actual SIN number "509 441 481" or similar patterns
-        # First try to find any 9-digit SIN pattern
-        sin_patterns = [
-            r'(\d{3}\s+\d{3}\s+\d{3})',  # "509 441 481"
-            r'(\d{9})',  # "509441481"
-            r'(\d{3}-\d{3}-\d{3})',  # "509-441-481"
-        ]
-        
-        for pattern in sin_patterns:
-            sin_match = re.search(pattern, text)
-            if sin_match:
-                sin_value = sin_match.group(1).replace(' ', '').replace('-', '')
-                if len(sin_value) == 9 and sin_value.isdigit():
-                    info.sin = sin_value
-                    break
+        # Extract SIN - look for masked SIN "XXX XX1 481" from the PDF
+        sin_match = re.search(r'(XXX\s+XX\d\s+\d{3})', text)
+        if sin_match:
+            info.sin = sin_match.group(1)
         
         # Extract Date of Birth - line 24: "1979-06-18" (appears after address)
         dob_match = re.search(r'2 Neilor Crescent.*?(\d{4}-\d{2}-\d{2})', text, re.DOTALL)
