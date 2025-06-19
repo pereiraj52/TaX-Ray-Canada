@@ -116,7 +116,7 @@ Changelog:
 - June 19, 2025. Removed widget elements from TaxReport page for cleaner minimal layout
 - June 19, 2025. Added "Key Household Data" section with 2-column layout showing household info and processing summary
 - June 19, 2025. Replaced household info with financial summary calculating combined totals (income, CPP, EI, tax) for all household members
-- June 19, 2025. Added Net Income field to household financial summary section
+- June 19, 2025. Added Net Income field to household financial summary section and positioned it last in the list
 ```
 
 ## User Preferences
