@@ -106,7 +106,7 @@ export type T1FormField = typeof t1FormFields.$inferSelect;
 
 // Extended types for API responses
 export type HouseholdWithClients = Household & {
-  clients: Client[];
+  clients: ClientWithT1Returns[];
 };
 
 export type ClientWithT1Returns = Client & {
