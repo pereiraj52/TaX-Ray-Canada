@@ -63,13 +63,14 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
   }
 
   // Collect all T1 returns from all clients
-  const allReturns = household.clients.flatMap(client => 
-    client.t1Returns?.map(t1Return => ({
+  const allReturns = household.clients.flatMap(client => {
+    console.log(`Processing client: ${client.firstName} ${client.lastName}, T1 Returns:`, client.t1Returns?.length || 0);
+    return client.t1Returns?.map(t1Return => ({
       ...t1Return,
       clientName: `${client.firstName} ${client.lastName}`,
       clientId: client.id
-    })) || []
-  );
+    })) || [];
+  });
 
 
 
