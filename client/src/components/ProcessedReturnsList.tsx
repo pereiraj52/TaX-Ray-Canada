@@ -136,6 +136,16 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
     .map(Number)
     .sort((a, b) => b - a);
 
+  // Debug the actual structure
+  console.log('Total returns in allReturns:', allReturns.length);
+  console.log('Years found:', sortedYears);
+  sortedYears.forEach(year => {
+    console.log(`Year ${year} clients:`, Object.keys(returnsByYear[year]));
+    Object.keys(returnsByYear[year]).forEach(clientName => {
+      console.log(`  ${clientName}: ${returnsByYear[year][clientName].length} returns`);
+    });
+  });
+
   return (
     <Card>
       <CardHeader>
