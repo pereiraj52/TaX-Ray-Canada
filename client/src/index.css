@@ -97,6 +97,18 @@
   @apply border-primary bg-blue-50;
 }
 
+.upload-area-compact {
+  @apply border border-dashed border-gray-300 rounded-lg p-3 hover:border-primary transition-colors cursor-pointer;
+}
+
+.upload-area-compact.dragover {
+  @apply border-primary bg-blue-50;
+}
+
+.status-processing {
+  @apply bg-blue-100 text-blue-800;
+}
+
 .field-row {
   @apply flex justify-between py-2 border-b border-gray-100;
 }

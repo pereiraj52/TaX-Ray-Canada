@@ -105,11 +105,9 @@ export default function T1UploadArea({ clientId, onUploadSuccess }: T1UploadArea
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-xl font-semibold text-secondary mb-4">T1 Tax Return Processing</h2>
-      
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
       <div
-        className={`upload-area ${dragOver ? 'dragover' : ''}`}
+        className={`upload-area-compact ${dragOver ? 'dragover' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -122,14 +120,15 @@ export default function T1UploadArea({ clientId, onUploadSuccess }: T1UploadArea
           onChange={handleFileInputChange}
           className="hidden"
         />
-        <div className="max-w-md mx-auto">
-          <CloudUpload className="text-4xl text-gray-400 mb-4 h-16 w-16 mx-auto" />
-          <h3 className="text-lg font-medium text-secondary mb-2">Upload T1 Tax Return</h3>
-          <p className="text-gray-600 mb-4">Drag and drop your PDF file here, or click to browse</p>
-          <Button className="bg-primary text-white hover:bg-primary-dark">
-            Select File
+        <div className="flex items-center gap-3">
+          <CloudUpload className="h-8 w-8 text-gray-400 flex-shrink-0" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-gray-900">Upload T1 PDF</p>
+            <p className="text-xs text-gray-500">Drag & drop or click to select</p>
+          </div>
+          <Button size="sm" className="bg-primary text-white hover:bg-primary-dark">
+            Browse
           </Button>
-          <p className="text-xs text-gray-500 mt-2">Maximum file size: 10MB. Accepted formats: PDF</p>
         </div>
       </div>
     </div>
