@@ -301,8 +301,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
           console.log(`Starting reprocessing for T1 return ${id}`);
           
+          // Construct the full file path using the saved fileName  
+          const fullPath = path.resolve('uploads', t1Return.fileName);
+          
           // Extract data from the existing PDF file
-          const extractedData = await T1PDFParser.extractT1Data(t1Return.filePath);
+          const extractedData = await T1PDFParser.extractT1Data(fullPath);
           
           // Delete existing form fields for this T1 return
           await db.delete(t1FormFields).where(eq(t1FormFields.t1ReturnId, id));
@@ -319,17 +322,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Update T1 return with new extracted data and mark as completed
           await storage.updateT1Return(id, {
             processingStatus: "completed",
-            taxYear: extractedData.taxYear,
-            firstName: extractedData.firstName,
-            lastName: extractedData.lastName,
-            sin: extractedData.sin,
-            dateOfBirth: extractedData.dateOfBirth,
-            province: extractedData.province,
-            maritalStatus: extractedData.maritalStatus,
-            address: extractedData.address,
-            city: extractedData.city,
-            postalCode: extractedData.postalCode,
-            spouseSin: extractedData.spouseSin
+            taxYear: extractedData.taxYear
           });
 
           console.log(`Reprocessing completed for T1 return ${id}`);

@@ -95,6 +95,8 @@ Changelog:
 - June 19, 2025. Implemented proper database cleanup for T1 return deletions with cascading field removal
 - June 19, 2025. Reorganized T1 data tabs to combine deductions and credits while keeping taxes separate
 - June 19, 2025. Modified upload areas to appear individually under each client's T1 status field
+- June 19, 2025. Fixed date of birth extraction to prevent document timestamp interference
+- June 19, 2025. Added reprocess button to re-extract data from existing T1 PDFs
 ```
 
 ## User Preferences
