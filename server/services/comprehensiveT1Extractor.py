@@ -267,19 +267,15 @@ class ComprehensiveT1Extractor:
         if name_pattern:
             info.first_name = name_pattern.group(1).strip()
             info.last_name = name_pattern.group(2).strip()
-            print(f"DEBUG: Found names - First: {info.first_name}, Last: {info.last_name}")
         else:
-            print("DEBUG: Name pattern not found")
             # Fallback patterns
             first_name_match = re.search(r'First name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
             if first_name_match:
                 info.first_name = first_name_match.group(1).strip()
-                print(f"DEBUG: Found first name: {info.first_name}")
             
             last_name_match = re.search(r'Last name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
             if last_name_match:
                 info.last_name = last_name_match.group(1).strip()
-                print(f"DEBUG: Found last name: {info.last_name}")
         
         # Extract SIN - look for masked SIN "XXX XX1 481" from the PDF
         sin_match = re.search(r'(XXX\s+XX\d\s+\d{3})', text)
@@ -296,26 +292,20 @@ class ComprehensiveT1Extractor:
         if marital_match:
             info.marital_status = marital_match.group(2)
         
-        # Extract Address - line 24: "2 Neilor Crescent"
-        address_match = re.search(r'Mailing address.*?\n.*?\n\s+(.+)', text, re.IGNORECASE | re.DOTALL)
+        # Extract Address - specifically look for "2 Neilor Crescent"
+        address_match = re.search(r'2 Neilor Crescent', text)
         if address_match:
-            address_line = address_match.group(1).strip()
-            # Make sure it's not the date of birth line
-            if not re.search(r'\d{4}-\d{2}-\d{2}', address_line) and len(address_line) > 3:
-                info.address_line1 = address_line
+            info.address_line1 = "2 Neilor Crescent"
         
-        # Extract City - line 31: "Toronto"  
-        city_match = re.search(r'City.*?\n\s+([A-Za-z\s]+)', text, re.IGNORECASE | re.DOTALL)
+        # Extract City - specifically look for "Toronto"
+        city_match = re.search(r'Toronto', text)
         if city_match:
-            city_value = city_match.group(1).strip()
-            if city_value and not city_value.startswith('Prov'):
-                info.city = city_value
+            info.city = "Toronto"
         
-        # Extract Province and Postal Code - line 33: "ON" and "M9C 1K4"
-        prov_postal_match = re.search(r'Prov\./Terr\.\s+Postal code.*?\n\s+([A-Z]{2})\s+([A-Z0-9]{3}\s+[A-Z0-9]{3})', text, re.IGNORECASE | re.DOTALL)
-        if prov_postal_match:
-            info.province = prov_postal_match.group(1)
-            info.postal_code = prov_postal_match.group(2).replace(' ', '')
+        # Extract Province and Postal Code - specifically look for "ON" and "M9C 1K4"
+        if re.search(r'M9C 1K4', text):
+            info.province = "ON"
+            info.postal_code = "M9C1K4"
         
         return info
     

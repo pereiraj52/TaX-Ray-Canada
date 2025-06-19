@@ -87,6 +87,8 @@ export class T1PDFParser {
 
     // Add personal information fields
     if (comprehensiveData.personal_info) {
+      console.log('Personal info data:', JSON.stringify(comprehensiveData.personal_info, null, 2));
+      
       const personalFields = [
         { key: 'first_name', name: 'First Name', type: 'text' },
         { key: 'last_name', name: 'Last Name', type: 'text' },
@@ -101,6 +103,7 @@ export class T1PDFParser {
 
       for (const field of personalFields) {
         const value = comprehensiveData.personal_info[field.key];
+        console.log(`Checking field ${field.key}: ${value}`);
         if (value) {
           formFields.push({
             fieldName: field.name,
