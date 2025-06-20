@@ -277,6 +277,49 @@ export class T1PDFParser {
       }
     }
 
+    // Extract Ontario provincial tax fields
+    if (comprehensiveData.ontario_tax) {
+      const ontarioTaxMapping = {
+        basic_personal_amount: { code: '58040', name: 'Ontario Basic Personal Amount' },
+        age_amount: { code: '58080', name: 'Ontario Age Amount' },
+        spouse_amount: { code: '58120', name: 'Ontario Spouse Amount' },
+        eligible_dependant: { code: '58160', name: 'Ontario Eligible Dependant' },
+        caregiver_amount: { code: '58185', name: 'Ontario Caregiver Amount' },
+        cpp_qpp_contributions: { code: '58240', name: 'Ontario CPP/QPP Contributions' },
+        cpp_qpp_self_employment: { code: '58280', name: 'Ontario CPP/QPP Self-Employment' },
+        employment_insurance_premiums: { code: '58300', name: 'Ontario Employment Insurance Premiums' },
+        volunteer_firefighter_amount: { code: '58305', name: 'Ontario Volunteer Firefighter Amount' },
+        adoption_expenses: { code: '58330', name: 'Ontario Adoption Expenses' },
+        pension_income_amount: { code: '58360', name: 'Ontario Pension Income Amount' },
+        disability_amount: { code: '58440', name: 'Ontario Disability Amount' },
+        disability_amount_transferred: { code: '58480', name: 'Ontario Disability Amount Transferred' },
+        student_loan_interest: { code: '58520', name: 'Ontario Student Loan Interest' },
+        tuition_education_amounts: { code: '58560', name: 'Ontario Tuition and Education Amounts' },
+        amounts_transferred_spouse: { code: '58640', name: 'Ontario Amounts Transferred from Spouse' },
+        medical_expenses: { code: '58689', name: 'Ontario Medical Expenses' },
+        donations_gifts: { code: '58729', name: 'Ontario Donations and Gifts' },
+        total_credits: { code: '58800', name: 'Ontario Total Credits' },
+        total_non_refundable_credits: { code: '58840', name: 'Ontario Total Non-Refundable Credits' },
+        ontario_non_refundable_tax_credits: { code: '61500', name: 'Ontario Non-Refundable Tax Credits' },
+        ontario_tax_split_income: { code: '61510', name: 'Ontario Tax on Split Income' },
+        ontario_dividend_tax_credit: { code: '61520', name: 'Ontario Dividend Tax Credit' },
+        ontario_health_premium: { code: '62140', name: 'Ontario Health Premium' },
+        ontario_tax: { code: '42800', name: 'Ontario Tax' },
+      };
+
+      for (const [fieldKey, mapping] of Object.entries(ontarioTaxMapping)) {
+        const value = comprehensiveData.ontario_tax[fieldKey];
+        if (value !== null && value !== undefined && value !== 'None' && parseFloat(value) > 0) {
+          formFields.push({
+            fieldName: mapping.name,
+            fieldCode: mapping.code,
+            fieldValue: parseFloat(value).toFixed(2),
+            fieldType: 'currency',
+          });
+        }
+      }
+    }
+
     extractedData.formFields = formFields;
     return extractedData;
   }
