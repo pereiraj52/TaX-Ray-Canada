@@ -126,6 +126,7 @@ Changelog:
 - June 20, 2025. Resolved reprocessing stuck state by updating field values directly in database when extraction encounters issues
 - June 20, 2025. Added comprehensive Ontario provincial tax extraction including Form 428 credits and deductions
 - June 20, 2025. Enhanced PDF parser to capture Ontario tax fields (58xxx, 61xxx, 62xxx series) with proper validation and formatting
+- June 20, 2025. Reorganized tax data tabs to separate Deductions and Credits, eliminating Ontario tab and grouping federal/provincial items within each section
 ```
 
 ## User Preferences

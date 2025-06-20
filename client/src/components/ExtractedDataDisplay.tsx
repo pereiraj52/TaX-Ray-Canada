@@ -10,7 +10,7 @@ interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
 }
 
-type TabType = 'identification' | 'income' | 'deductions' | 'taxes' | 'ontario';
+type TabType = 'identification' | 'income' | 'deductions' | 'credits' | 'taxes';
 
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('identification');
@@ -90,9 +90,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   const tabs = [
     { id: 'identification' as TabType, label: 'Identification', icon: User },
     { id: 'income' as TabType, label: 'Income', icon: DollarSign },
-    { id: 'deductions' as TabType, label: 'Deductions & Credits', icon: FileText },
-    { id: 'taxes' as TabType, label: 'Taxes', icon: Calculator },
-    { id: 'ontario' as TabType, label: 'Ontario', icon: File },
+    { id: 'deductions' as TabType, label: 'Deductions', icon: FileText },
+    { id: 'credits' as TabType, label: 'Credits', icon: Calculator },
+    { id: 'taxes' as TabType, label: 'Taxes', icon: File },
   ];
 
   return (
@@ -251,89 +251,174 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
         {activeTab === 'deductions' && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-secondary mb-4">Deductions</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="field-row">
-                    <span className="field-label">Registered Pension Plan Deduction (Line 20700):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">RRSP Deduction (Line 20800):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Union Dues (Line 21200):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Child Care Expenses (Line 21400):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Moving Expenses (Line 21900):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
-                  </div>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-yellow-800 mb-2">Deductions from Income</h3>
+              <p className="text-yellow-700 text-sm">Federal deductions that reduce taxable income</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <h4 className="font-semibold text-secondary border-b pb-2">Federal Deductions</h4>
+                <div className="field-row">
+                  <span className="field-label">Registered Pension Plan Deduction (Line 20700):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
                 </div>
-                <div className="space-y-4">
-                  <div className="field-row">
-                    <span className="field-label">Support Payments (Line 22000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
+                <div className="field-row">
+                  <span className="field-label">RRSP Deduction (Line 20800):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Union Dues (Line 21200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Child Care Expenses (Line 21400):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Moving Expenses (Line 21900):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Support Payments (Line 22000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Carrying Charges (Line 22100):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">CPP/QPP Deduction (Line 22200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Deductions (Line 23200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h4 className="font-semibold text-secondary border-b pb-2">Calculation Summary</h4>
+                <div className="field-row">
+                  <span className="field-label">Total Income (Line 15000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('15000'))}</span>
+                </div>
+                <div className="field-row font-semibold border-t pt-2">
+                  <span className="field-label">Total Deductions (Line 23300):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('23300'))}</span>
+                </div>
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-6">
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-green-800">Net Income (Line 23600):</span>
+                    <span className="font-bold text-green-600 text-lg">
+                      {formatCurrency(getFieldValue('23600'))}
+                    </span>
                   </div>
-                  <div className="field-row">
-                    <span className="field-label">Carrying Charges (Line 22100):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Other Deductions (Line 23200):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
-                  </div>
-                  <div className="field-row font-semibold border-t pt-2">
-                    <span className="field-label">Total Deductions (Line 23300):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('23300'))}</span>
-                  </div>
+                  <p className="text-green-700 text-sm mt-1">Total Income minus Total Deductions</p>
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'credits' && (
+          <div className="space-y-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-blue-800 mb-2">Non-Refundable Tax Credits</h3>
+              <p className="text-blue-700 text-sm">Federal and provincial tax credits that reduce taxes payable</p>
+            </div>
             
-            <div>
-              <h3 className="text-lg font-semibold text-secondary mb-4">Tax Credits</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="field-row">
-                    <span className="field-label">Basic Personal Amount (Line 30000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Spouse Amount (Line 30300):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">CPP/QPP Contributions (Line 30800):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">EI Premiums (Line 31200):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <h4 className="font-semibold text-secondary border-b pb-2">Federal Tax Credits</h4>
+                <div className="field-row">
+                  <span className="field-label">Basic Personal Amount (Line 30000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Age Amount (Line 30100):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Spouse Amount (Line 30300):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">CPP/QPP Contributions (Line 30800):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">EI Premiums (Line 31200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Canada Employment Amount (Line 31220):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Tuition & Education (Line 32300):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('32300'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Medical Expenses (Line 33000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('33000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Donations & Gifts (Line 34900):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
+                </div>
+                
+                <div className="bg-accent-light p-3 rounded-lg">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-secondary">Federal Tax Credits:</span>
+                    <span className="font-bold text-accent text-lg">
+                      {formatCurrency(getFieldValue('35000'))}
+                    </span>
                   </div>
                 </div>
-                <div className="space-y-4">
-                  <div className="field-row">
-                    <span className="field-label">Medical Expenses (Line 33000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('33000'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Donations & Gifts (Line 34900):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Tuition Amounts (Line 32300):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('32300'))}</span>
-                  </div>
-                  <div className="field-row font-semibold border-t pt-2">
-                    <span className="field-label">Total Tax Credits (Line 35000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('35000'))}</span>
+              </div>
+              
+              <div className="space-y-4">
+                <h4 className="font-semibold text-secondary border-b pb-2">Ontario Provincial Tax Credits</h4>
+                <div className="field-row">
+                  <span className="field-label">Ontario Basic Personal Amount (Line 58040):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58040'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Ontario Age Amount (Line 58080):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58080'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Ontario Spouse Amount (Line 58120):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58120'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Ontario CPP/QPP Contributions (Line 58240):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58240'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Ontario EI Premiums (Line 58300):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58300'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Ontario Medical Expenses (Line 58689):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58689'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Ontario Donations & Gifts (Line 58729):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58729'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Ontario Tuition & Education (Line 58560):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('58560'))}</span>
+                </div>
+                
+                <div className="bg-accent-light p-3 rounded-lg">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-secondary">Ontario Tax Credits:</span>
+                    <span className="font-bold text-accent text-lg">
+                      {formatCurrency(getFieldValue('58800'))}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -387,93 +472,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           </div>
         )}
 
-        {activeTab === 'ontario' && (
-          <div className="space-y-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-blue-800 mb-2">Ontario Form 428 - Provincial Tax Credits and Deductions</h3>
-              <p className="text-blue-700 text-sm">Ontario provincial tax calculations and non-refundable tax credits</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <h4 className="font-semibold text-secondary border-b pb-2">Basic Credits</h4>
-                <div className="field-row">
-                  <span className="field-label">Ontario Basic Personal Amount (Line 58040):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58040'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Age Amount (Line 58080):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58080'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Spouse Amount (Line 58120):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58120'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Eligible Dependant (Line 58160):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58160'))}</span>
-                </div>
-                
-                <h4 className="font-semibold text-secondary border-b pb-2 mt-6">Employment Credits</h4>
-                <div className="field-row">
-                  <span className="field-label">Ontario CPP/QPP Contributions (Line 58240):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58240'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario EI Premiums (Line 58300):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58300'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Medical Expenses (Line 58689):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58689'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Donations and Gifts (Line 58729):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58729'))}</span>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className="font-semibold text-secondary border-b pb-2">Calculated Amounts</h4>
-                <div className="field-row">
-                  <span className="field-label">Ontario Total Credits (Line 58800):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58800'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Total Non-Refundable Credits (Line 58840):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('58840'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Non-Refundable Tax Credits (Line 61500):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('61500'))}</span>
-                </div>
-                
-                <h4 className="font-semibold text-secondary border-b pb-2 mt-6">Tax Calculations</h4>
-                <div className="field-row">
-                  <span className="field-label">Ontario Tax on Split Income (Line 61510):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('61510'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Dividend Tax Credit (Line 61520):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('61520'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Ontario Health Premium (Line 62140):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('62140'))}</span>
-                </div>
-                
-                <div className="bg-accent-light p-4 rounded-lg mt-6">
-                  <div className="flex justify-between">
-                    <span className="font-semibold text-secondary">Total Ontario Tax (Line 42800):</span>
-                    <span className="font-bold text-accent text-lg">
-                      {formatCurrency(getFieldValue('42800'))}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+
       </div>
     </div>
   );
