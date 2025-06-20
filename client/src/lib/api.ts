@@ -53,6 +53,26 @@ export class T1API {
     return response.json();
   }
 
+  static async uploadT1Files(clientId: number, files: File[]): Promise<{ message: string; t1ReturnId: number }> {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append('t1Files', file);
+    });
+
+    const response = await fetch(`/api/clients/${clientId}/t1-upload-multiple`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Upload failed');
+    }
+
+    return response.json();
+  }
+
   static async getT1Return(id: number): Promise<T1ReturnWithFields> {
     const response = await apiRequest("GET", `/api/t1-returns/${id}`);
     return response.json();
