@@ -124,6 +124,8 @@ Changelog:
 - June 20, 2025. Added proper decimal formatting to all monetary values in household financial summary (Total Income, CPP, EI, Tax, Net Income)
 - June 20, 2025. Fixed Other Employment Income (Line 10400) extraction to correctly capture $96.80 value with enhanced PDF parsing logic
 - June 20, 2025. Resolved reprocessing stuck state by updating field values directly in database when extraction encounters issues
+- June 20, 2025. Added comprehensive Ontario provincial tax extraction including Form 428 credits and deductions
+- June 20, 2025. Enhanced PDF parser to capture Ontario tax fields (58xxx, 61xxx, 62xxx series) with proper validation and formatting
 ```
 
 ## User Preferences
