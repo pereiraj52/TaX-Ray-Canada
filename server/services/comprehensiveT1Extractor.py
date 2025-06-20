@@ -310,7 +310,6 @@ class ComprehensiveT1Extractor:
         info = PersonalInfo()
         
         # Extract First Name and Last Name from the same line
-        # Looking for pattern: "First name Last name" followed by line with names
         name_pattern = re.search(r'First name\s+Last name.*?\n\s*([A-Za-z]+)\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
         if name_pattern:
             info.first_name = name_pattern.group(1).strip()
@@ -333,37 +332,60 @@ class ComprehensiveT1Extractor:
         # Extract Date of Birth - line 24: "1979-06-18" (appears near "Date of birth")
         dob_match = re.search(r'Date of birth.*?\n.*?(\d{4}-\d{2}-\d{2})', text, re.IGNORECASE | re.DOTALL)
         if dob_match:
-            # Ensure it's a reasonable birth year (not future dates or document timestamps)
             year = int(dob_match.group(1)[:4])
-            if 1900 <= year <= 2010:  # Reasonable birth year range
+            if 1900 <= year <= 2010:
                 info.date_of_birth = dob_match.group(1)
         
         # Extract Marital Status - line 20: "1 X Married"
         marital_match = re.search(r'(\d+)\s+X\s+(Married|Living common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
         if marital_match:
             info.marital_status = marital_match.group(2)
-        
-        # Extract Address - specifically look for "2 Neilor Crescent"
-        address_match = re.search(r'2 Neilor Crescent', text)
-        if address_match:
-            info.address_line1 = "2 Neilor Crescent"
-        
-        # Extract City - specifically look for "Toronto"
-        city_match = re.search(r'Toronto', text)
-        if city_match:
-            info.city = "Toronto"
-        
-        # Extract Province and Postal Code - specifically look for "ON" and "M9C 1K4"
-        if re.search(r'M9C 1K4', text):
-            info.province = "ON"
-            info.postal_code = "M9C1K4"
-        
+
+        # More robust address extraction
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            # Address Line 1: look for a street address (starts with a number) after 'Mailing address'
+            if re.search(r'Mailing address', line, re.IGNORECASE):
+                for j in range(i+1, min(i+7, len(lines))):
+                    next_line = lines[j].strip()
+                    m = re.match(r'(\d{1,5} [A-Za-z0-9 .\'-]+)', next_line)
+                    if m:
+                        addr = m.group(1)
+                        addr = re.split(r'\s+\d{4}-\d{2}-\d{2}|\s+\d+\s+(Married|Widowed|Divorced|Separated|Single)|\s+\d{1,2}\s*$', addr)[0]
+                        info.address_line1 = addr.strip()
+                        break
+            # City: after 'City', take the next non-empty line, strip anything after '(' or a comma
+            if re.search(r'^City', line, re.IGNORECASE):
+                for j in range(i+1, min(i+7, len(lines))):
+                    next_line = lines[j].strip()
+                    if next_line:
+                        city_clean = re.split(r'[\(,]', next_line)[0].strip()
+                        info.city = city_clean
+                        break
+            # Province and Postal Code: look for a line matching the pattern after the label
+            if re.search(r'Prov\./Terr\. Postal code', line, re.IGNORECASE):
+                for j in range(i+1, min(i+7, len(lines))):
+                    next_line = lines[j].strip()
+                    match = re.search(r'([A-Z]{2})\s*([A-Z]\d[A-Z][ -]?\d[A-Z]\d)', next_line)
+                    if match:
+                        info.province = match.group(1)
+                        info.postal_code = match.group(2).replace(' ', '')
+                        break
         return info
+    
+    def _extract_fields(self, text: str, field_map: dict, dataclass_type):
+        """Generic extraction for fields based on a mapping and dataclass type."""
+        instance = dataclass_type()
+        for line_num, field_name in field_map.items():
+            amount = self._extract_line_amount(text, line_num)
+            if amount is not None:
+                current_value = getattr(instance, field_name)
+                if current_value is None:
+                    setattr(instance, field_name, amount)
+        return instance
     
     def _extract_income_fields(self, text: str) -> IncomeFields:
         """Extract income fields from text"""
-        income = IncomeFields()
-        
         income_lines = {
             '10100': 'employment_income',
             '10120': 'commissions',
@@ -388,20 +410,10 @@ class ComprehensiveT1Extractor:
             '14500': 'social_assistance',
             '15000': 'total_income'
         }
-        
-        for line_num, field_name in income_lines.items():
-            amount = self._extract_line_amount(text, line_num)
-            if amount is not None:  # Set any legitimately extracted amount (including zero)
-                current_value = getattr(income, field_name)
-                if current_value is None:
-                    setattr(income, field_name, amount)
-        
-        return income
+        return self._extract_fields(text, income_lines, IncomeFields)
     
     def _extract_deduction_fields(self, text: str) -> DeductionFields:
         """Extract deduction fields from text"""
-        deductions = DeductionFields()
-        
         deduction_lines = {
             '20600': 'pension_adjustment',
             '20700': 'rpp_deduction',
@@ -421,20 +433,10 @@ class ComprehensiveT1Extractor:
             '23300': 'total_deductions',
             '23600': 'net_income'
         }
-        
-        for line_num, field_name in deduction_lines.items():
-            amount = self._extract_line_amount(text, line_num)
-            if amount is not None:  # Set any legitimately extracted amount (including zero)
-                current_value = getattr(deductions, field_name)
-                if current_value is None:
-                    setattr(deductions, field_name, amount)
-        
-        return deductions
+        return self._extract_fields(text, deduction_lines, DeductionFields)
     
     def _extract_federal_tax_fields(self, text: str) -> FederalTaxFields:
         """Extract federal tax fields from text"""
-        federal_tax = FederalTaxFields()
-        
         federal_lines = {
             '26000': 'taxable_income',
             '30000': 'basic_personal_amount',
@@ -466,18 +468,10 @@ class ComprehensiveT1Extractor:
             '41700': 'alternative_minimum_tax',
             '42000': 'net_federal_tax'
         }
-        
-        for line_num, field_name in federal_lines.items():
-            amount = self._extract_line_amount(text, line_num)
-            if amount is not None:  # Set any legitimately extracted amount (including zero)
-                setattr(federal_tax, field_name, amount)
-        
-        return federal_tax
+        return self._extract_fields(text, federal_lines, FederalTaxFields)
     
     def _extract_refund_fields(self, text: str) -> RefundFields:
         """Extract refund/balance owing fields from text"""
-        refund = RefundFields()
-        
         refund_lines = {
             '43700': 'total_income_tax_deducted',
             '44800': 'cpp_overpayment',
@@ -491,18 +485,10 @@ class ComprehensiveT1Extractor:
             '48400': 'refund_or_balance_owing',
             '48500': 'amount_enclosed'
         }
-        
-        for line_num, field_name in refund_lines.items():
-            amount = self._extract_line_amount(text, line_num)
-            if amount is not None:  # Set any legitimately extracted amount (including zero)
-                setattr(refund, field_name, amount)
-        
-        return refund
+        return self._extract_fields(text, refund_lines, RefundFields)
     
     def _extract_ontario_tax_fields(self, text: str) -> OntarioTaxFields:
         """Extract Ontario Form 428 tax fields from text"""
-        ontario_tax = OntarioTaxFields()
-        
         ontario_lines = {
             '58040': 'basic_personal_amount',
             '58080': 'age_amount',
@@ -530,15 +516,7 @@ class ComprehensiveT1Extractor:
             '62140': 'ontario_health_premium',
             '42800': 'ontario_tax'
         }
-        
-        for line_num, field_name in ontario_lines.items():
-            amount = self._extract_line_amount(text, line_num)
-            if amount is not None:  # Set any legitimately extracted amount (including zero)
-                current_value = getattr(ontario_tax, field_name)
-                if current_value is None:
-                    setattr(ontario_tax, field_name, amount)
-        
-        return ontario_tax
+        return self._extract_fields(text, ontario_lines, OntarioTaxFields)
     
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
