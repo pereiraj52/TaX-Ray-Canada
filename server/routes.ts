@@ -201,6 +201,110 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upload Multiple T1 PDFs
+  app.post("/api/clients/:clientId/t1-upload-multiple", upload.array('t1Files', 10), async (req, res) => {
+    try {
+      const clientId = parseInt(req.params.clientId);
+      if (isNaN(clientId)) {
+        return res.status(400).json({ message: "Invalid client ID" });
+      }
+
+      const files = req.files as Express.Multer.File[];
+      if (!files || files.length === 0) {
+        return res.status(400).json({ message: "No files uploaded" });
+      }
+
+      const client = await storage.getClient(clientId);
+      if (!client) {
+        return res.status(404).json({ message: "Client not found" });
+      }
+
+      // Create T1 return record - we'll combine data from all files
+      const t1Return = await storage.createT1Return({
+        clientId: clientId,
+        taxYear: 2024, // Will be updated after extraction
+        fileName: files.map(f => f.originalname).join(', '),
+        filePath: files.map(f => f.path).join('|'), // Store multiple paths separated by |
+        fileSize: files.reduce((total, file) => total + file.size, 0),
+        processingStatus: "processing",
+      });
+
+      // Process all PDFs in the background
+      setTimeout(async () => {
+        try {
+          let combinedData: any = null;
+          let allFormFields: any[] = [];
+
+          for (const file of files) {
+            try {
+              const extractedData = await T1PDFParser.extractT1Data(file.path);
+              
+              // Use the first file's data for personal info, but combine form fields
+              if (!combinedData) {
+                combinedData = extractedData;
+                allFormFields = [...extractedData.formFields];
+              } else {
+                // Merge form fields from additional files
+                for (const newField of extractedData.formFields) {
+                  const existingField = allFormFields.find(f => f.fieldCode === newField.fieldCode);
+                  if (!existingField) {
+                    allFormFields.push(newField);
+                  } else if (newField.fieldValue && newField.fieldValue !== '0.00') {
+                    // Update existing field if new value is more meaningful
+                    existingField.fieldValue = newField.fieldValue;
+                  }
+                }
+              }
+            } catch (fileError) {
+              console.error(`Error processing file ${file.originalname}:`, fileError);
+            }
+          }
+
+          if (combinedData) {
+            // Update T1 return with combined extracted data
+            await storage.updateT1Return(t1Return.id, {
+              taxYear: combinedData.taxYear,
+              extractedData: { ...combinedData, formFields: allFormFields } as any,
+              processingStatus: "completed",
+            });
+
+            // Update client with extracted personal info
+            await storage.updateClient(clientId, {
+              sin: combinedData.sin,
+              dateOfBirth: combinedData.dateOfBirth,
+              province: combinedData.province,
+            });
+
+            // Create form fields
+            const formFields = allFormFields.map(field => ({
+              ...field,
+              t1ReturnId: t1Return.id,
+            }));
+
+            await storage.createT1FormFields(formFields);
+          } else {
+            await storage.updateT1Return(t1Return.id, {
+              processingStatus: "failed",
+            });
+          }
+        } catch (error) {
+          console.error("Error processing multiple T1 PDFs:", error);
+          await storage.updateT1Return(t1Return.id, {
+            processingStatus: "failed",
+          });
+        }
+      }, 100);
+
+      res.json({ 
+        message: `${files.length} files uploaded successfully, processing started`,
+        t1ReturnId: t1Return.id 
+      });
+    } catch (error) {
+      console.error("Error uploading multiple T1 files:", error);
+      res.status(500).json({ message: "Failed to upload T1 files" });
+    }
+  });
+
   // Get T1 return details
   app.get("/api/t1-returns/:id", async (req, res) => {
     try {
@@ -313,20 +417,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
           console.log(`Starting reprocessing for T1 return ${id}`);
           
-          // Use the stored file path for reprocessing
-          const filePath = t1Return.filePath || path.resolve('uploads', t1Return.fileName);
+          // Handle multiple file paths (separated by |) or single file path
+          const filePaths = t1Return.filePath ? t1Return.filePath.split('|') : [path.resolve('uploads', t1Return.fileName)];
           
-          // Extract data from the existing PDF file
-          const extractedData = await T1PDFParser.extractT1Data(filePath);
-          console.log(`Extracted ${extractedData.formFields?.length || 0} form fields`);
+          let combinedData: any = null;
+          let allFormFields: any[] = [];
+
+          // Process each PDF file
+          for (const filePath of filePaths) {
+            try {
+              console.log(`Processing file: ${filePath}`);
+              const extractedData = await T1PDFParser.extractT1Data(filePath);
+              
+              // Use the first file's data for personal info, but combine form fields
+              if (!combinedData) {
+                combinedData = extractedData;
+                allFormFields = [...extractedData.formFields];
+              } else {
+                // Merge form fields from additional files
+                for (const newField of extractedData.formFields) {
+                  const existingField = allFormFields.find(f => f.fieldCode === newField.fieldCode);
+                  if (!existingField) {
+                    allFormFields.push(newField);
+                  } else if (newField.fieldValue && newField.fieldValue !== '0.00') {
+                    // Update existing field if new value is more meaningful
+                    existingField.fieldValue = newField.fieldValue;
+                  }
+                }
+              }
+            } catch (fileError) {
+              console.error(`Error processing file ${filePath}:`, fileError);
+            }
+          }
+
+          console.log(`Extracted ${allFormFields?.length || 0} combined form fields from ${filePaths.length} files`);
           
           // Delete existing form fields for this T1 return
           await db.delete(t1FormFields).where(eq(t1FormFields.t1ReturnId, id));
           console.log(`Deleted existing form fields for T1 return ${id}`);
           
-          // Insert new form fields
-          if (extractedData.formFields && extractedData.formFields.length > 0) {
-            const fieldsWithT1ReturnId = extractedData.formFields.map(field => ({
+          // Insert new combined form fields
+          if (allFormFields && allFormFields.length > 0) {
+            const fieldsWithT1ReturnId = allFormFields.map(field => ({
               ...field,
               t1ReturnId: id
             }));
@@ -338,10 +470,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
 
           // Update T1 return with new extracted data and mark as completed
-          await storage.updateT1Return(id, {
-            processingStatus: "completed",
-            taxYear: extractedData.taxYear
-          });
+          if (combinedData) {
+            await storage.updateT1Return(id, {
+              processingStatus: "completed",
+              taxYear: combinedData.taxYear,
+              extractedData: { ...combinedData, formFields: allFormFields } as any,
+            });
+          } else {
+            await storage.updateT1Return(id, {
+              processingStatus: "failed"
+            });
+          }
 
           console.log(`Reprocessing completed for T1 return ${id}`);
         } catch (error) {
