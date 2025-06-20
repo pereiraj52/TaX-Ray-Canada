@@ -455,7 +455,35 @@ class ComprehensiveT1Extractor:
     
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
-        # More precise patterns that require the line number to be followed by actual amounts
+        # Special handling for line 10400 (Other Employment Income)
+        if line_num == '10400':
+            # Look for specific patterns that might contain the Other Employment Income value
+            special_patterns = [
+                # Look for T4 slip details or employment income breakdown
+                r'other employment income.*?(\d+)\.(\d{2})',
+                r'10400.*?(\d+)\.(\d{2})',
+                # Look in comparative summary tables
+                r'10100.*?Employment income.*?(\d+,?\d*)\s+(\d+,?\d*)\s+(\d+,?\d*)\s+(\d+,?\d*)\s+(\d+,?\d*)',
+                # Look for any separate employment income entries
+                r'employment.*?(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
+            ]
+            
+            for pattern in special_patterns:
+                matches = re.findall(pattern, text, re.IGNORECASE)
+                for match in matches:
+                    try:
+                        if isinstance(match, tuple) and len(match) == 2:
+                            dollars, cents = match
+                            dollars_cleaned = dollars.replace(',', '').strip()
+                            if (dollars_cleaned and cents and 
+                                dollars_cleaned.isdigit() and cents.isdigit() and
+                                10 <= int(dollars_cleaned) <= 10000):  # Reasonable range for other employment income
+                                amount_str = f"{dollars_cleaned}.{cents}"
+                                return Decimal(amount_str)
+                    except (InvalidOperation, ValueError):
+                        continue
+        
+        # Standard patterns for all line numbers
         patterns = [
             # Pattern for space-separated format with proper context: "10100          360,261 63     1"
             rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})\s+\d+',
