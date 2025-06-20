@@ -111,7 +111,7 @@ export type HouseholdWithClients = Household & {
 };
 
 export type ClientWithT1Returns = Client & {
-  t1Returns: T1Return[];
+  t1Returns: (T1Return & { formFields?: T1FormField[] })[];
 };
 
 export type T1ReturnWithFields = T1Return & {

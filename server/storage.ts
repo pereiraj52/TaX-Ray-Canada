@@ -62,6 +62,9 @@ export class DatabaseStorage implements IStorage {
         clients: {
           with: {
             t1Returns: {
+              with: {
+                formFields: true,
+              },
               orderBy: [desc(t1Returns.taxYear)],
             },
           },

@@ -113,16 +113,14 @@ export default function TaxReport() {
                       ${(() => {
                         let total = 0;
                         taxYearReturns.forEach(t1Return => {
-                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
-                            const data = t1Return.extractedData as any;
-                            if (data.formFields && Array.isArray(data.formFields)) {
-                              const incomeField = data.formFields.find((field: any) => 
-                                field.fieldCode === '15000'
-                              );
-                              if (incomeField?.fieldValue) {
-                                const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
-                                if (!isNaN(value)) total += value;
-                              }
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            const incomeField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '15000'
+                            );
+                            if (incomeField?.fieldValue) {
+                              const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) total += value;
                             }
                           }
                         });
@@ -217,16 +215,14 @@ export default function TaxReport() {
                       ${(() => {
                         let total = 0;
                         taxYearReturns.forEach(t1Return => {
-                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
-                            const data = t1Return.extractedData as any;
-                            if (data.formFields && Array.isArray(data.formFields)) {
-                              const netIncomeField = data.formFields.find((field: any) => 
-                                field.fieldCode === '23600'
-                              );
-                              if (netIncomeField?.fieldValue) {
-                                const value = parseFloat(String(netIncomeField.fieldValue).replace(/[,$\s]/g, ''));
-                                if (!isNaN(value)) total += value;
-                              }
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            const netIncomeField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '23600'
+                            );
+                            if (netIncomeField?.fieldValue) {
+                              const value = parseFloat(String(netIncomeField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) total += value;
                             }
                           }
                         });
