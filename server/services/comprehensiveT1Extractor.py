@@ -150,6 +150,48 @@ class RefundFields:
     amount_enclosed: Optional[Decimal] = None  # Line 48500
 
 @dataclass
+class OntarioTaxFields:
+    """Ontario Form 428 Tax Credits and Deductions"""
+    # Basic amounts and credits
+    basic_personal_amount: Optional[Decimal] = None  # Line 58040
+    age_amount: Optional[Decimal] = None  # Line 58080
+    spouse_amount: Optional[Decimal] = None  # Line 58120
+    eligible_dependant: Optional[Decimal] = None  # Line 58160
+    caregiver_amount: Optional[Decimal] = None  # Line 58185
+    
+    # Employment-related credits
+    cpp_qpp_contributions: Optional[Decimal] = None  # Line 58240
+    cpp_qpp_self_employment: Optional[Decimal] = None  # Line 58280
+    employment_insurance_premiums: Optional[Decimal] = None  # Line 58300
+    volunteer_firefighter_amount: Optional[Decimal] = None  # Line 58305
+    adoption_expenses: Optional[Decimal] = None  # Line 58330
+    pension_income_amount: Optional[Decimal] = None  # Line 58360
+    
+    # Disability and medical
+    disability_amount: Optional[Decimal] = None  # Line 58440
+    disability_amount_transferred: Optional[Decimal] = None  # Line 58480
+    
+    # Education and training
+    student_loan_interest: Optional[Decimal] = None  # Line 58520
+    tuition_education_amounts: Optional[Decimal] = None  # Line 58560
+    amounts_transferred_spouse: Optional[Decimal] = None  # Line 58640
+    
+    # Medical and other
+    medical_expenses: Optional[Decimal] = None  # Line 58689
+    donations_gifts: Optional[Decimal] = None  # Line 58729
+    
+    # Calculated amounts
+    total_credits: Optional[Decimal] = None  # Line 58800
+    total_non_refundable_credits: Optional[Decimal] = None  # Line 58840
+    ontario_non_refundable_tax_credits: Optional[Decimal] = None  # Line 61500
+    
+    # Tax calculations
+    ontario_tax_split_income: Optional[Decimal] = None  # Line 61510
+    ontario_dividend_tax_credit: Optional[Decimal] = None  # Line 61520
+    ontario_health_premium: Optional[Decimal] = None  # Line 62140
+    ontario_tax: Optional[Decimal] = None  # Line 42800
+
+@dataclass
 class ComprehensiveT1Return:
     """Complete T1 Tax Return with all schedules and provincial forms"""
     tax_year: Optional[int] = None
@@ -158,6 +200,7 @@ class ComprehensiveT1Return:
     deductions: DeductionFields = field(default_factory=DeductionFields)
     federal_tax: FederalTaxFields = field(default_factory=FederalTaxFields)
     refund: RefundFields = field(default_factory=RefundFields)
+    ontario_tax: OntarioTaxFields = field(default_factory=OntarioTaxFields)
     
     def __post_init__(self):
         if self.personal_info is None:
@@ -237,6 +280,9 @@ class ComprehensiveT1Extractor:
         
         # Extract refund fields
         t1_return.refund = self._extract_refund_fields(text)
+        
+        # Extract Ontario provincial tax fields
+        t1_return.ontario_tax = self._extract_ontario_tax_fields(text)
         
         return t1_return
     
@@ -452,6 +498,47 @@ class ComprehensiveT1Extractor:
                 setattr(refund, field_name, amount)
         
         return refund
+    
+    def _extract_ontario_tax_fields(self, text: str) -> OntarioTaxFields:
+        """Extract Ontario Form 428 tax fields from text"""
+        ontario_tax = OntarioTaxFields()
+        
+        ontario_lines = {
+            '58040': 'basic_personal_amount',
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58185': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58280': 'cpp_qpp_self_employment',
+            '58300': 'employment_insurance_premiums',
+            '58305': 'volunteer_firefighter_amount',
+            '58330': 'adoption_expenses',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58480': 'disability_amount_transferred',
+            '58520': 'student_loan_interest',
+            '58560': 'tuition_education_amounts',
+            '58640': 'amounts_transferred_spouse',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61500': 'ontario_non_refundable_tax_credits',
+            '61510': 'ontario_tax_split_income',
+            '61520': 'ontario_dividend_tax_credit',
+            '62140': 'ontario_health_premium',
+            '42800': 'ontario_tax'
+        }
+        
+        for line_num, field_name in ontario_lines.items():
+            amount = self._extract_line_amount(text, line_num)
+            if amount is not None:  # Set any legitimately extracted amount (including zero)
+                current_value = getattr(ontario_tax, field_name)
+                if current_value is None:
+                    setattr(ontario_tax, field_name, amount)
+        
+        return ontario_tax
     
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
