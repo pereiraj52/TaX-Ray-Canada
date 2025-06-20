@@ -474,7 +474,7 @@ class ComprehensiveT1Extractor:
                         dollars, cents = match
                         # Validate that we have reasonable amounts (not sequential small numbers)
                         dollars_cleaned = dollars.replace(',', '').strip()
-                        if dollars_cleaned and cents and int(dollars_cleaned) >= 100:  # At least $1.00
+                        if dollars_cleaned and cents and int(dollars_cleaned) >= 1:  # At least $1.00
                             amount_str = f"{dollars_cleaned}.{cents}"
                             return Decimal(amount_str)
                 except (InvalidOperation, ValueError):

@@ -120,6 +120,8 @@ Changelog:
 - June 19, 2025. Implemented calculations to sum financial values across all household members for the corresponding tax year
 - June 19, 2025. Fixed application startup failures with improved database connection configuration and error handling
 - June 19, 2025. Resolved total income generation issue in audit reports by fixing form field data access and adding Net Income field extraction
+- June 20, 2025. Fixed household financial summary calculations by updating database queries to include form fields and correcting data access patterns
+- June 20, 2025. Added proper decimal formatting to all monetary values in household financial summary (Total Income, CPP, EI, Tax, Net Income)
 ```
 
 ## User Preferences
