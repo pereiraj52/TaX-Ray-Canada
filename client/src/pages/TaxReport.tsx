@@ -137,16 +137,14 @@ export default function TaxReport() {
                       ${(() => {
                         let total = 0;
                         taxYearReturns.forEach(t1Return => {
-                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
-                            const data = t1Return.extractedData as any;
-                            if (data.formFields && Array.isArray(data.formFields)) {
-                              const cppField = data.formFields.find((field: any) => 
-                                field.fieldCode === '30800'
-                              );
-                              if (cppField?.fieldValue) {
-                                const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
-                                if (!isNaN(value)) total += value;
-                              }
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            const cppField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '30800'
+                            );
+                            if (cppField?.fieldValue) {
+                              const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) total += value;
                             }
                           }
                         });
@@ -163,16 +161,14 @@ export default function TaxReport() {
                       ${(() => {
                         let total = 0;
                         taxYearReturns.forEach(t1Return => {
-                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
-                            const data = t1Return.extractedData as any;
-                            if (data.formFields && Array.isArray(data.formFields)) {
-                              const eiField = data.formFields.find((field: any) => 
-                                field.fieldCode === '31200'
-                              );
-                              if (eiField?.fieldValue) {
-                                const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
-                                if (!isNaN(value)) total += value;
-                              }
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            const eiField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '31200'
+                            );
+                            if (eiField?.fieldValue) {
+                              const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) total += value;
                             }
                           }
                         });
@@ -189,16 +185,14 @@ export default function TaxReport() {
                       ${(() => {
                         let total = 0;
                         taxYearReturns.forEach(t1Return => {
-                          if (t1Return.extractedData && typeof t1Return.extractedData === 'object') {
-                            const data = t1Return.extractedData as any;
-                            if (data.formFields && Array.isArray(data.formFields)) {
-                              const taxField = data.formFields.find((field: any) => 
-                                field.fieldCode === '42000'
-                              );
-                              if (taxField?.fieldValue) {
-                                const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
-                                if (!isNaN(value)) total += value;
-                              }
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            const taxField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '42000'
+                            );
+                            if (taxField?.fieldValue) {
+                              const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) total += value;
                             }
                           }
                         });
