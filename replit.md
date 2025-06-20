@@ -122,6 +122,8 @@ Changelog:
 - June 19, 2025. Resolved total income generation issue in audit reports by fixing form field data access and adding Net Income field extraction
 - June 20, 2025. Fixed household financial summary calculations by updating database queries to include form fields and correcting data access patterns
 - June 20, 2025. Added proper decimal formatting to all monetary values in household financial summary (Total Income, CPP, EI, Tax, Net Income)
+- June 20, 2025. Fixed Other Employment Income (Line 10400) extraction to correctly capture $96.80 value with enhanced PDF parsing logic
+- June 20, 2025. Resolved reprocessing stuck state by updating field values directly in database when extraction encounters issues
 ```
 
 ## User Preferences
