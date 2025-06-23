@@ -479,5 +479,21 @@ DEBUG-SPOUSE-LINE: Amount for an eligible spouse or common-law partner 302 00 2
     "net_income": "70572.84",
     "uccb": null,
     "uccb_repayment": null
+  },
+  "schedule7": {
+    "rrsp_contributions": "36600.00",
+    "repayments_hbp": "1618.00",
+    "spp_contributions": null,
+    "repayments_llp": null,
+    "transfers_in": null,
+    "excess_contributions": null,
+    "unused_contributions_prior": null,
+    "unused_contributions_current": null,
+    "rrsp_deduction_limit": null,
+    "rrsp_deduction_claimed": "34982.00",
+    "prpp_employer_contributions": null,
+    "fhsa_deduction": null,
+    "total_deduction": null,
+    "prpp_contributions": null
   }
 }

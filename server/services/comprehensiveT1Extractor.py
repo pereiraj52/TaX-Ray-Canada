@@ -576,6 +576,24 @@ class SpouseInfo:
     uccb_repayment: Optional[Decimal] = None
 
 @dataclass
+class Schedule7Fields:
+    """Schedule 7 - RRSP, PRPP, SPP Contributions, Transfers, HBP/LLP Activities"""
+    rrsp_contributions: Optional[Decimal] = None  # Line 24500
+    repayments_hbp: Optional[Decimal] = None     # Line 24600
+    spp_contributions: Optional[Decimal] = None  # Line 24640
+    repayments_llp: Optional[Decimal] = None     # Line 24630
+    transfers_in: Optional[Decimal] = None       # Line 24650
+    excess_contributions: Optional[Decimal] = None # Line 23200 (if relevant)
+    unused_contributions_prior: Optional[Decimal] = None # Line 24000
+    unused_contributions_current: Optional[Decimal] = None # Line 24400
+    rrsp_deduction_limit: Optional[Decimal] = None # Line 20600 (limit, not claim)
+    rrsp_deduction_claimed: Optional[Decimal] = None # Line 20800 (claimed on T1)
+    prpp_employer_contributions: Optional[Decimal] = None # Line 20810 (deduction, not direct contribution)
+    fhsa_deduction: Optional[Decimal] = None # Line 20805
+    total_deduction: Optional[Decimal] = None # Line 32000 (Schedule 7 total)
+    prpp_contributions: Optional[Decimal] = None # Not directly mapped on S7; leave as null unless line is found
+
+@dataclass
 class ComprehensiveT1Return:
     """Complete T1 Tax Return with all schedules and provincial forms"""
     tax_year: Optional[int] = None
@@ -598,6 +616,7 @@ class ComprehensiveT1Return:
     saskatchewan_tax: SaskatchewanTaxFields = field(default_factory=SaskatchewanTaxFields)
     yukon_tax: YukonTaxFields = field(default_factory=YukonTaxFields)
     spouse_info: SpouseInfo = field(default_factory=SpouseInfo)
+    schedule7: Schedule7Fields = field(default_factory=Schedule7Fields)
     
     def __post_init__(self):
         if self.personal_info is None:
@@ -721,6 +740,9 @@ class ComprehensiveT1Extractor:
         
         # Spouse-specific fields
         t1_return.spouse_info = self._extract_spouse_info(text)
+        
+        # Extract Schedule 7 fields
+        t1_return.schedule7 = self._extract_schedule7_fields(text)
         
         return t1_return
     
@@ -1588,6 +1610,26 @@ class ComprehensiveT1Extractor:
             if debug_f:
                 debug_f.close()
         return spouse_info
+
+    def _extract_schedule7_fields(self, text: str) -> Schedule7Fields:
+        """Extract Schedule 7 fields from text"""
+        schedule7_lines = {
+            '24500': 'rrsp_contributions',
+            '24600': 'repayments_hbp',
+            '24640': 'spp_contributions',
+            '24630': 'repayments_llp',
+            '24650': 'transfers_in',
+            '23200': 'excess_contributions',
+            '24000': 'unused_contributions_prior',
+            '24400': 'unused_contributions_current',
+            '20600': 'rrsp_deduction_limit',
+            '20800': 'rrsp_deduction_claimed',
+            '20810': 'prpp_employer_contributions',
+            '20805': 'fhsa_deduction',
+            '32000': 'total_deduction',
+            # 'prpp_contributions': null,  # Not directly mapped; leave as null
+        }
+        return self._extract_fields(text, schedule7_lines, Schedule7Fields)
 
 def decimal_serializer(obj):
     """JSON serializer for Decimal objects"""
