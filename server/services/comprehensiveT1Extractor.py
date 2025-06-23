@@ -569,6 +569,13 @@ class YukonTaxFields:
     tax: Optional[Decimal] = None
 
 @dataclass
+class SpouseInfo:
+    self_employed: Optional[bool] = None
+    net_income: Optional[Decimal] = None
+    uccb: Optional[Decimal] = None
+    uccb_repayment: Optional[Decimal] = None
+
+@dataclass
 class ComprehensiveT1Return:
     """Complete T1 Tax Return with all schedules and provincial forms"""
     tax_year: Optional[int] = None
@@ -590,6 +597,7 @@ class ComprehensiveT1Return:
     quebec_tax: QuebecTaxFields = field(default_factory=QuebecTaxFields)
     saskatchewan_tax: SaskatchewanTaxFields = field(default_factory=SaskatchewanTaxFields)
     yukon_tax: YukonTaxFields = field(default_factory=YukonTaxFields)
+    spouse_info: SpouseInfo = field(default_factory=SpouseInfo)
     
     def __post_init__(self):
         if self.personal_info is None:
@@ -602,6 +610,8 @@ class ComprehensiveT1Return:
             self.federal_tax = FederalTaxFields()
         if self.refund is None:
             self.refund = RefundFields()
+        if self.spouse_info is None:
+            self.spouse_info = SpouseInfo()
 
 class ComprehensiveT1Extractor:
     """Comprehensive T1 extractor with all schedules and provincial forms"""
@@ -708,6 +718,9 @@ class ComprehensiveT1Extractor:
         
         # Extract Yukon tax fields
         t1_return.yukon_tax = self._extract_yukon_tax_fields(text)
+        
+        # Spouse-specific fields
+        t1_return.spouse_info = self._extract_spouse_info(text)
         
         return t1_return
     
@@ -1389,70 +1402,192 @@ class ComprehensiveT1Extractor:
     
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
+        # Debug for balance owing
+        debug_f = None
+        if line_num == '48500':
+            try:
+                debug_f = open('attached_assets/balance_owing_debug.log', 'w')
+                debug_f.write(f'DEBUG: Extracting balance owing for line {line_num}\n')
+            except Exception:
+                debug_f = None
         # Special handling for line 10400 (Other Employment Income)
         if line_num == '10400':
-            # Check if this appears to be the Pereira PDF (based on employment income amount)
-            if '360,261' in text and '63' in text:
-                # For this specific return, the Other Employment Income is $96.80
-                # This value might be embedded in a T4 slip attachment or calculated separately
-                return Decimal('96.80')
-            
-            # Look for specific patterns that might contain the Other Employment Income value
-            special_patterns = [
-                # Look for T4 slip details or employment income breakdown
-                r'other employment income.*?(\d+)\.(\d{2})',
-                r'10400.*?(\d+)\.(\d{2})',
-                # Look for patterns with reasonable other employment income amounts
-                r'(\d{1,3})\.(\d{2})',  # Simple pattern for small amounts
-                # Look for space-separated format
-                r'(\d{1,3})\s+(\d{2})',
-            ]
-            
-            for pattern in special_patterns:
-                matches = re.findall(pattern, text, re.IGNORECASE)
+            lines = text.splitlines()
+            for idx, line in enumerate(lines):
+                if re.match(r'^\s*10400\b', line):
+                    m = re.search(r'10400.*?(\d{1,3}(?:,\d{3})*)[ .](\d{2})', line)
+                    if m:
+                        try:
+                            value = m.group(1).replace(',', '') + '.' + m.group(2)
+                            return Decimal(value)
+                        except Exception:
+                            return None
+                    if idx+1 < len(lines):
+                        next_line = lines[idx+1]
+                        m2 = re.search(r'(\d{1,3}(?:,\d{3})*)[ .](\d{2})', next_line)
+                        if m2:
+                            try:
+                                value = m2.group(1).replace(',', '') + '.' + m2.group(2)
+                                return Decimal(value)
+                            except Exception:
+                                return None
+            return None
+        # Standard patterns for all line numbers
+        patterns = [
+            rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})\s+\d+',
+            rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\.(\d{{2}})',
+            rf'{line_num}\s{{10,}}(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})',
+            rf'{line_num}\s{{10,}}(\d{{1,3}}(?:,\d{{3}})*)\.(\d{{2}})',
+        ]
+        lines = text.splitlines()
+        found = None
+        for idx, line in enumerate(lines):
+            if debug_f:
+                debug_f.write(f'CHECKING LINE: {line}\n')
+            for pattern in patterns:
+                matches = re.findall(pattern, line)
+                if debug_f:
+                    debug_f.write(f'PATTERN: {pattern} MATCHES: {matches}\n')
                 for match in matches:
                     try:
                         if isinstance(match, tuple) and len(match) == 2:
                             dollars, cents = match
                             dollars_cleaned = dollars.replace(',', '').strip()
-                            if (dollars_cleaned and cents and 
-                                dollars_cleaned.isdigit() and cents.isdigit() and
-                                1 <= int(dollars_cleaned) <= 1000):  # Reasonable range for other employment income
-                                amount = int(dollars_cleaned)
-                                # Look for amounts that could be other employment income
-                                if 50 <= amount <= 500:  # Reasonable range
-                                    amount_str = f"{dollars_cleaned}.{cents}"
-                                    return Decimal(amount_str)
+                            if dollars_cleaned and cents and int(dollars_cleaned) >= 1:
+                                amount_str = f"{dollars_cleaned}.{cents}"
+                                if debug_f:
+                                    debug_f.write(f'FOUND AMOUNT: {amount_str}\n')
+                                if debug_f:
+                                    debug_f.close()
+                                return Decimal(amount_str)
                     except (InvalidOperation, ValueError):
                         continue
-        
-        # Standard patterns for all line numbers
-        patterns = [
-            # Pattern for space-separated format with proper context: "10100          360,261 63     1"
-            rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})\s+\d+',
-            # Pattern for decimal format with proper context: "10100          360,261.63"
-            rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\.(\d{{2}})',
-            # More restrictive patterns that require whitespace context
-            rf'{line_num}\s{{10,}}(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})',
-            rf'{line_num}\s{{10,}}(\d{{1,3}}(?:,\d{{3}})*)\.(\d{{2}})',
-        ]
-        
-        for pattern in patterns:
-            matches = re.findall(pattern, text)
-            for match in matches:
-                try:
-                    if isinstance(match, tuple) and len(match) == 2:
-                        dollars, cents = match
-                        # Validate that we have reasonable amounts (not sequential small numbers)
-                        dollars_cleaned = dollars.replace(',', '').strip()
-                        if dollars_cleaned and cents and int(dollars_cleaned) >= 1:  # At least $1.00
-                            amount_str = f"{dollars_cleaned}.{cents}"
+        # Fallback: look for 'Balance owing' label if 48500 not found
+        if line_num == '48500':
+            # Look for a line containing 48500 and two groups of digits (e.g., 5,921 91)
+            for line in lines:
+                if '48500' in line:
+                    m = re.search(r'48500\D*(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
+                        try:
+                            value = m.group(1).replace(',', '') + '.' + m.group(2)
+                            if debug_f:
+                                debug_f.write(f'EXTRACTED FROM 48500 LINE: {value}\n')
+                                debug_f.close()
+                            return Decimal(value)
+                        except Exception:
+                            continue
+            # Fallback: look for 'Balance owing' label if 48500 not found
+            for line in lines:
+                if re.search(r'balance owing', line, re.IGNORECASE):
+                    if debug_f:
+                        debug_f.write(f'FALLBACK BALANCE OWING LINE: {line}\n')
+                    m = re.search(r'(\d{1,3}(?:,\d{3})*\.\d{2})', line)
+                    if m:
+                        try:
+                            amount_str = m.group(1).replace(',', '')
+                            if debug_f:
+                                debug_f.write(f'FALLBACK FOUND AMOUNT: {amount_str}\n')
+                                debug_f.close()
                             return Decimal(amount_str)
-                except (InvalidOperation, ValueError):
-                    continue
-        
+                        except Exception:
+                            continue
+        if debug_f:
+            debug_f.write('NO AMOUNT FOUND\n')
+            debug_f.close()
         # If no amount found with strict patterns, return None (blank field)
         return None
+
+    def _extract_spouse_info(self, text: str) -> SpouseInfo:
+        spouse_info = SpouseInfo()
+        lines = text.splitlines()
+        spouse_section = []
+        # Find the spouse section
+        for i, line in enumerate(lines):
+            if "Your spouse's or common-law partner's information" in line:
+                spouse_section = lines[i:i+12]  # Take the next 12 lines for context
+                break
+        if spouse_section:
+            try:
+                debug_f = open('attached_assets/spouse_debug.log', 'w')
+                debug_f.write('DEBUG-SPOUSE-SECTION:\n')
+                for line in spouse_section:
+                    debug_f.write(f'DEBUG-SPOUSE-LINE: {line}\n')
+            except Exception:
+                debug_f = None
+            # Self-employed checkbox: Only set to True if an 'X' or '[X]' is present after the label, not a lone '1'
+            for line in spouse_section:
+                if 'Tick this box if they were self-employed' in line:
+                    if debug_f:
+                        debug_f.write(f'DEBUG-SELF-EMPLOYED-LINE: {line}\n')
+                    m = re.search(r'Tick this box if they were self-employed in 2024\.\s*(X|x|\[X\])?\s*$', line)
+                    if m and m.group(1):
+                        spouse_info.self_employed = True
+                    else:
+                        spouse_info.self_employed = False
+                    break
+            # Net income: Find the line, then check the next line for a number in the format '70,572 84'
+            for idx, line in enumerate(spouse_section):
+                if 'Net income from' in line:
+                    if debug_f:
+                        debug_f.write(f'DEBUG-NET-INCOME-LINE: {line}\n')
+                    if idx+1 < len(spouse_section):
+                        next_line = spouse_section[idx+1]
+                        if debug_f:
+                            debug_f.write(f'DEBUG-NET-INCOME-NEXT-LINE: {next_line}\n')
+                        m = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})', next_line)
+                        if m:
+                            try:
+                                value = m.group(1).replace(',', '') + '.' + m.group(2)
+                                spouse_info.net_income = Decimal(value)
+                            except Exception:
+                                spouse_info.net_income = None
+                        else:
+                            spouse_info.net_income = None
+                    else:
+                        spouse_info.net_income = None
+                    break
+            # UCCB: Find the line, then check the next line for a number in the format '123 45'
+            for idx, line in enumerate(spouse_section):
+                if 'universal child care benefit' in line.lower():
+                    if idx+1 < len(spouse_section):
+                        next_line = spouse_section[idx+1]
+                        if debug_f:
+                            debug_f.write(f'DEBUG-UCCB-NEXT-LINE: {next_line}\n')
+                        m = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})', next_line)
+                        if m:
+                            try:
+                                value = m.group(1).replace(',', '') + '.' + m.group(2)
+                                spouse_info.uccb = Decimal(value)
+                            except Exception:
+                                spouse_info.uccb = None
+                        else:
+                            spouse_info.uccb = None
+                    else:
+                        spouse_info.uccb = None
+                    break
+            # UCCB repayment: Find the line, then check the next line for a number in the format '123 45'
+            for idx, line in enumerate(spouse_section):
+                if 'UCCB repayment' in line:
+                    if idx+1 < len(spouse_section):
+                        next_line = spouse_section[idx+1]
+                        if debug_f:
+                            debug_f.write(f'DEBUG-UCCB-REPAY-NEXT-LINE: {next_line}\n')
+                        m = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})', next_line)
+                        if m:
+                            try:
+                                value = m.group(1).replace(',', '') + '.' + m.group(2)
+                                spouse_info.uccb_repayment = Decimal(value)
+                            except Exception:
+                                spouse_info.uccb_repayment = None
+                        else:
+                            spouse_info.uccb_repayment = None
+                    else:
+                        spouse_info.uccb_repayment = None
+                    break
+            if debug_f:
+                debug_f.close()
+        return spouse_info
 
 def decimal_serializer(obj):
     """JSON serializer for Decimal objects"""

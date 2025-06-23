@@ -44,7 +44,7 @@ DEBUG-SPOUSE-LINE: Amount for an eligible spouse or common-law partner 302 00 2
     "tax_exempt_emergency_volunteer": null,
     "commissions_included": null,
     "wage_loss_replacement": null,
-    "other_employment_income": "96.80",
+    "other_employment_income": null,
     "old_age_security": null,
     "cpp_qpp_benefits": null,
     "other_pensions": null,
@@ -170,7 +170,7 @@ DEBUG-SPOUSE-LINE: Amount for an eligible spouse or common-law partner 302 00 2
     "tax_paid_by_instalments": null,
     "provincial_territorial_credits": null,
     "refund": null,
-    "balance_owing": null
+    "balance_owing": "5921.91"
   },
   "refund": {
     "total_income_tax_deducted": "128175.62",
@@ -199,7 +199,7 @@ DEBUG-SPOUSE-LINE: Amount for an eligible spouse or common-law partner 302 00 2
     "tax_paid_by_instalments": null,
     "provincial_territorial_credits": null,
     "refund": null,
-    "balance_owing": null
+    "balance_owing": "5921.91"
   },
   "ontario_tax": {
     "basic_personal_amount": "12399.00",
@@ -473,5 +473,11 @@ DEBUG-SPOUSE-LINE: Amount for an eligible spouse or common-law partner 302 00 2
     "dividend_tax_credit": "274.74",
     "health_premium": null,
     "tax": "51931.77"
+  },
+  "spouse_info": {
+    "self_employed": false,
+    "net_income": "70572.84",
+    "uccb": null,
+    "uccb_repayment": null
   }
 }
