@@ -45,7 +45,6 @@ class PersonalInfo:
     marital_status: Optional[str] = None
     spouse_sin: Optional[str] = None
     spouse_first_name: Optional[str] = None
-    spouse_last_name: Optional[str] = None
     address_line1: Optional[str] = None
     address_line2: Optional[str] = None
     city: Optional[str] = None
@@ -192,6 +191,246 @@ class OntarioTaxFields:
     ontario_tax: Optional[Decimal] = None  # Line 42800
 
 @dataclass
+class AlbertaTaxFields:
+    """Alberta Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class BritishColumbiaTaxFields:
+    """British Columbia Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class ManitobaTaxFields:
+    """Manitoba Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class NewBrunswickTaxFields:
+    """New Brunswick Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class NewfoundlandLabradorTaxFields:
+    """Newfoundland and Labrador Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class NorthwestTerritoriesTaxFields:
+    """Northwest Territories Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class NovaScotiaTaxFields:
+    """Nova Scotia Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class NunavutTaxFields:
+    """Nunavut Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class PrinceEdwardIslandTaxFields:
+    """Prince Edward Island Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class QuebecTaxFields:
+    """Quebec TP-1 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class SaskatchewanTaxFields:
+    """Saskatchewan Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
+class YukonTaxFields:
+    """Yukon Form 428 Tax Credits and Deductions"""
+    basic_personal_amount: Optional[Decimal] = None
+    age_amount: Optional[Decimal] = None
+    spouse_amount: Optional[Decimal] = None
+    eligible_dependant: Optional[Decimal] = None
+    caregiver_amount: Optional[Decimal] = None
+    cpp_qpp_contributions: Optional[Decimal] = None
+    employment_insurance_premiums: Optional[Decimal] = None
+    pension_income_amount: Optional[Decimal] = None
+    disability_amount: Optional[Decimal] = None
+    medical_expenses: Optional[Decimal] = None
+    donations_gifts: Optional[Decimal] = None
+    total_credits: Optional[Decimal] = None
+    total_non_refundable_credits: Optional[Decimal] = None
+    dividend_tax_credit: Optional[Decimal] = None
+    health_premium: Optional[Decimal] = None
+    tax: Optional[Decimal] = None
+
+@dataclass
 class ComprehensiveT1Return:
     """Complete T1 Tax Return with all schedules and provincial forms"""
     tax_year: Optional[int] = None
@@ -201,6 +440,18 @@ class ComprehensiveT1Return:
     federal_tax: FederalTaxFields = field(default_factory=FederalTaxFields)
     refund: RefundFields = field(default_factory=RefundFields)
     ontario_tax: OntarioTaxFields = field(default_factory=OntarioTaxFields)
+    alberta_tax: AlbertaTaxFields = field(default_factory=AlbertaTaxFields)
+    british_columbia_tax: BritishColumbiaTaxFields = field(default_factory=BritishColumbiaTaxFields)
+    manitoba_tax: ManitobaTaxFields = field(default_factory=ManitobaTaxFields)
+    new_brunswick_tax: NewBrunswickTaxFields = field(default_factory=NewBrunswickTaxFields)
+    newfoundland_labrador_tax: NewfoundlandLabradorTaxFields = field(default_factory=NewfoundlandLabradorTaxFields)
+    northwest_territories_tax: NorthwestTerritoriesTaxFields = field(default_factory=NorthwestTerritoriesTaxFields)
+    nova_scotia_tax: NovaScotiaTaxFields = field(default_factory=NovaScotiaTaxFields)
+    nunavut_tax: NunavutTaxFields = field(default_factory=NunavutTaxFields)
+    prince_edward_island_tax: PrinceEdwardIslandTaxFields = field(default_factory=PrinceEdwardIslandTaxFields)
+    quebec_tax: QuebecTaxFields = field(default_factory=QuebecTaxFields)
+    saskatchewan_tax: SaskatchewanTaxFields = field(default_factory=SaskatchewanTaxFields)
+    yukon_tax: YukonTaxFields = field(default_factory=YukonTaxFields)
     
     def __post_init__(self):
         if self.personal_info is None:
@@ -284,6 +535,42 @@ class ComprehensiveT1Extractor:
         # Extract Ontario provincial tax fields
         t1_return.ontario_tax = self._extract_ontario_tax_fields(text)
         
+        # Extract Alberta tax fields
+        t1_return.alberta_tax = self._extract_alberta_tax_fields(text)
+        
+        # Extract British Columbia tax fields
+        t1_return.british_columbia_tax = self._extract_british_columbia_tax_fields(text)
+        
+        # Extract Manitoba tax fields
+        t1_return.manitoba_tax = self._extract_manitoba_tax_fields(text)
+        
+        # Extract New Brunswick tax fields
+        t1_return.new_brunswick_tax = self._extract_new_brunswick_tax_fields(text)
+        
+        # Extract Newfoundland and Labrador tax fields
+        t1_return.newfoundland_labrador_tax = self._extract_newfoundland_labrador_tax_fields(text)
+        
+        # Extract Northwest Territories tax fields
+        t1_return.northwest_territories_tax = self._extract_northwest_territories_tax_fields(text)
+        
+        # Extract Nova Scotia tax fields
+        t1_return.nova_scotia_tax = self._extract_nova_scotia_tax_fields(text)
+        
+        # Extract Nunavut tax fields
+        t1_return.nunavut_tax = self._extract_nunavut_tax_fields(text)
+        
+        # Extract Prince Edward Island tax fields
+        t1_return.prince_edward_island_tax = self._extract_prince_edward_island_tax_fields(text)
+        
+        # Extract Quebec tax fields
+        t1_return.quebec_tax = self._extract_quebec_tax_fields(text)
+        
+        # Extract Saskatchewan tax fields
+        t1_return.saskatchewan_tax = self._extract_saskatchewan_tax_fields(text)
+        
+        # Extract Yukon tax fields
+        t1_return.yukon_tax = self._extract_yukon_tax_fields(text)
+        
         return t1_return
     
     def _extract_tax_year(self, text: str) -> Optional[int]:
@@ -308,7 +595,6 @@ class ComprehensiveT1Extractor:
     def _extract_personal_info(self, text: str) -> PersonalInfo:
         """Extract personal information from text"""
         info = PersonalInfo()
-        
         # Extract First Name and Last Name from the same line
         name_pattern = re.search(r'First name\s+Last name.*?\n\s*([A-Za-z]+)\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
         if name_pattern:
@@ -319,28 +605,38 @@ class ComprehensiveT1Extractor:
             first_name_match = re.search(r'First name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
             if first_name_match:
                 info.first_name = first_name_match.group(1).strip()
-            
             last_name_match = re.search(r'Last name.*?\n\s+([A-Za-z]+)', text, re.IGNORECASE | re.DOTALL)
             if last_name_match:
                 info.last_name = last_name_match.group(1).strip()
-        
+        # Extract Spouse First Name using 'their first name' label
+        spouse_their_first_name_idx = None
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            if 'their first name' in line.lower():
+                spouse_their_first_name_idx = i
+                break
+        if spouse_their_first_name_idx is not None:
+            # Look for the next non-empty line after the label
+            for j in range(spouse_their_first_name_idx + 1, min(spouse_their_first_name_idx + 5, len(lines))):
+                possible_name = lines[j].strip()
+                if possible_name:
+                    # Only take the first word as the first name
+                    info.spouse_first_name = possible_name.split()[0]
+                    break
         # Extract SIN - look for masked SIN "XXX XX1 481" from the PDF
         sin_match = re.search(r'(XXX\s+XX\d\s+\d{3})', text)
         if sin_match:
             info.sin = sin_match.group(1)
-        
         # Extract Date of Birth - line 24: "1979-06-18" (appears near "Date of birth")
         dob_match = re.search(r'Date of birth.*?\n.*?(\d{4}-\d{2}-\d{2})', text, re.IGNORECASE | re.DOTALL)
         if dob_match:
             year = int(dob_match.group(1)[:4])
             if 1900 <= year <= 2010:
                 info.date_of_birth = dob_match.group(1)
-        
         # Extract Marital Status - line 20: "1 X Married"
         marital_match = re.search(r'(\d+)\s+X\s+(Married|Living common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
         if marital_match:
             info.marital_status = marital_match.group(2)
-
         # More robust address extraction
         lines = text.splitlines()
         for i, line in enumerate(lines):
@@ -371,6 +667,26 @@ class ComprehensiveT1Extractor:
                         info.province = match.group(1)
                         info.postal_code = match.group(2).replace(' ', '')
                         break
+        # Extract Spouse SIN using 'their SIN' label
+        spouse_their_sin_idx = None
+        for i, line in enumerate(lines):
+            if 'their sin' in line.lower():
+                spouse_their_sin_idx = i
+                break
+        if spouse_their_sin_idx is not None:
+            # Look for the next non-empty line after the label
+            for j in range(spouse_their_sin_idx + 1, min(spouse_their_sin_idx + 5, len(lines))):
+                possible_sin = lines[j].strip()
+                if possible_sin:
+                    # Only take the first group of digits or masked SIN
+                    sin_match = re.search(r'(\d{3} ?\d{3} ?\d{3}|XXX ?XX\d ?\d{3})', possible_sin)
+                    if sin_match:
+                        info.spouse_sin = sin_match.group(1)
+                        break
+        # DEBUG: Print all lines containing 'spouse' to help tune regex
+        for line in text.splitlines():
+            if 'spouse' in line.lower():
+                print('DEBUG-SPOUSE-LINE:', line)
         return info
     
     def _extract_fields(self, text: str, field_map: dict, dataclass_type):
@@ -517,6 +833,270 @@ class ComprehensiveT1Extractor:
             '42800': 'ontario_tax'
         }
         return self._extract_fields(text, ontario_lines, OntarioTaxFields)
+    
+    def _extract_alberta_tax_fields(self, text: str) -> AlbertaTaxFields:
+        """Extract Alberta tax fields from text"""
+        alberta_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for Alberta
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, alberta_lines, AlbertaTaxFields)
+
+    def _extract_british_columbia_tax_fields(self, text: str) -> BritishColumbiaTaxFields:
+        """Extract British Columbia tax fields from text"""
+        bc_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for BC
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, bc_lines, BritishColumbiaTaxFields)
+
+    def _extract_manitoba_tax_fields(self, text: str) -> ManitobaTaxFields:
+        """Extract Manitoba tax fields from text"""
+        mb_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for Manitoba
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, mb_lines, ManitobaTaxFields)
+
+    def _extract_new_brunswick_tax_fields(self, text: str) -> NewBrunswickTaxFields:
+        """Extract New Brunswick tax fields from text"""
+        nb_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NB
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, nb_lines, NewBrunswickTaxFields)
+
+    def _extract_newfoundland_labrador_tax_fields(self, text: str) -> NewfoundlandLabradorTaxFields:
+        """Extract Newfoundland and Labrador tax fields from text"""
+        nl_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NL
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, nl_lines, NewfoundlandLabradorTaxFields)
+
+    def _extract_northwest_territories_tax_fields(self, text: str) -> NorthwestTerritoriesTaxFields:
+        """Extract Northwest Territories tax fields from text"""
+        nt_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NT
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, nt_lines, NorthwestTerritoriesTaxFields)
+
+    def _extract_nova_scotia_tax_fields(self, text: str) -> NovaScotiaTaxFields:
+        """Extract Nova Scotia tax fields from text"""
+        ns_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NS
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, ns_lines, NovaScotiaTaxFields)
+
+    def _extract_nunavut_tax_fields(self, text: str) -> NunavutTaxFields:
+        """Extract Nunavut tax fields from text"""
+        nu_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NU
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, nu_lines, NunavutTaxFields)
+
+    def _extract_prince_edward_island_tax_fields(self, text: str) -> PrinceEdwardIslandTaxFields:
+        """Extract Prince Edward Island tax fields from text"""
+        pe_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for PE
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, pe_lines, PrinceEdwardIslandTaxFields)
+
+    def _extract_quebec_tax_fields(self, text: str) -> QuebecTaxFields:
+        """Extract Quebec tax fields from text"""
+        qc_lines = {
+            '350': 'basic_personal_amount',  # TODO: Update line numbers for Quebec (TP-1)
+            '352': 'age_amount',
+            '354': 'spouse_amount',
+            '356': 'eligible_dependant',
+            '358': 'caregiver_amount',
+            '360': 'cpp_qpp_contributions',
+            '362': 'employment_insurance_premiums',
+            '364': 'pension_income_amount',
+            '366': 'disability_amount',
+            '368': 'medical_expenses',
+            '370': 'donations_gifts',
+            '372': 'total_credits',
+            '374': 'total_non_refundable_credits',
+            '376': 'dividend_tax_credit',
+            '378': 'health_premium',
+            '430': 'tax',
+        }
+        return self._extract_fields(text, qc_lines, QuebecTaxFields)
+
+    def _extract_saskatchewan_tax_fields(self, text: str) -> SaskatchewanTaxFields:
+        """Extract Saskatchewan tax fields from text"""
+        sk_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for SK
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, sk_lines, SaskatchewanTaxFields)
+
+    def _extract_yukon_tax_fields(self, text: str) -> YukonTaxFields:
+        """Extract Yukon tax fields from text"""
+        yt_lines = {
+            '58040': 'basic_personal_amount',  # TODO: Update line numbers for YT
+            '58080': 'age_amount',
+            '58120': 'spouse_amount',
+            '58160': 'eligible_dependant',
+            '58165': 'caregiver_amount',
+            '58240': 'cpp_qpp_contributions',
+            '58300': 'employment_insurance_premiums',
+            '58360': 'pension_income_amount',
+            '58440': 'disability_amount',
+            '58689': 'medical_expenses',
+            '58729': 'donations_gifts',
+            '58800': 'total_credits',
+            '58840': 'total_non_refundable_credits',
+            '61520': 'dividend_tax_credit',
+            '62140': 'health_premium',
+            '42800': 'tax',
+        }
+        return self._extract_fields(text, yt_lines, YukonTaxFields)
     
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
