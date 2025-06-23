@@ -55,83 +55,155 @@ class PersonalInfo:
 
 @dataclass
 class IncomeFields:
-    """T1 Income fields (Lines 10000-14700)"""
+    """T1 Income fields (Lines 10000-15000)"""
+    # Employment Income
     employment_income: Optional[Decimal] = None  # Line 10100
-    commissions: Optional[Decimal] = None  # Line 10200
+    tax_exempt_emergency_volunteer: Optional[Decimal] = None  # Line 10105
+    commissions_included: Optional[Decimal] = None  # Line 10120
+    wage_loss_replacement: Optional[Decimal] = None  # Line 10130
     other_employment_income: Optional[Decimal] = None  # Line 10400
+    # Pension and Retirement Income
     old_age_security: Optional[Decimal] = None  # Line 11300
     cpp_qpp_benefits: Optional[Decimal] = None  # Line 11400
     other_pensions: Optional[Decimal] = None  # Line 11500
     elected_split_pension: Optional[Decimal] = None  # Line 11600
+    uccb: Optional[Decimal] = None  # Line 11700
+    uccb_dependent: Optional[Decimal] = None  # Line 11701
+    split_income: Optional[Decimal] = None  # Line 11800
+    # Government Benefits
     employment_insurance: Optional[Decimal] = None  # Line 11900
-    taxable_dividends: Optional[Decimal] = None  # Line 12000
+    ei_maternity_parental: Optional[Decimal] = None  # Line 11905
+    # Investment Income
+    taxable_dividends_eligible: Optional[Decimal] = None  # Line 12000
+    taxable_dividends_other: Optional[Decimal] = None  # Line 12010
     interest_investment_income: Optional[Decimal] = None  # Line 12100
     partnership_income: Optional[Decimal] = None  # Line 12200
+    foreign_dividends: Optional[Decimal] = None  # Line 12400
+    # Other Income
+    rdsp_income: Optional[Decimal] = None  # Line 12500
     rental_income: Optional[Decimal] = None  # Line 12600
     capital_gains: Optional[Decimal] = None  # Line 12700
     rrsp_income: Optional[Decimal] = None  # Line 12900
+    fhsa_income: Optional[Decimal] = None  # Line 12905
+    fhsa_income_other: Optional[Decimal] = None  # Line 12906
     other_income: Optional[Decimal] = None  # Line 13000
-    self_employment_income: Optional[Decimal] = None  # Line 13500
+    scholarships: Optional[Decimal] = None  # Line 13010
+    # Self-Employment Income
+    self_employment_business: Optional[Decimal] = None  # Line 13499
+    self_employment_partnership: Optional[Decimal] = None  # Line 13500
+    self_employment_professional: Optional[Decimal] = None  # Line 13700
+    self_employment_commission: Optional[Decimal] = None  # Line 13900
+    self_employment_farming: Optional[Decimal] = None  # Line 14100
+    self_employment_fishing: Optional[Decimal] = None  # Line 14300
+    # Other Sources
     workers_compensation: Optional[Decimal] = None  # Line 14400
     social_assistance: Optional[Decimal] = None  # Line 14500
+    net_federal_supplements: Optional[Decimal] = None  # Line 14600
     total_income: Optional[Decimal] = None  # Line 15000
 
 @dataclass
 class DeductionFields:
-    """T1 Deduction fields (Lines 20600-23300)"""
+    """T1 Deduction fields (Lines 20000-23600)"""
+    # Registered Plan Contributions
     pension_adjustment: Optional[Decimal] = None  # Line 20600
     rpp_deduction: Optional[Decimal] = None  # Line 20700
     rrsp_deduction: Optional[Decimal] = None  # Line 20800
+    fhsa_deduction: Optional[Decimal] = None  # Line 20805
+    prpp_employer_contributions: Optional[Decimal] = None  # Line 20810
+    # Personal Deductions
+    split_pension_deduction: Optional[Decimal] = None  # Line 21000
     annual_union_dues: Optional[Decimal] = None  # Line 21200
+    uccb_repayment: Optional[Decimal] = None  # Line 21300
     child_care_expenses: Optional[Decimal] = None  # Line 21400
     disability_supports: Optional[Decimal] = None  # Line 21500
     business_investment_loss: Optional[Decimal] = None  # Line 21700
     moving_expenses: Optional[Decimal] = None  # Line 21900
-    support_payments: Optional[Decimal] = None  # Line 22000
+    # Support and Investment Expenses
+    support_payments_total: Optional[Decimal] = None  # Line 21999
+    support_payments_allowable: Optional[Decimal] = None  # Line 22000
     carrying_charges: Optional[Decimal] = None  # Line 22100
-    deduction_cpp_qpp: Optional[Decimal] = None  # Line 22200
+    deduction_cpp_qpp_self: Optional[Decimal] = None  # Line 22200
+    deduction_cpp_qpp_enhanced: Optional[Decimal] = None  # Line 22215
+    # Specialized Deductions
     exploration_development: Optional[Decimal] = None  # Line 22400
     other_employment_expenses: Optional[Decimal] = None  # Line 22900
     clergy_residence: Optional[Decimal] = None  # Line 23100
     other_deductions: Optional[Decimal] = None  # Line 23200
-    total_deductions: Optional[Decimal] = None  # Line 23300
+    social_benefits_repayment: Optional[Decimal] = None  # Line 23500
     net_income: Optional[Decimal] = None  # Line 23600
 
 @dataclass
 class FederalTaxFields:
     """Schedule 1 - Federal Tax Calculation fields"""
     taxable_income: Optional[Decimal] = None  # Line 26000
+    # Non-Refundable Tax Credits
     basic_personal_amount: Optional[Decimal] = None  # Line 30000
     age_amount: Optional[Decimal] = None  # Line 30100
     spouse_amount: Optional[Decimal] = None  # Line 30300
     eligible_dependant: Optional[Decimal] = None  # Line 30400
+    caregiver_spouse: Optional[Decimal] = None  # Line 30425
+    caregiver_other: Optional[Decimal] = None  # Line 30450
+    caregiver_children: Optional[Decimal] = None  # Line 30500
     cpp_qpp_contributions: Optional[Decimal] = None  # Line 30800
+    cpp_qpp_self_employment: Optional[Decimal] = None  # Line 31000
     employment_insurance_premiums: Optional[Decimal] = None  # Line 31200
-    canada_employment_amount: Optional[Decimal] = None  # Line 31220
-    public_transit_amount: Optional[Decimal] = None  # Line 31270
-    children_fitness_amount: Optional[Decimal] = None  # Line 31300
-    children_arts_amount: Optional[Decimal] = None  # Line 31350
-    home_buyers_amount: Optional[Decimal] = None  # Line 31900
+    ppip_premiums_paid: Optional[Decimal] = None  # Line 31205
+    ppip_premiums_payable: Optional[Decimal] = None  # Line 31210
+    ei_self_employment: Optional[Decimal] = None  # Line 31217
+    volunteer_firefighters: Optional[Decimal] = None  # Line 31220
+    search_rescue_volunteers: Optional[Decimal] = None  # Line 31240
+    canada_employment_amount: Optional[Decimal] = None  # Line 31260
+    home_buyers_amount: Optional[Decimal] = None  # Line 31270
+    home_accessibility_expenses: Optional[Decimal] = None  # Line 31285
     adoption_expenses: Optional[Decimal] = None  # Line 31300
+    digital_news_subscription: Optional[Decimal] = None  # Line 31350
     pension_income_amount: Optional[Decimal] = None  # Line 31400
-    caregiver_amount: Optional[Decimal] = None  # Line 31500
     disability_amount: Optional[Decimal] = None  # Line 31600
+    disability_transferred: Optional[Decimal] = None  # Line 31800
     interest_student_loans: Optional[Decimal] = None  # Line 31900
     tuition_education_amounts: Optional[Decimal] = None  # Line 32300
-    medical_expenses: Optional[Decimal] = None  # Line 33000
+    tuition_transferred_child: Optional[Decimal] = None  # Line 32400
+    transferred_spouse: Optional[Decimal] = None  # Line 32600
+    medical_expenses: Optional[Decimal] = None  # Line 33099
+    medical_expenses_other: Optional[Decimal] = None  # Line 33199
     donations_gifts: Optional[Decimal] = None  # Line 34900
     total_tax_credits: Optional[Decimal] = None  # Line 35000
+    # Tax Calculation Section
     federal_tax: Optional[Decimal] = None  # Line 40400
+    federal_tax_split_income: Optional[Decimal] = None  # Line 40424
     federal_dividend_tax_credit: Optional[Decimal] = None  # Line 40425
-    overseas_employment_tax_credit: Optional[Decimal] = None  # Line 40700
-    minimum_tax_carryover: Optional[Decimal] = None  # Line 40900
-    basic_federal_tax: Optional[Decimal] = None  # Line 41000
+    minimum_tax_carryover: Optional[Decimal] = None  # Line 40427
     federal_foreign_tax_credit: Optional[Decimal] = None  # Line 40500
     federal_political_contribution_tax_credit: Optional[Decimal] = None  # Line 41000
     investment_tax_credit: Optional[Decimal] = None  # Line 41200
-    labour_sponsored_funds_tax_credit: Optional[Decimal] = None  # Line 41300
-    alternative_minimum_tax: Optional[Decimal] = None  # Line 41700
+    labour_sponsored_funds_tax_credit: Optional[Decimal] = None  # Line 41400
+    acwb: Optional[Decimal] = None  # Line 41500
+    minimum_tax: Optional[Decimal] = None  # Line 41700
+    special_taxes: Optional[Decimal] = None  # Line 41800
     net_federal_tax: Optional[Decimal] = None  # Line 42000
+    cpp_contributions_payable: Optional[Decimal] = None  # Line 42100
+    ei_premiums_payable: Optional[Decimal] = None  # Line 42120
+    social_benefits_repayment: Optional[Decimal] = None  # Line 42200
+    provincial_tax: Optional[Decimal] = None  # Line 42800
+    total_payable: Optional[Decimal] = None  # Line 43500
+    total_income_tax_deducted: Optional[Decimal] = None  # Line 43700
+    tax_transfer_quebec: Optional[Decimal] = None  # Line 43800
+    quebec_abatement: Optional[Decimal] = None  # Line 44000
+    cpp_qpp_overpayment: Optional[Decimal] = None  # Line 44800
+    ei_overpayment: Optional[Decimal] = None  # Line 45000
+    refundable_medical_expense: Optional[Decimal] = None  # Line 45200
+    cwb: Optional[Decimal] = None  # Line 45300
+    ctc: Optional[Decimal] = None  # Line 45350
+    refund_investment_tax_credit: Optional[Decimal] = None  # Line 45400
+    part_xii2_tax_credit: Optional[Decimal] = None  # Line 45600
+    gst_hst_rebate: Optional[Decimal] = None  # Line 45700
+    educator_school_supply: Optional[Decimal] = None  # Line 46900
+    journalism_labour_tax_credit: Optional[Decimal] = None  # Line 47555
+    fuel_charge_farmers_tax_credit: Optional[Decimal] = None  # Line 47556
+    tax_paid_by_instalments: Optional[Decimal] = None  # Line 47600
+    provincial_territorial_credits: Optional[Decimal] = None  # Line 47900
+    refund: Optional[Decimal] = None  # Line 48400
+    balance_owing: Optional[Decimal] = None  # Line 48500
 
 @dataclass
 class RefundFields:
@@ -147,6 +219,23 @@ class RefundFields:
     total_credits: Optional[Decimal] = None  # Line 48200
     refund_or_balance_owing: Optional[Decimal] = None  # Line 48400
     amount_enclosed: Optional[Decimal] = None  # Line 48500
+    # Additional Refundable Credits
+    tax_transfer_quebec: Optional[Decimal] = None  # Line 43800
+    quebec_abatement: Optional[Decimal] = None  # Line 44000
+    cpp_qpp_overpayment: Optional[Decimal] = None  # Line 44800
+    refundable_medical_expense: Optional[Decimal] = None  # Line 45200
+    cwb: Optional[Decimal] = None  # Line 45300
+    ctc: Optional[Decimal] = None  # Line 45350
+    refund_investment_tax_credit: Optional[Decimal] = None  # Line 45400
+    part_xii2_tax_credit: Optional[Decimal] = None  # Line 45600
+    gst_hst_rebate: Optional[Decimal] = None  # Line 45700
+    educator_school_supply: Optional[Decimal] = None  # Line 46900
+    journalism_labour_tax_credit: Optional[Decimal] = None  # Line 47555
+    fuel_charge_farmers_tax_credit: Optional[Decimal] = None  # Line 47556
+    tax_paid_by_instalments: Optional[Decimal] = None  # Line 47600
+    provincial_territorial_credits: Optional[Decimal] = None  # Line 47900
+    refund: Optional[Decimal] = None  # Line 48400
+    balance_owing: Optional[Decimal] = None  # Line 48500
 
 @dataclass
 class OntarioTaxFields:
@@ -157,7 +246,6 @@ class OntarioTaxFields:
     spouse_amount: Optional[Decimal] = None  # Line 58120
     eligible_dependant: Optional[Decimal] = None  # Line 58160
     caregiver_amount: Optional[Decimal] = None  # Line 58185
-    
     # Employment-related credits
     cpp_qpp_contributions: Optional[Decimal] = None  # Line 58240
     cpp_qpp_self_employment: Optional[Decimal] = None  # Line 58280
@@ -165,45 +253,53 @@ class OntarioTaxFields:
     volunteer_firefighter_amount: Optional[Decimal] = None  # Line 58305
     adoption_expenses: Optional[Decimal] = None  # Line 58330
     pension_income_amount: Optional[Decimal] = None  # Line 58360
-    
     # Disability and medical
     disability_amount: Optional[Decimal] = None  # Line 58440
     disability_amount_transferred: Optional[Decimal] = None  # Line 58480
-    
     # Education and training
     student_loan_interest: Optional[Decimal] = None  # Line 58520
     tuition_education_amounts: Optional[Decimal] = None  # Line 58560
     amounts_transferred_spouse: Optional[Decimal] = None  # Line 58640
-    
     # Medical and other
     medical_expenses: Optional[Decimal] = None  # Line 58689
     donations_gifts: Optional[Decimal] = None  # Line 58729
-    
     # Calculated amounts
     total_credits: Optional[Decimal] = None  # Line 58800
     total_non_refundable_credits: Optional[Decimal] = None  # Line 58840
     ontario_non_refundable_tax_credits: Optional[Decimal] = None  # Line 61500
-    
     # Tax calculations
     ontario_tax_split_income: Optional[Decimal] = None  # Line 61510
     ontario_dividend_tax_credit: Optional[Decimal] = None  # Line 61520
     ontario_health_premium: Optional[Decimal] = None  # Line 62140
     ontario_tax: Optional[Decimal] = None  # Line 42800
+    # Ontario Refundable Credits (Form 479ON)
+    ontario_energy_property_tax_credit: Optional[Decimal] = None  # Line 61050
+    ontario_senior_homeowners_grant: Optional[Decimal] = None  # Line 61052
+    ontario_political_contribution_credit: Optional[Decimal] = None  # Line 61055
+    ontario_sales_tax_credit: Optional[Decimal] = None  # Line 61056
+    ontario_trillium_benefit: Optional[Decimal] = None  # Line 61080
+    ontario_child_benefit: Optional[Decimal] = None  # Line 61240
+    ontario_working_families_tax_credit: Optional[Decimal] = None  # Line 61300
 
 @dataclass
 class AlbertaTaxFields:
     """Alberta Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479AB)
+    family_employment_tax_credit: Optional[Decimal] = None  # Line 61220
+    carbon_levy_rebate: Optional[Decimal] = None  # Line 61230
+    child_family_benefit: Optional[Decimal] = None  # Line 61240
+    seniors_benefit: Optional[Decimal] = None  # Line 61250
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -213,17 +309,24 @@ class AlbertaTaxFields:
 @dataclass
 class BritishColumbiaTaxFields:
     """British Columbia Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479BC)
+    climate_action_tax_credit: Optional[Decimal] = None  # Line 61120
+    family_bonus: Optional[Decimal] = None  # Line 61130
+    early_childhood_tax_benefit: Optional[Decimal] = None  # Line 61140
+    child_opportunity_benefit: Optional[Decimal] = None  # Line 61150
+    caregiver_tax_credit: Optional[Decimal] = None  # Line 61160
+    training_tax_credit: Optional[Decimal] = None  # Line 61170
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -233,17 +336,21 @@ class BritishColumbiaTaxFields:
 @dataclass
 class ManitobaTaxFields:
     """Manitoba Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479MB)
+    low_income_tax_credit: Optional[Decimal] = None  # Line 61420
+    family_tax_benefit: Optional[Decimal] = None  # Line 61430
+    seniors_school_tax_rebate: Optional[Decimal] = None  # Line 61440
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -253,17 +360,21 @@ class ManitobaTaxFields:
 @dataclass
 class NewBrunswickTaxFields:
     """New Brunswick Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479NB)
+    low_income_tax_credit: Optional[Decimal] = None  # Line 61520
+    child_tax_benefit: Optional[Decimal] = None  # Line 61530
+    working_income_supplement: Optional[Decimal] = None  # Line 61540
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -273,17 +384,21 @@ class NewBrunswickTaxFields:
 @dataclass
 class NewfoundlandLabradorTaxFields:
     """Newfoundland and Labrador Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479NL)
+    low_income_tax_credit: Optional[Decimal] = None  # Line 61820
+    child_benefit: Optional[Decimal] = None  # Line 61830
+    seniors_benefit: Optional[Decimal] = None  # Line 61840
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -293,17 +408,20 @@ class NewfoundlandLabradorTaxFields:
 @dataclass
 class NorthwestTerritoriesTaxFields:
     """Northwest Territories Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479NT)
+    cost_of_living_credit: Optional[Decimal] = None  # Line 61920
+    child_benefit: Optional[Decimal] = None  # Line 61930
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -313,17 +431,21 @@ class NorthwestTerritoriesTaxFields:
 @dataclass
 class NovaScotiaTaxFields:
     """Nova Scotia Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479NS)
+    affordable_living_tax_credit: Optional[Decimal] = None  # Line 61620
+    child_benefit: Optional[Decimal] = None  # Line 61630
+    poverty_reduction_credit: Optional[Decimal] = None  # Line 61640
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -333,17 +455,20 @@ class NovaScotiaTaxFields:
 @dataclass
 class NunavutTaxFields:
     """Nunavut Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479NU)
+    cost_of_living_credit: Optional[Decimal] = None  # Line 62020
+    child_benefit: Optional[Decimal] = None  # Line 62030
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -353,17 +478,21 @@ class NunavutTaxFields:
 @dataclass
 class PrinceEdwardIslandTaxFields:
     """Prince Edward Island Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479PE)
+    low_income_tax_credit: Optional[Decimal] = None  # Line 61720
+    child_benefit: Optional[Decimal] = None  # Line 61730
+    sales_tax_credit: Optional[Decimal] = None  # Line 61740
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -373,17 +502,19 @@ class PrinceEdwardIslandTaxFields:
 @dataclass
 class QuebecTaxFields:
     """Quebec TP-1 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 350
+    spouse_amount: Optional[Decimal] = None  # Line 351
+    dependant_children_amount: Optional[Decimal] = None  # Line 352
+    other_dependants_amount: Optional[Decimal] = None  # Line 353
+    age_amount: Optional[Decimal] = None  # Line 354
+    pension_income_amount: Optional[Decimal] = None  # Line 355
+    disability_amount: Optional[Decimal] = None  # Line 358
+    medical_expenses: Optional[Decimal] = None  # Line 361
+    donations_gifts: Optional[Decimal] = None  # Line 393
+    # Refundable Credits (Quebec)
+    quebec_abatement: Optional[Decimal] = None  # Line 440
+    quebec_tax_payable: Optional[Decimal] = None  # Line 451
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -393,17 +524,21 @@ class QuebecTaxFields:
 @dataclass
 class SaskatchewanTaxFields:
     """Saskatchewan Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479SK)
+    low_income_tax_credit: Optional[Decimal] = None  # Line 61320
+    seniors_supplement: Optional[Decimal] = None  # Line 61330
+    graduate_retention_benefit: Optional[Decimal] = None  # Line 61340
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -413,17 +548,20 @@ class SaskatchewanTaxFields:
 @dataclass
 class YukonTaxFields:
     """Yukon Form 428 Tax Credits and Deductions"""
-    basic_personal_amount: Optional[Decimal] = None
-    age_amount: Optional[Decimal] = None
-    spouse_amount: Optional[Decimal] = None
-    eligible_dependant: Optional[Decimal] = None
-    caregiver_amount: Optional[Decimal] = None
-    cpp_qpp_contributions: Optional[Decimal] = None
-    employment_insurance_premiums: Optional[Decimal] = None
-    pension_income_amount: Optional[Decimal] = None
-    disability_amount: Optional[Decimal] = None
-    medical_expenses: Optional[Decimal] = None
-    donations_gifts: Optional[Decimal] = None
+    basic_personal_amount: Optional[Decimal] = None  # Line 58080
+    age_amount: Optional[Decimal] = None  # Line 58160
+    spouse_amount: Optional[Decimal] = None  # Line 58240
+    eligible_dependant: Optional[Decimal] = None  # Line 58320
+    caregiver_amount: Optional[Decimal] = None  # Line 58400
+    disability_amount: Optional[Decimal] = None  # Line 58480
+    pension_income_amount: Optional[Decimal] = None  # Line 58560
+    tuition_amount: Optional[Decimal] = None  # Line 58640
+    medical_expenses: Optional[Decimal] = None  # Line 58720
+    donations_gifts: Optional[Decimal] = None  # Line 58800
+    # Refundable Credits (Form 479YT)
+    cost_of_living_credit: Optional[Decimal] = None  # Line 62120
+    child_benefit: Optional[Decimal] = None  # Line 62130
+    # Calculated
     total_credits: Optional[Decimal] = None
     total_non_refundable_credits: Optional[Decimal] = None
     dividend_tax_credit: Optional[Decimal] = None
@@ -703,51 +841,83 @@ class ComprehensiveT1Extractor:
     def _extract_income_fields(self, text: str) -> IncomeFields:
         """Extract income fields from text"""
         income_lines = {
+            # Employment Income
             '10100': 'employment_income',
-            '10120': 'commissions',
-            '10200': 'commissions',
+            '10105': 'tax_exempt_emergency_volunteer',
+            '10120': 'commissions_included',
+            '10130': 'wage_loss_replacement',
             '10400': 'other_employment_income',
+            # Pension and Retirement Income
             '11300': 'old_age_security',
             '11400': 'cpp_qpp_benefits',
             '11500': 'other_pensions',
             '11600': 'elected_split_pension',
-            '11700': 'employment_insurance',
+            '11700': 'uccb',
+            '11701': 'uccb_dependent',
+            '11800': 'split_income',
+            # Government Benefits
             '11900': 'employment_insurance',
-            '12000': 'taxable_dividends',
+            '11905': 'ei_maternity_parental',
+            # Investment Income
+            '12000': 'taxable_dividends_eligible',
+            '12010': 'taxable_dividends_other',
             '12100': 'interest_investment_income',
             '12200': 'partnership_income',
+            '12400': 'foreign_dividends',
+            # Other Income
+            '12500': 'rdsp_income',
             '12600': 'rental_income',
             '12700': 'capital_gains',
             '12900': 'rrsp_income',
+            '12905': 'fhsa_income',
+            '12906': 'fhsa_income_other',
             '13000': 'other_income',
-            '13500': 'self_employment_income',
-            '13700': 'workers_compensation',
+            '13010': 'scholarships',
+            # Self-Employment Income
+            '13499': 'self_employment_business',
+            '13500': 'self_employment_partnership',
+            '13700': 'self_employment_professional',
+            '13900': 'self_employment_commission',
+            '14100': 'self_employment_farming',
+            '14300': 'self_employment_fishing',
+            # Other Sources
             '14400': 'workers_compensation',
             '14500': 'social_assistance',
-            '15000': 'total_income'
+            '14600': 'net_federal_supplements',
+            '15000': 'total_income',
         }
         return self._extract_fields(text, income_lines, IncomeFields)
     
     def _extract_deduction_fields(self, text: str) -> DeductionFields:
         """Extract deduction fields from text"""
         deduction_lines = {
+            # Registered Plan Contributions
             '20600': 'pension_adjustment',
             '20700': 'rpp_deduction',
             '20800': 'rrsp_deduction',
+            '20805': 'fhsa_deduction',
+            '20810': 'prpp_employer_contributions',
+            # Personal Deductions
+            '21000': 'split_pension_deduction',
             '21200': 'annual_union_dues',
+            '21300': 'uccb_repayment',
             '21400': 'child_care_expenses',
             '21500': 'disability_supports',
             '21700': 'business_investment_loss',
             '21900': 'moving_expenses',
-            '22000': 'support_payments',
+            # Support and Investment Expenses
+            '21999': 'support_payments_total',
+            '22000': 'support_payments_allowable',
             '22100': 'carrying_charges',
-            '22200': 'deduction_cpp_qpp',
+            '22200': 'deduction_cpp_qpp_self',
+            '22215': 'deduction_cpp_qpp_enhanced',
+            # Specialized Deductions
             '22400': 'exploration_development',
             '22900': 'other_employment_expenses',
             '23100': 'clergy_residence',
             '23200': 'other_deductions',
-            '23300': 'total_deductions',
-            '23600': 'net_income'
+            '23500': 'social_benefits_repayment',
+            '23600': 'net_income',
         }
         return self._extract_fields(text, deduction_lines, DeductionFields)
     
@@ -755,34 +925,74 @@ class ComprehensiveT1Extractor:
         """Extract federal tax fields from text"""
         federal_lines = {
             '26000': 'taxable_income',
+            # Non-Refundable Tax Credits
             '30000': 'basic_personal_amount',
             '30100': 'age_amount',
             '30300': 'spouse_amount',
             '30400': 'eligible_dependant',
+            '30425': 'caregiver_spouse',
+            '30450': 'caregiver_other',
+            '30500': 'caregiver_children',
             '30800': 'cpp_qpp_contributions',
+            '31000': 'cpp_qpp_self_employment',
             '31200': 'employment_insurance_premiums',
-            '31220': 'canada_employment_amount',
-            '31270': 'public_transit_amount',
-            '31300': 'children_fitness_amount',
-            '31350': 'children_arts_amount',
+            '31205': 'ppip_premiums_paid',
+            '31210': 'ppip_premiums_payable',
+            '31217': 'ei_self_employment',
+            '31220': 'volunteer_firefighters',
+            '31240': 'search_rescue_volunteers',
+            '31260': 'canada_employment_amount',
+            '31270': 'home_buyers_amount',
+            '31285': 'home_accessibility_expenses',
+            '31300': 'adoption_expenses',
+            '31350': 'digital_news_subscription',
             '31400': 'pension_income_amount',
-            '31500': 'caregiver_amount',
             '31600': 'disability_amount',
+            '31800': 'disability_transferred',
             '31900': 'interest_student_loans',
             '32300': 'tuition_education_amounts',
-            '33000': 'medical_expenses',
+            '32400': 'tuition_transferred_child',
+            '32600': 'transferred_spouse',
+            '33099': 'medical_expenses',
+            '33199': 'medical_expenses_other',
             '34900': 'donations_gifts',
             '35000': 'total_tax_credits',
+            # Tax Calculation Section
             '40400': 'federal_tax',
+            '40424': 'federal_tax_split_income',
             '40425': 'federal_dividend_tax_credit',
+            '40427': 'minimum_tax_carryover',
             '40500': 'federal_foreign_tax_credit',
-            '40700': 'overseas_employment_tax_credit',
-            '40900': 'minimum_tax_carryover',
-            '41000': 'basic_federal_tax',
+            '41000': 'federal_political_contribution_tax_credit',
             '41200': 'investment_tax_credit',
-            '41300': 'labour_sponsored_funds_tax_credit',
-            '41700': 'alternative_minimum_tax',
-            '42000': 'net_federal_tax'
+            '41400': 'labour_sponsored_funds_tax_credit',
+            '41500': 'acwb',
+            '41700': 'minimum_tax',
+            '41800': 'special_taxes',
+            '42000': 'net_federal_tax',
+            '42100': 'cpp_contributions_payable',
+            '42120': 'ei_premiums_payable',
+            '42200': 'social_benefits_repayment',
+            '42800': 'provincial_tax',
+            '43500': 'total_payable',
+            '43700': 'total_income_tax_deducted',
+            '43800': 'tax_transfer_quebec',
+            '44000': 'quebec_abatement',
+            '44800': 'cpp_qpp_overpayment',
+            '45000': 'ei_overpayment',
+            '45200': 'refundable_medical_expense',
+            '45300': 'cwb',
+            '45350': 'ctc',
+            '45400': 'refund_investment_tax_credit',
+            '45600': 'part_xii2_tax_credit',
+            '45700': 'gst_hst_rebate',
+            '46900': 'educator_school_supply',
+            '47555': 'journalism_labour_tax_credit',
+            '47556': 'fuel_charge_farmers_tax_credit',
+            '47600': 'tax_paid_by_instalments',
+            '47900': 'provincial_territorial_credits',
+            '48400': 'refund',
+            '48500': 'balance_owing',
         }
         return self._extract_fields(text, federal_lines, FederalTaxFields)
     
@@ -799,55 +1009,92 @@ class ComprehensiveT1Extractor:
             '47900': 'provincial_credits',
             '48200': 'total_credits',
             '48400': 'refund_or_balance_owing',
-            '48500': 'amount_enclosed'
+            '48500': 'amount_enclosed',
+            # Additional Refundable Credits
+            '43800': 'tax_transfer_quebec',
+            '44000': 'quebec_abatement',
+            '44800': 'cpp_qpp_overpayment',
+            '45200': 'refundable_medical_expense',
+            '45300': 'cwb',
+            '45350': 'ctc',
+            '45400': 'refund_investment_tax_credit',
+            '45600': 'part_xii2_tax_credit',
+            '45700': 'gst_hst_rebate',
+            '46900': 'educator_school_supply',
+            '47555': 'journalism_labour_tax_credit',
+            '47556': 'fuel_charge_farmers_tax_credit',
+            '47600': 'tax_paid_by_instalments',
+            '47900': 'provincial_territorial_credits',
+            '48400': 'refund',
+            '48500': 'balance_owing',
         }
         return self._extract_fields(text, refund_lines, RefundFields)
     
     def _extract_ontario_tax_fields(self, text: str) -> OntarioTaxFields:
         """Extract Ontario Form 428 tax fields from text"""
         ontario_lines = {
+            # Basic amounts and credits
             '58040': 'basic_personal_amount',
             '58080': 'age_amount',
             '58120': 'spouse_amount',
             '58160': 'eligible_dependant',
             '58185': 'caregiver_amount',
+            # Employment-related credits
             '58240': 'cpp_qpp_contributions',
             '58280': 'cpp_qpp_self_employment',
             '58300': 'employment_insurance_premiums',
             '58305': 'volunteer_firefighter_amount',
             '58330': 'adoption_expenses',
             '58360': 'pension_income_amount',
+            # Disability and medical
             '58440': 'disability_amount',
             '58480': 'disability_amount_transferred',
+            # Education and training
             '58520': 'student_loan_interest',
             '58560': 'tuition_education_amounts',
             '58640': 'amounts_transferred_spouse',
+            # Medical and other
             '58689': 'medical_expenses',
             '58729': 'donations_gifts',
+            # Calculated amounts
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61500': 'ontario_non_refundable_tax_credits',
+            # Tax calculations
             '61510': 'ontario_tax_split_income',
             '61520': 'ontario_dividend_tax_credit',
             '62140': 'ontario_health_premium',
-            '42800': 'ontario_tax'
+            '42800': 'ontario_tax',
+            # Ontario Refundable Credits (Form 479ON)
+            '61050': 'ontario_energy_property_tax_credit',
+            '61052': 'ontario_senior_homeowners_grant',
+            '61055': 'ontario_political_contribution_credit',
+            '61056': 'ontario_sales_tax_credit',
+            '61080': 'ontario_trillium_benefit',
+            '61240': 'ontario_child_benefit',
+            '61300': 'ontario_working_families_tax_credit',
         }
         return self._extract_fields(text, ontario_lines, OntarioTaxFields)
     
     def _extract_alberta_tax_fields(self, text: str) -> AlbertaTaxFields:
         """Extract Alberta tax fields from text"""
         alberta_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for Alberta
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479AB)
+            '61220': 'family_employment_tax_credit',
+            '61230': 'carbon_levy_rebate',
+            '61240': 'child_family_benefit',
+            '61250': 'seniors_benefit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -859,17 +1106,24 @@ class ComprehensiveT1Extractor:
     def _extract_british_columbia_tax_fields(self, text: str) -> BritishColumbiaTaxFields:
         """Extract British Columbia tax fields from text"""
         bc_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for BC
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479BC)
+            '61120': 'climate_action_tax_credit',
+            '61130': 'family_bonus',
+            '61140': 'early_childhood_tax_benefit',
+            '61150': 'child_opportunity_benefit',
+            '61160': 'caregiver_tax_credit',
+            '61170': 'training_tax_credit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -881,17 +1135,21 @@ class ComprehensiveT1Extractor:
     def _extract_manitoba_tax_fields(self, text: str) -> ManitobaTaxFields:
         """Extract Manitoba tax fields from text"""
         mb_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for Manitoba
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479MB)
+            '61420': 'low_income_tax_credit',
+            '61430': 'family_tax_benefit',
+            '61440': 'seniors_school_tax_rebate',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -903,17 +1161,21 @@ class ComprehensiveT1Extractor:
     def _extract_new_brunswick_tax_fields(self, text: str) -> NewBrunswickTaxFields:
         """Extract New Brunswick tax fields from text"""
         nb_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NB
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479NB)
+            '61520': 'low_income_tax_credit',
+            '61530': 'child_tax_benefit',
+            '61540': 'working_income_supplement',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -925,17 +1187,21 @@ class ComprehensiveT1Extractor:
     def _extract_newfoundland_labrador_tax_fields(self, text: str) -> NewfoundlandLabradorTaxFields:
         """Extract Newfoundland and Labrador tax fields from text"""
         nl_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NL
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479NL)
+            '61820': 'low_income_tax_credit',
+            '61830': 'child_benefit',
+            '61840': 'seniors_benefit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -947,17 +1213,20 @@ class ComprehensiveT1Extractor:
     def _extract_northwest_territories_tax_fields(self, text: str) -> NorthwestTerritoriesTaxFields:
         """Extract Northwest Territories tax fields from text"""
         nt_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NT
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479NT)
+            '61920': 'cost_of_living_credit',
+            '61930': 'child_benefit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -969,17 +1238,21 @@ class ComprehensiveT1Extractor:
     def _extract_nova_scotia_tax_fields(self, text: str) -> NovaScotiaTaxFields:
         """Extract Nova Scotia tax fields from text"""
         ns_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NS
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479NS)
+            '61620': 'affordable_living_tax_credit',
+            '61630': 'child_benefit',
+            '61640': 'poverty_reduction_credit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -991,17 +1264,20 @@ class ComprehensiveT1Extractor:
     def _extract_nunavut_tax_fields(self, text: str) -> NunavutTaxFields:
         """Extract Nunavut tax fields from text"""
         nu_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for NU
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479NU)
+            '62020': 'cost_of_living_credit',
+            '62030': 'child_benefit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -1013,17 +1289,21 @@ class ComprehensiveT1Extractor:
     def _extract_prince_edward_island_tax_fields(self, text: str) -> PrinceEdwardIslandTaxFields:
         """Extract Prince Edward Island tax fields from text"""
         pe_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for PE
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479PE)
+            '61720': 'low_income_tax_credit',
+            '61730': 'child_benefit',
+            '61740': 'sales_tax_credit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -1035,21 +1315,23 @@ class ComprehensiveT1Extractor:
     def _extract_quebec_tax_fields(self, text: str) -> QuebecTaxFields:
         """Extract Quebec tax fields from text"""
         qc_lines = {
-            '350': 'basic_personal_amount',  # TODO: Update line numbers for Quebec (TP-1)
-            '352': 'age_amount',
-            '354': 'spouse_amount',
-            '356': 'eligible_dependant',
-            '358': 'caregiver_amount',
-            '360': 'cpp_qpp_contributions',
-            '362': 'employment_insurance_premiums',
-            '364': 'pension_income_amount',
-            '366': 'disability_amount',
-            '368': 'medical_expenses',
-            '370': 'donations_gifts',
-            '372': 'total_credits',
-            '374': 'total_non_refundable_credits',
-            '376': 'dividend_tax_credit',
-            '378': 'health_premium',
+            '350': 'basic_personal_amount',
+            '351': 'spouse_amount',
+            '352': 'dependant_children_amount',
+            '353': 'other_dependants_amount',
+            '354': 'age_amount',
+            '355': 'pension_income_amount',
+            '358': 'disability_amount',
+            '361': 'medical_expenses',
+            '393': 'donations_gifts',
+            # Refundable Credits (Quebec)
+            '440': 'quebec_abatement',
+            '451': 'quebec_tax_payable',
+            # Calculated
+            '393': 'total_credits',
+            '394': 'total_non_refundable_credits',
+            '395': 'dividend_tax_credit',
+            '396': 'health_premium',
             '430': 'tax',
         }
         return self._extract_fields(text, qc_lines, QuebecTaxFields)
@@ -1057,17 +1339,21 @@ class ComprehensiveT1Extractor:
     def _extract_saskatchewan_tax_fields(self, text: str) -> SaskatchewanTaxFields:
         """Extract Saskatchewan tax fields from text"""
         sk_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for SK
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479SK)
+            '61320': 'low_income_tax_credit',
+            '61330': 'seniors_supplement',
+            '61340': 'graduate_retention_benefit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
@@ -1079,17 +1365,20 @@ class ComprehensiveT1Extractor:
     def _extract_yukon_tax_fields(self, text: str) -> YukonTaxFields:
         """Extract Yukon tax fields from text"""
         yt_lines = {
-            '58040': 'basic_personal_amount',  # TODO: Update line numbers for YT
-            '58080': 'age_amount',
-            '58120': 'spouse_amount',
-            '58160': 'eligible_dependant',
-            '58165': 'caregiver_amount',
-            '58240': 'cpp_qpp_contributions',
-            '58300': 'employment_insurance_premiums',
-            '58360': 'pension_income_amount',
-            '58440': 'disability_amount',
-            '58689': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58080': 'basic_personal_amount',
+            '58160': 'age_amount',
+            '58240': 'spouse_amount',
+            '58320': 'eligible_dependant',
+            '58400': 'caregiver_amount',
+            '58480': 'disability_amount',
+            '58560': 'pension_income_amount',
+            '58640': 'tuition_amount',
+            '58720': 'medical_expenses',
+            '58800': 'donations_gifts',
+            # Refundable Credits (Form 479YT)
+            '62120': 'cost_of_living_credit',
+            '62130': 'child_benefit',
+            # Calculated
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
             '61520': 'dividend_tax_credit',
