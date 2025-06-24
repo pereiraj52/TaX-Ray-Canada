@@ -113,8 +113,44 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   };
 
   const getFieldValue = (fieldCode: string): string => {
+    if (isEditing && editedFields[fieldCode] !== undefined) {
+      return editedFields[fieldCode];
+    }
     const field = currencyFields.find(f => f.fieldCode === fieldCode);
     return field?.fieldValue || '0';
+  };
+
+  const handleFieldChange = (fieldCode: string, value: string) => {
+    setEditedFields(prev => ({
+      ...prev,
+      [fieldCode]: value
+    }));
+  };
+
+  const renderEditableField = (fieldCode: string, label: string, isCurrency = true) => {
+    const value = getFieldValue(fieldCode);
+    
+    if (isEditing) {
+      return (
+        <div className="field-row">
+          <span className="field-label">{label}:</span>
+          <Input
+            type="text"
+            value={value}
+            onChange={(e) => handleFieldChange(fieldCode, e.target.value)}
+            className="w-32 h-8 text-sm inline-block ml-2"
+            placeholder={isCurrency ? "0.00" : ""}
+          />
+        </div>
+      );
+    }
+    
+    return (
+      <div className="field-row">
+        <span className="field-label">{label}:</span>
+        <span className="field-value">{isCurrency ? formatCurrency(value) : value}</span>
+      </div>
+    );
   };
 
   const getTextFieldValue = (fieldCode: string): string => {

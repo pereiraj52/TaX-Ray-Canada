@@ -106,4 +106,8 @@ export class T1API {
   static async reprocessT1Return(id: number): Promise<void> {
     await apiRequest("POST", `/api/t1-returns/${id}/reprocess`);
   }
+
+  static async updateT1FormField(data: { fieldCode: string; fieldValue: string; t1ReturnId: number }): Promise<void> {
+    await apiRequest("PATCH", `/api/t1-form-fields`, data);
+  }
 }
