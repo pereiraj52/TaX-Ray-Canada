@@ -266,8 +266,6 @@ export default function TaxReport() {
                       })()}
                     </span>
                   </div>
-                </div>
-
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total CPP Contributions:</span>
                     <span className="font-medium">
