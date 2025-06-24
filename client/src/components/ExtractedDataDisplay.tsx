@@ -127,25 +127,43 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       {/* Tax Year and Basic Info */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-medium text-secondary mb-2">Tax Year</h3>
-          <p className="text-2xl font-bold text-primary">{t1Return.taxYear}</p>
-        </div>
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-medium text-secondary mb-2">Date of Birth</h3>
-          <p className="text-lg font-semibold text-secondary">
-            {getTextFieldValue('date_of_birth')}
-          </p>
-        </div>
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-medium text-secondary mb-2">Province</h3>
-          <p className="text-lg font-semibold text-secondary">
-            {getTextFieldValue('province')}
-          </p>
-        </div>
-        <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="font-medium text-secondary mb-2">Total Income</h3>
           <p className="text-lg font-semibold text-secondary">
             {formatCurrency(getFieldValue('15000'))}
+          </p>
+        </div>
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h3 className="font-medium text-secondary mb-2">Total Tax</h3>
+          <p className="text-lg font-semibold text-secondary">
+            {formatCurrency(getFieldValue('42000'))}
+          </p>
+        </div>
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h3 className="font-medium text-secondary mb-2">Average Rate</h3>
+          <p className="text-lg font-semibold text-secondary">
+            {(() => {
+              const totalIncome = parseFloat(getFieldValue('15000') || '0');
+              const totalTax = parseFloat(getFieldValue('42000') || '0');
+              if (totalIncome === 0) return '0.00%';
+              const rate = (totalTax / totalIncome) * 100;
+              return `${rate.toFixed(2)}%`;
+            })()}
+          </p>
+        </div>
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h3 className="font-medium text-secondary mb-2">Marginal Rate</h3>
+          <p className="text-lg font-semibold text-secondary">
+            {(() => {
+              const province = getTextFieldValue('province');
+              const totalIncome = parseFloat(getFieldValue('15000') || '0');
+              // Simplified marginal rate calculation based on 2024 tax brackets
+              // This is a basic approximation - in practice, you'd want more detailed calculations
+              if (totalIncome <= 55000) return '20.05%'; // Combined federal + provincial for most provinces
+              if (totalIncome <= 111000) return '31.00%';
+              if (totalIncome <= 173000) return '43.41%';
+              if (totalIncome <= 246000) return '46.67%';
+              return '53.53%';
+            })()}
           </p>
         </div>
       </div>
