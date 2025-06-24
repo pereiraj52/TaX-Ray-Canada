@@ -130,6 +130,7 @@ Changelog:
 - June 20, 2025. Modified upload functionality to support multiple PDF files for a single T1 return with combined data extraction and field merging
 - June 24, 2025. Updated date of birth display to show extracted data from T1 returns instead of stored client data for accuracy
 - June 24, 2025. Removed household name and created date from household profile section for cleaner interface
+- June 24, 2025. Eliminated household name and created date from Layout header section for streamlined top navigation
 ```
 
 ## User Preferences

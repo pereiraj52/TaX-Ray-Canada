@@ -103,10 +103,7 @@ export default function HouseholdDetail() {
 
 
   return (
-    <Layout 
-      title={household.name} 
-      subtitle={`Created on ${new Date(household.createdAt).toLocaleDateString()}`}
-    >
+    <Layout>
       <div className="p-6">
         {/* Breadcrumb */}
         <nav className="flex mb-6" aria-label="Breadcrumb">
