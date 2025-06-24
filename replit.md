@@ -172,6 +172,7 @@ Changelog:
 - June 24, 2025. Completely rebuilt Credits tab with comprehensive federal and provincial credits organized into 6 collapsible categories: Basic, Employment, Personal Situation, Education & Medical, Ontario Provincial, and Refundable credits with 35+ credit fields
 - June 24, 2025. Simplified Tax Summary tab to display only 5 key fields: Federal Tax, Provincial Tax, Total Tax, Taxes Paid, and Refund/Balance Due with clean centered layout
 - June 24, 2025. Fixed refund/balance calculation by computing difference between taxes paid and total tax instead of relying on extracted field 48400, with proper color coding (green for refund, red for balance due)
+- June 24, 2025. Standardized font styling across all tabs to use font-medium text-primary for consistent visual hierarchy matching the Summary tab
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)

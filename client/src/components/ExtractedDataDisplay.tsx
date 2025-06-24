@@ -445,7 +445,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Employment Income</h4>
+                    <h4 className="font-medium text-primary">Employment Income</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['10100', '10105', '10120', '10130', '10400']))}
@@ -541,7 +541,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Government Benefits</h4>
+                    <h4 className="font-medium text-primary">Government Benefits</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['11900', '11905']))}
@@ -573,7 +573,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Investment Income</h4>
+                    <h4 className="font-medium text-primary">Investment Income</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['12000', '12010', '12100', '12200', '12400']))}
@@ -673,7 +673,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Self-Employment Income</h4>
+                    <h4 className="font-medium text-primary">Self-Employment Income</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['13499', '13500', '13700', '13900', '14100', '14300']))}
@@ -779,7 +779,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Retirement Plan Deductions</h4>
+                    <h4 className="font-medium text-primary">Retirement Plan Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810']))}
@@ -823,7 +823,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Personal Deductions</h4>
+                    <h4 className="font-medium text-primary">Personal Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['21000', '21200', '21300', '21400', '21500', '21700', '21900']))}
@@ -875,7 +875,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Support & Investment Deductions</h4>
+                    <h4 className="font-medium text-primary">Support & Investment Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['21999', '22000', '22100', '22200', '22215']))}
@@ -919,7 +919,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Employment Deductions</h4>
+                    <h4 className="font-medium text-primary">Employment Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['22900', '23100']))}
@@ -951,7 +951,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Specialized Deductions</h4>
+                    <h4 className="font-medium text-primary">Specialized Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['22400', '23200', '23500']))}
@@ -987,7 +987,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Provincial Deductions (Ontario)</h4>
+                    <h4 className="font-medium text-primary">Provincial Deductions (Ontario)</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['61000', '61100', '61200', '61300', '61400', '61500']))}
@@ -1057,7 +1057,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Basic Credits</h4>
+                    <h4 className="font-medium text-primary">Basic Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['30000', '30100', '30300', '30400', '30450']))}
@@ -1101,7 +1101,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Employment Credits</h4>
+                    <h4 className="font-medium text-primary">Employment Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31400']))}
@@ -1141,7 +1141,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Personal Situation Credits</h4>
+                    <h4 className="font-medium text-primary">Personal Situation Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['31500', '31600', '31800', '31850']))}
@@ -1181,7 +1181,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Education & Medical Credits</h4>
+                    <h4 className="font-medium text-primary">Education & Medical Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['31900', '32300', '32400', '33000', '33099', '33199', '34900']))}
@@ -1233,7 +1233,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Ontario Provincial Credits</h4>
+                    <h4 className="font-medium text-primary">Ontario Provincial Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58689', '58729']))}
@@ -1329,7 +1329,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Refundable Credits</h4>
+                    <h4 className="font-medium text-primary">Refundable Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['45200', '45300', '45350', '45400', '44900', '47555', '47556']))}
