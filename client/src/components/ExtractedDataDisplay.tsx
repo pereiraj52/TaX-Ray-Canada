@@ -18,7 +18,15 @@ type TabType = 'summary' | 'income' | 'deductions' | 'credits' | 'taxes' | 'iden
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('summary');
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
+    'employment': true,
+    'pension': true,
+    'benefits': true,
+    'investment': true,
+    'other': true,
+    'self-employment': true,
+    'other-sources': true
+  });
   const { toast } = useToast();
 
 

@@ -163,6 +163,7 @@ Changelog:
 - June 24, 2025. Completely revised Income tab to include all 30+ T1 income fields organized by category (Employment, Pension, Investment, Self-Employment, etc.)
 - June 24, 2025. Added Marginal Capital Gains Rate, Marginal Eligible Dividend Rate, and Marginal Non-Eligible Dividend Rate calculations to Marginal Rates section with authentic Canadian tax treatment
 - June 24, 2025. Made income sections collapsible with section totals displayed on the right side of each category header for better organization and overview
+- June 24, 2025. Set all income sections to be collapsed by default when Income tab loads for cleaner initial interface
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
