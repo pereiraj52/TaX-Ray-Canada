@@ -110,4 +110,8 @@ export class T1API {
   static async updateT1FormField(data: { fieldCode: string; fieldValue: string; t1ReturnId: number }): Promise<void> {
     await apiRequest("PATCH", `/api/t1-form-fields`, data);
   }
+
+  static async createT1FormField(data: { fieldCode: string; fieldValue: string; t1ReturnId: number; fieldName?: string; fieldType?: string }): Promise<void> {
+    await apiRequest("POST", `/api/t1-form-fields`, data);
+  }
 }

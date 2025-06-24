@@ -29,7 +29,8 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
   useEffect(() => {
     if (open) {
       const initialFields: Record<string, string> = {};
-      t1Return.formFields.forEach(field => {
+      const allFields = getAllPossibleFields();
+      allFields.forEach(field => {
         initialFields[field.fieldCode] = field.fieldValue;
       });
       setEditedFields(initialFields);
@@ -45,7 +46,20 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       }));
       
       for (const update of updates) {
-        await T1API.updateT1FormField(update);
+        // Check if field exists, if not create it
+        const existingField = t1Return.formFields.find(f => f.fieldCode === update.fieldCode);
+        if (existingField) {
+          await T1API.updateT1FormField(update);
+        } else if (update.fieldValue && update.fieldValue.trim() !== '') {
+          // Only create new fields if they have a value
+          const allFields = getAllPossibleFields();
+          const fieldDef = allFields.find(f => f.fieldCode === update.fieldCode);
+          await T1API.createT1FormField({
+            ...update,
+            fieldName: fieldDef?.fieldName || `Field ${update.fieldCode}`,
+            fieldType: fieldDef?.fieldType || 'currency'
+          });
+        }
       }
     },
     onSuccess: () => {
@@ -81,6 +95,135 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
     onOpenChange(false);
   };
 
+  // Complete list of all T1 fields that are checked for extraction
+  const getAllPossibleFields = (): T1FormField[] => {
+    const allFieldDefinitions = [
+      // Personal Information
+      { fieldCode: 'first_name', fieldName: 'First Name', fieldType: 'text' },
+      { fieldCode: 'last_name', fieldName: 'Last Name', fieldType: 'text' },
+      { fieldCode: 'sin', fieldName: 'Social Insurance Number', fieldType: 'text' },
+      { fieldCode: 'date_of_birth', fieldName: 'Date of Birth', fieldType: 'text' },
+      { fieldCode: 'marital_status', fieldName: 'Marital Status', fieldType: 'text' },
+      { fieldCode: 'address_line1', fieldName: 'Address', fieldType: 'text' },
+      { fieldCode: 'city', fieldName: 'City', fieldType: 'text' },
+      { fieldCode: 'province', fieldName: 'Province', fieldType: 'text' },
+      { fieldCode: 'postal_code', fieldName: 'Postal Code', fieldType: 'text' },
+      
+      // Income Fields (Lines 10000-17000)
+      { fieldCode: '10100', fieldName: 'Employment Income', fieldType: 'currency' },
+      { fieldCode: '10400', fieldName: 'Other Employment Income', fieldType: 'currency' },
+      { fieldCode: '11300', fieldName: 'OAS Pension', fieldType: 'currency' },
+      { fieldCode: '11400', fieldName: 'CPP/QPP Benefits', fieldType: 'currency' },
+      { fieldCode: '11500', fieldName: 'Other Pensions', fieldType: 'currency' },
+      { fieldCode: '11600', fieldName: 'Split Pension Amount', fieldType: 'currency' },
+      { fieldCode: '11900', fieldName: 'Employment Insurance', fieldType: 'currency' },
+      { fieldCode: '12000', fieldName: 'Taxable Dividends', fieldType: 'currency' },
+      { fieldCode: '12100', fieldName: 'Interest and Investment Income', fieldType: 'currency' },
+      { fieldCode: '12200', fieldName: 'Partnership Income', fieldType: 'currency' },
+      { fieldCode: '12600', fieldName: 'Rental Income', fieldType: 'currency' },
+      { fieldCode: '12700', fieldName: 'Capital Gains', fieldType: 'currency' },
+      { fieldCode: '12900', fieldName: 'RRSP Income', fieldType: 'currency' },
+      { fieldCode: '13000', fieldName: 'Other Income', fieldType: 'currency' },
+      { fieldCode: '13500', fieldName: 'Self-Employment Income', fieldType: 'currency' },
+      { fieldCode: '14400', fieldName: 'Workers Compensation', fieldType: 'currency' },
+      { fieldCode: '14500', fieldName: 'Social Assistance', fieldType: 'currency' },
+      { fieldCode: '15000', fieldName: 'Total Income', fieldType: 'currency' },
+      
+      // Deductions (Lines 20000-23000)
+      { fieldCode: '20600', fieldName: 'Pension Adjustment', fieldType: 'currency' },
+      { fieldCode: '20700', fieldName: 'Registered Pension Plan Deduction', fieldType: 'currency' },
+      { fieldCode: '20800', fieldName: 'RRSP Deduction', fieldType: 'currency' },
+      { fieldCode: '21200', fieldName: 'Annual Union Dues', fieldType: 'currency' },
+      { fieldCode: '21400', fieldName: 'Child Care Expenses', fieldType: 'currency' },
+      { fieldCode: '21500', fieldName: 'Disability Supports', fieldType: 'currency' },
+      { fieldCode: '21700', fieldName: 'Business Investment Loss', fieldType: 'currency' },
+      { fieldCode: '21900', fieldName: 'Moving Expenses', fieldType: 'currency' },
+      { fieldCode: '22000', fieldName: 'Support Payments', fieldType: 'currency' },
+      { fieldCode: '22100', fieldName: 'Carrying Charges', fieldType: 'currency' },
+      { fieldCode: '22200', fieldName: 'CPP/QPP Deduction', fieldType: 'currency' },
+      { fieldCode: '22400', fieldName: 'Exploration Development', fieldType: 'currency' },
+      { fieldCode: '22900', fieldName: 'Other Employment Expenses', fieldType: 'currency' },
+      { fieldCode: '23100', fieldName: 'Clergy Residence', fieldType: 'currency' },
+      { fieldCode: '23200', fieldName: 'Other Deductions', fieldType: 'currency' },
+      { fieldCode: '23300', fieldName: 'Total Deductions', fieldType: 'currency' },
+      { fieldCode: '23600', fieldName: 'Net Income', fieldType: 'currency' },
+      
+      // Non-Refundable Credits (Lines 26000-35000)
+      { fieldCode: '26000', fieldName: 'Taxable Income', fieldType: 'currency' },
+      { fieldCode: '30000', fieldName: 'Basic Personal Amount', fieldType: 'currency' },
+      { fieldCode: '30100', fieldName: 'Age Amount', fieldType: 'currency' },
+      { fieldCode: '30300', fieldName: 'Spouse Amount', fieldType: 'currency' },
+      { fieldCode: '30400', fieldName: 'Eligible Dependant', fieldType: 'currency' },
+      { fieldCode: '30800', fieldName: 'CPP/QPP Contributions', fieldType: 'currency' },
+      { fieldCode: '31200', fieldName: 'Employment Insurance Premiums', fieldType: 'currency' },
+      { fieldCode: '31220', fieldName: 'Canada Employment Amount', fieldType: 'currency' },
+      { fieldCode: '31400', fieldName: 'Pension Income Amount', fieldType: 'currency' },
+      { fieldCode: '31500', fieldName: 'Caregiver Amount', fieldType: 'currency' },
+      { fieldCode: '31600', fieldName: 'Disability Amount', fieldType: 'currency' },
+      { fieldCode: '31900', fieldName: 'Interest on Student Loans', fieldType: 'currency' },
+      { fieldCode: '32300', fieldName: 'Tuition and Education Amounts', fieldType: 'currency' },
+      { fieldCode: '33000', fieldName: 'Medical Expenses', fieldType: 'currency' },
+      { fieldCode: '34900', fieldName: 'Donations and Gifts', fieldType: 'currency' },
+      { fieldCode: '35000', fieldName: 'Total Tax Credits', fieldType: 'currency' },
+      
+      // Federal Tax (Lines 40000-43000)
+      { fieldCode: '40400', fieldName: 'Federal Tax', fieldType: 'currency' },
+      { fieldCode: '40425', fieldName: 'Federal Dividend Tax Credit', fieldType: 'currency' },
+      { fieldCode: '40500', fieldName: 'Federal Foreign Tax Credit', fieldType: 'currency' },
+      { fieldCode: '41000', fieldName: 'Basic Federal Tax', fieldType: 'currency' },
+      { fieldCode: '42000', fieldName: 'Net Federal Tax', fieldType: 'currency' },
+      
+      // Refund/Credits (Lines 43000-48000)
+      { fieldCode: '43700', fieldName: 'Total Income Tax Deducted', fieldType: 'currency' },
+      { fieldCode: '44800', fieldName: 'CPP Overpayment', fieldType: 'currency' },
+      { fieldCode: '44900', fieldName: 'Climate Action Incentive', fieldType: 'currency' },
+      { fieldCode: '45000', fieldName: 'EI Overpayment', fieldType: 'currency' },
+      { fieldCode: '45300', fieldName: 'Working Income Tax Benefit', fieldType: 'currency' },
+      { fieldCode: '45350', fieldName: 'GST/HST Credit', fieldType: 'currency' },
+      { fieldCode: '45400', fieldName: 'Canada Child Benefit', fieldType: 'currency' },
+      { fieldCode: '47900', fieldName: 'Provincial Credits', fieldType: 'currency' },
+      { fieldCode: '48200', fieldName: 'Total Credits', fieldType: 'currency' },
+      { fieldCode: '48400', fieldName: 'Refund or Balance Owing', fieldType: 'currency' },
+      { fieldCode: '48500', fieldName: 'Amount Enclosed', fieldType: 'currency' },
+      
+      // Ontario Provincial Tax (Lines 58000+)
+      { fieldCode: '58040', fieldName: 'Ontario Basic Personal Amount', fieldType: 'currency' },
+      { fieldCode: '58080', fieldName: 'Ontario Age Amount', fieldType: 'currency' },
+      { fieldCode: '58120', fieldName: 'Ontario Spouse Amount', fieldType: 'currency' },
+      { fieldCode: '58160', fieldName: 'Ontario Eligible Dependant', fieldType: 'currency' },
+      { fieldCode: '58185', fieldName: 'Ontario Caregiver Amount', fieldType: 'currency' },
+      { fieldCode: '58240', fieldName: 'Ontario CPP/QPP Contributions', fieldType: 'currency' },
+      { fieldCode: '58280', fieldName: 'Ontario CPP/QPP Self-Employment', fieldType: 'currency' },
+      { fieldCode: '58300', fieldName: 'Ontario Employment Insurance Premiums', fieldType: 'currency' },
+      { fieldCode: '58305', fieldName: 'Ontario Volunteer Firefighter Amount', fieldType: 'currency' },
+      { fieldCode: '58330', fieldName: 'Ontario Adoption Expenses', fieldType: 'currency' },
+      { fieldCode: '58360', fieldName: 'Ontario Pension Income Amount', fieldType: 'currency' },
+      { fieldCode: '58440', fieldName: 'Ontario Disability Amount', fieldType: 'currency' },
+      { fieldCode: '58480', fieldName: 'Ontario Disability Amount Transferred', fieldType: 'currency' },
+      { fieldCode: '58520', fieldName: 'Ontario Student Loan Interest', fieldType: 'currency' },
+      { fieldCode: '58560', fieldName: 'Ontario Tuition and Education Amounts', fieldType: 'currency' },
+      { fieldCode: '58640', fieldName: 'Ontario Amounts Transferred from Spouse', fieldType: 'currency' },
+      { fieldCode: '58689', fieldName: 'Ontario Medical Expenses', fieldType: 'currency' },
+      { fieldCode: '58729', fieldName: 'Ontario Donations and Gifts', fieldType: 'currency' },
+      { fieldCode: '58800', fieldName: 'Ontario Tax Credits', fieldType: 'currency' },
+    ];
+
+    // Create field objects with current values or empty defaults
+    return allFieldDefinitions.map(fieldDef => {
+      const existingField = t1Return.formFields.find(f => f.fieldCode === fieldDef.fieldCode);
+      return {
+        id: existingField?.id || 0,
+        t1ReturnId: t1Return.id,
+        fieldCode: fieldDef.fieldCode,
+        fieldName: fieldDef.fieldName,
+        fieldValue: existingField?.fieldValue || '',
+        fieldType: fieldDef.fieldType as 'text' | 'currency',
+        createdAt: existingField?.createdAt || new Date(),
+        updatedAt: existingField?.updatedAt || new Date(),
+      };
+    });
+  };
+
   // Group fields by category based on field codes
   const groupFieldsByCategory = (fields: T1FormField[]): FieldGroup[] => {
     const groups: Record<string, T1FormField[]> = {
@@ -91,7 +234,6 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       'Taxes (Lines 40000-43000)': [],
       'Refund/Credits (Lines 44000-48000)': [],
       'Provincial Tax (Lines 58000+)': [],
-      'Other Fields': []
     };
 
     fields.forEach(field => {
@@ -104,36 +246,33 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
         groups['Income (Lines 10000-17000)'].push(field);
       } else if (lineNumber >= 20000 && lineNumber < 24000) {
         groups['Deductions (Lines 20000-23000)'].push(field);
-      } else if (lineNumber >= 30000 && lineNumber < 35000) {
+      } else if (lineNumber >= 26000 && lineNumber < 36000) {
         groups['Non-Refundable Credits (Lines 30000-34000)'].push(field);
       } else if (lineNumber >= 40000 && lineNumber < 44000) {
         groups['Taxes (Lines 40000-43000)'].push(field);
-      } else if (lineNumber >= 44000 && lineNumber < 49000) {
+      } else if (lineNumber >= 43000 && lineNumber < 49000) {
         groups['Refund/Credits (Lines 44000-48000)'].push(field);
       } else if (lineNumber >= 58000) {
         groups['Provincial Tax (Lines 58000+)'].push(field);
-      } else {
-        groups['Other Fields'].push(field);
       }
     });
 
-    // Filter out empty groups and sort fields within each group
-    return Object.entries(groups)
-      .filter(([_, fields]) => fields.length > 0)
-      .map(([category, fields]) => ({
-        category,
-        fields: fields.sort((a, b) => {
-          const aNum = parseInt(a.fieldCode);
-          const bNum = parseInt(b.fieldCode);
-          if (isNaN(aNum) && isNaN(bNum)) return a.fieldCode.localeCompare(b.fieldCode);
-          if (isNaN(aNum)) return -1;
-          if (isNaN(bNum)) return 1;
-          return aNum - bNum;
-        })
-      }));
+    // Return all groups, sort fields within each group
+    return Object.entries(groups).map(([category, fields]) => ({
+      category,
+      fields: fields.sort((a, b) => {
+        const aNum = parseInt(a.fieldCode);
+        const bNum = parseInt(b.fieldCode);
+        if (isNaN(aNum) && isNaN(bNum)) return a.fieldCode.localeCompare(b.fieldCode);
+        if (isNaN(aNum)) return -1;
+        if (isNaN(bNum)) return 1;
+        return aNum - bNum;
+      })
+    }));
   };
 
-  const fieldGroups = groupFieldsByCategory(t1Return.formFields);
+  const allFields = getAllPossibleFields();
+  const fieldGroups = groupFieldsByCategory(allFields);
 
   const formatCurrency = (value: string): string => {
     const num = parseFloat(value);
