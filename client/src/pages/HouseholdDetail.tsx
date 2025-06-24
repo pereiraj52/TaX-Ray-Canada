@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
-import { ChevronRight, Home, File, User } from "lucide-react";
+import { ChevronRight, Home, File, User, Edit } from "lucide-react";
 import Layout from "@/components/Layout";
 import T1UploadArea from "@/components/T1UploadArea";
 import ExtractedDataDisplay from "@/components/ExtractedDataDisplay";
@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI, T1API } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { HouseholdWithClients, T1ReturnWithFields } from "@shared/schema";
+import HouseholdEditForm from "@/components/HouseholdEditForm";
 
 export default function HouseholdDetail() {
   const params = useParams();
@@ -19,6 +20,7 @@ export default function HouseholdDetail() {
   const { toast } = useToast();
   const [selectedT1ReturnId, setSelectedT1ReturnId] = useState<number | null>(null);
   const [processingT1Returns, setProcessingT1Returns] = useState<Set<number>>(new Set());
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
@@ -105,23 +107,34 @@ export default function HouseholdDetail() {
   return (
     <Layout>
       <div className="p-6">
-        {/* Breadcrumb */}
-        <nav className="flex mb-6" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-1 md:space-x-3">
-            <li className="inline-flex items-center">
-              <Link href="/" className="text-gray-500 hover:text-primary inline-flex items-center">
-                <Home className="mr-2 h-4 w-4" />
-                Households
-              </Link>
-            </li>
-            <li>
-              <div className="flex items-center">
-                <ChevronRight className="text-gray-400 mx-2 h-4 w-4" />
-                <span className="text-secondary font-medium">{household.name}</span>
-              </div>
-            </li>
-          </ol>
-        </nav>
+        {/* Breadcrumb with Edit Button */}
+        <div className="flex justify-between items-center mb-6">
+          <nav className="flex" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <Link href="/" className="text-gray-500 hover:text-primary inline-flex items-center">
+                  <Home className="mr-2 h-4 w-4" />
+                  Households
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <ChevronRight className="text-gray-400 mx-2 h-4 w-4" />
+                  <span className="text-secondary font-medium">{household.name}</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setIsEditModalOpen(true)}
+            className="flex items-center"
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Edit Members
+          </Button>
+        </div>
 
         {/* Household Header */}
         <Card className="mb-6">
