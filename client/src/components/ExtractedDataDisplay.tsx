@@ -988,28 +988,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
               {/* Summary Section */}
               <div className="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <div className="font-semibold text-green-800">Total Income</div>
-                    <div className="text-lg font-bold text-green-600">
-                      {formatCurrency(getFieldValue('15000'))}
-                    </div>
-                    <div className="text-sm text-green-700">Line 15000</div>
+                <div className="text-center">
+                  <div className="font-semibold text-green-800 mb-2">Total Deductions</div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {formatCurrency(getFieldValue('23300'))}
                   </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-green-800">Total Deductions</div>
-                    <div className="text-lg font-bold text-green-600">
-                      {formatCurrency(getFieldValue('23300'))}
-                    </div>
-                    <div className="text-sm text-green-700">Line 23300</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-green-800">Net Income</div>
-                    <div className="text-xl font-bold text-green-600">
-                      {formatCurrency(getFieldValue('23600'))}
-                    </div>
-                    <div className="text-sm text-green-700">Line 23600</div>
-                  </div>
+                  <div className="text-sm text-green-700 mt-1">Line 23300</div>
                 </div>
               </div>
             </div>
