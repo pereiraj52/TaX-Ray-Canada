@@ -153,6 +153,7 @@ Changelog:
 - June 24, 2025. Removed Total Credits field from Key Tax Information section for simplified summary display
 - June 24, 2025. Added percentage column to Key Tax Information showing each amount as percentage of total income for enhanced analysis
 - June 24, 2025. Repositioned percentages to display inline next to dollar amounts instead of below for improved readability
+- June 24, 2025. Fixed dollar amount alignment by wrapping values in text-right div containers for consistent column alignment
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
