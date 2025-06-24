@@ -207,38 +207,33 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <>
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">Total Income:</span>
-                          <div className="text-right">
-                            <div className="font-medium text-primary">{formatCurrency(getFieldValue('15000'))}</div>
-                            <div className="text-sm text-gray-500">100.0%</div>
-                          </div>
+                          <span className="font-medium text-primary">
+                            {formatCurrency(getFieldValue('15000'))} <span className="text-sm text-gray-500">(100.0%)</span>
+                          </span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">Total Deductions:</span>
-                          <div className="text-right">
-                            <div className="font-medium text-primary">{formatCurrency(totalDeductions.toString())}</div>
-                            <div className="text-sm text-gray-500">{calculatePercentage(totalDeductions)}</div>
-                          </div>
+                          <span className="font-medium text-primary">
+                            {formatCurrency(totalDeductions.toString())} <span className="text-sm text-gray-500">({calculatePercentage(totalDeductions)})</span>
+                          </span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">Taxable Income:</span>
-                          <div className="text-right">
-                            <div className="font-medium text-primary">{formatCurrency(getFieldValue('26000'))}</div>
-                            <div className="text-sm text-gray-500">{calculatePercentage(taxableIncome)}</div>
-                          </div>
+                          <span className="font-medium text-primary">
+                            {formatCurrency(getFieldValue('26000'))} <span className="text-sm text-gray-500">({calculatePercentage(taxableIncome)})</span>
+                          </span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">Total Tax:</span>
-                          <div className="text-right">
-                            <div className="font-medium text-primary">{formatCurrency(getFieldValue('43700'))}</div>
-                            <div className="text-sm text-gray-500">{calculatePercentage(totalTax)}</div>
-                          </div>
+                          <span className="font-medium text-primary">
+                            {formatCurrency(getFieldValue('43700'))} <span className="text-sm text-gray-500">({calculatePercentage(totalTax)})</span>
+                          </span>
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">Net Income:</span>
-                          <div className="text-right">
-                            <div className="font-medium text-primary">{formatCurrency(netIncome.toString())}</div>
-                            <div className="text-sm text-gray-500">{calculatePercentage(netIncome)}</div>
-                          </div>
+                          <span className="font-medium text-primary">
+                            {formatCurrency(netIncome.toString())} <span className="text-sm text-gray-500">({calculatePercentage(netIncome)})</span>
+                          </span>
                         </div>
                       </>
                     );
