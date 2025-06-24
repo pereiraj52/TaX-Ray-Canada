@@ -133,7 +133,7 @@ export default function Dashboard() {
                     Last Updated
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Launch
+                    Open
                   </th>
                 </tr>
               </thead>
@@ -163,7 +163,7 @@ export default function Dashboard() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link href={`/household/${household.id}`}>
                         <Button variant="outline" size="sm">
-                          Launch
+                          Open
                         </Button>
                       </Link>
                     </td>
