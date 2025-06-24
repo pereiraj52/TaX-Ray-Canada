@@ -1714,18 +1714,15 @@ class ComprehensiveT1Extractor:
         rrsp_limit = None
         for line in lines:
             if rrsp_limit is None and 'deduction limit' in line.lower():
-                print(f'DEBUG-FOUND-DEDUCTION-LIMIT-LINE: {line}')
+                # Found deduction limit line
                 m = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s*$', line)
                 if m:
                     try:
                         value = m.group(1).replace(',', '') + '.' + m.group(2)
                         if value.replace('.', '').isdigit():
                             rrsp_limit = Decimal(value)
-                            print(f'FOUND RRSP_DEDUCTION_LIMIT: {value}')
                     except Exception:
                         pass
-                else:
-                    print(f'DEBUG-REGEX-NO-MATCH for line: {line}')
         fields = self._extract_fields(text, schedule7_lines, Schedule7Fields)
         fields.unused_contributions_prior = line1
         fields.rrsp_contributions = line2
