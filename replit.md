@@ -138,6 +138,7 @@ Changelog:
 - June 24, 2025. Changed "Processed T1 Returns" section heading to "Tax Reports" for clearer terminology
 - June 24, 2025. Restructured Tax Reports to display taxpayer names as clickable links with "Name Year" format and inline status/action icons
 - June 24, 2025. Implemented two-step confirmation process for delete button to prevent accidental T1 return deletions
+- June 24, 2025. Simplified extracted data display heading to show only client name instead of "Extracted T1 Data - [Name]"
 ```
 
 ## User Preferences

@@ -99,7 +99,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-secondary">
-          Extracted T1 Data - {t1Return.client.firstName} {t1Return.client.lastName}
+          {t1Return.client.firstName} {t1Return.client.lastName}
         </h2>
         <div className="flex items-center space-x-3">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
