@@ -98,7 +98,8 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
     client.t1Returns?.map(t1Return => ({
       ...t1Return,
       clientName: `${client.firstName} ${client.lastName}`,
-      clientId: client.id
+      clientId: client.id,
+      province: client.province
     })) || []
   );
 
@@ -189,7 +190,20 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                             className="font-medium text-gray-700 hover:text-blue-600 hover:underline text-left"
                             disabled={t1Return.processingStatus !== 'completed'}
                           >
-                            {clientName} {year}
+                            {(() => {
+                              // Get province from form fields if available
+                              const formFields = (t1Return as any).formFields;
+                              let province = t1Return.province || 'Unknown';
+                              
+                              if (formFields && Array.isArray(formFields)) {
+                                const provinceField = formFields.find((field: any) => field.fieldCode === 'province');
+                                if (provinceField?.fieldValue) {
+                                  province = provinceField.fieldValue;
+                                }
+                              }
+                              
+                              return `${clientName} - ${province} - ${year}`;
+                            })()}
                           </button>
                         </div>
                         <div className="flex items-center gap-2">
@@ -240,7 +254,20 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Delete T1 Return</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete the T1 return for {clientName} {year}? This action cannot be undone and will permanently remove all extracted tax data.
+                                  Are you sure you want to delete the T1 return for {(() => {
+                                    // Get province from form fields if available
+                                    const formFields = (t1Return as any).formFields;
+                                    let province = t1Return.province || 'Unknown';
+                                    
+                                    if (formFields && Array.isArray(formFields)) {
+                                      const provinceField = formFields.find((field: any) => field.fieldCode === 'province');
+                                      if (provinceField?.fieldValue) {
+                                        province = provinceField.fieldValue;
+                                      }
+                                    }
+                                    
+                                    return `${clientName} - ${province} - ${year}`;
+                                  })()}? This action cannot be undone and will permanently remove all extracted tax data.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
