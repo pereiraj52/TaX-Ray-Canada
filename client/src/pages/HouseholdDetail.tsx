@@ -153,7 +153,7 @@ export default function HouseholdDetail() {
                 const status = getClientStatus(client);
                 return (
                   <div key={client.id} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center">
                         <div className={`w-10 h-10 ${getClientAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium`}>
                           {client.firstName[0]}{client.lastName[0]}
