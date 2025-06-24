@@ -171,10 +171,6 @@ export default function HouseholdDetail() {
                         <span className="text-gray-600">Province:</span>
                         <span className="font-medium">{client.province || 'Not provided'}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">T1 Status:</span>
-                        <span className={status.class}>{status.status}</span>
-                      </div>
                     </div>
                     
                     {/* Show processing status if a T1 is being processed for this client */}
