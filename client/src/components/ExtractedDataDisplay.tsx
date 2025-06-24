@@ -211,7 +211,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Net Income:</span>
-                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('23600'))}</span>
+                    <span className="font-medium text-primary">{
+                      (() => {
+                        const totalIncome = parseFloat(getFieldValue('15000') || '0');
+                        const totalTax = parseFloat(getFieldValue('43500') || '0');
+                        const netIncome = totalIncome - totalTax;
+                        return formatCurrency(netIncome.toString());
+                      })()
+                    }</span>
                   </div>
                 </div>
               </div>
