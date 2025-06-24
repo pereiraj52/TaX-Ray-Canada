@@ -162,53 +162,43 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
               <div className="space-y-2">
                 {Object.entries(returnsByYear[year]).map(([clientName, returns]) => (
                   <div key={clientName} className="ml-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <User className="h-4 w-4 text-gray-500" />
-                      <span className="font-medium text-gray-700">{clientName}</span>
-                    </div>
-                    
-                    <div className="ml-6 space-y-1">
-                      {returns.map((t1Return) => (
-                        <div key={t1Return.id} className="flex items-center justify-between bg-gray-50 p-2 rounded text-sm">
-                          <div className="flex items-center gap-2">
-                            <FileText className="h-3 w-3 text-gray-400" />
-                            <button
-                              onClick={() => onT1ReturnClick?.(t1Return.id)}
-                              className="text-gray-700 hover:text-blue-600 hover:underline text-left"
-                              disabled={t1Return.processingStatus !== 'completed'}
-                            >
-                              {t1Return.fileName || 'Unknown file'}
-                            </button>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(t1Return.processingStatus || 'pending')}
-                            <span className="text-xs text-gray-600">
-                              {getStatusText(t1Return.processingStatus || 'pending')}
-                            </span>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => reprocessMutation.mutate(t1Return.id)}
-                              disabled={reprocessMutation.isPending}
-                              className="h-6 w-6 p-0 text-blue-500 hover:text-blue-700 hover:bg-blue-50"
-                              title="Reprocess T1 return"
-                            >
-                              <RefreshCw className="h-3 w-3" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => deleteMutation.mutate(t1Return.id)}
-                              disabled={deleteMutation.isPending}
-                              className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-                              title="Delete T1 return"
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
-                          </div>
+                    {returns.map((t1Return) => (
+                      <div key={t1Return.id} className="flex items-center justify-between bg-gray-50 p-2 rounded text-sm">
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4 text-gray-500" />
+                          <button
+                            onClick={() => onT1ReturnClick?.(t1Return.id)}
+                            className="font-medium text-gray-700 hover:text-blue-600 hover:underline text-left"
+                            disabled={t1Return.processingStatus !== 'completed'}
+                          >
+                            {clientName} {year}
+                          </button>
                         </div>
-                      ))}
-                    </div>
+                        <div className="flex items-center gap-2">
+                          {getStatusIcon(t1Return.processingStatus || 'pending')}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => reprocessMutation.mutate(t1Return.id)}
+                            disabled={reprocessMutation.isPending}
+                            className="h-6 w-6 p-0 text-blue-500 hover:text-blue-700 hover:bg-blue-50"
+                            title="Reprocess T1 return"
+                          >
+                            <RefreshCw className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteMutation.mutate(t1Return.id)}
+                            disabled={deleteMutation.isPending}
+                            className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                            title="Delete T1 return"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>

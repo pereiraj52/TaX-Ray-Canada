@@ -136,6 +136,7 @@ Changelog:
 - June 24, 2025. Removed T1 status from client profile area for further interface streamlining
 - June 24, 2025. Removed date of birth and province from client profile section for minimal, clean interface
 - June 24, 2025. Changed "Processed T1 Returns" section heading to "Tax Reports" for clearer terminology
+- June 24, 2025. Restructured Tax Reports to display taxpayer names as clickable links with "Name Year" format and inline status/action icons
 ```
 
 ## User Preferences
