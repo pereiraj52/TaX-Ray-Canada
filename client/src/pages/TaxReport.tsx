@@ -132,6 +132,39 @@ export default function TaxReport() {
                     </span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-gray-600">Total Deductions:</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            // Line 23300: Net Income Before Deductions Adjustment
+                            const line23300Field = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '23300'
+                            );
+                            // Line 25700: Other deductions
+                            const line25700Field = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '25700'
+                            );
+                            
+                            const line23300 = line23300Field?.fieldValue ? 
+                              parseFloat(String(line23300Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                            const line25700 = line25700Field?.fieldValue ? 
+                              parseFloat(String(line25700Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                            
+                            if (!isNaN(line23300)) total += line23300;
+                            if (!isNaN(line25700)) total += line25700;
+                          }
+                        });
+                        return total.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
+                      })()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Total CPP Contributions:</span>
                     <span className="font-medium">
                       ${(() => {

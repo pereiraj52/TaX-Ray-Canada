@@ -196,6 +196,17 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <span className="font-medium text-primary">{formatCurrency(getFieldValue('15000'))}</span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-gray-600">Total Deductions:</span>
+                    <span className="font-medium text-primary">
+                      {(() => {
+                        const line23300 = parseFloat(getFieldValue('23300') || '0');
+                        const line25700 = parseFloat(getFieldValue('25700') || '0');
+                        const totalDeductions = line23300 + line25700;
+                        return formatCurrency(totalDeductions.toString());
+                      })()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Taxable Income:</span>
                     <span className="font-medium text-primary">{formatCurrency(getFieldValue('26000'))}</span>
                   </div>
