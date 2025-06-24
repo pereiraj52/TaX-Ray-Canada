@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import { T1API } from "@/lib/api";
 
@@ -9,6 +10,7 @@ interface ProcessingStatusProps {
 
 export default function ProcessingStatus({ t1ReturnId, onStatusChange }: ProcessingStatusProps) {
   const queryClient = useQueryClient();
+  const previousStatus = useRef<string>("pending");
   
   const { data: t1Return } = useQuery({
     queryKey: ["/api/t1-returns", t1ReturnId],
@@ -19,15 +21,20 @@ export default function ProcessingStatus({ t1ReturnId, onStatusChange }: Process
 
   const status = t1Return?.processingStatus || "pending";
   
-  // Invalidate household queries when processing completes
-  if (status === "completed" || status === "failed") {
-    queryClient.invalidateQueries({ queryKey: ["/api/households"] });
-  }
-
-  // Notify parent of status changes
-  if (onStatusChange) {
-    onStatusChange(status);
-  }
+  // Handle status changes with proper cleanup and refresh
+  useEffect(() => {
+    if (previousStatus.current !== status && (status === "completed" || status === "failed")) {
+      // Invalidate all relevant queries to refresh the screen
+      queryClient.invalidateQueries({ queryKey: ["/api/households"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/t1-returns"] });
+      
+      // Notify parent of status changes
+      if (onStatusChange) {
+        onStatusChange(status);
+      }
+    }
+    previousStatus.current = status;
+  }, [status, onStatusChange, queryClient]);
 
   if (status === "processing" || status === "pending") {
     return (

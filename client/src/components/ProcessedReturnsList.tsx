@@ -12,9 +12,10 @@ interface ProcessedReturnsListProps {
   householdId: number;
   onT1ReturnClick?: (t1ReturnId: number) => void;
   onEditClick?: (t1ReturnId: number) => void;
+  onT1ProcessingStart?: (t1ReturnId: number) => void;
 }
 
-export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onEditClick }: ProcessedReturnsListProps) {
+export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onEditClick, onT1ProcessingStart }: ProcessedReturnsListProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -69,11 +70,13 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
 
   const reprocessMutation = useMutation({
     mutationFn: T1API.reprocessT1Return,
-    onSuccess: () => {
+    onSuccess: (_, t1ReturnId) => {
       toast({
         title: "Success",
         description: "T1 return is being reprocessed",
       });
+      // Add to processing state to show status
+      onT1ProcessingStart?.(t1ReturnId);
       // Invalidate household data to refresh the list
       queryClient.invalidateQueries({ queryKey: ["/api/households"] });
     },

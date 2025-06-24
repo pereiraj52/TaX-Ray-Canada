@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import { ChevronRight, Home, File, User, Edit } from "lucide-react";
 import Layout from "@/components/Layout";
@@ -195,6 +195,10 @@ export default function HouseholdDetail() {
                                 if (t1Id) newSet.delete(t1Id);
                                 return newSet;
                               });
+                              
+                              // Force a complete refresh of household data
+                              queryClient.invalidateQueries({ queryKey: ["/api/households"] });
+                              queryClient.invalidateQueries({ queryKey: ["/api/t1-returns"] });
                             }
                           }}
                         />
@@ -216,6 +220,9 @@ export default function HouseholdDetail() {
             householdId={householdId} 
             onT1ReturnClick={(t1ReturnId) => setSelectedT1ReturnId(t1ReturnId)}
             onEditClick={(t1ReturnId) => setEditDialogT1ReturnId(t1ReturnId)}
+            onT1ProcessingStart={(t1ReturnId) => {
+              setProcessingT1Returns(prev => new Set(prev).add(t1ReturnId));
+            }}
           />
         </div>
 
