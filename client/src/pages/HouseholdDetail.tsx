@@ -58,6 +58,17 @@ export default function HouseholdDetail() {
     }
   };
 
+  const getExtractedDateOfBirth = (client: any) => {
+    const t1Returns = client.t1Returns || [];
+    const completedT1 = t1Returns.find((t: any) => t.processingStatus === 'completed' && t.extractedData);
+    
+    if (completedT1 && completedT1.extractedData && completedT1.extractedData.dateOfBirth) {
+      return completedT1.extractedData.dateOfBirth;
+    }
+    
+    return client.dateOfBirth || 'Not provided';
+  };
+
   if (isLoading) {
     return (
       <Layout title="Loading..." subtitle="Loading household details">
@@ -141,7 +152,7 @@ export default function HouseholdDetail() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Date of Birth:</span>
-                        <span className="font-medium">{client.dateOfBirth || 'Not provided'}</span>
+                        <span className="font-medium">{getExtractedDateOfBirth(client)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Province:</span>
