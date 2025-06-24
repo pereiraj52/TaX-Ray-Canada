@@ -199,12 +199,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <span className="text-gray-600">Total Deductions:</span>
                     <span className="font-medium text-primary">
                       {(() => {
-                        // Calculate total deductions from available deduction fields
-                        const rppDeduction = parseFloat(getFieldValue('20700') || '0'); // RPP
-                        const rrspDeduction = parseFloat(getFieldValue('20800') || '0'); // RRSP
-                        const childCareDeduction = parseFloat(getFieldValue('21400') || '0'); // Child Care
-                        const unionDues = parseFloat(getFieldValue('21200') || '0'); // Union Dues
-                        const totalDeductions = rppDeduction + rrspDeduction + childCareDeduction + unionDues;
+                        const line23300 = parseFloat(getFieldValue('23300') || '0');
+                        const line25700 = parseFloat(getFieldValue('25700') || '0');
+                        const totalDeductions = line23300 + line25700;
                         return formatCurrency(totalDeductions.toString());
                       })()}
                     </span>
