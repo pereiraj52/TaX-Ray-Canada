@@ -125,7 +125,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       </div>
 
       {/* Tax Year and Basic Info */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="font-medium text-secondary mb-2">Tax Year</h3>
           <p className="text-2xl font-bold text-primary">{t1Return.taxYear}</p>
@@ -140,6 +140,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           <h3 className="font-medium text-secondary mb-2">Province</h3>
           <p className="text-lg font-semibold text-secondary">
             {getTextFieldValue('province')}
+          </p>
+        </div>
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <h3 className="font-medium text-secondary mb-2">Total Income</h3>
+          <p className="text-lg font-semibold text-secondary">
+            {formatCurrency(getFieldValue('15000'))}
           </p>
         </div>
       </div>
