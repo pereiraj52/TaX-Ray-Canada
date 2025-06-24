@@ -120,7 +120,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
-            Processed T1 Returns
+            Tax Reports
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -140,7 +140,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5" />
-          Processed T1 Returns
+          Tax Reports
         </CardTitle>
       </CardHeader>
       <CardContent>

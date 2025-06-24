@@ -135,6 +135,7 @@ Changelog:
 - June 24, 2025. Replaced T1 upload areas with compact upload buttons positioned to the far right of client profiles for cleaner interface
 - June 24, 2025. Removed T1 status from client profile area for further interface streamlining
 - June 24, 2025. Removed date of birth and province from client profile section for minimal, clean interface
+- June 24, 2025. Changed "Processed T1 Returns" section heading to "Tax Reports" for clearer terminology
 ```
 
 ## User Preferences
