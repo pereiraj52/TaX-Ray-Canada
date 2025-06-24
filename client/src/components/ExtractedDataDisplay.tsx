@@ -136,7 +136,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="font-medium text-primary mb-2">Total Tax</h3>
           <p className="text-lg font-semibold text-primary">
-            {formatCurrency(getFieldValue('43500'))}
+            {formatCurrency(getFieldValue('43700'))}
           </p>
         </div>
         <div className="bg-gray-50 p-4 rounded-lg">
@@ -144,7 +144,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           <p className="text-lg font-semibold text-primary">
             {(() => {
               const totalIncome = parseFloat(getFieldValue('15000') || '0');
-              const totalTax = parseFloat(getFieldValue('43500') || '0');
+              const totalTax = parseFloat(getFieldValue('43700') || '0');
               if (totalIncome === 0) return '0.00%';
               const rate = (totalTax / totalIncome) * 100;
               return `${rate.toFixed(2)}%`;
@@ -207,7 +207,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total Tax:</span>
-                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('43500'))}</span>
+                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('43700'))}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Net Income:</span>
@@ -248,7 +248,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   <div className="text-2xl font-bold text-primary">
                     {(() => {
                       const totalIncome = parseFloat(getFieldValue('15000') || '0');
-                      const totalTax = parseFloat(getFieldValue('43500') || '0');
+                      const totalTax = parseFloat(getFieldValue('43700') || '0');
                       if (totalIncome === 0) return '0.00%';
                       const rate = (totalTax / totalIncome) * 100;
                       return `${rate.toFixed(2)}%`;
