@@ -644,6 +644,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update T1 form field
+  app.patch("/api/t1-form-fields", async (req, res) => {
+    try {
+      const { fieldCode, fieldValue, t1ReturnId } = req.body;
+      
+      if (!fieldCode || fieldValue === undefined || !t1ReturnId) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Check if field exists
+      const existingFields = await storage.getT1FormFieldsByReturn(t1ReturnId);
+      const existingField = existingFields.find(f => f.fieldCode === fieldCode);
+
+      if (existingField) {
+        // Update existing field
+        await db.update(t1FormFields)
+          .set({ fieldValue })
+          .where(eq(t1FormFields.id, existingField.id));
+      } else {
+        // Create new field
+        await storage.createT1FormField({
+          t1ReturnId,
+          fieldCode,
+          fieldValue,
+          fieldName: `Field ${fieldCode}`,
+          fieldType: 'currency'
+        });
+      }
+
+      res.json({ message: "Field updated successfully" });
+    } catch (error) {
+      console.error("Error updating T1 form field:", error);
+      res.status(500).json({ message: "Failed to update field" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

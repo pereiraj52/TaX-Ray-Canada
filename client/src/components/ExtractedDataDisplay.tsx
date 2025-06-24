@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File } from "lucide-react";
+import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { T1ReturnWithFields } from "@shared/schema";
-import { useMutation } from "@tanstack/react-query";
-import { HouseholdAPI } from "@/lib/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { HouseholdAPI, T1API } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 interface ExtractedDataDisplayProps {
@@ -14,7 +15,41 @@ type TabType = 'identification' | 'income' | 'deductions' | 'credits' | 'taxes';
 
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('identification');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedFields, setEditedFields] = useState<Record<string, string>>({});
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const saveFieldsMutation = useMutation({
+    mutationFn: async () => {
+      // Create API call to update T1 form fields
+      const updates = Object.entries(editedFields).map(([fieldCode, fieldValue]) => ({
+        fieldCode,
+        fieldValue,
+        t1ReturnId: t1Return.id
+      }));
+      
+      for (const update of updates) {
+        await T1API.updateT1FormField(update);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/t1-returns", t1Return.id] });
+      setIsEditing(false);
+      setEditedFields({});
+      toast({
+        title: "Success",
+        description: "T1 data updated successfully",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update T1 data",
+        variant: "destructive",
+      });
+    },
+  });
 
   const generateReportMutation = useMutation({
     mutationFn: () => HouseholdAPI.generateClientAuditReport(t1Return.clientId),
@@ -106,10 +141,38 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             <CheckCircle className="mr-2 h-4 w-4" />
             Data Extracted Successfully
           </span>
-          <Button variant="outline" size="sm">
-            <Edit className="mr-1 h-4 w-4" />
-            Edit Data
-          </Button>
+          {isEditing ? (
+            <>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditedFields({});
+                }}
+              >
+                Cancel
+              </Button>
+              <Button 
+                size="sm"
+                onClick={() => saveFieldsMutation.mutate()}
+                disabled={saveFieldsMutation.isPending}
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
+                <Save className="mr-1 h-4 w-4" />
+                {saveFieldsMutation.isPending ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </>
+          ) : (
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setIsEditing(true)}
+            >
+              <Edit className="mr-1 h-4 w-4" />
+              Edit Data
+            </Button>
+          )}
 
         </div>
       </div>
