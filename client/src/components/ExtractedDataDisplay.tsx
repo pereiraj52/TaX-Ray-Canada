@@ -271,49 +271,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </div>
             </div>
 
-            {/* Tax Breakdown Chart */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-              <h3 className="font-semibold text-primary mb-4">Tax Rate Analysis</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">
-                    {(() => {
-                      const totalIncome = parseFloat(getFieldValue('15000') || '0');
-                      const totalTax = parseFloat(getFieldValue('43700') || '0');
-                      if (totalIncome === 0) return '0.00%';
-                      const rate = (totalTax / totalIncome) * 100;
-                      return `${rate.toFixed(2)}%`;
-                    })()}
-                  </div>
-                  <div className="text-sm text-gray-600">Average Tax Rate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">
-                    {(() => {
-                      const totalIncome = parseFloat(getFieldValue('15000') || '0');
-                      if (totalIncome <= 55000) return '20.05%';
-                      if (totalIncome <= 111000) return '31.00%';
-                      if (totalIncome <= 173000) return '43.41%';
-                      if (totalIncome <= 246000) return '46.67%';
-                      return '53.53%';
-                    })()}
-                  </div>
-                  <div className="text-sm text-gray-600">Marginal Tax Rate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">
-                    {(() => {
-                      const totalIncome = parseFloat(getFieldValue('15000') || '0');
-                      const netIncome = parseFloat(getFieldValue('23600') || '0');
-                      if (totalIncome === 0) return '0.00%';
-                      const rate = (netIncome / totalIncome) * 100;
-                      return `${rate.toFixed(2)}%`;
-                    })()}
-                  </div>
-                  <div className="text-sm text-gray-600">Net Income Rate</div>
-                </div>
-              </div>
-            </div>
+
           </div>
         )}
 
