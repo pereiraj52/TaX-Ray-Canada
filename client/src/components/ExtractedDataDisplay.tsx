@@ -199,9 +199,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <span className="text-gray-600">Total Deductions:</span>
                     <span className="font-medium text-primary">
                       {(() => {
-                        const line23300 = parseFloat(getFieldValue('23300') || '0');
-                        const line25700 = parseFloat(getFieldValue('25700') || '0');
-                        const totalDeductions = line23300 + line25700;
+                        const totalIncome = parseFloat(getFieldValue('15000') || '0');
+                        const taxableIncome = parseFloat(getFieldValue('26000') || '0');
+                        const totalDeductions = totalIncome - taxableIncome;
                         return formatCurrency(totalDeductions.toString());
                       })()}
                     </span>

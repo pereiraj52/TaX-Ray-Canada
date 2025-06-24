@@ -149,7 +149,7 @@ Changelog:
 - June 24, 2025. Expanded Extracted T1 Data Display dashboard from 3 to 4 items, adding Total Income field for quick reference
 - June 24, 2025. Updated dashboard items to show Total Income, Total Tax, Average Rate, and Marginal Rate with calculated tax metrics
 - June 24, 2025. Changed title and dashboard font colors to primary green shade for consistent branding
-- June 24, 2025. Added Total Deductions field to key tax information summary calculating lines 23300 + 25700 positioned between Total Income and Taxable Income
+- June 24, 2025. Added Total Deductions field to key tax information summary calculating difference between Total Income and Taxable Income positioned between Total Income and Taxable Income
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)

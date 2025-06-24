@@ -135,29 +135,35 @@ export default function TaxReport() {
                     <span className="text-gray-600">Total Deductions:</span>
                     <span className="font-medium">
                       ${(() => {
-                        let total = 0;
+                        let totalIncome = 0;
+                        let totalTaxableIncome = 0;
+                        
                         taxYearReturns.forEach(t1Return => {
                           const t1WithFields = t1Return as any;
                           if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            // Line 23300: Net Income Before Deductions Adjustment
-                            const line23300Field = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '23300'
+                            // Total Income (Line 15000)
+                            const incomeField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '15000'
                             );
-                            // Line 25700: Other deductions
-                            const line25700Field = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '25700'
+                            // Taxable Income (Line 26000)
+                            const taxableField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '26000'
                             );
                             
-                            const line23300 = line23300Field?.fieldValue ? 
-                              parseFloat(String(line23300Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                            const line25700 = line25700Field?.fieldValue ? 
-                              parseFloat(String(line25700Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                            if (incomeField?.fieldValue) {
+                              const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) totalIncome += value;
+                            }
                             
-                            if (!isNaN(line23300)) total += line23300;
-                            if (!isNaN(line25700)) total += line25700;
+                            if (taxableField?.fieldValue) {
+                              const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) totalTaxableIncome += value;
+                            }
                           }
                         });
-                        return total.toLocaleString('en-US', {
+                        
+                        const totalDeductions = totalIncome - totalTaxableIncome;
+                        return totalDeductions.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2
                         });
