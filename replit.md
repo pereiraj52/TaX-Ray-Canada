@@ -148,6 +148,7 @@ Changelog:
 - June 24, 2025. Changed title and dashboard font colors to primary green shade for consistent branding
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
+- June 24, 2025. Corrected Total Tax dashboard item to use line 43500 instead of line 42000 for accurate tax calculations
 ```
 
 ## User Preferences
