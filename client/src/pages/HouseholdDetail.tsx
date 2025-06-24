@@ -21,6 +21,7 @@ export default function HouseholdDetail() {
   const [selectedT1ReturnId, setSelectedT1ReturnId] = useState<number | null>(null);
   const [processingT1Returns, setProcessingT1Returns] = useState<Set<number>>(new Set());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editDialogT1ReturnId, setEditDialogT1ReturnId] = useState<number | null>(null);
 
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
@@ -32,6 +33,12 @@ export default function HouseholdDetail() {
     queryKey: ["/api/t1-returns", selectedT1ReturnId],
     queryFn: () => T1API.getT1Return(selectedT1ReturnId!),
     enabled: selectedT1ReturnId !== null,
+  });
+
+  const { data: editT1Return } = useQuery<T1ReturnWithFields>({
+    queryKey: ["/api/t1-returns", editDialogT1ReturnId],
+    queryFn: () => T1API.getT1Return(editDialogT1ReturnId!),
+    enabled: editDialogT1ReturnId !== null,
   });
 
 
@@ -207,6 +214,7 @@ export default function HouseholdDetail() {
           <ProcessedReturnsList 
             householdId={householdId} 
             onT1ReturnClick={(t1ReturnId) => setSelectedT1ReturnId(t1ReturnId)}
+            onEditClick={(t1ReturnId) => setEditDialogT1ReturnId(t1ReturnId)}
           />
         </div>
 
@@ -221,6 +229,19 @@ export default function HouseholdDetail() {
             open={isEditModalOpen}
             onOpenChange={setIsEditModalOpen}
             household={household}
+          />
+        )}
+
+        {/* T1 Field Edit Dialog */}
+        {editT1Return && (
+          <T1FieldEditDialog
+            open={editDialogT1ReturnId !== null}
+            onOpenChange={(open) => {
+              if (!open) {
+                setEditDialogT1ReturnId(null);
+              }
+            }}
+            t1Return={editT1Return}
           />
         )}
       </div>

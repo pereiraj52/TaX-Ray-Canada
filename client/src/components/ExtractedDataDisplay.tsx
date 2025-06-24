@@ -119,15 +119,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             <CheckCircle className="mr-2 h-4 w-4" />
             Data Extracted Successfully
           </span>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setEditDialogOpen(true)}
-          >
-            <Edit className="mr-1 h-4 w-4" />
-            Edit Data
-          </Button>
-
         </div>
       </div>
 

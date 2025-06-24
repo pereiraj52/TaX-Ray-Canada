@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw, Search } from "lucide-react";
+import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw, Search, Edit } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -11,9 +11,10 @@ import { useToast } from "@/hooks/use-toast";
 interface ProcessedReturnsListProps {
   householdId: number;
   onT1ReturnClick?: (t1ReturnId: number) => void;
+  onEditClick?: (t1ReturnId: number) => void;
 }
 
-export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: ProcessedReturnsListProps) {
+export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onEditClick }: ProcessedReturnsListProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -211,6 +212,16 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
                             title="Reprocess T1 return"
                           >
                             <RefreshCw className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onEditClick?.(t1Return.id)}
+                            disabled={t1Return.processingStatus !== 'completed'}
+                            className="h-6 w-6 p-0 text-orange-500 hover:text-orange-700 hover:bg-orange-50"
+                            title="Edit T1 data"
+                          >
+                            <Edit className="h-3 w-3" />
                           </Button>
                           <Button
                             variant="ghost"
