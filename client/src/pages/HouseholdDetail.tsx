@@ -7,6 +7,7 @@ import T1UploadButton from "@/components/T1UploadButton";
 import ExtractedDataDisplay from "@/components/ExtractedDataDisplay";
 import ProcessingStatus from "@/components/ProcessingStatus";
 import ProcessedReturnsList from "@/components/ProcessedReturnsList";
+import T1FieldEditDialog from "@/components/T1FieldEditDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI, T1API } from "@/lib/api";
