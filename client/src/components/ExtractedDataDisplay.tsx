@@ -2,6 +2,8 @@ import { useState } from "react";
 import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { T1ReturnWithFields } from "@shared/schema";
+import { useMutation } from "@tanstack/react-query";
+import { HouseholdAPI } from "@/lib/api";
 import T1FieldEditDialog from "@/components/T1FieldEditDialog";
 
 interface ExtractedDataDisplayProps {
