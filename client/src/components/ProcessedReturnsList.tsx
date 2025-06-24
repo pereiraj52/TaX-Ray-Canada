@@ -164,7 +164,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
       <CardContent>
         <div className="space-y-4">
           {sortedYears.map(year => (
-            <div key={year} className="border-l-2 border-gray-200 pl-4">
+            <div key={year}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-gray-600" />
