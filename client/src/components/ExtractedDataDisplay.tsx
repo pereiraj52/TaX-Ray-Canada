@@ -384,14 +384,122 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         {activeTab === 'accounts' && (
           <div className="space-y-6">
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-purple-800 mb-2">Investment Accounts</h3>
-              <p className="text-purple-700 text-sm">RRSP, TFSA, and other investment account information</p>
+              <h3 className="font-semibold text-purple-800 mb-2">Investment & Savings Accounts</h3>
+              <p className="text-purple-700 text-sm">Registered accounts, contribution room, and capital loss information</p>
             </div>
             
-            <div className="text-center py-12">
-              <TrendingUp className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-600 mb-2">Investment Accounts</h3>
-              <p className="text-gray-500">Account information will be displayed here</p>
+            {/* RRSP/RRIF Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-primary">RRSP/RRIF</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Account Balance:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* TFSA Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-primary">TFSA</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Account Balance:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* FHSA Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-primary">FHSA</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Account Balance:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RESP Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-primary">RESP</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Account Balance:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RDSP Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-primary">RDSP</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Account Balance:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Capital Loss Carry Forwards Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-primary">Capital Loss Carry Forwards</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Available Losses:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">Applied This Year:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
