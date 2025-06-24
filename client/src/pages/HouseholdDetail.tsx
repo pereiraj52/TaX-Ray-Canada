@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import { ChevronRight, Home, File, User, Edit } from "lucide-react";
 import Layout from "@/components/Layout";
-import T1UploadArea from "@/components/T1UploadArea";
+import T1UploadButton from "@/components/T1UploadButton";
 import ExtractedDataDisplay from "@/components/ExtractedDataDisplay";
 import ProcessingStatus from "@/components/ProcessingStatus";
 import ProcessedReturnsList from "@/components/ProcessedReturnsList";
@@ -145,13 +145,21 @@ export default function HouseholdDetail() {
                 const status = getClientStatus(client);
                 return (
                   <div key={client.id} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center mb-3">
-                      <div className={`w-10 h-10 ${getClientAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium`}>
-                        {client.firstName[0]}{client.lastName[0]}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center">
+                        <div className={`w-10 h-10 ${getClientAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium`}>
+                          {client.firstName[0]}{client.lastName[0]}
+                        </div>
+                        <div className="ml-3">
+                          <h3 className="font-medium text-secondary">{client.firstName} {client.lastName}</h3>
+                          <p className="text-sm text-gray-500">{client.isPrimary ? 'Primary' : 'Secondary'} Client</p>
+                        </div>
                       </div>
-                      <div className="ml-3">
-                        <h3 className="font-medium text-secondary">{client.firstName} {client.lastName}</h3>
-                        <p className="text-sm text-gray-500">{client.isPrimary ? 'Primary' : 'Secondary'} Client</p>
+                      <div className="flex items-center space-x-2">
+                        <T1UploadButton
+                          clientId={client.id}
+                          onUploadSuccess={handleT1UploadSuccess}
+                        />
                       </div>
                     </div>
                     <div className="space-y-2 text-sm">
@@ -167,14 +175,6 @@ export default function HouseholdDetail() {
                         <span className="text-gray-600">T1 Status:</span>
                         <span className={status.class}>{status.status}</span>
                       </div>
-                    </div>
-                    
-                    {/* T1 Upload Area for this client */}
-                    <div className="mt-4">
-                      <T1UploadArea
-                        clientId={client.id}
-                        onUploadSuccess={handleT1UploadSuccess}
-                      />
                     </div>
                     
                     {/* Show processing status if a T1 is being processed for this client */}
