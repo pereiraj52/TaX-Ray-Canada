@@ -128,6 +128,8 @@ Changelog:
 - June 20, 2025. Enhanced PDF parser to capture Ontario tax fields (58xxx, 61xxx, 62xxx series) with proper validation and formatting
 - June 20, 2025. Reorganized tax data tabs to separate Deductions and Credits, eliminating Ontario tab and grouping federal/provincial items within each section
 - June 20, 2025. Modified upload functionality to support multiple PDF files for a single T1 return with combined data extraction and field merging
+- June 24, 2025. Updated date of birth display to show extracted data from T1 returns instead of stored client data for accuracy
+- June 24, 2025. Removed household name and created date from household profile section for cleaner interface
 ```
 
 ## User Preferences

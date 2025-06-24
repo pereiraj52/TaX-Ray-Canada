@@ -129,11 +129,6 @@ export default function HouseholdDetail() {
         {/* Household Header */}
         <Card className="mb-6">
           <CardContent className="p-6">
-            <div className="mb-4">
-              <h1 className="text-2xl font-bold text-secondary">{household.name}</h1>
-              <p className="text-gray-600">Created on {new Date(household.createdAt).toLocaleDateString()}</p>
-            </div>
-
             {/* Client Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {household.clients.map((client, index) => {
