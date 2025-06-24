@@ -227,6 +227,15 @@ export default function HouseholdDetail() {
         {t1Return && (
           <ExtractedDataDisplay t1Return={t1Return} />
         )}
+
+        {/* Edit Household Modal */}
+        {household && (
+          <HouseholdEditForm
+            open={isEditModalOpen}
+            onOpenChange={setIsEditModalOpen}
+            household={household}
+          />
+        )}
       </div>
     </Layout>
   );

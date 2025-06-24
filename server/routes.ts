@@ -496,6 +496,97 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update household
+  app.patch("/api/households/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid household ID" });
+      }
+
+      const updateData = z.object({
+        name: z.string().min(1, "Household name is required"),
+      }).parse(req.body);
+
+      const updatedHousehold = await storage.updateHousehold(id, updateData);
+      if (!updatedHousehold) {
+        return res.status(404).json({ message: "Household not found" });
+      }
+
+      res.json(updatedHousehold);
+    } catch (error) {
+      console.error("Error updating household:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update household" });
+    }
+  });
+
+  // Create client
+  app.post("/api/clients", async (req, res) => {
+    try {
+      const clientData = insertClientSchema.parse(req.body);
+      const client = await storage.createClient(clientData);
+      res.status(201).json(client);
+    } catch (error) {
+      console.error("Error creating client:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create client" });
+    }
+  });
+
+  // Update client
+  app.patch("/api/clients/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid client ID" });
+      }
+
+      const updateData = z.object({
+        firstName: z.string().min(1, "First name is required"),
+        lastName: z.string().min(1, "Last name is required"),
+      }).parse(req.body);
+
+      const updatedClient = await storage.updateClient(id, updateData);
+      if (!updatedClient) {
+        return res.status(404).json({ message: "Client not found" });
+      }
+
+      res.json(updatedClient);
+    } catch (error) {
+      console.error("Error updating client:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update client" });
+    }
+  });
+
+  // Delete client
+  app.delete("/api/clients/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid client ID" });
+      }
+
+      const client = await storage.getClient(id);
+      if (!client) {
+        return res.status(404).json({ message: "Client not found" });
+      }
+
+      await storage.deleteClient(id);
+      res.json({ message: "Client deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting client:", error);
+      res.status(500).json({ message: "Failed to delete client" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

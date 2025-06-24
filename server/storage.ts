@@ -23,11 +23,13 @@ export interface IStorage {
   getHouseholds(): Promise<HouseholdWithClients[]>;
   getHousehold(id: number): Promise<HouseholdWithClients | undefined>;
   createHousehold(household: InsertHousehold): Promise<Household>;
+  updateHousehold(id: number, updates: Partial<InsertHousehold>): Promise<Household | undefined>;
   
   // Client operations
   getClient(id: number): Promise<ClientWithT1Returns | undefined>;
   createClient(client: InsertClient): Promise<Client>;
   updateClient(id: number, updates: Partial<InsertClient>): Promise<Client | undefined>;
+  deleteClient(id: number): Promise<void>;
   
   // T1 Return operations
   getT1Return(id: number): Promise<T1ReturnWithFields | undefined>;
@@ -110,6 +112,30 @@ export class DatabaseStorage implements IStorage {
       .where(eq(clients.id, id))
       .returning();
     return result || undefined;
+  }
+
+  async updateHousehold(id: number, updates: Partial<InsertHousehold>): Promise<Household | undefined> {
+    const [result] = await db
+      .update(households)
+      .set(updates)
+      .where(eq(households.id, id))
+      .returning();
+    return result || undefined;
+  }
+
+  async deleteClient(id: number): Promise<void> {
+    // First delete associated T1 returns and form fields
+    const clientT1Returns = await db
+      .select({ id: t1Returns.id })
+      .from(t1Returns)
+      .where(eq(t1Returns.clientId, id));
+    
+    for (const t1Return of clientT1Returns) {
+      await this.deleteT1Return(t1Return.id);
+    }
+    
+    // Then delete the client
+    await db.delete(clients).where(eq(clients.id, id));
   }
 
   async getT1Return(id: number): Promise<T1ReturnWithFields | undefined> {

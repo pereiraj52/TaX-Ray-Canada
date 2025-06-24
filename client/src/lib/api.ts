@@ -32,6 +32,22 @@ export class HouseholdAPI {
     const response = await apiRequest("POST", `/api/households/${householdId}/audit-report`);
     return response.blob();
   }
+
+  static async updateHousehold(id: number, data: { name: string }): Promise<void> {
+    await apiRequest("PATCH", `/api/households/${id}`, data);
+  }
+
+  static async createClient(data: { householdId: number; firstName: string; lastName: string; isPrimary: boolean }): Promise<void> {
+    await apiRequest("POST", "/api/clients", data);
+  }
+
+  static async updateClient(id: number, data: { firstName: string; lastName: string }): Promise<void> {
+    await apiRequest("PATCH", `/api/clients/${id}`, data);
+  }
+
+  static async deleteClient(id: number): Promise<void> {
+    await apiRequest("DELETE", `/api/clients/${id}`);
+  }
 }
 
 export class T1API {
