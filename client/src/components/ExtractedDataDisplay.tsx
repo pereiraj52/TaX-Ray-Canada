@@ -5,6 +5,7 @@ import { T1ReturnWithFields } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { HouseholdAPI } from "@/lib/api";
 import T1FieldEditDialog from "@/components/T1FieldEditDialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
@@ -15,6 +16,7 @@ type TabType = 'identification' | 'income' | 'deductions' | 'credits' | 'taxes';
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('identification');
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const { toast } = useToast();
 
 
 
@@ -112,7 +114,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-secondary">
-          {t1Return.client.firstName} {t1Return.client.lastName}
+          {t1Return.client.firstName} {t1Return.client.lastName} - {getTextFieldValue('province')} - {t1Return.taxYear}
         </h2>
         <div className="flex items-center space-x-3">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">

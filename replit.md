@@ -142,6 +142,7 @@ Changelog:
 - June 24, 2025. Modified audit report generation to create client-specific reports instead of household-wide reports
 - June 24, 2025. Replaced audit report button with magnifying glass icon positioned between reprocess and delete buttons in Tax Reports
 - June 24, 2025. Fixed Edit Data button functionality with full edit mode implementation including save/cancel capabilities and backend API integration
+- June 24, 2025. Updated tax report names to display "Name - Province - Year" format in both Tax Reports list and extracted data display header
 ```
 
 ## User Preferences
