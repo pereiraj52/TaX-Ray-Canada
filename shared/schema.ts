@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb, decimal } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb, decimal, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
@@ -72,6 +72,23 @@ export const t1FormFieldsRelations = relations(t1FormFields, ({ one }) => ({
   }),
 }));
 
+// Tax Brackets Reference Table
+export const taxBrackets = pgTable("tax_brackets", {
+  id: serial("id").primaryKey(),
+  jurisdiction: varchar("jurisdiction", { length: 50 }).notNull(), // 'federal' or province code like 'ON', 'BC', etc.
+  taxYear: integer("tax_year").notNull(),
+  bracketOrder: integer("bracket_order").notNull(), // 1, 2, 3, etc.
+  minIncome: decimal("min_income", { precision: 12, scale: 2 }).notNull(),
+  maxIncome: decimal("max_income", { precision: 12, scale: 2 }), // null for highest bracket
+  marginalRate: decimal("marginal_rate", { precision: 5, scale: 4 }).notNull(), // stored as decimal (e.g., 0.2005 for 20.05%)
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const taxBracketsRelations = relations(taxBrackets, ({ many }) => ({
+  // No relations needed for now
+}));
+
 // Insert schemas
 export const insertHouseholdSchema = createInsertSchema(households).omit({
   id: true,
@@ -94,16 +111,24 @@ export const insertT1FormFieldSchema = createInsertSchema(t1FormFields).omit({
   id: true,
 });
 
+export const insertTaxBracketSchema = createInsertSchema(taxBrackets).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type InsertHousehold = z.infer<typeof insertHouseholdSchema>;
 export type InsertClient = z.infer<typeof insertClientSchema>;
 export type InsertT1Return = z.infer<typeof insertT1ReturnSchema>;
 export type InsertT1FormField = z.infer<typeof insertT1FormFieldSchema>;
+export type InsertTaxBracket = z.infer<typeof insertTaxBracketSchema>;
 
 export type Household = typeof households.$inferSelect;
 export type Client = typeof clients.$inferSelect;
 export type T1Return = typeof t1Returns.$inferSelect;
 export type T1FormField = typeof t1FormFields.$inferSelect;
+export type TaxBracket = typeof taxBrackets.$inferSelect;
 
 // Extended types for API responses
 export type HouseholdWithClients = Household & {
