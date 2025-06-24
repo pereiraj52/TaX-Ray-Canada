@@ -33,11 +33,34 @@ export default function MarginalRateBreakdown({ income, province }: MarginalRate
           <span className="text-gray-600">Combined Marginal Rate:</span>
           <span className="font-medium text-primary">Loading...</span>
         </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Marginal Effective Rate:</span>
+          <span className="font-medium text-primary">Loading...</span>
+        </div>
       </div>
     );
   }
 
   const combinedRate = marginalRates.federalRate + marginalRates.provincialRate;
+  
+  // Calculate marginal effective rate (includes benefit clawbacks)
+  // For higher incomes, this typically includes OAS clawback and other benefit reductions
+  const calculateMarginalEffectiveRate = (income: number, combinedRate: number) => {
+    // OAS clawback starts at ~$86,912 (2024) at 15% rate
+    const oasClawbackThreshold = 86912;
+    const oasClawbackRate = 15.0;
+    
+    // Child benefit clawback varies by province and income
+    let effectiveRate = combinedRate;
+    
+    if (income > oasClawbackThreshold && income < 142000) {
+      effectiveRate += oasClawbackRate;
+    }
+    
+    return effectiveRate;
+  };
+  
+  const marginalEffectiveRate = calculateMarginalEffectiveRate(income, combinedRate);
 
   return (
     <div className="space-y-3">
@@ -52,6 +75,10 @@ export default function MarginalRateBreakdown({ income, province }: MarginalRate
       <div className="flex justify-between">
         <span className="text-gray-600">Combined Marginal Rate:</span>
         <span className="font-medium text-primary">{combinedRate.toFixed(2)}%</span>
+      </div>
+      <div className="flex justify-between">
+        <span className="text-gray-600">Marginal Effective Rate:</span>
+        <span className="font-medium text-primary">{marginalEffectiveRate.toFixed(2)}%</span>
       </div>
     </div>
   );
