@@ -578,15 +578,17 @@ class SpouseInfo:
 @dataclass
 class Schedule7Fields:
     """Schedule 7 - RRSP, PRPP, SPP Contributions, Transfers, HBP/LLP Activities"""
-    rrsp_contributions: Optional[Decimal] = None  # Line 24500
+    # rrsp_contributions: Optional[Decimal] = None  # Line 24500 (remove old field)
+    unused_contributions_prior: Optional[Decimal] = None # Schedule 7, box 1
+    rrsp_contributions: Optional[Decimal] = None  # Schedule 7, box 2 (was rrsp_contributions_line2)
+    RRSP_60days: Optional[Decimal] = None  # Schedule 7, box 3
     repayments_hbp: Optional[Decimal] = None     # Line 24600
     spp_contributions: Optional[Decimal] = None  # Line 24640
     repayments_llp: Optional[Decimal] = None     # Line 24630
     transfers_in: Optional[Decimal] = None       # Line 24650
     excess_contributions: Optional[Decimal] = None # Line 23200 (if relevant)
-    unused_contributions_prior: Optional[Decimal] = None # Line 24000
     unused_contributions_current: Optional[Decimal] = None # Line 24400
-    rrsp_deduction_limit: Optional[Decimal] = None # Line 20600 (limit, not claim)
+    rrsp_deduction_limit: Optional[Decimal] = None # Line 11 (limit, not claim)
     rrsp_deduction_claimed: Optional[Decimal] = None # Line 20800 (claimed on T1)
     prpp_employer_contributions: Optional[Decimal] = None # Line 20810 (deduction, not direct contribution)
     fhsa_deduction: Optional[Decimal] = None # Line 20805
@@ -859,7 +861,8 @@ class ComprehensiveT1Extractor:
         # DEBUG: Print all lines containing 'spouse' to help tune regex
         for line in text.splitlines():
             if 'spouse' in line.lower():
-                print('DEBUG-SPOUSE-LINE:', line)
+                # print('DEBUG-SPOUSE-LINE:', line)
+                pass
         return info
     
     def _extract_fields(self, text: str, field_map: dict, dataclass_type):
@@ -1424,6 +1427,8 @@ class ComprehensiveT1Extractor:
     
     def _extract_line_amount(self, text: str, line_num: str) -> Optional[Decimal]:
         """Extract amount for a specific line number"""
+        import re
+        
         # Debug for balance owing
         debug_f = None
         if line_num == '48500':
@@ -1432,28 +1437,51 @@ class ComprehensiveT1Extractor:
                 debug_f.write(f'DEBUG: Extracting balance owing for line {line_num}\n')
             except Exception:
                 debug_f = None
+        
+        # Debug for pension adjustment
+        if line_num == '20600':
+            try:
+                debug_f = open('attached_assets/pension_adjustment_debug.log', 'w')
+                debug_f.write(f'DEBUG: Extracting pension adjustment for line {line_num}\n')
+            except Exception:
+                debug_f = None
+        
         # Special handling for line 10400 (Other Employment Income)
         if line_num == '10400':
             lines = text.splitlines()
             for idx, line in enumerate(lines):
-                if re.match(r'^\s*10400\b', line):
-                    m = re.search(r'10400.*?(\d{1,3}(?:,\d{3})*)[ .](\d{2})', line)
+                # Look for the specific pattern: "Other employment income 10400" followed by amount
+                if re.match(r'^\s*Other employment income\s+10400\b', line):
+                    # Extract amount from this line: "Other employment income 10400 96 80 2"
+                    m = re.search(r'10400\s+(\d{1,3})\s+(\d{2})', line)
                     if m:
                         try:
-                            value = m.group(1).replace(',', '') + '.' + m.group(2)
+                            dollars = m.group(1)
+                            cents = m.group(2)
+                            value = f"{dollars}.{cents}"
                             return Decimal(value)
                         except Exception:
-                            return None
-                    if idx+1 < len(lines):
-                        next_line = lines[idx+1]
-                        m2 = re.search(r'(\d{1,3}(?:,\d{3})*)[ .](\d{2})', next_line)
-                        if m2:
-                            try:
-                                value = m2.group(1).replace(',', '') + '.' + m2.group(2)
-                                return Decimal(value)
-                            except Exception:
-                                return None
+                            continue
             return None
+        
+        # Special handling for line 20600 (Pension Adjustment)
+        if line_num == '20600':
+            lines = text.splitlines()
+            for idx, line in enumerate(lines):
+                # Look for the pattern: "20600" followed by text and then amount
+                if '20600' in line:
+                    # Extract amount from patterns like "206003696,403 9118,194 00"
+                    m = re.search(r'20600.*?(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
+                        try:
+                            dollars = m.group(1).replace(',', '')
+                            cents = m.group(2)
+                            value = f"{dollars}.{cents}"
+                            return Decimal(value)
+                        except Exception:
+                            continue
+            return None
+        
         # Standard patterns for all line numbers
         patterns = [
             rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})\s+\d+',
@@ -1614,7 +1642,10 @@ class ComprehensiveT1Extractor:
     def _extract_schedule7_fields(self, text: str) -> Schedule7Fields:
         """Extract Schedule 7 fields from text"""
         schedule7_lines = {
-            '24500': 'rrsp_contributions',
+            # '24500': 'rrsp_contributions', (remove old mapping)
+            'S7-1': 'unused_contributions_prior',
+            'S7-2': 'rrsp_contributions',
+            'S7-3': 'RRSP_60days',
             '24600': 'repayments_hbp',
             '24640': 'spp_contributions',
             '24630': 'repayments_llp',
@@ -1622,14 +1653,95 @@ class ComprehensiveT1Extractor:
             '23200': 'excess_contributions',
             '24000': 'unused_contributions_prior',
             '24400': 'unused_contributions_current',
-            '20600': 'rrsp_deduction_limit',
+            # '11': 'rrsp_deduction_limit',  # Remove this mapping - use custom extraction only
+            # '20600': 'rrsp_deduction_limit',  # Remove this mapping
             '20800': 'rrsp_deduction_claimed',
             '20810': 'prpp_employer_contributions',
             '20805': 'fhsa_deduction',
             '32000': 'total_deduction',
-            # 'prpp_contributions': null,  # Not directly mapped; leave as null
+            # 'prpp_contributions': null,  # Not directly mapped; leave as null unless line is found
         }
-        return self._extract_fields(text, schedule7_lines, Schedule7Fields)
+        import re
+        lines = text.splitlines()
+        debug_lines = []
+        # Debug logging: print 50 lines before and after any line with 'Schedule 7', 'RRSP', or 'contributions'
+        found = False
+        for i, line in enumerate(lines):
+            if ('schedule 7' in line.lower() or 'rrsp' in line.lower() or 'contributions' in line.lower()) and not found:
+                start = max(0, i-50)
+                end = min(len(lines), i+51)
+                debug_lines = lines[start:end]
+                found = True
+        # print('DEBUG-SCHEDULE7-EXPANDED-SECTION:')
+        # for l in debug_lines:
+        #     print(f'DEBUG-S7-LINE: {l}')
+        line1 = line2 = line3 = None
+        for line in lines:
+            # Stricter extraction for unused_contributions_prior: must be at start of line
+            if re.match(r'^\s*1\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line):
+                m1 = re.match(r'^\s*1\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                if m1:
+                    try:
+                        value = m1.group(1).replace(',', '') + '.' + m1.group(2)
+                        if value.replace('.', '').isdigit():
+                            line1 = Decimal(value)
+                            # print(f'FOUND LINE1: {value}')
+                    except Exception:
+                        pass
+            # Only assign the first value for rrsp_contributions where the line contains 'attach all receipts'
+            if line2 is None and 'attach all receipts' in line.lower():
+                m2 = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s+2\s*$', line)
+                if m2:
+                    try:
+                        value = m2.group(1).replace(',', '') + '.' + m2.group(2)
+                        if value.replace('.', '').isdigit():
+                            line2 = Decimal(value)
+                            # print(f'FOUND LINE2: {value}')
+                    except Exception:
+                        pass
+            # Only assign the first value for RRSP_60days where the line contains 'attach all receipts'
+            if line3 is None and 'attach all receipts' in line.lower():
+                m3 = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s+3\s*$', line)
+                if m3:
+                    try:
+                        value = m3.group(1).replace(',', '') + '.' + m3.group(2)
+                        if value.replace('.', '').isdigit():
+                            line3 = Decimal(value)
+                            # print(f'FOUND LINE3: {value}')
+                    except Exception:
+                        pass
+        # Extract rrsp_deduction_limit from the correct context
+        rrsp_limit = None
+        for line in lines:
+            if rrsp_limit is None and 'deduction limit' in line.lower():
+                print(f'DEBUG-FOUND-DEDUCTION-LIMIT-LINE: {line}')
+                m = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s*$', line)
+                if m:
+                    try:
+                        value = m.group(1).replace(',', '') + '.' + m.group(2)
+                        if value.replace('.', '').isdigit():
+                            rrsp_limit = Decimal(value)
+                            print(f'FOUND RRSP_DEDUCTION_LIMIT: {value}')
+                    except Exception:
+                        pass
+                else:
+                    print(f'DEBUG-REGEX-NO-MATCH for line: {line}')
+        fields = self._extract_fields(text, schedule7_lines, Schedule7Fields)
+        fields.unused_contributions_prior = line1
+        fields.rrsp_contributions = line2
+        fields.RRSP_60days = line3
+        if rrsp_limit is not None:
+            fields.rrsp_deduction_limit = rrsp_limit
+        # print(f'FINAL VALUES - line1: {line1}, line2: {line2}, line3: {line3}')
+        # Debug: Print all lines containing '11' and 5 lines before/after
+        # for i, line in enumerate(lines):
+        #     if re.search(r'\b11\b', line):
+        #         start = max(0, i-5)
+        #         end = min(len(lines), i+6)
+        #         print('DEBUG-S7-LINE11-CONTEXT:')
+        #         for l in lines[start:end]:
+        #             print(f'DEBUG-S7-LINE: {l}')
+        return fields
 
 def decimal_serializer(obj):
     """JSON serializer for Decimal objects"""
