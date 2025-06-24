@@ -163,6 +163,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     return basicCreditsTotal + employmentCreditsTotal + personalSituationTotal + educationMedicalTotal;
   };
 
+  const getRefundOrBalance = (): number => {
+    // Calculate refund/balance: Taxes Paid (43700) - Total Tax (43500)
+    // Positive = Refund, Negative = Balance Due
+    const taxesPaid = parseFloat(getFieldValue('43700')) || 0;
+    const totalTax = parseFloat(getFieldValue('43500')) || 0;
+    return taxesPaid - totalTax;
+  };
+
   const CollapsibleSection = ({ 
     id, 
     title, 
@@ -1413,8 +1421,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </div>
               
               <div className="field-row text-xl font-bold border-t pt-4 bg-gray-50 p-4 rounded-lg">
-                <span className="field-label">Refund/Balance Due (Line 48400):</span>
-                <span className="field-value font-mono">{formatCurrency(getFieldValue('48400'))}</span>
+                <span className="field-label">
+                  {getRefundOrBalance() >= 0 ? 'Refund Due:' : 'Balance Owing:'}
+                </span>
+                <span className={`field-value font-mono ${getRefundOrBalance() >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {formatCurrency(Math.abs(getRefundOrBalance()))}
+                </span>
               </div>
             </div>
           </div>
