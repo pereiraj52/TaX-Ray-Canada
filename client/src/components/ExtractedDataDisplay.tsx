@@ -25,7 +25,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     'investment': true,
     'other': true,
     'self-employment': true,
-    'other-sources': true
+    'other-sources': true,
+    // Deduction sections
+    'retirement-plan-deductions': true,
+    'personal-deductions': true,
+    'employment-deductions': true,
+    'support-investment-deductions': true,
+    'specialized-deductions': true,
+    'provincial-deductions': true
   });
   const { toast } = useToast();
 
@@ -719,68 +726,290 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           <div className="space-y-6">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
               <h3 className="font-semibold text-yellow-800 mb-2">Deductions from Income</h3>
-              <p className="text-yellow-700 text-sm">Federal deductions that reduce taxable income</p>
+              <p className="text-yellow-700 text-sm">Federal and provincial deductions that reduce taxable income</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <h4 className="font-semibold text-secondary border-b pb-2">Federal Deductions</h4>
-                <div className="field-row">
-                  <span className="field-label">Registered Pension Plan Deduction (Line 20700):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">RRSP Deduction (Line 20800):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Union Dues (Line 21200):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Child Care Expenses (Line 21400):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Moving Expenses (Line 21900):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Support Payments (Line 22000):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Carrying Charges (Line 22100):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">CPP/QPP Deduction (Line 22200):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Other Deductions (Line 23200):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className="font-semibold text-secondary border-b pb-2">Calculation Summary</h4>
-                <div className="field-row">
-                  <span className="field-label">Total Income (Line 15000):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('15000'))}</span>
-                </div>
-                <div className="field-row font-semibold border-t pt-2">
-                  <span className="field-label">Total Deductions (Line 23300):</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('23300'))}</span>
-                </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-6">
-                  <div className="flex justify-between">
-                    <span className="font-semibold text-green-800">Net Income (Line 23600):</span>
-                    <span className="font-bold text-green-600 text-lg">
-                      {formatCurrency(getFieldValue('23600'))}
-                    </span>
+            <div className="space-y-4">
+              {/* Retirement Plan Deductions Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('retirement-plan-deductions')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['retirement-plan-deductions'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-semibold text-secondary">Retirement Plan Deductions</h4>
                   </div>
-                  <p className="text-green-700 text-sm mt-1">Total Income minus Total Deductions</p>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['20600', '20700', '20800', '20805', '20810']))}
+                  </span>
+                </button>
+                {!collapsedSections['retirement-plan-deductions'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Pension Adjustment (Line 20600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('20600'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Registered Pension Plan Deduction (Line 20700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">RRSP Deduction (Line 20800):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">FHSA Deduction (Line 20805):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('20805'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">PRPP Employer Contributions (Line 20810):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('20810'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Personal Deductions Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('personal-deductions')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['personal-deductions'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-semibold text-secondary">Personal Deductions</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['21000', '21200', '21300', '21400', '21500', '21700', '21900']))}
+                  </span>
+                </button>
+                {!collapsedSections['personal-deductions'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Split Pension Deduction (Line 21000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21000'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Annual Union Dues (Line 21200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">UCCB Repayment (Line 21300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21300'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Child Care Expenses (Line 21400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Disability Supports (Line 21500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21500'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Business Investment Loss (Line 21700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21700'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Moving Expenses (Line 21900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Support and Investment Deductions Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('support-investment-deductions')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['support-investment-deductions'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-semibold text-secondary">Support & Investment Deductions</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['21999', '22000', '22100', '22200', '22215']))}
+                  </span>
+                </button>
+                {!collapsedSections['support-investment-deductions'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Support Payments Total (Line 21999):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21999'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Support Payments Allowable (Line 22000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Carrying Charges (Line 22100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">CPP/QPP Self-Employed (Line 22200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">CPP/QPP Enhanced (Line 22215):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Employment Deductions Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('employment-deductions')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['employment-deductions'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-semibold text-secondary">Employment Deductions</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['22900', '23100']))}
+                  </span>
+                </button>
+                {!collapsedSections['employment-deductions'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Other Employment Expenses (Line 22900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Clergy Residence (Line 23100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('23100'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Specialized Deductions Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('specialized-deductions')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['specialized-deductions'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-semibold text-secondary">Specialized Deductions</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['22400', '23200', '23500']))}
+                  </span>
+                </button>
+                {!collapsedSections['specialized-deductions'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Exploration Development (Line 22400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Other Deductions (Line 23200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Social Benefits Repayment (Line 23500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('23500'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Provincial Deductions Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('provincial-deductions')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['provincial-deductions'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-semibold text-secondary">Provincial Deductions (Ontario)</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['61000', '61100', '61200', '61300', '61400', '61500']))}
+                  </span>
+                </button>
+                {!collapsedSections['provincial-deductions'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Ontario Health Premium (Line 61000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('61000'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Volunteer Firefighter (Line 61100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('61100'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Employee Home Relocation (Line 61200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('61200'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Mining Exploration (Line 61300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('61300'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Political Contribution (Line 61400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('61400'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Flow-Through Share (Line 61500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('61500'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Summary Section */}
+              <div className="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="font-semibold text-green-800">Total Income</div>
+                    <div className="text-lg font-bold text-green-600">
+                      {formatCurrency(getFieldValue('15000'))}
+                    </div>
+                    <div className="text-sm text-green-700">Line 15000</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-semibold text-green-800">Total Deductions</div>
+                    <div className="text-lg font-bold text-green-600">
+                      {formatCurrency(getFieldValue('23300'))}
+                    </div>
+                    <div className="text-sm text-green-700">Line 23300</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-semibold text-green-800">Net Income</div>
+                    <div className="text-xl font-bold text-green-600">
+                      {formatCurrency(getFieldValue('23600'))}
+                    </div>
+                    <div className="text-sm text-green-700">Line 23600</div>
+                  </div>
                 </div>
               </div>
             </div>
