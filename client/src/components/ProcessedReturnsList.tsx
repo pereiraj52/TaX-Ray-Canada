@@ -147,12 +147,6 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
   if (Object.keys(returnsByYear).length === 0) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            Tax Reports
-          </CardTitle>
-        </CardHeader>
         <CardContent>
           <p className="text-gray-500 text-sm">No T1 returns have been processed yet.</p>
         </CardContent>
@@ -167,12 +161,6 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <FileText className="h-5 w-5" />
-          Tax Reports
-        </CardTitle>
-      </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {sortedYears.map(year => (
