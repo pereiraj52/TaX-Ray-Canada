@@ -170,6 +170,7 @@ Changelog:
 - June 24, 2025. Simplified deductions summary box to show only Total Deductions with centered layout for cleaner, focused display
 - June 24, 2025. Fixed Total Deductions calculation to sum all sub-category totals instead of relying on Line 23300 for accurate display
 - June 24, 2025. Completely rebuilt Credits tab with comprehensive federal and provincial credits organized into 6 collapsible categories: Basic, Employment, Personal Situation, Education & Medical, Ontario Provincial, and Refundable credits with 35+ credit fields
+- June 24, 2025. Simplified Tax Summary tab to display only 5 key fields: Federal Tax, Provincial Tax, Total Tax, Taxes Paid, and Refund/Balance Due with clean centered layout
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)

@@ -1386,45 +1386,35 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
         {activeTab === 'taxes' && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-secondary mb-4">Federal Tax Calculation</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="field-row">
-                    <span className="field-label">Taxable Income (Line 26000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('26000'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Federal Tax (Line 40400):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('40400'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">Basic Federal Tax (Line 41000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('41000'))}</span>
-                  </div>
-                  <div className="field-row font-semibold border-t pt-2">
-                    <span className="field-label">Net Federal Tax (Line 42000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('42000'))}</span>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="field-row">
-                    <span className="field-label">Total Income Tax Deducted (Line 43700):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('43700'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">CPP Overpayment (Line 44800):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('44800'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <span className="field-label">EI Overpayment (Line 45000):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
-                  </div>
-                  <div className="field-row font-semibold border-t pt-2 text-lg">
-                    <span className="field-label">Refund/Balance Owing (Line 48400):</span>
-                    <span className="field-value">{formatCurrency(getFieldValue('48400'))}</span>
-                  </div>
-                </div>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-green-800 mb-2">Tax Summary</h3>
+              <p className="text-green-700 text-sm">Federal and provincial taxes, payments, and final balance</p>
+            </div>
+            
+            <div className="max-w-2xl mx-auto space-y-6">
+              <div className="field-row text-lg">
+                <span className="field-label">Federal Tax (Line 42000):</span>
+                <span className="field-value font-mono">{formatCurrency(getFieldValue('42000'))}</span>
+              </div>
+              
+              <div className="field-row text-lg">
+                <span className="field-label">Provincial Tax (Ontario):</span>
+                <span className="field-value font-mono">{formatCurrency(getFieldValue('42800'))}</span>
+              </div>
+              
+              <div className="field-row text-lg font-semibold border-t pt-4">
+                <span className="field-label">Total Tax (Line 43500):</span>
+                <span className="field-value font-mono">{formatCurrency(getFieldValue('43500'))}</span>
+              </div>
+              
+              <div className="field-row text-lg">
+                <span className="field-label">Taxes Paid (Line 43700):</span>
+                <span className="field-value font-mono">{formatCurrency(getFieldValue('43700'))}</span>
+              </div>
+              
+              <div className="field-row text-xl font-bold border-t pt-4 bg-gray-50 p-4 rounded-lg">
+                <span className="field-label">Refund/Balance Due (Line 48400):</span>
+                <span className="field-value font-mono">{formatCurrency(getFieldValue('48400'))}</span>
               </div>
             </div>
           </div>
