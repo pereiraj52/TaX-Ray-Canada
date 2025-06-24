@@ -162,16 +162,7 @@ export default function HouseholdDetail() {
                         />
                       </div>
                     </div>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Date of Birth:</span>
-                        <span className="font-medium">{getExtractedDateOfBirth(client)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Province:</span>
-                        <span className="font-medium">{client.province || 'Not provided'}</span>
-                      </div>
-                    </div>
+
                     
                     {/* Show processing status if a T1 is being processed for this client */}
                     {Array.from(processingT1Returns).some(t1Id => {
