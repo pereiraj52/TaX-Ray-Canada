@@ -325,7 +325,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Generate audit report
+  // Generate audit report for specific client
+  app.post("/api/clients/:clientId/audit-report", async (req, res) => {
+    try {
+      const clientId = parseInt(req.params.clientId);
+      if (isNaN(clientId)) {
+        return res.status(400).json({ message: "Invalid client ID" });
+      }
+
+      const client = await storage.getClient(clientId);
+      if (!client) {
+        return res.status(404).json({ message: "Client not found" });
+      }
+
+      // Get household info
+      const household = await storage.getHousehold(client.householdId);
+      if (!household) {
+        return res.status(404).json({ message: "Household not found" });
+      }
+
+      // Get T1 returns for this specific client
+      const clientReturns = await storage.getT1ReturnsByClient(clientId);
+      const completedReturns = [];
+      
+      for (const returnRecord of clientReturns) {
+        if (returnRecord.processingStatus === 'completed') {
+          const fullReturn = await storage.getT1Return(returnRecord.id);
+          if (fullReturn && fullReturn.formFields) {
+            completedReturns.push(fullReturn);
+          }
+        }
+      }
+
+      if (completedReturns.length === 0) {
+        return res.status(400).json({ message: "No completed T1 returns found for this client" });
+      }
+
+      // Filter to only include the most recent tax year
+      const mostRecentYear = Math.max(...completedReturns.map(t1 => t1.taxYear));
+      const t1Returns = completedReturns.filter(t1 => t1.taxYear === mostRecentYear);
+
+      // Create a single-client household for the report
+      const singleClientHousehold = {
+        ...household,
+        clients: [client]
+      };
+
+      const reportBuffer = await T1AuditReportGenerator.generateAuditReport(singleClientHousehold, t1Returns);
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="audit-report-${client.firstName}-${client.lastName}-${mostRecentYear}.pdf"`);
+      res.send(reportBuffer);
+    } catch (error) {
+      console.error("Error generating client audit report:", error);
+      res.status(500).json({ message: "Failed to generate audit report" });
+    }
+  });
+
+  // Generate audit report for household
   app.post("/api/households/:id/audit-report", async (req, res) => {
     try {
       const householdId = parseInt(req.params.id);

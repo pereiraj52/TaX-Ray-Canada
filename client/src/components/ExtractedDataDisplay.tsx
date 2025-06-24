@@ -17,12 +17,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   const { toast } = useToast();
 
   const generateReportMutation = useMutation({
-    mutationFn: () => HouseholdAPI.generateAuditReport(t1Return.client.householdId),
+    mutationFn: () => HouseholdAPI.generateClientAuditReport(t1Return.clientId),
     onSuccess: (blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `audit-report-${t1Return.taxYear}.pdf`;
+      a.download = `audit-report-${t1Return.client.firstName}-${t1Return.client.lastName}-${t1Return.taxYear}.pdf`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

@@ -33,6 +33,11 @@ export class HouseholdAPI {
     return response.blob();
   }
 
+  static async generateClientAuditReport(clientId: number): Promise<Blob> {
+    const response = await apiRequest("POST", `/api/clients/${clientId}/audit-report`);
+    return response.blob();
+  }
+
   static async updateHousehold(id: number, data: { name: string }): Promise<void> {
     await apiRequest("PATCH", `/api/households/${id}`, data);
   }
