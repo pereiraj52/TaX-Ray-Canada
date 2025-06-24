@@ -321,40 +321,182 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         )}
 
         {activeTab === 'income' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="field-row">
-                <span className="field-label">Employment Income (Line 10100):</span>
-                <span className="currency-value">{formatCurrency(getFieldValue('10100'))}</span>
-              </div>
-              <div className="field-row">
-                <span className="field-label">Other Employment Income (Line 10400):</span>
-                <span className="field-value">{formatCurrency(getFieldValue('10400'))}</span>
-              </div>
-              <div className="field-row">
-                <span className="field-label">OAS Pension (Line 11300):</span>
-                <span className="field-value">{formatCurrency(getFieldValue('11300'))}</span>
-              </div>
-              <div className="field-row">
-                <span className="field-label">CPP/QPP Benefits (Line 11400):</span>
-                <span className="field-value">{formatCurrency(getFieldValue('11400'))}</span>
-              </div>
+          <div className="space-y-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-blue-800 mb-2">Income Sources</h3>
+              <p className="text-blue-700 text-sm">All income reported on T1 tax return</p>
             </div>
-            <div className="space-y-4">
-              <div className="field-row">
-                <span className="field-label">Other Pensions (Line 11500):</span>
-                <span className="field-value">{formatCurrency(getFieldValue('11500'))}</span>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <h4 className="font-semibold text-secondary border-b pb-2">Employment Income</h4>
+                <div className="field-row">
+                  <span className="field-label">Employment Income (Line 10100):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Tax-Exempt Emergency Volunteer (Line 10105):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10105'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Commissions Included (Line 10120):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10120'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Wage Loss Replacement (Line 10130):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10130'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Employment Income (Line 10400):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10400'))}</span>
+                </div>
+
+                <h4 className="font-semibold text-secondary border-b pb-2 mt-6">Pension & Retirement Income</h4>
+                <div className="field-row">
+                  <span className="field-label">Old Age Security (Line 11300):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11300'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">CPP/QPP Benefits (Line 11400):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Pensions (Line 11500):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Split Pension Amount (Line 11600):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Universal Child Care Benefit (Line 11700):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">UCCB for Dependant (Line 11701):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11701'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Split Income (Line 11800):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11800'))}</span>
+                </div>
+
+                <h4 className="font-semibold text-secondary border-b pb-2 mt-6">Government Benefits</h4>
+                <div className="field-row">
+                  <span className="field-label">Employment Insurance (Line 11900):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">EI Maternity/Parental (Line 11905):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11905'))}</span>
+                </div>
               </div>
-              <div className="field-row">
-                <span className="field-label">Split Pension (Line 11600):</span>
-                <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
-              </div>
-              <div className="bg-accent-light p-3 rounded-lg">
-                <div className="flex justify-between">
-                  <span className="font-medium text-secondary">Total Income:</span>
-                  <span className="font-bold text-accent text-lg">
-                    {formatCurrency(getFieldValue('15000'))}
-                  </span>
+              
+              <div className="space-y-4">
+                <h4 className="font-semibold text-secondary border-b pb-2">Investment Income</h4>
+                <div className="field-row">
+                  <span className="field-label">Taxable Dividends - Eligible (Line 12000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Taxable Dividends - Other (Line 12010):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12010'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Interest and Investment Income (Line 12100):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Partnership Income (Line 12200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Foreign Dividends (Line 12400):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12400'))}</span>
+                </div>
+
+                <h4 className="font-semibold text-secondary border-b pb-2 mt-6">Other Income</h4>
+                <div className="field-row">
+                  <span className="field-label">RDSP Income (Line 12500):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Rental Income (Line 12600):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Capital Gains (Line 12700):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">RRSP Income (Line 12900):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">FHSA Income (Line 12905):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">FHSA Income - Other (Line 12906):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Income (Line 13000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Scholarships (Line 13010):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
+                </div>
+
+                <h4 className="font-semibold text-secondary border-b pb-2 mt-6">Self-Employment Income</h4>
+                <div className="field-row">
+                  <span className="field-label">Business Income (Line 13499):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13499'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Partnership Income (Line 13500):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Professional Income (Line 13700):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13700'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Commission Income (Line 13900):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Farming Income (Line 14100):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Fishing Income (Line 14300):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14300'))}</span>
+                </div>
+
+                <h4 className="font-semibold text-secondary border-b pb-2 mt-6">Other Sources</h4>
+                <div className="field-row">
+                  <span className="field-label">Workers' Compensation (Line 14400):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Social Assistance (Line 14500):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Net Federal Supplements (Line 14600):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14600'))}</span>
+                </div>
+                
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-6">
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-green-800">Total Income (Line 15000):</span>
+                    <span className="font-bold text-green-600 text-lg">
+                      {formatCurrency(getFieldValue('15000'))}
+                    </span>
+                  </div>
+                  <p className="text-green-700 text-sm mt-1">Sum of all income sources</p>
                 </div>
               </div>
             </div>

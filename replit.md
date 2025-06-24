@@ -160,6 +160,7 @@ Changelog:
 - June 24, 2025. Removed Tax Rate Analysis section from T1 extract summary for cleaner interface
 - June 24, 2025. Added marginal effective rate to Marginal Rates section including OAS clawback calculations for comprehensive tax planning
 - June 24, 2025. Updated Key Tax Information font size to match Marginal Rates section using font-medium instead of text-lg font-semibold for consistency
+- June 24, 2025. Completely revised Income tab to include all 30+ T1 income fields organized by category (Employment, Pension, Investment, Self-Employment, etc.)
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
