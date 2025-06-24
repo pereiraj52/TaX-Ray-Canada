@@ -27,9 +27,9 @@ export class TaxCalculator {
         and(
           eq(taxBrackets.jurisdiction, 'federal'),
           eq(taxBrackets.taxYear, taxYear),
-          lte(taxBrackets.minIncome, income.toString()),
+          lte(taxBrackets.minIncome, income),
           or(
-            gte(taxBrackets.maxIncome, income.toString()),
+            gte(taxBrackets.maxIncome, income),
             isNull(taxBrackets.maxIncome)
           )
         )
@@ -44,9 +44,9 @@ export class TaxCalculator {
         and(
           eq(taxBrackets.jurisdiction, province.toUpperCase()),
           eq(taxBrackets.taxYear, taxYear),
-          lte(taxBrackets.minIncome, income.toString()),
+          lte(taxBrackets.minIncome, income),
           or(
-            gte(taxBrackets.maxIncome, income.toString()),
+            gte(taxBrackets.maxIncome, income),
             isNull(taxBrackets.maxIncome)
           )
         )

@@ -705,6 +705,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Tax brackets API routes
+  app.get("/api/tax-brackets/marginal-rate", async (req, res) => {
+    try {
+      const { income, province, taxYear = 2024 } = req.query;
+
+      if (!income || !province) {
+        return res.status(400).json({
+          error: 'Income and province are required parameters'
+        });
+      }
+
+      const incomeNum = parseFloat(income as string);
+      if (isNaN(incomeNum) || incomeNum < 0) {
+        return res.status(400).json({
+          error: 'Income must be a valid positive number'
+        });
+      }
+
+      // Import TaxCalculator here to avoid circular dependencies
+      const { TaxCalculator } = await import('./services/taxCalculator');
+      const taxInfo = await TaxCalculator.calculateMarginalRate(
+        incomeNum,
+        province as string,
+        parseInt(taxYear as string)
+      );
+
+      res.json(taxInfo);
+    } catch (error) {
+      console.error('Error calculating marginal tax rate:', error);
+      res.status(500).json({
+        error: 'Failed to calculate marginal tax rate'
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

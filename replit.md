@@ -143,6 +143,8 @@ Changelog:
 - June 24, 2025. Replaced audit report button with magnifying glass icon positioned between reprocess and delete buttons in Tax Reports
 - June 24, 2025. Fixed Edit Data button functionality with full edit mode implementation including save/cancel capabilities and backend API integration
 - June 24, 2025. Updated tax report names to display "Name - Province - Year" format in both Tax Reports list and extracted data display header
+- June 24, 2025. Implemented comprehensive tax brackets reference table for accurate marginal rate calculations with federal and provincial rates for ON, AB, BC, SK, QC
+- June 24, 2025. Created TaxCalculator service and API endpoints to replace simplified tax rate approximations with precise calculations based on stored tax bracket data
 - June 24, 2025. Expanded Extracted T1 Data Display dashboard from 3 to 4 items, adding Total Income field for quick reference
 - June 24, 2025. Updated dashboard items to show Total Income, Total Tax, Average Rate, and Marginal Rate with calculated tax metrics
 - June 24, 2025. Changed title and dashboard font colors to primary green shade for consistent branding
