@@ -140,10 +140,6 @@ export default function HouseholdDetail() {
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">SIN:</span>
-                        <span className="font-medium">{client.sin || 'Not provided'}</span>
-                      </div>
-                      <div className="flex justify-between">
                         <span className="text-gray-600">Date of Birth:</span>
                         <span className="font-medium">{client.dateOfBirth || 'Not provided'}</span>
                       </div>
