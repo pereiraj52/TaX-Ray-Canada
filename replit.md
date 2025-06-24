@@ -147,6 +147,7 @@ Changelog:
 - June 24, 2025. Updated dashboard items to show Total Income, Total Tax, Average Rate, and Marginal Rate with calculated tax metrics
 - June 24, 2025. Changed title and dashboard font colors to primary green shade for consistent branding
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
+- June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 ```
 
 ## User Preferences

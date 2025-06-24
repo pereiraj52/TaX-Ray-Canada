@@ -11,10 +11,10 @@ interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
 }
 
-type TabType = 'identification' | 'income' | 'deductions' | 'credits' | 'taxes';
+type TabType = 'summary' | 'income' | 'deductions' | 'credits' | 'taxes' | 'identification';
 
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('identification');
+  const [activeTab, setActiveTab] = useState<TabType>('summary');
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const { toast } = useToast();
 
@@ -103,11 +103,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   };
 
   const tabs = [
-    { id: 'identification' as TabType, label: 'Identification', icon: User },
+    { id: 'summary' as TabType, label: 'Summary', icon: FileText },
     { id: 'income' as TabType, label: 'Income', icon: DollarSign },
     { id: 'deductions' as TabType, label: 'Deductions', icon: FileText },
     { id: 'credits' as TabType, label: 'Credits', icon: Calculator },
     { id: 'taxes' as TabType, label: 'Taxes', icon: File },
+    { id: 'identification' as TabType, label: 'Identification', icon: User },
   ];
 
   return (
@@ -189,6 +190,102 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
       {/* Tab Content */}
       <div className="py-6">
+        {activeTab === 'summary' && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Key Tax Information */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="font-semibold text-primary mb-4">Key Tax Information</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Total Income:</span>
+                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('15000'))}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Taxable Income:</span>
+                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('26000'))}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Total Tax:</span>
+                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('42000'))}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Net Income:</span>
+                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('23600'))}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Personal Information */}
+              <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                <h3 className="font-semibold text-primary mb-4">Personal Information</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Name:</span>
+                    <span className="font-medium text-primary">{getTextFieldValue('first_name')} {getTextFieldValue('last_name')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Province:</span>
+                    <span className="font-medium text-primary">{getTextFieldValue('province')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Tax Year:</span>
+                    <span className="font-medium text-primary">{t1Return.taxYear}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Marital Status:</span>
+                    <span className="font-medium text-primary">{getTextFieldValue('marital_status')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Tax Breakdown Chart */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <h3 className="font-semibold text-primary mb-4">Tax Rate Analysis</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">
+                    {(() => {
+                      const totalIncome = parseFloat(getFieldValue('15000') || '0');
+                      const totalTax = parseFloat(getFieldValue('42000') || '0');
+                      if (totalIncome === 0) return '0.00%';
+                      const rate = (totalTax / totalIncome) * 100;
+                      return `${rate.toFixed(2)}%`;
+                    })()}
+                  </div>
+                  <div className="text-sm text-gray-600">Average Tax Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">
+                    {(() => {
+                      const totalIncome = parseFloat(getFieldValue('15000') || '0');
+                      if (totalIncome <= 55000) return '20.05%';
+                      if (totalIncome <= 111000) return '31.00%';
+                      if (totalIncome <= 173000) return '43.41%';
+                      if (totalIncome <= 246000) return '46.67%';
+                      return '53.53%';
+                    })()}
+                  </div>
+                  <div className="text-sm text-gray-600">Marginal Tax Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">
+                    {(() => {
+                      const totalIncome = parseFloat(getFieldValue('15000') || '0');
+                      const netIncome = parseFloat(getFieldValue('23600') || '0');
+                      if (totalIncome === 0) return '0.00%';
+                      const rate = (netIncome / totalIncome) * 100;
+                      return `${rate.toFixed(2)}%`;
+                    })()}
+                  </div>
+                  <div className="text-sm text-gray-600">Net Income Rate</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {activeTab === 'identification' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
