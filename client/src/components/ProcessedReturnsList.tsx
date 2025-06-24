@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw } from "lucide-react";
+import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw, Search } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -16,6 +16,31 @@ interface ProcessedReturnsListProps {
 export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: ProcessedReturnsListProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  const generateReportMutation = useMutation({
+    mutationFn: (clientId: number) => HouseholdAPI.generateClientAuditReport(clientId),
+    onSuccess: (blob, clientId) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit-report-client-${clientId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast({
+        title: "Success",
+        description: "Audit report generated successfully",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to generate audit report",
+        variant: "destructive",
+      });
+    },
+  });
 
   const { data: household } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
@@ -186,6 +211,16 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick }: P
                             title="Reprocess T1 return"
                           >
                             <RefreshCw className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => generateReportMutation.mutate(t1Return.clientId)}
+                            disabled={generateReportMutation.isPending || t1Return.processingStatus !== 'completed'}
+                            className="h-6 w-6 p-0 text-green-500 hover:text-green-700 hover:bg-green-50"
+                            title="Generate audit report"
+                          >
+                            <Search className="h-3 w-3" />
                           </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>

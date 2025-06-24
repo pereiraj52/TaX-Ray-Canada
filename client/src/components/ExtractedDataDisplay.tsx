@@ -110,15 +110,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             <Edit className="mr-1 h-4 w-4" />
             Edit Data
           </Button>
-          <Button 
-            onClick={() => generateReportMutation.mutate()}
-            disabled={generateReportMutation.isPending}
-            className="bg-accent text-white hover:bg-green-600"
-            size="sm"
-          >
-            <File className="mr-1 h-4 w-4" />
-            {generateReportMutation.isPending ? "Generating..." : "Generate Audit Report"}
-          </Button>
+
         </div>
       </div>
 
