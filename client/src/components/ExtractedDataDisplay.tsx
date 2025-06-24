@@ -1,11 +1,8 @@
 import { useState } from "react";
-import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, Save } from "lucide-react";
+import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { T1ReturnWithFields } from "@shared/schema";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { HouseholdAPI, T1API } from "@/lib/api";
-import { useToast } from "@/hooks/use-toast";
+import T1FieldEditDialog from "@/components/T1FieldEditDialog";
 
 interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
@@ -15,41 +12,9 @@ type TabType = 'identification' | 'income' | 'deductions' | 'credits' | 'taxes';
 
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('identification');
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedFields, setEditedFields] = useState<Record<string, string>>({});
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
-  const saveFieldsMutation = useMutation({
-    mutationFn: async () => {
-      // Create API call to update T1 form fields
-      const updates = Object.entries(editedFields).map(([fieldCode, fieldValue]) => ({
-        fieldCode,
-        fieldValue,
-        t1ReturnId: t1Return.id
-      }));
-      
-      for (const update of updates) {
-        await T1API.updateT1FormField(update);
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/t1-returns", t1Return.id] });
-      setIsEditing(false);
-      setEditedFields({});
-      toast({
-        title: "Success",
-        description: "T1 data updated successfully",
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update T1 data",
-        variant: "destructive",
-      });
-    },
-  });
+
 
   const generateReportMutation = useMutation({
     mutationFn: () => HouseholdAPI.generateClientAuditReport(t1Return.clientId),
@@ -113,37 +78,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   };
 
   const getFieldValue = (fieldCode: string): string => {
-    if (isEditing && editedFields[fieldCode] !== undefined) {
-      return editedFields[fieldCode];
-    }
     const field = currencyFields.find(f => f.fieldCode === fieldCode);
     return field?.fieldValue || '0';
   };
 
-  const handleFieldChange = (fieldCode: string, value: string) => {
-    setEditedFields(prev => ({
-      ...prev,
-      [fieldCode]: value
-    }));
-  };
-
-  const renderEditableField = (fieldCode: string, label: string, isCurrency = true) => {
+  const renderField = (fieldCode: string, label: string, isCurrency = true) => {
     const value = getFieldValue(fieldCode);
-    
-    if (isEditing) {
-      return (
-        <div className="field-row">
-          <span className="field-label">{label}:</span>
-          <Input
-            type="text"
-            value={value}
-            onChange={(e) => handleFieldChange(fieldCode, e.target.value)}
-            className="w-32 h-8 text-sm inline-block ml-2"
-            placeholder={isCurrency ? "0.00" : ""}
-          />
-        </div>
-      );
-    }
     
     return (
       <div className="field-row">
@@ -177,38 +117,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             <CheckCircle className="mr-2 h-4 w-4" />
             Data Extracted Successfully
           </span>
-          {isEditing ? (
-            <>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditedFields({});
-                }}
-              >
-                Cancel
-              </Button>
-              <Button 
-                size="sm"
-                onClick={() => saveFieldsMutation.mutate()}
-                disabled={saveFieldsMutation.isPending}
-                className="bg-green-600 hover:bg-green-700 text-white"
-              >
-                <Save className="mr-1 h-4 w-4" />
-                {saveFieldsMutation.isPending ? 'Saving...' : 'Save Changes'}
-              </Button>
-            </>
-          ) : (
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => setIsEditing(true)}
-            >
-              <Edit className="mr-1 h-4 w-4" />
-              Edit Data
-            </Button>
-          )}
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setEditDialogOpen(true)}
+          >
+            <Edit className="mr-1 h-4 w-4" />
+            Edit Data
+          </Button>
 
         </div>
       </div>
@@ -565,6 +481,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
 
       </div>
+      
+      <T1FieldEditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        t1Return={t1Return}
+      />
     </div>
   );
 }
