@@ -155,6 +155,7 @@ Changelog:
 - June 24, 2025. Repositioned percentages to display inline next to dollar amounts instead of below for improved readability
 - June 24, 2025. Fixed dollar amount alignment by wrapping values in text-right div containers for consistent column alignment
 - June 24, 2025. Applied monospace font (font-mono) to dollar amounts for precise digit alignment while keeping percentages in sans-serif font
+- June 24, 2025. Updated Key Tax Information font styling to match dashboard items using text-lg font-semibold text-primary for consistent visual hierarchy
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
