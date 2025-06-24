@@ -34,6 +34,18 @@ export default function MarginalRateBreakdown({ income, province }: MarginalRate
           <span className="font-medium text-primary">Loading...</span>
         </div>
         <div className="flex justify-between">
+          <span className="text-gray-600">Marginal Capital Gains Rate:</span>
+          <span className="font-medium text-primary">Loading...</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Marginal Eligible Dividend Rate:</span>
+          <span className="font-medium text-primary">Loading...</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Marginal Non-Eligible Dividend Rate:</span>
+          <span className="font-medium text-primary">Loading...</span>
+        </div>
+        <div className="flex justify-between">
           <span className="text-gray-600">Marginal Effective Rate:</span>
           <span className="font-medium text-primary">Loading...</span>
         </div>
@@ -61,6 +73,39 @@ export default function MarginalRateBreakdown({ income, province }: MarginalRate
   };
   
   const marginalEffectiveRate = calculateMarginalEffectiveRate(income, combinedRate);
+  
+  // Calculate special marginal rates for different income types
+  const marginalCapitalGainsRate = combinedRate * 0.5; // Only 50% of capital gains are taxable
+  
+  // Eligible dividends get gross-up and dividend tax credit
+  const marginalEligibleDividendRate = (() => {
+    // Eligible dividends: 38% gross-up, then federal DTC of 25% and provincial varies
+    const grossUpRate = 1.38;
+    const federalDTC = 0.25;
+    const provincialDTC = province === 'ON' ? 0.10 : 0.08; // Simplified provincial rates
+    
+    const grossedUpIncome = grossUpRate;
+    const taxOnGrossedUp = grossedUpIncome * (combinedRate / 100);
+    const totalDTC = federalDTC + provincialDTC;
+    const netTax = taxOnGrossedUp - totalDTC;
+    
+    return Math.max(0, netTax * 100); // Convert to percentage
+  })();
+  
+  // Non-eligible dividends: smaller gross-up and credit
+  const marginalNonEligibleDividendRate = (() => {
+    // Non-eligible dividends: 15% gross-up, smaller dividend tax credits
+    const grossUpRate = 1.15;
+    const federalDTC = 0.0833; // Federal DTC rate for non-eligible
+    const provincialDTC = province === 'ON' ? 0.0298 : 0.025; // Simplified provincial rates
+    
+    const grossedUpIncome = grossUpRate;
+    const taxOnGrossedUp = grossedUpIncome * (combinedRate / 100);
+    const totalDTC = federalDTC + provincialDTC;
+    const netTax = taxOnGrossedUp - totalDTC;
+    
+    return Math.max(0, netTax * 100); // Convert to percentage
+  })();
 
   return (
     <div className="space-y-3">
@@ -75,6 +120,18 @@ export default function MarginalRateBreakdown({ income, province }: MarginalRate
       <div className="flex justify-between">
         <span className="text-gray-600">Combined Marginal Rate:</span>
         <span className="font-medium text-primary">{combinedRate.toFixed(2)}%</span>
+      </div>
+      <div className="flex justify-between">
+        <span className="text-gray-600">Marginal Capital Gains Rate:</span>
+        <span className="font-medium text-primary">{marginalCapitalGainsRate.toFixed(2)}%</span>
+      </div>
+      <div className="flex justify-between">
+        <span className="text-gray-600">Marginal Eligible Dividend Rate:</span>
+        <span className="font-medium text-primary">{marginalEligibleDividendRate.toFixed(2)}%</span>
+      </div>
+      <div className="flex justify-between">
+        <span className="text-gray-600">Marginal Non-Eligible Dividend Rate:</span>
+        <span className="font-medium text-primary">{marginalNonEligibleDividendRate.toFixed(2)}%</span>
       </div>
       <div className="flex justify-between">
         <span className="text-gray-600">Marginal Effective Rate:</span>
