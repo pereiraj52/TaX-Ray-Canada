@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, ChevronDown, ChevronRight, Minus, Plus } from "lucide-react";
+import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, ChevronDown, ChevronRight, Minus, Plus, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { T1ReturnWithFields } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
@@ -214,7 +214,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     { id: 'income' as TabType, label: 'Income', icon: DollarSign },
     { id: 'deductions' as TabType, label: 'Deductions', icon: Minus },
     { id: 'credits' as TabType, label: 'Credits', icon: Plus },
-    { id: 'taxes' as TabType, label: 'Taxes', icon: File },
+    { id: 'taxes' as TabType, label: 'Taxes', icon: Building2 },
     { id: 'identification' as TabType, label: 'Identification', icon: User },
   ];
 
