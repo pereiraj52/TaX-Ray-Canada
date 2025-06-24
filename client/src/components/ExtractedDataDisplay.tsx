@@ -391,7 +391,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             {/* RRSP/RRIF Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-primary">RRSP/RRIF</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Account Balance:</span>
                   <div className="text-right">
@@ -400,6 +400,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">2024 Contribution:</span>
                   <div className="text-right">
                     <span className="font-mono">$0.00</span>
                   </div>
@@ -410,7 +416,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             {/* TFSA Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-primary">TFSA</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Account Balance:</span>
                   <div className="text-right">
@@ -419,6 +425,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">2024 Contribution:</span>
                   <div className="text-right">
                     <span className="font-mono">$0.00</span>
                   </div>
@@ -429,7 +441,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             {/* FHSA Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-primary">FHSA</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Account Balance:</span>
                   <div className="text-right">
@@ -438,6 +450,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">2024 Contribution:</span>
                   <div className="text-right">
                     <span className="font-mono">$0.00</span>
                   </div>
@@ -448,7 +466,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             {/* RESP Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-primary">RESP</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Account Balance:</span>
                   <div className="text-right">
@@ -457,6 +475,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">2024 Contribution:</span>
                   <div className="text-right">
                     <span className="font-mono">$0.00</span>
                   </div>
@@ -467,7 +491,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             {/* RDSP Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-primary">RDSP</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Account Balance:</span>
                   <div className="text-right">
@@ -476,6 +500,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Contribution Room:</span>
+                  <div className="text-right">
+                    <span className="font-mono">$0.00</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-700">2024 Contribution:</span>
                   <div className="text-right">
                     <span className="font-mono">$0.00</span>
                   </div>

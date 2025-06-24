@@ -179,6 +179,7 @@ Changelog:
 - June 24, 2025. Changed taxes tab icon from File to Building2 (bank outline) for better visual representation of tax institution
 - June 24, 2025. Added new Accounts tab after Taxes with TrendingUp icon representing stock market chart for investment account information
 - June 24, 2025. Created comprehensive account sections for RRSP/RRIF, TFSA, FHSA, RESP, RDSP, and Capital Loss Carry Forwards with account balance and contribution room fields
+- June 24, 2025. Added 2024 Contribution field to all account sections (RRSP/RRIF, TFSA, FHSA, RESP, RDSP) with 3-column grid layout
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
