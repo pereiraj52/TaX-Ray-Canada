@@ -191,40 +191,58 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <h3 className="font-semibold text-primary mb-4">Key Tax Information</h3>
                 <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Total Income:</span>
-                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('15000'))}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Total Deductions:</span>
-                    <span className="font-medium text-primary">
-                      {(() => {
-                        const totalIncome = parseFloat(getFieldValue('15000') || '0');
-                        const taxableIncome = parseFloat(getFieldValue('26000') || '0');
-                        const totalDeductions = totalIncome - taxableIncome;
-                        return formatCurrency(totalDeductions.toString());
-                      })()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Taxable Income:</span>
-                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('26000'))}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Total Tax:</span>
-                    <span className="font-medium text-primary">{formatCurrency(getFieldValue('43700'))}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Net Income:</span>
-                    <span className="font-medium text-primary">{
-                      (() => {
-                        const totalIncome = parseFloat(getFieldValue('15000') || '0');
-                        const totalTax = parseFloat(getFieldValue('43500') || '0');
-                        const netIncome = totalIncome - totalTax;
-                        return formatCurrency(netIncome.toString());
-                      })()
-                    }</span>
-                  </div>
+                  {(() => {
+                    const totalIncome = parseFloat(getFieldValue('15000') || '0');
+                    const taxableIncome = parseFloat(getFieldValue('26000') || '0');
+                    const totalDeductions = totalIncome - taxableIncome;
+                    const totalTax = parseFloat(getFieldValue('43700') || '0');
+                    const netIncome = totalIncome - parseFloat(getFieldValue('43500') || '0');
+                    
+                    const calculatePercentage = (amount: number) => {
+                      if (totalIncome === 0) return '0.0%';
+                      return `${((amount / totalIncome) * 100).toFixed(1)}%`;
+                    };
+                    
+                    return (
+                      <>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Total Income:</span>
+                          <div className="text-right">
+                            <div className="font-medium text-primary">{formatCurrency(getFieldValue('15000'))}</div>
+                            <div className="text-sm text-gray-500">100.0%</div>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Total Deductions:</span>
+                          <div className="text-right">
+                            <div className="font-medium text-primary">{formatCurrency(totalDeductions.toString())}</div>
+                            <div className="text-sm text-gray-500">{calculatePercentage(totalDeductions)}</div>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Taxable Income:</span>
+                          <div className="text-right">
+                            <div className="font-medium text-primary">{formatCurrency(getFieldValue('26000'))}</div>
+                            <div className="text-sm text-gray-500">{calculatePercentage(taxableIncome)}</div>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Total Tax:</span>
+                          <div className="text-right">
+                            <div className="font-medium text-primary">{formatCurrency(getFieldValue('43700'))}</div>
+                            <div className="text-sm text-gray-500">{calculatePercentage(totalTax)}</div>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Net Income:</span>
+                          <div className="text-right">
+                            <div className="font-medium text-primary">{formatCurrency(netIncome.toString())}</div>
+                            <div className="text-sm text-gray-500">{calculatePercentage(netIncome)}</div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
 

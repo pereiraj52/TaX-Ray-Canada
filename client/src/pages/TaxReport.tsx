@@ -107,19 +107,73 @@ export default function TaxReport() {
               <CardContent className="p-6">
                 <h3 className="font-medium text-gray-900 mb-4">Household Financial Summary</h3>
                 <div className="space-y-3">
+                  {(() => {
+                    // Calculate totals first
+                    let totalIncomeSum = 0;
+                    let totalTaxableIncomeSum = 0;
+                    let totalTaxSum = 0;
+                    
+                    taxYearReturns.forEach(t1Return => {
+                      const t1WithFields = t1Return as any;
+                      if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                        const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                        const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                        const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                        
+                        if (incomeField?.fieldValue) {
+                          const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
+                          if (!isNaN(value)) totalIncomeSum += value;
+                        }
+                        if (taxableField?.fieldValue) {
+                          const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
+                          if (!isNaN(value)) totalTaxableIncomeSum += value;
+                        }
+                        if (taxField?.fieldValue) {
+                          const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
+                          if (!isNaN(value)) totalTaxSum += value;
+                        }
+                      }
+                    });
+                    
+                    const totalDeductionsSum = totalIncomeSum - totalTaxableIncomeSum;
+                    
+                    const calculatePercentage = (amount: number) => {
+                      if (totalIncomeSum === 0) return '0.0%';
+                      return `${((amount / totalIncomeSum) * 100).toFixed(1)}%`;
+                    };
+                    
+                    return (
+                      <>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Total Income:</span>
+                          <div className="text-right">
+                            <div className="font-medium">${totalIncomeSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                            <div className="text-sm text-gray-500">100.0%</div>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Total Deductions:</span>
+                          <div className="text-right">
+                            <div className="font-medium">${totalDeductionsSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                            <div className="text-sm text-gray-500">{calculatePercentage(totalDeductionsSum)}</div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Total Income:</span>
+                    <span className="text-gray-600">Total CPP Contributions:</span>
                     <span className="font-medium">
                       ${(() => {
                         let total = 0;
                         taxYearReturns.forEach(t1Return => {
                           const t1WithFields = t1Return as any;
                           if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            const incomeField = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '15000'
+                            const cppField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '30800'
                             );
-                            if (incomeField?.fieldValue) {
-                              const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
+                            if (cppField?.fieldValue) {
+                              const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
                               if (!isNaN(value)) total += value;
                             }
                           }
@@ -132,44 +186,87 @@ export default function TaxReport() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Total Deductions:</span>
+                    <span className="text-gray-600">Total EI Premiums:</span>
                     <span className="font-medium">
                       ${(() => {
-                        let totalIncome = 0;
-                        let totalTaxableIncome = 0;
-                        
+                        let total = 0;
                         taxYearReturns.forEach(t1Return => {
                           const t1WithFields = t1Return as any;
                           if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            // Total Income (Line 15000)
-                            const incomeField = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '15000'
+                            const eiField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '31200'
                             );
-                            // Taxable Income (Line 26000)
-                            const taxableField = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '26000'
-                            );
-                            
-                            if (incomeField?.fieldValue) {
-                              const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
-                              if (!isNaN(value)) totalIncome += value;
-                            }
-                            
-                            if (taxableField?.fieldValue) {
-                              const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
-                              if (!isNaN(value)) totalTaxableIncome += value;
+                            if (eiField?.fieldValue) {
+                              const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) total += value;
                             }
                           }
                         });
-                        
-                        const totalDeductions = totalIncome - totalTaxableIncome;
-                        return totalDeductions.toLocaleString('en-US', {
+                        return total.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2
                         });
                       })()}
                     </span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Total Tax Bill:</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            const taxField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '42000'
+                            );
+                            if (taxField?.fieldValue) {
+                              const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) total += value;
+                            }
+                          }
+                        });
+                        return total.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
+                      })()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Net Income:</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let totalIncome = 0;
+                        let totalTax = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            const incomeField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '15000'
+                            );
+                            const taxField = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '43500'
+                            );
+                            if (incomeField?.fieldValue) {
+                              const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) totalIncome += value;
+                            }
+                            if (taxField?.fieldValue) {
+                              const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
+                              if (!isNaN(value)) totalTax += value;
+                            }
+                          }
+                        });
+                        const netIncome = totalIncome - totalTax;
+                        return netIncome.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
+                      })()}
+                    </span>
+                  </div>
+                </div>
 
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total CPP Contributions:</span>
