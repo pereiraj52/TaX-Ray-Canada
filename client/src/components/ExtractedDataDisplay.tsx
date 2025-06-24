@@ -489,7 +489,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Pension & Retirement Income</h4>
+                    <h4 className="font-medium text-primary">Pension & Retirement Income</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['11300', '11400', '11500', '11600', '11700', '11701', '11800']))}
@@ -617,7 +617,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Other Income</h4>
+                    <h4 className="font-medium text-primary">Other Income</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['12500', '12600', '12700', '12900', '12905', '12906', '13000', '13010']))}
@@ -721,7 +721,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-semibold text-secondary">Other Sources</h4>
+                    <h4 className="font-medium text-primary">Other Sources</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['14400', '14500', '14600']))}
