@@ -745,7 +745,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-semibold text-secondary">Retirement Plan Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['20600', '20700', '20800', '20805', '20810']))}
+                    {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810']))}
                   </span>
                 </button>
                 {!collapsedSections['retirement-plan-deductions'] && (

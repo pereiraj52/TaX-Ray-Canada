@@ -166,6 +166,7 @@ Changelog:
 - June 24, 2025. Set all income sections to be collapsed by default when Income tab loads for cleaner initial interface
 - June 24, 2025. Completely rebuilt Deductions tab with comprehensive federal and provincial deductions organized into 6 collapsible categories: Retirement Plan, Personal, Support & Investment, Employment, Specialized, and Provincial (Ontario) deductions
 - June 24, 2025. Added missing deduction fields to PDF parser mapping including FHSA, PRPP, split pension, UCCB repayment, enhanced CPP/QPP, and social benefits repayment for complete T1 deduction coverage
+- June 24, 2025. Excluded pension adjustment (Line 20600) from retirement plan deductions total calculation as it's an informational adjustment rather than an actual deduction
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
