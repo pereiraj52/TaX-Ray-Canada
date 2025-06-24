@@ -3,7 +3,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
 import { Save, X } from "lucide-react";
 import { T1ReturnWithFields, T1FormField } from "@shared/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -170,18 +169,18 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
               <div key={group.category} className="border rounded-lg p-4">
                 <h3 className="text-lg font-semibold mb-4 text-secondary border-b pb-2">
                   {group.category}
-                  <Badge variant="secondary" className="ml-2">
-                    {group.fields.length} fields
-                  </Badge>
+                  <span className="ml-2 text-sm font-normal text-gray-500">
+                    ({group.fields.length} fields)
+                  </span>
                 </h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {group.fields.map((field) => (
                     <div key={field.id} className="space-y-2">
                       <div className="flex items-center space-x-2">
-                        <Badge variant="outline" className="text-xs">
+                        <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded border">
                           {field.fieldCode}
-                        </Badge>
+                        </span>
                         <label className="text-sm font-medium text-gray-700">
                           {field.fieldName}
                         </label>
