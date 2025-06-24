@@ -202,7 +202,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                                 }
                               }
                               
-                              return `${clientName} - ${province} - ${year}`;
+                              return `${clientName} - Tax Form - ${province} - ${year}`;
                             })()}
                           </button>
                         </div>
@@ -266,7 +266,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                                       }
                                     }
                                     
-                                    return `${clientName} - ${province} - ${year}`;
+                                    return `${clientName} - Tax Form - ${province} - ${year}`;
                                   })()}? This action cannot be undone and will permanently remove all extracted tax data.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
