@@ -175,6 +175,7 @@ Changelog:
 - June 24, 2025. Standardized font styling across all tabs to use font-medium text-primary for consistent visual hierarchy matching the Summary tab
 - June 24, 2025. Fixed Tax Summary and Identification tabs to use consistent font-medium text-primary styling instead of field-row classes with proper flex layouts
 - June 24, 2025. Changed deductions tab icon from FileText to Minus for better visual representation
+- June 24, 2025. Changed credits tab icon from Calculator to Plus for better visual representation
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
