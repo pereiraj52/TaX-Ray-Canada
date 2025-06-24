@@ -680,6 +680,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Create T1 form field
+  app.post("/api/t1-form-fields", async (req, res) => {
+    try {
+      const { fieldCode, fieldValue, t1ReturnId, fieldName, fieldType } = req.body;
+
+      if (!fieldCode || !fieldValue || !t1ReturnId) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Create new field
+      await storage.createT1FormField({
+        t1ReturnId,
+        fieldCode,
+        fieldValue,
+        fieldName: fieldName || `Field ${fieldCode}`,
+        fieldType: fieldType || 'currency'
+      });
+
+      res.json({ message: "Field created successfully" });
+    } catch (error) {
+      console.error("Error creating T1 form field:", error);
+      res.status(500).json({ message: "Failed to create field" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
