@@ -139,22 +139,16 @@ export default function TaxReport() {
                         taxYearReturns.forEach(t1Return => {
                           const t1WithFields = t1Return as any;
                           if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            // Line 23300: Net Income Before Deductions Adjustment
-                            const line23300Field = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '23300'
-                            );
-                            // Line 25700: Other deductions
-                            const line25700Field = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '25700'
-                            );
+                            // Sum actual deduction fields that are extracted
+                            const deductionCodes = ['20700', '20800', '21400', '21200']; // RPP, RRSP, Child Care, Union Dues
                             
-                            const line23300 = line23300Field?.fieldValue ? 
-                              parseFloat(String(line23300Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                            const line25700 = line25700Field?.fieldValue ? 
-                              parseFloat(String(line25700Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                            
-                            if (!isNaN(line23300)) total += line23300;
-                            if (!isNaN(line25700)) total += line25700;
+                            deductionCodes.forEach(code => {
+                              const field = t1WithFields.formFields.find((field: any) => field.fieldCode === code);
+                              if (field?.fieldValue) {
+                                const value = parseFloat(String(field.fieldValue).replace(/[,$\s]/g, ''));
+                                if (!isNaN(value)) total += value;
+                              }
+                            });
                           }
                         });
                         return total.toLocaleString('en-US', {
