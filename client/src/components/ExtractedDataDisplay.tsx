@@ -134,6 +134,18 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     }, 0);
   };
 
+  const getTotalDeductions = (): number => {
+    // Calculate total deductions by summing all sub-category totals
+    const retirementPlanTotal = getSectionTotal(['20700', '20800', '20805', '20810']);
+    const personalTotal = getSectionTotal(['21000', '21200', '21300', '21400', '21500', '21700', '21900']);
+    const supportInvestmentTotal = getSectionTotal(['21999', '22000', '22100', '22200', '22215']);
+    const employmentTotal = getSectionTotal(['22900', '23100']);
+    const specializedTotal = getSectionTotal(['22400', '23200', '23500']);
+    const provincialTotal = getSectionTotal(['61000', '61100', '61200', '61300', '61400', '61500']);
+    
+    return retirementPlanTotal + personalTotal + supportInvestmentTotal + employmentTotal + specializedTotal + provincialTotal;
+  };
+
   const CollapsibleSection = ({ 
     id, 
     title, 
@@ -991,9 +1003,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 <div className="text-center">
                   <div className="font-semibold text-green-800 mb-2">Total Deductions</div>
                   <div className="text-2xl font-bold text-green-600">
-                    {formatCurrency(getFieldValue('23300'))}
+                    {formatCurrency(getTotalDeductions())}
                   </div>
-                  <div className="text-sm text-green-700 mt-1">Line 23300</div>
+                  <div className="text-sm text-green-700 mt-1">Calculated from all deduction categories</div>
                 </div>
               </div>
             </div>
