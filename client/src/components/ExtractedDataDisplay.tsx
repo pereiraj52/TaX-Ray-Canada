@@ -119,24 +119,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     }, 0);
   };
 
-  const formatCurrency = (value: string | number): string => {
-    const num = typeof value === 'string' ? parseFloat(value) : value;
-    if (isNaN(num) || num === 0) return '$0.00';
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(num);
-  };
-
-  const getSectionTotal = (fieldCodes: string[]): number => {
-    return fieldCodes.reduce((total, code) => {
-      const value = parseFloat(getFieldValue(code) || '0');
-      return total + value;
-    }, 0);
-  };
-
   const CollapsibleSection = ({ 
     id, 
     title, 
