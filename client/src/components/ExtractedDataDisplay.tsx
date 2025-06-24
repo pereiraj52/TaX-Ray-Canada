@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { HouseholdAPI } from "@/lib/api";
 import T1FieldEditDialog from "@/components/T1FieldEditDialog";
 import { useToast } from "@/hooks/use-toast";
+import MarginalRateDisplay from "@/components/MarginalRateDisplay";
 
 interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
@@ -154,17 +155,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="font-medium text-primary mb-2">Marginal Rate</h3>
           <p className="text-lg font-semibold text-primary">
-            {(() => {
-              const province = getTextFieldValue('province');
-              const totalIncome = parseFloat(getFieldValue('15000') || '0');
-              // Simplified marginal rate calculation based on 2024 tax brackets
-              // This is a basic approximation - in practice, you'd want more detailed calculations
-              if (totalIncome <= 55000) return '20.05%'; // Combined federal + provincial for most provinces
-              if (totalIncome <= 111000) return '31.00%';
-              if (totalIncome <= 173000) return '43.41%';
-              if (totalIncome <= 246000) return '46.67%';
-              return '53.53%';
-            })()}
+            <MarginalRateDisplay 
+              income={parseFloat(getFieldValue('15000') || '0')} 
+              province={getTextFieldValue('province')} 
+            />
           </p>
         </div>
       </div>
