@@ -150,7 +150,7 @@ Changelog:
 - June 24, 2025. Updated dashboard items to show Total Income, Total Tax, Average Rate, and Marginal Rate with calculated tax metrics
 - June 24, 2025. Changed title and dashboard font colors to primary green shade for consistent branding
 - June 24, 2025. Added Total Deductions field to key tax information summary calculating difference between Total Income and Taxable Income positioned between Total Income and Taxable Income
-- June 24, 2025. Added Total Credits field between Taxable Income and Total Tax calculating sum of lines 35000, 31000, and 58350 for comprehensive tax credit summary
+- June 24, 2025. Removed Total Credits field from Key Tax Information section for simplified summary display
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
