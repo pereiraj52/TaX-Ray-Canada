@@ -113,7 +113,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-secondary">
+        <h2 className="text-xl font-semibold text-primary">
           {t1Return.client.firstName} {t1Return.client.lastName} - {getTextFieldValue('province')} - {t1Return.taxYear}
         </h2>
         <div className="flex items-center space-x-3">
@@ -127,20 +127,20 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       {/* Tax Year and Basic Info */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-medium text-secondary mb-2">Total Income</h3>
-          <p className="text-lg font-semibold text-secondary">
+          <h3 className="font-medium text-primary mb-2">Total Income</h3>
+          <p className="text-lg font-semibold text-primary">
             {formatCurrency(getFieldValue('15000'))}
           </p>
         </div>
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-medium text-secondary mb-2">Total Tax</h3>
-          <p className="text-lg font-semibold text-secondary">
+          <h3 className="font-medium text-primary mb-2">Total Tax</h3>
+          <p className="text-lg font-semibold text-primary">
             {formatCurrency(getFieldValue('42000'))}
           </p>
         </div>
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-medium text-secondary mb-2">Average Rate</h3>
-          <p className="text-lg font-semibold text-secondary">
+          <h3 className="font-medium text-primary mb-2">Average Rate</h3>
+          <p className="text-lg font-semibold text-primary">
             {(() => {
               const totalIncome = parseFloat(getFieldValue('15000') || '0');
               const totalTax = parseFloat(getFieldValue('42000') || '0');
@@ -151,8 +151,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           </p>
         </div>
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-medium text-secondary mb-2">Marginal Rate</h3>
-          <p className="text-lg font-semibold text-secondary">
+          <h3 className="font-medium text-primary mb-2">Marginal Rate</h3>
+          <p className="text-lg font-semibold text-primary">
             {(() => {
               const province = getTextFieldValue('province');
               const totalIncome = parseFloat(getFieldValue('15000') || '0');

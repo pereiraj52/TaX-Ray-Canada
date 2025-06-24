@@ -145,6 +145,7 @@ Changelog:
 - June 24, 2025. Updated tax report names to display "Name - Province - Year" format in both Tax Reports list and extracted data display header
 - June 24, 2025. Expanded Extracted T1 Data Display dashboard from 3 to 4 items, adding Total Income field for quick reference
 - June 24, 2025. Updated dashboard items to show Total Income, Total Tax, Average Rate, and Marginal Rate with calculated tax metrics
+- June 24, 2025. Changed title and dashboard font colors to primary green shade for consistent branding
 ```
 
 ## User Preferences
