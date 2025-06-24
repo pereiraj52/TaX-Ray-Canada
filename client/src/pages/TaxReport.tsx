@@ -171,6 +171,46 @@ export default function TaxReport() {
                     </span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-gray-600">Total Credits:</span>
+                    <span className="font-medium">
+                      ${(() => {
+                        let total = 0;
+                        taxYearReturns.forEach(t1Return => {
+                          const t1WithFields = t1Return as any;
+                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                            // Basic personal amount (Line 35000)
+                            const line35000Field = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '35000'
+                            );
+                            // Other federal credits (Line 31000)
+                            const line31000Field = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '31000'
+                            );
+                            // Provincial credits (Line 58350 for Ontario)
+                            const line58350Field = t1WithFields.formFields.find((field: any) => 
+                              field.fieldCode === '58350'
+                            );
+                            
+                            const line35000 = line35000Field?.fieldValue ? 
+                              parseFloat(String(line35000Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                            const line31000 = line31000Field?.fieldValue ? 
+                              parseFloat(String(line31000Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                            const line58350 = line58350Field?.fieldValue ? 
+                              parseFloat(String(line58350Field.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                            
+                            if (!isNaN(line35000)) total += line35000;
+                            if (!isNaN(line31000)) total += line31000;
+                            if (!isNaN(line58350)) total += line58350;
+                          }
+                        });
+                        return total.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        });
+                      })()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Total CPP Contributions:</span>
                     <span className="font-medium">
                       ${(() => {

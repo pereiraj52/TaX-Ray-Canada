@@ -211,6 +211,18 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <span className="font-medium text-primary">{formatCurrency(getFieldValue('26000'))}</span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-gray-600">Total Credits:</span>
+                    <span className="font-medium text-primary">
+                      {(() => {
+                        const line35000 = parseFloat(getFieldValue('35000') || '0'); // Basic personal amount
+                        const line31000 = parseFloat(getFieldValue('31000') || '0'); // Other federal credits
+                        const line58350 = parseFloat(getFieldValue('58350') || '0'); // Ontario credits
+                        const totalCredits = line35000 + line31000 + line58350;
+                        return formatCurrency(totalCredits.toString());
+                      })()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Total Tax:</span>
                     <span className="font-medium text-primary">{formatCurrency(getFieldValue('43700'))}</span>
                   </div>
