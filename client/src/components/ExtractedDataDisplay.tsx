@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, ChevronDown, ChevronRight, Minus, Plus, Building2 } from "lucide-react";
+import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, ChevronDown, ChevronRight, Minus, Plus, Building2, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { T1ReturnWithFields } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
 }
 
-type TabType = 'summary' | 'income' | 'deductions' | 'credits' | 'taxes' | 'identification';
+type TabType = 'summary' | 'income' | 'deductions' | 'credits' | 'taxes' | 'accounts' | 'identification';
 
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('summary');
@@ -215,6 +215,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     { id: 'deductions' as TabType, label: 'Deductions', icon: Minus },
     { id: 'credits' as TabType, label: 'Credits', icon: Plus },
     { id: 'taxes' as TabType, label: 'Taxes', icon: Building2 },
+    { id: 'accounts' as TabType, label: 'Accounts', icon: TrendingUp },
     { id: 'identification' as TabType, label: 'Identification', icon: User },
   ];
 
@@ -377,6 +378,21 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             </div>
 
 
+          </div>
+        )}
+
+        {activeTab === 'accounts' && (
+          <div className="space-y-6">
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-purple-800 mb-2">Investment Accounts</h3>
+              <p className="text-purple-700 text-sm">RRSP, TFSA, and other investment account information</p>
+            </div>
+            
+            <div className="text-center py-12">
+              <TrendingUp className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-600 mb-2">Investment Accounts</h3>
+              <p className="text-gray-500">Account information will be displayed here</p>
+            </div>
           </div>
         )}
 
