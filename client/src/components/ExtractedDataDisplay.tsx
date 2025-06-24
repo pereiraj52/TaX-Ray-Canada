@@ -7,6 +7,7 @@ import { HouseholdAPI } from "@/lib/api";
 import T1FieldEditDialog from "@/components/T1FieldEditDialog";
 import { useToast } from "@/hooks/use-toast";
 import MarginalRateDisplay from "@/components/MarginalRateDisplay";
+import MarginalRateBreakdown from "@/components/MarginalRateBreakdown";
 
 interface ExtractedDataDisplayProps {
   t1Return: T1ReturnWithFields;
@@ -251,26 +252,21 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
               </div>
 
-              {/* Personal Information */}
+              {/* Marginal Rates */}
               <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                <h3 className="font-semibold text-primary mb-4">Personal Information</h3>
+                <h3 className="font-semibold text-primary mb-4">Marginal Rates</h3>
                 <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Name:</span>
-                    <span className="font-medium text-primary">{getTextFieldValue('first_name')} {getTextFieldValue('last_name')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Province:</span>
-                    <span className="font-medium text-primary">{getTextFieldValue('province')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Tax Year:</span>
-                    <span className="font-medium text-primary">{t1Return.taxYear}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Marital Status:</span>
-                    <span className="font-medium text-primary">{getTextFieldValue('marital_status')}</span>
-                  </div>
+                  {(() => {
+                    const totalIncome = parseFloat(getFieldValue('15000') || '0');
+                    const province = getTextFieldValue('province');
+                    
+                    return (
+                      <MarginalRateBreakdown 
+                        income={totalIncome} 
+                        province={province} 
+                      />
+                    );
+                  })()}
                 </div>
               </div>
             </div>
