@@ -383,43 +383,43 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         {activeTab === 'identification' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div className="field-row">
-                <span className="field-label">First Name:</span>
-                <span className="field-value">{getTextFieldValue('first_name')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">First Name:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('first_name')}</span>
               </div>
-              <div className="field-row">
-                <span className="field-label">Last Name:</span>
-                <span className="field-value">{getTextFieldValue('last_name')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Last Name:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('last_name')}</span>
               </div>
-              <div className="field-row">
-                <span className="field-label">Social Insurance Number:</span>
-                <span className="field-value">{getTextFieldValue('sin')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Social Insurance Number:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('sin')}</span>
               </div>
-              <div className="field-row">
-                <span className="field-label">Date of Birth:</span>
-                <span className="field-value">{getTextFieldValue('date_of_birth')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Date of Birth:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('date_of_birth')}</span>
               </div>
-              <div className="field-row">
-                <span className="field-label">Marital Status:</span>
-                <span className="field-value">{getTextFieldValue('marital_status')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Marital Status:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('marital_status')}</span>
               </div>
             </div>
             <div className="space-y-4">
-              <div className="field-row">
-                <span className="field-label">Address:</span>
-                <span className="field-value">{getTextFieldValue('address_line1')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Address:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('address_line1')}</span>
               </div>
-              <div className="field-row">
-                <span className="field-label">City:</span>
-                <span className="field-value">{getTextFieldValue('city')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">City:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('city')}</span>
               </div>
-              <div className="field-row">
-                <span className="field-label">Postal Code:</span>
-                <span className="field-value">{getTextFieldValue('postal_code')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Postal Code:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('postal_code')}</span>
               </div>
-              <div className="field-row">
-                <span className="field-label">Province:</span>
-                <span className="field-value">{getTextFieldValue('province')}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Province:</span>
+                <span className="font-medium text-primary">{getTextFieldValue('province')}</span>
               </div>
             </div>
           </div>
@@ -1400,31 +1400,31 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             </div>
             
             <div className="max-w-2xl mx-auto space-y-6">
-              <div className="field-row text-lg">
-                <span className="field-label">Federal Tax (Line 42000):</span>
-                <span className="field-value font-mono">{formatCurrency(getFieldValue('42000'))}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Federal Tax (Line 42000):</span>
+                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('42000'))}</span>
               </div>
               
-              <div className="field-row text-lg">
-                <span className="field-label">Provincial Tax (Ontario):</span>
-                <span className="field-value font-mono">{formatCurrency(getFieldValue('42800'))}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Provincial Tax (Ontario):</span>
+                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('42800'))}</span>
               </div>
               
-              <div className="field-row text-lg font-semibold border-t pt-4">
-                <span className="field-label">Total Tax (Line 43500):</span>
-                <span className="field-value font-mono">{formatCurrency(getFieldValue('43500'))}</span>
+              <div className="flex justify-between items-center border-t pt-4">
+                <span className="font-medium text-primary">Total Tax (Line 43500):</span>
+                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('43500'))}</span>
               </div>
               
-              <div className="field-row text-lg">
-                <span className="field-label">Taxes Paid (Line 43700):</span>
-                <span className="field-value font-mono">{formatCurrency(getFieldValue('43700'))}</span>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-primary">Taxes Paid (Line 43700):</span>
+                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('43700'))}</span>
               </div>
               
-              <div className="field-row text-xl font-bold border-t pt-4 bg-gray-50 p-4 rounded-lg">
-                <span className="field-label">
+              <div className="flex justify-between items-center border-t pt-4 bg-gray-50 p-4 rounded-lg">
+                <span className="font-medium text-primary">
                   {getRefundOrBalance() >= 0 ? 'Refund Due:' : 'Balance Owing:'}
                 </span>
-                <span className={`field-value font-mono ${getRefundOrBalance() >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`font-medium font-mono ${getRefundOrBalance() >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {formatCurrency(Math.abs(getRefundOrBalance()))}
                 </span>
               </div>
