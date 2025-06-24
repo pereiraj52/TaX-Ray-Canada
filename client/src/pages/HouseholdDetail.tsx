@@ -19,6 +19,7 @@ export default function HouseholdDetail() {
   const params = useParams();
   const householdId = parseInt(params.id || "0");
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [selectedT1ReturnId, setSelectedT1ReturnId] = useState<number | null>(null);
   const [processingT1Returns, setProcessingT1Returns] = useState<Set<number>>(new Set());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
