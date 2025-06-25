@@ -208,7 +208,7 @@ Changelog:
 - June 25, 2025. Implemented Marginal Effective Rate calculation using comprehensive tax calculator: runs calculation twice with $1 employment income increase to measure true tax impact including all benefits, clawbacks, and complex interactions
 - June 25, 2025. Removed processing summary section from household tax reports for cleaner interface focused on financial data only
 - June 25, 2025. Added interactive pie chart to household tax reports showing income breakdown: Net Income, Income Tax, CPP Contributions, and EI Premiums with percentages and tooltips
-- June 25, 2025. Created Canadian federal tax bracket analysis table and bar chart showing how household income flows through tax brackets with individual spouse marginal rate indicators using circular badges and enhanced tooltips
+- June 25, 2025. Created separate Canadian federal tax bracket analyses for each spouse with individual tables and bar charts showing personal income flow through tax brackets, similar to attached report format with side-by-side layout
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
