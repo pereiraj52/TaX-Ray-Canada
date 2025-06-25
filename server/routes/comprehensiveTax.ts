@@ -257,3 +257,49 @@ comprehensiveTaxRouter.post('/enhanced-marginal-analysis/:t1ReturnId', async (re
     res.status(500).json({ error: 'Failed to perform enhanced marginal analysis' });
   }
 });
+
+/**
+ * POST /api/comprehensive-tax/marginal-effective-rate/:t1ReturnId
+ * Calculate Marginal Effective Rate by running tax calculator with $1 employment income increase
+ */
+comprehensiveTaxRouter.post('/marginal-effective-rate/:t1ReturnId', async (req, res) => {
+  try {
+    const t1ReturnId = parseInt(req.params.t1ReturnId);
+    if (isNaN(t1ReturnId)) {
+      return res.status(400).json({ error: 'Invalid T1 return ID' });
+    }
+
+    // Get T1 return with form fields
+    const t1Return = await storage.getT1Return(t1ReturnId);
+    if (!t1Return) {
+      return res.status(404).json({ error: 'T1 return not found' });
+    }
+
+    // Get client information
+    const client = await storage.getClient(t1Return.clientId);
+    if (!client) {
+      return res.status(404).json({ error: 'Client not found' });
+    }
+
+    // Extract personal information for calculations
+    const personalInfo = {
+      age: 2024 - (client.dateOfBirth ? new Date(client.dateOfBirth).getFullYear() : 1990),
+      isMarried: false, // Would need to be extracted from T1 or stored separately
+    };
+
+    // Calculate Marginal Effective Rate
+    const marginalEffectiveRate = await comprehensiveTaxService.calculateMarginalEffectiveRate(
+      t1Return.formFields,
+      client.province || 'ON',
+      personalInfo
+    );
+
+    res.json({
+      marginalEffectiveRate,
+      description: 'Rate calculated by adding $1 to employment income and measuring tax impact'
+    });
+  } catch (error) {
+    console.error('Marginal effective rate calculation error:', error);
+    res.status(500).json({ error: 'Failed to calculate marginal effective rate' });
+  }
+});

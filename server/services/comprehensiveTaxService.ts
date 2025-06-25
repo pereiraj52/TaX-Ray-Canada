@@ -373,6 +373,46 @@ export class ComprehensiveTaxService {
       taxDeferral: taxDeferralResult,
     };
   }
+
+  /**
+   * Calculate Marginal Effective Rate by running tax calculator twice
+   * First with original income, then with $1 added to employment income
+   */
+  async calculateMarginalEffectiveRate(
+    formFields: T1FormField[],
+    province: string,
+    personalInfo: any
+  ): Promise<number> {
+    try {
+      // Convert T1 fields to tax input
+      const baseInput = this.convertT1FieldsToTaxInput(formFields, province, personalInfo);
+      
+      // Calculate initial tax with original income
+      const initialResult = await this.calculateComprehensiveTax(baseInput);
+      const initialTaxOwing = (initialResult.federalTax || 0) + (initialResult.provincialTax || 0);
+
+      // Create modified input with $1 added to employment income
+      const modifiedInput = {
+        ...baseInput,
+        income: {
+          ...baseInput.income,
+          employmentIncome: (baseInput.income.employmentIncome || 0) + 1
+        }
+      };
+
+      // Calculate tax with modified income
+      const modifiedResult = await this.calculateComprehensiveTax(modifiedInput);
+      const modifiedTaxOwing = (modifiedResult.federalTax || 0) + (modifiedResult.provincialTax || 0);
+
+      // Calculate marginal effective rate as percentage
+      const marginalEffectiveRate = ((modifiedTaxOwing - initialTaxOwing) / 1) * 100;
+
+      return Math.round(marginalEffectiveRate * 100) / 100; // Round to 2 decimal places
+    } catch (error) {
+      console.error('Error calculating marginal effective rate:', error);
+      throw new Error('Failed to calculate marginal effective rate');
+    }
+  }
 }
 
 export const comprehensiveTaxService = new ComprehensiveTaxService();
