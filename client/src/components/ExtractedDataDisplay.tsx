@@ -539,7 +539,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">HBP Balance:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue('hbp_balance') || getHouseholdFieldValue('hbp_balance'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
