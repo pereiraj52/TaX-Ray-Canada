@@ -1,12 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw, Search, Edit } from "lucide-react";
+import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw, Search, Edit, DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { HouseholdAPI, T1API } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 interface ProcessedReturnsListProps {
   householdId: number;
@@ -18,6 +22,41 @@ interface ProcessedReturnsListProps {
 export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onEditClick, onT1ProcessingStart }: ProcessedReturnsListProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [isManualEntryOpen, setIsManualEntryOpen] = useState(false);
+  const [manualAccountData, setManualAccountData] = useState({
+    // RRSP
+    rrsp_account_balance: '',
+    rrsp_contribution_room: '',
+    // TFSA
+    tfsa_account_balance: '',
+    tfsa_contribution_room: '',
+    tfsa_2024_contribution: '',
+    // FHSA
+    fhsa_account_balance: '',
+    fhsa_contribution_room: '',
+    // RESP
+    resp_account_balance: '',
+    resp_contribution_room: '',
+    resp_2024_contribution: '',
+    resp_total_grant: '',
+    resp_grant_room_2024: '',
+    resp_grant_remaining: '',
+    resp_clb_received: '',
+    resp_clb_room_2024: '',
+    resp_clb_remaining: '',
+    // RDSP
+    rdsp_account_balance: '',
+    rdsp_contribution_room: '',
+    rdsp_2024_contribution: '',
+    rdsp_cdsg_received: '',
+    rdsp_cdsg_room_2024: '',
+    rdsp_cdsg_remaining: '',
+    rdsp_cdsb_received: '',
+    rdsp_cdsb_room_2024: '',
+    rdsp_cdsb_remaining: '',
+    // Capital Loss
+    capital_loss_available: ''
+  });
 
   const generateReportMutation = useMutation({
     mutationFn: (clientId: number) => HouseholdAPI.generateClientAuditReport(clientId),
