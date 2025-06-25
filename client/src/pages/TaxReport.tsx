@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HouseholdAPI } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 export default function TaxReport() {
   const params = useParams();
@@ -370,6 +371,127 @@ export default function TaxReport() {
 
 
           </div>
+        </div>
+
+        {/* Income Breakdown Pie Chart */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Income Breakdown</h2>
+          <Card>
+            <CardContent className="p-6">
+              {(() => {
+                // Calculate all the components
+                let totalIncomeSum = 0;
+                let totalTaxSum = 0;
+                let totalCppSum = 0;
+                let totalEiSum = 0;
+                
+                taxYearReturns.forEach(t1Return => {
+                  const t1WithFields = t1Return as any;
+                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                    const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                    const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                    const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+                    
+                    if (incomeField?.fieldValue) {
+                      const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) totalIncomeSum += value;
+                    }
+                    if (taxField?.fieldValue) {
+                      const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) totalTaxSum += value;
+                    }
+                    if (cppField?.fieldValue) {
+                      const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) totalCppSum += value;
+                    }
+                    if (eiField?.fieldValue) {
+                      const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) totalEiSum += value;
+                    }
+                  }
+                });
+                
+                const netIncomeSum = totalIncomeSum - totalTaxSum - totalCppSum - totalEiSum;
+                
+                const pieData = [
+                  {
+                    name: 'Net Income',
+                    value: netIncomeSum,
+                    color: '#22c55e'
+                  },
+                  {
+                    name: 'Income Tax',
+                    value: totalTaxSum,
+                    color: '#ef4444'
+                  },
+                  {
+                    name: 'CPP Contributions',
+                    value: totalCppSum,
+                    color: '#3b82f6'
+                  },
+                  {
+                    name: 'EI Premiums',
+                    value: totalEiSum,
+                    color: '#f59e0b'
+                  }
+                ].filter(item => item.value > 0);
+
+                const CustomTooltip = ({ active, payload }: any) => {
+                  if (active && payload && payload.length) {
+                    const data = payload[0];
+                    const percentage = ((data.value / totalIncomeSum) * 100).toFixed(1);
+                    return (
+                      <div className="bg-white p-3 border rounded shadow-lg">
+                        <p className="font-medium">{data.name}</p>
+                        <p className="text-sm text-gray-600">
+                          ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </p>
+                        <p className="text-sm text-gray-600">{percentage}% of total income</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                };
+
+                return (
+                  <div className="h-96">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={pieData}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, value }) => {
+                            const percentage = ((value / totalIncomeSum) * 100).toFixed(1);
+                            return `${name}: ${percentage}%`;
+                          }}
+                          outerRadius={120}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {pieData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend 
+                          formatter={(value, entry) => {
+                            const item = pieData.find(d => d.name === value);
+                            if (item) {
+                              return `${value}: $${item.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                            }
+                            return value;
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                );
+              })()}
+            </CardContent>
+          </Card>
         </div>
 
       </div>
