@@ -526,7 +526,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 Contribution:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getFieldValue("20805"))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("20805"))}</span>
                       </div>
                     </div>
                   </div>
@@ -560,49 +560,49 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Contribution Room:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_contribution_room'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_contribution_room'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 Contribution:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_2024_contribution'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_2024_contribution'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Total CESG Received:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_total_grant'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_total_grant'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CESG Room 2024:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_grant_room_2024'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_grant_room_2024'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CESG Remaining:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Total CLB Received:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_clb_received'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_received'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CLB Room 2024:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_clb_room_2024'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_room_2024'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CLB Remaining:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_clb_remaining'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_remaining'))}</span>
                       </div>
                     </div>
                   </div>
