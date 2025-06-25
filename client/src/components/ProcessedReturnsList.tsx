@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw, Search, Edit, DollarSign } from "lucide-react";
+import { FileText, Calendar, User, CheckCircle, XCircle, Clock, Trash2, RefreshCw, Search, Edit, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -296,7 +296,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                                 className="h-6 w-6 p-0 text-green-500 hover:text-green-700 hover:bg-green-50"
                                 title="Manual account data entry"
                               >
-                                <DollarSign className="h-3 w-3" />
+                                <TrendingUp className="h-3 w-3" />
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
