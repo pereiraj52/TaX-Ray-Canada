@@ -118,6 +118,22 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     return field?.fieldValue || '0';
   };
 
+  // For household-level fields (like RESP), these are shared across all household members
+  const getHouseholdFieldValue = (fieldType: string): string => {
+    // These values would normally come from a household-level data source
+    // For now, returning consistent values that will be the same for both household members
+    const householdFields = {
+      'resp_total_grant': '0',
+      'resp_grant_room_2024': '0', 
+      'resp_grant_remaining': '0',
+      'resp_account_balance': '0',
+      'resp_contribution_room': '0',
+      'resp_2024_contribution': '0'
+    };
+    
+    return householdFields[fieldType as keyof typeof householdFields] || '0';
+  };
+
   const renderField = (fieldCode: string, label: string, isCurrency = true) => {
     const value = getFieldValue(fieldCode);
     
@@ -535,37 +551,37 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_account_balance'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Contribution Room:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_contribution_room'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 Contribution:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_2024_contribution'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Total Grant Received:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_total_grant'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Grant Room 2024:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_grant_room_2024'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Grant Remaining:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
                       </div>
                     </div>
                   </div>
