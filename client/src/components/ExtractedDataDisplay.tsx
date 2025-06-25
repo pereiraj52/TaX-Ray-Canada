@@ -422,6 +422,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <MarginalRateBreakdown 
                         income={totalIncome} 
                         province={province} 
+                        t1ReturnId={t1Return.id}
                       />
                     );
                   })()}

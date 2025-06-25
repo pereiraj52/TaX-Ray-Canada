@@ -4,9 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 interface MarginalRateBreakdownProps {
   income: number;
   province: string;
+  t1ReturnId?: number;
 }
 
-export default function MarginalRateBreakdown({ income, province }: MarginalRateBreakdownProps) {
+export default function MarginalRateBreakdown({ income, province, t1ReturnId }: MarginalRateBreakdownProps) {
   const { data: marginalRates } = useQuery({
     queryKey: ['/api/tax-brackets/marginal-rate', income, province],
     queryFn: async () => {
@@ -16,6 +17,21 @@ export default function MarginalRateBreakdown({ income, province }: MarginalRate
       return response.json();
     },
     enabled: !!income && !!province,
+  });
+
+  // Fetch Marginal Effective Rate using comprehensive tax calculator
+  const { data: marginalEffectiveRateData } = useQuery({
+    queryKey: ['/api/comprehensive-tax/marginal-effective-rate', t1ReturnId],
+    queryFn: async () => {
+      if (!t1ReturnId) return null;
+      const response = await fetch(`/api/comprehensive-tax/marginal-effective-rate/${t1ReturnId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) throw new Error('Failed to fetch marginal effective rate');
+      return response.json();
+    },
+    enabled: !!t1ReturnId,
   });
 
   if (!marginalRates) {
@@ -135,7 +151,12 @@ export default function MarginalRateBreakdown({ income, province }: MarginalRate
       </div>
       <div className="flex justify-between">
         <span className="text-gray-600">Marginal Effective Rate:</span>
-        <span className="font-medium text-primary">{marginalEffectiveRate.toFixed(2)}%</span>
+        <span className="font-medium text-primary">
+          {marginalEffectiveRateData?.marginalEffectiveRate 
+            ? `${marginalEffectiveRateData.marginalEffectiveRate.toFixed(2)}%`
+            : `${marginalEffectiveRate.toFixed(2)}%`
+          }
+        </span>
       </div>
     </div>
   );
