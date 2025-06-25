@@ -526,7 +526,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-700">Applied This Year:</span>
                   <div className="text-right">
-                    <span className="font-mono">$0.00</span>
+                    <span className="font-mono">{formatCurrency(getFieldValue("25300"))}</span>
                   </div>
                 </div>
               </div>

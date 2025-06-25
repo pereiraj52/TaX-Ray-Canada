@@ -182,6 +182,7 @@ Changelog:
 - June 24, 2025. Added 2024 Contribution field to all account sections (RRSP/RRIF, TFSA, FHSA, RESP, RDSP) with 3-column grid layout
 - June 24, 2025. Connected RRSP 2024 Contribution field to line 20800 (RRSP deduction) for accurate data display
 - June 24, 2025. Connected FHSA 2024 Contribution field to line 20805 (FHSA deduction) for accurate data display
+- June 24, 2025. Connected Capital Loss Applied This Year field to line 25300 for accurate display of capital losses claimed
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
