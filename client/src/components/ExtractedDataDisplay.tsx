@@ -276,7 +276,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
   const tabs = [
     { id: 'summary' as TabType, label: 'Summary', icon: FileText },
-    { id: 'income' as TabType, label: 'Income', icon: DollarSign },
+    { id: 'income' as TabType, label: 'Income', icon: TrendingUp },
     { id: 'deductions' as TabType, label: 'Deductions', icon: Minus },
     { id: 'credits' as TabType, label: 'Credits', icon: Plus },
     { id: 'taxes' as TabType, label: 'Taxes', icon: Building2 },
