@@ -9,6 +9,7 @@ import { insertHouseholdSchema, insertClientSchema, t1FormFields } from "@shared
 import { z } from "zod";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
+import { comprehensiveTaxRouter } from "./routes/comprehensiveTax";
 
 const upload = multer({
   dest: 'uploads/',
@@ -739,6 +740,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+
+  // Register comprehensive tax calculator routes
+  app.use('/api/comprehensive-tax', comprehensiveTaxRouter);
 
   const httpServer = createServer(app);
   return httpServer;

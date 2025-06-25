@@ -1,0 +1,1987 @@
+"""
+Complete Comprehensive Canadian Income Tax Calculator for 2024
+Includes ALL major components: AMT, TOSI, loss carryovers, foreign tax credits,
+pension splitting, CCA, provincial specifics, and advanced business calculations
+"""
+
+from dataclasses import dataclass, field
+from typing import Dict, List, Tuple, Optional
+import math
+from enum import Enum
+
+class EmploymentType(Enum):
+    REGULAR = "regular"
+    COMMISSIONED = "commissioned"
+    CLERGY = "clergy"
+    ARTIST = "artist"
+
+class BusinessType(Enum):
+    SOLE_PROPRIETORSHIP = "sole_prop"
+    PARTNERSHIP = "partnership"
+    FARMING = "farming"
+    FISHING = "fishing"
+    PROFESSIONAL = "professional"
+    RESOURCE_EXPLORATION = "resource"
+    SCIENTIFIC_RESEARCH = "research"
+
+class FarmingMethod(Enum):
+    CASH = "cash"
+    ACCRUAL = "accrual"
+    
+class SpecialStatus(Enum):
+    ARTIST = "artist"
+    DIPLOMAT = "diplomat"
+    MILITARY_OVERSEAS = "military"
+    CLERGY = "clergy"
+    APPRENTICE = "apprentice"
+
+@dataclass
+class TaxBracket:
+    """Represents a tax bracket with income range and rate"""
+    min_income: float
+    max_income: float
+    rate: float
+
+@dataclass
+class PersonalInfo:
+    """Comprehensive personal information affecting tax calculations"""
+    age: int = 30
+    is_married: bool = False
+    spouse_income: float = 0
+    spouse_age: int = 30
+    has_disability: bool = False
+    spouse_has_disability: bool = False
+    is_caregiver: bool = False
+    num_dependants: int = 0
+    dependant_ages: List[int] = field(default_factory=list)
+    dependant_disabilities: List[bool] = field(default_factory=list)
+    is_student: bool = False
+    months_student: int = 0
+    is_first_time_buyer: bool = False
+    employment_type: EmploymentType = EmploymentType.REGULAR
+    business_type: Optional[BusinessType] = None
+    farming_method: Optional[FarmingMethod] = None
+    special_status: List[SpecialStatus] = field(default_factory=list)
+    is_northern_resident: bool = False
+    northern_resident_months: int = 0
+    is_indigenous_on_reserve: bool = False
+    reserve_income_exempt: float = 0
+    is_volunteer_firefighter: bool = False
+    is_search_rescue_volunteer: bool = False
+    years_as_apprentice: int = 0
+    is_new_immigrant: bool = False
+    months_in_canada: int = 12
+
+@dataclass
+class IncomeDetails:
+    """Comprehensive income sources including all specialized items"""
+    # Employment Income
+    employment_income: float = 0
+    employment_benefits: float = 0
+    stock_option_benefit: float = 0
+    stock_option_deduction_eligible: bool = False
+    commission_income: float = 0
+    tips_gratuities: float = 0
+    overseas_employment_exempt: float = 0
+    
+    # Business Income
+    business_income: float = 0
+    professional_income: float = 0
+    farming_income: float = 0
+    farming_income_previous_years: List[float] = field(default_factory=list)  # For averaging
+    fishing_income: float = 0
+    fishing_settlement_payment: float = 0
+    partnership_income: float = 0
+    partnership_losses: float = 0
+    limited_partnership_losses: float = 0
+    
+    # Resource and Specialized Business
+    resource_income: float = 0
+    flow_through_share_deductions: float = 0
+    scientific_research_expenditures: float = 0
+    film_production_income: float = 0
+    
+    # Investment Income
+    interest_income: float = 0
+    canadian_dividend_income: float = 0
+    foreign_dividend_income: float = 0
+    foreign_business_income: float = 0
+    foreign_non_business_income: float = 0
+    rental_income: float = 0
+    royalty_income: float = 0
+    trust_income: float = 0
+    
+    # Capital Gains/Losses
+    capital_gains: float = 0
+    capital_losses_current: float = 0
+    net_capital_losses_applied: float = 0
+    superficial_losses_denied: float = 0
+    principal_residence_exemption: float = 0
+    
+    # Pension and Benefits
+    cpp_qpp_benefits: float = 0
+    oas_benefits: float = 0
+    gis_benefits: float = 0
+    private_pension: float = 0
+    foreign_pension: float = 0
+    rrif_withdrawals: float = 0
+    lif_withdrawals: float = 0
+    annuity_income: float = 0
+    lump_sum_payment: float = 0  # For averaging
+    
+    # Government Benefits
+    ei_benefits: float = 0
+    social_assistance: float = 0
+    workers_compensation: float = 0
+    
+    # Other Income
+    alimony_received: float = 0
+    scholarship_income: float = 0
+    bursary_income: float = 0
+    death_benefits: float = 0
+    uic_benefit_repayment: float = 0
+    other_income: float = 0
+    
+    # Split Income (TOSI) Items
+    split_income_amount: float = 0
+    split_income_from_related_business: bool = False
+    
+    # Artist Income (for averaging)
+    artistic_income_current: float = 0
+    artistic_income_previous_years: List[float] = field(default_factory=list)
+
+@dataclass
+class AdvancedDeductions:
+    """Advanced business, investment, and specialized deductions"""
+    # Business Expenses
+    business_expenses: float = 0
+    home_office_expenses: float = 0
+    motor_vehicle_expenses: float = 0
+    capital_cost_allowance: float = 0
+    terminal_loss: float = 0
+    business_investment_loss: float = 0
+    
+    # Farming and Fishing Specific
+    restricted_farm_loss: float = 0
+    farm_inventory_adjustment: float = 0
+    fishing_income_stabilization: float = 0
+    
+    # Partnership and Investment
+    at_risk_adjustment: float = 0
+    partnership_loss_limitation: float = 0
+    superficial_loss_adjustment: float = 0
+    
+    # Reserves and Deferrals
+    reserve_for_doubtful_debts: float = 0
+    inventory_reserve: float = 0
+    services_not_rendered_reserve: float = 0
+    goods_not_delivered_reserve: float = 0
+    
+    # Employment Expenses (T2200)
+    home_office_employment: float = 0
+    motor_vehicle_employment: float = 0
+    travel_expenses: float = 0
+    other_employment_expenses: float = 0
+    
+    # Investment Expenses
+    carrying_charges: float = 0
+    interest_investment_loans: float = 0
+    safety_deposit_fees: float = 0
+    accounting_fees: float = 0
+    investment_counsel_fees: float = 0
+    
+    # Loss Carryovers Applied
+    non_capital_losses_applied: float = 0
+    farm_losses_applied: float = 0
+    limited_partnership_losses: float = 0
+    
+    # Resource Industry
+    canadian_exploration_expense: float = 0
+    canadian_development_expense: float = 0
+    canadian_oil_gas_property_expense: float = 0
+    foreign_exploration_development: float = 0
+    
+    # Special Elections
+    income_averaging_annuity_elected: bool = False
+    rights_or_things_elected: bool = False
+
+@dataclass
+class DeductionsCredits:
+    """Comprehensive deductions and credits including all niche items"""
+    # Registered Plans
+    rrsp_contribution: float = 0
+    pension_contribution: float = 0
+    
+    # Employment Deductions
+    union_dues: float = 0
+    professional_dues: float = 0
+    office_rent: float = 0
+    salary_assistant: float = 0
+    clergy_residence: float = 0
+    
+    # Family and Support
+    childcare_expenses: float = 0
+    alimony_paid: float = 0
+    
+    # Medical and Disability
+    medical_expenses: float = 0
+    attendant_care: float = 0
+    disability_supports: float = 0
+    
+    # Education
+    tuition_fees: float = 0
+    education_months: int = 0
+    textbook_months: int = 0
+    student_loan_interest: float = 0
+    
+    # Special Situations
+    moving_expenses: float = 0
+    northern_residents_deduction: float = 0
+    overseas_employment_credit: float = 0
+    
+    # Donations and Political
+    charitable_donations: float = 0
+    political_contributions: float = 0
+    
+    # Provincial Specific Credits
+    ontario_political_contribution: float = 0
+    ontario_first_time_home_buyer: float = 0
+    ontario_senior_homeowner_grant: float = 0
+    bc_political_contribution: float = 0
+    bc_training_tax_credit: float = 0
+    bc_climate_action_credit: float = 0
+    quebec_political_contribution: float = 0
+    quebec_childcare_credit: float = 0
+    quebec_medical_expense_credit: float = 0
+    saskatchewan_active_families: float = 0
+    manitoba_property_tax_credit: float = 0
+    alberta_family_employment_credit: float = 0
+    
+    # Specialized Federal Credits
+    adoption_expenses: float = 0
+    home_renovation_credit: float = 0
+    home_accessibility_expenses: float = 0
+    apprenticeship_job_creation_credit: float = 0
+    investment_tax_credit: float = 0
+    labour_sponsored_funds_credit: float = 0
+    mineral_exploration_credit: float = 0
+    film_tax_credit: float = 0
+    scientific_research_credit: float = 0
+    
+    # Other Credits
+    public_transit_passes: float = 0
+    first_time_home_buyer_credit: float = 0
+    volunteer_firefighter: bool = False
+    search_rescue_volunteer: bool = False
+    
+    # Resource Deductions
+    depletion_allowance: float = 0
+    resource_allowance: float = 0
+    
+    # Artist Deductions
+    artist_income_averaging_elected: bool = False
+
+@dataclass
+class ForeignTaxPaid:
+    """Foreign taxes paid for foreign tax credit calculation"""
+    foreign_business_tax: float = 0
+    foreign_non_business_tax: float = 0
+    foreign_tax_carryover: float = 0
+
+@dataclass
+class PensionSplitting:
+    """Pension income splitting election"""
+    eligible_pension_income: float = 0
+    amount_to_split: float = 0
+    split_with_spouse: bool = False
+
+@dataclass
+class TaxResult:
+    """Comprehensive tax calculation results"""
+    # Income Summary
+    total_income: float
+    net_income: float
+    taxable_income: float
+    split_income_subject_to_tosi: float
+    
+    # Regular Tax Calculations
+    federal_tax: float
+    provincial_tax: float
+    total_tax_before_credits: float
+    
+    # Alternative Minimum Tax
+    amt_income: float
+    amt_tax: float
+    amt_carryforward: float
+    
+    # Tax on Split Income
+    tosi_tax: float
+    
+    # Non-Refundable Credits
+    basic_personal_credit: float
+    spouse_credit: float
+    dependant_credit: float
+    age_credit: float
+    pension_credit: float
+    disability_credit: float
+    tuition_credit: float
+    medical_credit: float
+    charitable_credit: float
+    political_credit: float
+    foreign_tax_credit: float
+    total_non_refundable_credits: float
+    
+    # Provincial Surtax
+    provincial_surtax: float
+    
+    # Final Tax
+    total_tax_after_credits: float
+    
+    # Payroll Deductions
+    cpp_contribution: float
+    ei_contribution: float
+    
+    # Refundable Credits
+    gst_hst_credit: float
+    canada_workers_benefit: float
+    canada_child_benefit: float
+    climate_action_incentive: float
+    working_income_tax_benefit: float
+    total_refundable_credits: float
+    
+    # Clawbacks
+    oas_clawback: float
+    ei_benefit_clawback: float
+    social_benefit_repayment: float
+    total_clawbacks: float
+    
+    # Final Results
+    total_payable: float
+    net_income_after_tax: float
+    average_tax_rate: float
+    marginal_tax_rate: float
+
+class ComprehensiveCanadianTaxCalculator2024:
+    """Complete Canadian tax calculator for 2024 with all advanced features"""
+    
+    def __init__(self):
+        self.setup_tax_data()
+    
+    def setup_tax_data(self):
+        """Initialize all tax brackets, rates, and constants for 2024"""
+        
+        # Federal tax brackets for 2024
+        self.federal_brackets = [
+            TaxBracket(0, 55867, 0.15),
+            TaxBracket(55867, 111733, 0.205),
+            TaxBracket(111733, 173205, 0.26),
+            TaxBracket(173205, 246752, 0.29),
+            TaxBracket(246752, float('inf'), 0.33)
+        ]
+        
+        # Federal amounts and rates for 2024
+        self.federal_amounts = {
+            'basic_personal': 15705,
+            'spouse_equivalent': 15705,
+            'dependant': 2616,
+            'caregiver': 2616,
+            'age_amount': 8790,
+            'age_threshold': 42335,
+            'pension_amount': 2000,
+            'disability_amount': 9428,
+            'tuition_rate': 0.15,
+            'medical_rate': 0.15,
+            'charitable_rate_low': 0.15,
+            'charitable_rate_high': 0.29,
+            'dividend_gross_up': 1.38,
+            'dividend_tax_credit': 0.2505,
+            'volunteer_firefighter_credit': 3000,
+            'search_rescue_credit': 3000
+        }
+        
+        # Alternative Minimum Tax for 2024
+        self.amt_exemption = 40000
+        self.amt_rate = 0.15
+        
+        # Stock option deduction
+        self.stock_option_deduction_rate = 0.50
+        
+        # Provincial/Territorial data with surtaxes and specific credits
+        self.provincial_data = {
+            'AB': {
+                'brackets': [TaxBracket(0, float('inf'), 0.10)],
+                'amounts': {
+                    'basic_personal': 21003,
+                    'spouse_equivalent': 21003,
+                    'age_amount': 27060,
+                    'pension_amount': 1360,
+                    'disability_amount': 17787,
+                    'medical_rate': 0.10,
+                    'charitable_rate': 0.10,
+                    'dividend_tax_credit': 0.10,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'BC': {
+                'brackets': [
+                    TaxBracket(0, 47937, 0.0506),
+                    TaxBracket(47937, 95875, 0.077),
+                    TaxBracket(95875, 110076, 0.105),
+                    TaxBracket(110076, 133664, 0.1229),
+                    TaxBracket(133664, 181232, 0.147),
+                    TaxBracket(181232, float('inf'), 0.2045)
+                ],
+                'amounts': {
+                    'basic_personal': 12580,
+                    'spouse_equivalent': 12580,
+                    'age_amount': 4908,
+                    'pension_amount': 1000,
+                    'disability_amount': 8405,
+                    'medical_rate': 0.0506,
+                    'charitable_rate': 0.0506,
+                    'dividend_tax_credit': 0.10,
+                    'political_contribution_rate': 0.75,
+                    'low_income_tax_reduction': True
+                },
+                'surtax': False
+            },
+            'MB': {
+                'brackets': [
+                    TaxBracket(0, 47000, 0.108),
+                    TaxBracket(47000, 100000, 0.1275),
+                    TaxBracket(100000, float('inf'), 0.174)
+                ],
+                'amounts': {
+                    'basic_personal': 15780,
+                    'spouse_equivalent': 15780,
+                    'age_amount': 3728,
+                    'pension_amount': 1000,
+                    'disability_amount': 4530,
+                    'medical_rate': 0.108,
+                    'charitable_rate': 0.108,
+                    'dividend_tax_credit': 0.08,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'NB': {
+                'brackets': [
+                    TaxBracket(0, 49958, 0.094),
+                    TaxBracket(49958, 99916, 0.14),
+                    TaxBracket(99916, 185064, 0.16),
+                    TaxBracket(185064, float('inf'), 0.195)
+                ],
+                'amounts': {
+                    'basic_personal': 12458,
+                    'spouse_equivalent': 12458,
+                    'age_amount': 5355,
+                    'pension_amount': 1000,
+                    'disability_amount': 8870,
+                    'medical_rate': 0.094,
+                    'charitable_rate': 0.094,
+                    'dividend_tax_credit': 0.0275,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'NL': {
+                'brackets': [
+                    TaxBracket(0, 43198, 0.087),
+                    TaxBracket(43198, 86395, 0.145),
+                    TaxBracket(86395, 154244, 0.158),
+                    TaxBracket(154244, 215943, 0.178),
+                    TaxBracket(215943, float('inf'), 0.198)
+                ],
+                'amounts': {
+                    'basic_personal': 10382,
+                    'spouse_equivalent': 10382,
+                    'age_amount': 7401,
+                    'pension_amount': 1000,
+                    'disability_amount': 4200,
+                    'medical_rate': 0.087,
+                    'charitable_rate': 0.087,
+                    'dividend_tax_credit': 0.035,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'NS': {
+                'brackets': [
+                    TaxBracket(0, 29590, 0.0879),
+                    TaxBracket(29590, 59180, 0.1495),
+                    TaxBracket(59180, 93000, 0.1667),
+                    TaxBracket(93000, 150000, 0.175),
+                    TaxBracket(150000, float('inf'), 0.21)
+                ],
+                'amounts': {
+                    'basic_personal': 8744,
+                    'spouse_equivalent': 8744,
+                    'age_amount': 6313,
+                    'pension_amount': 1000,
+                    'disability_amount': 7341,
+                    'medical_rate': 0.0879,
+                    'charitable_rate': 0.0879,
+                    'dividend_tax_credit': 0.0885,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'NT': {
+                'brackets': [
+                    TaxBracket(0, 50597, 0.059),
+                    TaxBracket(50597, 101198, 0.086),
+                    TaxBracket(101198, 164525, 0.122),
+                    TaxBracket(164525, 239229, 0.1405)
+                ],
+                'amounts': {
+                    'basic_personal': 16593,
+                    'spouse_equivalent': 16593,
+                    'age_amount': 7898,
+                    'pension_amount': 1000,
+                    'disability_amount': 4637,
+                    'medical_rate': 0.059,
+                    'charitable_rate': 0.059,
+                    'dividend_tax_credit': 0.115,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'NU': {
+                'brackets': [
+                    TaxBracket(0, 53268, 0.04),
+                    TaxBracket(53268, 106537, 0.07),
+                    TaxBracket(106537, 173205, 0.09),
+                    TaxBracket(173205, 246752, 0.115),
+                    TaxBracket(246752, float('inf'), 0.115)
+                ],
+                'amounts': {
+                    'basic_personal': 19531,
+                    'spouse_equivalent': 19531,
+                    'age_amount': 7898,
+                    'pension_amount': 1000,
+                    'disability_amount': 4637,
+                    'medical_rate': 0.04,
+                    'charitable_rate': 0.04,
+                    'dividend_tax_credit': 0.0551,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'ON': {
+                'brackets': [
+                    TaxBracket(0, 51446, 0.0505),
+                    TaxBracket(51446, 102894, 0.0915),
+                    TaxBracket(102894, 150000, 0.1116),
+                    TaxBracket(150000, 220000, 0.1216),
+                    TaxBracket(220000, float('inf'), 0.1316)
+                ],
+                'amounts': {
+                    'basic_personal': 12399,
+                    'spouse_equivalent': 12399,
+                    'age_amount': 5846,
+                    'pension_amount': 1000,
+                    'disability_amount': 9545,
+                    'medical_rate': 0.0505,
+                    'charitable_rate': 0.0505,
+                    'dividend_tax_credit': 0.10,
+                    'political_contribution_rate': 0.75
+                },
+                'health_premium': True,
+                'surtax': {
+                    'rate1': 0.20,  # 20% on tax over $5,554
+                    'threshold1': 5554,
+                    'rate2': 0.36,  # 36% on tax over $7,108
+                    'threshold2': 7108
+                }
+            },
+            'PE': {
+                'brackets': [
+                    TaxBracket(0, 32656, 0.098),
+                    TaxBracket(32656, 65312, 0.138),
+                    TaxBracket(65312, 105000, 0.167),
+                    TaxBracket(105000, float('inf'), 0.187)
+                ],
+                'amounts': {
+                    'basic_personal': 12500,
+                    'spouse_equivalent': 12500,
+                    'age_amount': 4207,
+                    'pension_amount': 1000,
+                    'disability_amount': 7341,
+                    'medical_rate': 0.098,
+                    'charitable_rate': 0.098,
+                    'dividend_tax_credit': 0.105,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': {
+                    'rate1': 0.10,  # 10% on tax over $12,500
+                    'threshold1': 12500
+                }
+            },
+            'QC': {
+                'brackets': [
+                    TaxBracket(0, 51780, 0.14),
+                    TaxBracket(51780, 103545, 0.19),
+                    TaxBracket(103545, 126000, 0.24),
+                    TaxBracket(126000, float('inf'), 0.2575)
+                ],
+                'amounts': {
+                    'basic_personal': 18056,
+                    'spouse_equivalent': 18056,
+                    'age_amount': 3208,
+                    'pension_amount': 2815,
+                    'disability_amount': 3708,
+                    'medical_rate': 0.20,
+                    'charitable_rate': 0.20,
+                    'dividend_tax_credit': 0.0778,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False,
+                'unique_quebec_credits': True
+            },
+            'SK': {
+                'brackets': [
+                    TaxBracket(0, 52057, 0.105),
+                    TaxBracket(52057, 148734, 0.125),
+                    TaxBracket(148734, float('inf'), 0.145)
+                ],
+                'amounts': {
+                    'basic_personal': 17661,
+                    'spouse_equivalent': 17661,
+                    'age_amount': 6065,
+                    'pension_amount': 1000,
+                    'disability_amount': 5659,
+                    'medical_rate': 0.105,
+                    'charitable_rate': 0.105,
+                    'dividend_tax_credit': 0.11,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            },
+            'YT': {
+                'brackets': [
+                    TaxBracket(0, 55867, 0.064),
+                    TaxBracket(55867, 111733, 0.09),
+                    TaxBracket(111733, 173205, 0.109),
+                    TaxBracket(173205, 500000, 0.128),
+                    TaxBracket(500000, float('inf'), 0.15)
+                ],
+                'amounts': {
+                    'basic_personal': 15705,
+                    'spouse_equivalent': 15705,
+                    'age_amount': 7898,
+                    'pension_amount': 1000,
+                    'disability_amount': 9428,
+                    'medical_rate': 0.064,
+                    'charitable_rate': 0.064,
+                    'dividend_tax_credit': 0.124,
+                    'political_contribution_rate': 0.75
+                },
+                'surtax': False
+            }
+        }
+        
+        # CPP/QPP and EI constants for 2024
+        self.cpp_max_pensionable = 71300
+        self.cpp_basic_exemption = 3500
+        self.cpp_rate = 0.0595
+        self.cpp_max_contribution = 4055.25
+        
+        self.ei_max_insurable = 63750
+        self.ei_rate = 0.0163
+        self.ei_rate_quebec = 0.0127
+        self.qpip_rate = 0.00494
+        
+        # Quebec QPP rates
+        self.qpp_rate = 0.064
+        self.qpp_max_pensionable = 71300
+        self.qpp_basic_exemption = 3500
+        
+        # Benefit amounts and thresholds
+        self.setup_benefit_thresholds()
+    
+    def setup_benefit_thresholds(self):
+        """Setup benefit and clawback thresholds"""
+        # OAS Clawback thresholds for 2024
+        self.oas_clawback_threshold = 86912
+        self.oas_clawback_rate = 0.15
+        self.oas_max_annual = 7362
+        
+        # EI Benefit Clawback for 2024
+        self.ei_clawback_threshold = 78750
+        self.ei_clawback_rate = 0.30
+        
+        # Canada Child Benefit for 2024
+        self.ccb_max_under6 = 7787
+        self.ccb_max_6to17 = 6570
+        self.ccb_threshold = 36502
+        self.ccb_reduction_rate1 = 0.07
+        self.ccb_reduction_rate2 = 0.032
+        self.ccb_second_threshold = 78221
+        
+        # GST/HST Credit maximums for 2024
+        self.gst_credit_single = 467
+        self.gst_credit_married = 612
+        self.gst_credit_child = 161
+        self.gst_credit_threshold = 42335
+        
+        # Resource industry rates and limits
+        self.canadian_exploration_rate = 1.0  # 100% deduction
+        self.canadian_development_rate = 0.30  # 30% declining balance
+        self.depletion_rate = 0.25  # 25% of resource income
+        
+        # Farming and fishing limits
+        self.restricted_farm_loss_limit = 8750  # Annual limit
+        self.farming_averaging_years = 5  # Years for income averaging
+        
+        # Artist income averaging
+        self.artist_averaging_threshold = 3000  # Minimum fluctuation
+        
+        # Quebec-specific amounts for 2024
+        self.quebec_specific = {
+            'basic_personal_amount': 18056,
+            'medical_expense_threshold_rate': 0.03,
+            'medical_expense_minimum': 1330,  # Different from federal
+            'childcare_maximum': 13000,
+            'political_contribution_rates': [0.75, 0.50, 0.167],  # Tiered rates
+            'solidarity_tax_threshold': 22580,
+            'health_contribution_threshold': 17570
+        }
+    
+    def calculate_total_income(self, income: IncomeDetails) -> float:
+        """Calculate total income from all sources"""
+        employment_total = (income.employment_income + income.employment_benefits + 
+                          income.stock_option_benefit + income.commission_income + 
+                          income.tips_gratuities)
+        
+        business_total = (income.business_income + income.professional_income + 
+                         income.farming_income + income.fishing_income + 
+                         income.partnership_income)
+        
+        # Gross up eligible Canadian dividends
+        dividend_total = (income.canadian_dividend_income * self.federal_amounts['dividend_gross_up'] + 
+                         income.foreign_dividend_income)
+        
+        investment_total = (income.interest_income + dividend_total + income.rental_income + 
+                          income.royalty_income + income.foreign_business_income + 
+                          income.foreign_non_business_income)
+        
+        # Only 50% of capital gains are taxable
+        capital_gains_total = max(0, (income.capital_gains - income.capital_losses_current) * 0.5)
+        # Apply net capital losses from previous years
+        capital_gains_total = max(0, capital_gains_total - income.net_capital_losses_applied)
+        
+        pension_total = (income.cpp_qpp_benefits + income.oas_benefits + income.private_pension + 
+                        income.foreign_pension + income.rrif_withdrawals + income.lif_withdrawals + 
+                        income.annuity_income)
+        
+        other_total = (income.ei_benefits + income.alimony_received + 
+                      income.scholarship_income + income.death_benefits + 
+                      income.other_income)
+        
+        return (employment_total + business_total + investment_total + 
+                capital_gains_total + pension_total + other_total)
+    
+    def calculate_tax_on_brackets(self, income: float, brackets: List[TaxBracket]) -> float:
+        """Calculate tax based on progressive tax brackets"""
+        total_tax = 0
+        
+        for bracket in brackets:
+            if income <= bracket.min_income:
+                break
+                
+            taxable_in_bracket = min(income, bracket.max_income) - bracket.min_income
+            if taxable_in_bracket > 0:
+                total_tax += taxable_in_bracket * bracket.rate
+                
+        return total_tax
+    
+    def calculate_alternative_minimum_tax(self, income: IncomeDetails, regular_taxable_income: float,
+                                        deductions: DeductionsCredits, advanced: AdvancedDeductions) -> Tuple[float, float]:
+        """Calculate Alternative Minimum Tax"""
+        # Start with regular taxable income
+        amt_income = regular_taxable_income
+        
+        # Add back preference items
+        amt_income += income.stock_option_benefit * 0.5  # Add back 50% of stock option deduction
+        amt_income += advanced.capital_cost_allowance * 0.3  # Add back 30% of CCA
+        amt_income += deductions.rrsp_contribution * 0.0  # RRSP not added back
+        
+        # Apply AMT exemption
+        amt_taxable = max(0, amt_income - self.amt_exemption)
+        
+        # Calculate AMT at 15%
+        amt_tax = amt_taxable * self.amt_rate
+        
+        return amt_income, amt_tax
+    
+    def calculate_tax_on_split_income(self, income: IncomeDetails, personal: PersonalInfo) -> float:
+        """Calculate Tax on Split Income (TOSI)"""
+        if income.split_income_amount <= 0:
+            return 0
+        
+        tosi_applicable = False
+        
+        # Check if TOSI applies
+        if personal.age < 18:
+            # Always applies to minors
+            tosi_applicable = True
+        elif personal.age >= 18 and personal.age < 25:
+            # Applies to 18-24 year olds with exceptions
+            if income.split_income_from_related_business:
+                tosi_applicable = True
+        elif personal.age >= 25:
+            # Complex rules for adults 25+ (simplified here)
+            if income.split_income_from_related_business:
+                tosi_applicable = True
+        
+        if tosi_applicable:
+            # Apply highest marginal rate (simplified to 33% federal + provincial)
+            highest_rate = 0.33  # This should be calculated based on province
+            return income.split_income_amount * highest_rate
+        
+        return 0
+    
+    def calculate_foreign_tax_credit(self, foreign_tax: ForeignTaxPaid, foreign_income: float,
+                                   total_tax: float, net_income: float) -> float:
+        """Calculate foreign tax credit"""
+        if foreign_tax.foreign_business_tax <= 0 and foreign_tax.foreign_non_business_tax <= 0:
+            return 0
+        
+        # Foreign business income tax credit
+        business_credit = 0
+        if foreign_tax.foreign_business_tax > 0 and foreign_income > 0:
+            business_limit = min(foreign_tax.foreign_business_tax,
+                               total_tax * (foreign_income / net_income))
+            business_credit = business_limit
+        
+        # Foreign non-business income tax credit
+        non_business_credit = 0
+        if foreign_tax.foreign_non_business_tax > 0:
+            non_business_limit = min(foreign_tax.foreign_non_business_tax,
+                                   total_tax * 0.15)  # Simplified calculation
+            non_business_credit = non_business_limit
+        
+        return business_credit + non_business_credit + foreign_tax.foreign_tax_carryover
+    
+    def calculate_pension_income_splitting(self, pension_splitting: PensionSplitting,
+                                         personal: PersonalInfo) -> Tuple[float, float]:
+        """Calculate pension income splitting benefit"""
+        if not pension_splitting.split_with_spouse or pension_splitting.amount_to_split <= 0:
+            return 0, 0
+        
+        # Check eligibility (age 65+ or certain pension types)
+        if personal.age < 65 and pension_splitting.eligible_pension_income <= 0:
+            return 0, 0
+        
+        # Calculate tax savings (simplified)
+        split_amount = min(pension_splitting.amount_to_split, 
+                          pension_splitting.eligible_pension_income * 0.5)
+        
+        # This would require complex calculation comparing tax with and without splitting
+        # Simplified here as the difference in marginal rates
+        tax_savings = split_amount * 0.10  # Simplified assumption
+        
+        return split_amount, tax_savings
+    
+    def calculate_provincial_surtax(self, provincial_tax: float, province: str) -> float:
+        """Calculate provincial surtax where applicable"""
+        if province not in self.provincial_data or not self.provincial_data[province].get('surtax'):
+            return 0
+        
+        surtax_data = self.provincial_data[province]['surtax']
+        surtax = 0
+        
+        if provincial_tax > surtax_data['threshold1']:
+            surtax += (provincial_tax - surtax_data['threshold1']) * surtax_data['rate1']
+        
+        if 'threshold2' in surtax_data and provincial_tax > surtax_data['threshold2']:
+            # Remove first level and add second level
+            surtax = ((surtax_data['threshold2'] - surtax_data['threshold1']) * surtax_data['rate1'] +
+                     (provincial_tax - surtax_data['threshold2']) * surtax_data['rate2'])
+        
+        return surtax
+    
+    def calculate_non_refundable_credits(self, income: IncomeDetails, deductions: DeductionsCredits, 
+                                       personal: PersonalInfo, province: str, 
+                                       net_income: float, taxable_income: float,
+                                       foreign_tax: ForeignTaxPaid) -> Dict[str, float]:
+        """Calculate all non-refundable tax credits"""
+        credits = {}
+        
+        fed_rate = 0.15
+        prov_amounts = self.provincial_data[province]['amounts']
+        prov_rate = prov_amounts['medical_rate']
+        
+        # Basic Personal Amount
+        fed_basic = self.federal_amounts['basic_personal'] * fed_rate
+        prov_basic = prov_amounts['basic_personal'] * prov_rate
+        credits['basic_personal'] = fed_basic + prov_basic
+        
+        # Spouse/Equivalent Credit
+        spouse_credit = 0
+        if personal.is_married and personal.spouse_income < self.federal_amounts['spouse_equivalent']:
+            spouse_amount = max(0, self.federal_amounts['spouse_equivalent'] - personal.spouse_income)
+            fed_spouse = spouse_amount * fed_rate
+            prov_spouse_amount = max(0, prov_amounts['spouse_equivalent'] - personal.spouse_income)
+            prov_spouse = prov_spouse_amount * prov_rate
+            spouse_credit = fed_spouse + prov_spouse
+        credits['spouse'] = spouse_credit
+        
+        # Dependant Credit
+        dependant_credit = 0
+        for i, age in enumerate(personal.dependant_ages):
+            if age < 18:
+                fed_dep = self.federal_amounts['dependant'] * fed_rate
+                dependant_credit += fed_dep
+                
+                # Add disability amount for dependant if applicable
+                if i < len(personal.dependant_disabilities) and personal.dependant_disabilities[i]:
+                    fed_disability_dep = self.federal_amounts['disability_amount'] * fed_rate
+                    prov_disability_dep = prov_amounts['disability_amount'] * prov_rate
+                    dependant_credit += fed_disability_dep + prov_disability_dep
+        credits['dependant'] = dependant_credit
+        
+        # Age Credit (65+)
+        age_credit = 0
+        if personal.age >= 65:
+            age_reduction = max(0, net_income - self.federal_amounts['age_threshold']) * 0.15
+            fed_age_amount = max(0, self.federal_amounts['age_amount'] - age_reduction)
+            fed_age = fed_age_amount * fed_rate
+            prov_age = prov_amounts['age_amount'] * prov_rate
+            age_credit = fed_age + prov_age
+        credits['age'] = age_credit
+        
+        # Pension Credit
+        pension_credit = 0
+        pension_income = (income.cpp_qpp_benefits + income.private_pension + 
+                         income.rrif_withdrawals + income.foreign_pension)
+        if pension_income > 0:
+            fed_pension_amount = min(pension_income, self.federal_amounts['pension_amount'])
+            fed_pension = fed_pension_amount * fed_rate
+            prov_pension_amount = min(pension_income, prov_amounts['pension_amount'])
+            prov_pension = prov_pension_amount * prov_rate
+            pension_credit = fed_pension + prov_pension
+        credits['pension'] = pension_credit
+        
+        # Disability Credit
+        disability_credit = 0
+        if personal.has_disability:
+            fed_disability = self.federal_amounts['disability_amount'] * fed_rate
+            prov_disability = prov_amounts['disability_amount'] * prov_rate
+            disability_credit = fed_disability + prov_disability
+        credits['disability'] = disability_credit
+        
+        # Tuition Credit
+        tuition_credit = 0
+        if deductions.tuition_fees > 0:
+            fed_tuition = deductions.tuition_fees * self.federal_amounts['tuition_rate']
+            prov_tuition = deductions.tuition_fees * prov_rate
+            tuition_credit = fed_tuition + prov_tuition
+        credits['tuition'] = tuition_credit
+        
+        # Medical Expense Credit
+        medical_credit = 0
+        total_medical = deductions.medical_expenses + deductions.attendant_care
+        if total_medical > 0:
+            medical_threshold = min(net_income * 0.03, 2635)
+            eligible_medical = max(0, total_medical - medical_threshold)
+            fed_medical = eligible_medical * self.federal_amounts['medical_rate']
+            prov_medical = eligible_medical * prov_amounts['medical_rate']
+            medical_credit = fed_medical + prov_medical
+        credits['medical'] = medical_credit
+        
+        # Charitable Donation Credit
+        charitable_credit = 0
+        if deductions.charitable_donations > 0:
+            fed_charity = min(deductions.charitable_donations, 200) * self.federal_amounts['charitable_rate_low']
+            if deductions.charitable_donations > 200:
+                fed_charity += (deductions.charitable_donations - 200) * self.federal_amounts['charitable_rate_high']
+            
+            prov_charity = deductions.charitable_donations * prov_amounts['charitable_rate']
+            charitable_credit = fed_charity + prov_charity
+        credits['charitable'] = charitable_credit
+        
+        # Political Contribution Credit
+        political_credit = 0
+        total_political = deductions.political_contributions
+        if province == 'ON':
+            total_political += deductions.ontario_political_contribution
+        elif province == 'BC':
+            total_political += deductions.bc_political_contribution
+            
+        if total_political > 0:
+            # Federal political contribution credit
+            if total_political <= 400:
+                fed_political = total_political * 0.75
+            elif total_political <= 750:
+                fed_political = 300 + (total_political - 400) * 0.50
+            else:
+                fed_political = 475 + (total_political - 750) * 0.33
+            fed_political = min(fed_political, 675)
+            
+            # Provincial political contribution credit
+            prov_political = total_political * prov_amounts.get('political_contribution_rate', 0)
+            political_credit = fed_political + prov_political
+        credits['political'] = political_credit
+        
+        # Foreign Tax Credit
+        foreign_income_total = (income.foreign_business_income + income.foreign_non_business_income + 
+                              income.foreign_dividend_income + income.foreign_pension)
+        foreign_tax_credit = self.calculate_foreign_tax_credit(
+            foreign_tax, foreign_income_total, 
+            taxable_income * 0.25,  # Simplified total tax estimate
+            net_income
+        )
+        credits['foreign_tax_credit'] = foreign_tax_credit
+        
+        # Special Credits
+        if personal.is_volunteer_firefighter:
+            credits['volunteer_firefighter'] = self.federal_amounts['volunteer_firefighter_credit'] * fed_rate
+        
+        if personal.is_search_rescue_volunteer:
+            credits['search_rescue'] = self.federal_amounts['search_rescue_credit'] * fed_rate
+        
+        return credits
+    
+    def calculate_cpp_contribution(self, employment_income: float, self_employment_income: float, 
+                                 business_income: float, province: str) -> float:
+        """Calculate CPP/QPP contribution"""
+        total_earned_income = employment_income + self_employment_income + business_income
+        
+        if province == 'QC':
+            pensionable = min(total_earned_income, self.qpp_max_pensionable) - self.qpp_basic_exemption
+            return max(0, pensionable * self.qpp_rate)
+        else:
+            pensionable = min(total_earned_income, self.cpp_max_pensionable) - self.cpp_basic_exemption
+            return max(0, min(pensionable * self.cpp_rate, self.cpp_max_contribution))
+    
+    def calculate_ei_contribution(self, employment_income: float, province: str) -> float:
+        """Calculate EI/QPIP contribution"""
+        if province == 'QC':
+            ei_contrib = min(employment_income, self.ei_max_insurable) * self.ei_rate_quebec
+            qpip_contrib = min(employment_income, self.ei_max_insurable) * self.qpip_rate
+            return ei_contrib + qpip_contrib
+        else:
+            return min(employment_income, self.ei_max_insurable) * self.ei_rate
+    
+    def calculate_oas_clawback(self, oas_income: float, net_income: float) -> float:
+        """Calculate OAS clawback (recovery tax)"""
+        if oas_income <= 0 or net_income <= self.oas_clawback_threshold:
+            return 0
+        
+        excess_income = net_income - self.oas_clawback_threshold
+        clawback = min(oas_income, excess_income * self.oas_clawback_rate)
+        return clawback
+    
+    def calculate_ei_benefit_clawback(self, ei_benefits: float, net_income: float) -> float:
+        """Calculate EI benefit clawback for high earners"""
+        if ei_benefits <= 0 or net_income <= self.ei_clawback_threshold:
+            return 0
+        
+        excess_income = net_income - self.ei_clawback_threshold
+        clawback = min(ei_benefits, excess_income * self.ei_clawback_rate)
+        return clawback
+    
+    def calculate_canada_child_benefit(self, personal: PersonalInfo, family_net_income: float) -> float:
+        """Calculate Canada Child Benefit with proper phase-out"""
+        if not personal.dependant_ages:
+            return 0
+        
+        total_benefit = 0
+        
+        for age in personal.dependant_ages:
+            if age < 6:
+                base_benefit = self.ccb_max_under6
+            elif age < 18:
+                base_benefit = self.ccb_max_6to17
+            else:
+                continue
+            
+            total_benefit += base_benefit
+        
+        if family_net_income > self.ccb_threshold:
+            num_children = len([age for age in personal.dependant_ages if age < 18])
+            
+            if num_children == 1:
+                reduction_rate = self.ccb_reduction_rate1
+            elif num_children == 2:
+                reduction_rate = self.ccb_reduction_rate1
+            elif num_children == 3:
+                reduction_rate = 0.19
+            else:
+                reduction_rate = 0.23
+            
+            excess_income = family_net_income - self.ccb_threshold
+            
+            if family_net_income <= self.ccb_second_threshold:
+                reduction = excess_income * reduction_rate
+            else:
+                first_phase = self.ccb_second_threshold - self.ccb_threshold
+                second_phase = family_net_income - self.ccb_second_threshold
+                reduction = (first_phase * reduction_rate + 
+                           second_phase * self.ccb_reduction_rate2)
+            
+            total_benefit = max(0, total_benefit - reduction)
+        
+        return total_benefit
+    
+    def calculate_gst_hst_credit(self, net_income: float, personal: PersonalInfo) -> float:
+        """Calculate GST/HST Credit"""
+        if personal.is_married:
+            base_credit = self.gst_credit_married
+            family_income = net_income + personal.spouse_income
+        else:
+            base_credit = self.gst_credit_single
+            family_income = net_income
+        
+        child_credit = len([age for age in personal.dependant_ages if age < 19]) * self.gst_credit_child
+        total_credit = base_credit + child_credit
+        
+        if family_income > self.gst_credit_threshold:
+            reduction = (family_income - self.gst_credit_threshold) * 0.05
+            total_credit = max(0, total_credit - reduction)
+        
+        return total_credit
+    
+    def calculate_farming_fishing_averaging(self, current_income: float, 
+                                           previous_years: List[float], 
+                                           business_type: BusinessType) -> Tuple[float, float]:
+        """Calculate farming and fishing income averaging"""
+        if business_type not in [BusinessType.FARMING, BusinessType.FISHING]:
+            return current_income, 0
+        
+        if len(previous_years) < 4:
+            return current_income, 0  # Need at least 4 previous years
+        
+        # Calculate average of previous years
+        avg_previous = sum(previous_years[-4:]) / 4
+        
+        # Only beneficial if current year significantly exceeds average
+        if current_income <= avg_previous * 1.2:
+            return current_income, 0
+        
+        # Calculate tax savings by averaging
+        excess_income = current_income - avg_previous
+        averaged_income = avg_previous + (excess_income * 0.25)  # Simplified averaging
+        
+        tax_savings = excess_income * 0.25  # Approximate savings
+        return averaged_income, tax_savings
+    
+    def calculate_artist_income_averaging(self, current_income: float, 
+                                        previous_years: List[float]) -> Tuple[float, float]:
+        """Calculate artist income averaging (forward averaging)"""
+        if len(previous_years) < 2:
+            return current_income, 0
+        
+        # Check for significant fluctuation
+        recent_avg = sum(previous_years[-2:]) / 2
+        if abs(current_income - recent_avg) < self.artist_averaging_threshold:
+            return current_income, 0
+        
+        # Forward averaging calculation (simplified)
+        if current_income > recent_avg * 1.3:
+            # High income year - average forward
+            averaged_amount = current_income * 0.25  # 25% can be averaged forward
+            return current_income - averaged_amount, averaged_amount
+        
+        return current_income, 0
+    
+    def calculate_superficial_loss_adjustment(self, capital_losses: float, 
+                                            identical_property_purchased: float) -> float:
+        """Calculate superficial loss adjustment"""
+        # Superficial loss rules - if identical property purchased within 30 days
+        if identical_property_purchased > 0:
+            # Deny the loss (simplified rule)
+            return min(capital_losses, identical_property_purchased)
+        return 0
+    
+    def calculate_restricted_farm_loss(self, farm_income: float, farm_expenses: float,
+                                     other_income: float) -> Tuple[float, float]:
+        """Calculate restricted farm loss"""
+        farm_loss = max(0, farm_expenses - farm_income)
+        
+        if farm_loss == 0:
+            return 0, 0
+        
+        # Check if farming is chief source of income
+        if other_income > 0 and farm_income < other_income * 0.5:
+            # Restricted farm loss applies
+            allowable_loss = min(farm_loss, self.restricted_farm_loss_limit)
+            restricted_portion = farm_loss - allowable_loss
+            return allowable_loss, restricted_portion
+        
+        return farm_loss, 0
+    
+    def calculate_resource_deductions(self, resource_income: float, 
+                                    exploration_expenses: float,
+                                    development_expenses: float) -> Dict[str, float]:
+        """Calculate resource industry deductions"""
+        deductions = {}
+        
+        # Canadian Exploration Expense (100% deduction)
+        deductions['exploration'] = exploration_expenses * self.canadian_exploration_rate
+        
+        # Canadian Development Expense (30% declining balance)
+        deductions['development'] = development_expenses * self.canadian_development_rate
+        
+        # Depletion allowance (25% of resource income)
+        deductions['depletion'] = resource_income * self.depletion_rate
+        
+        return deductions
+    
+    def calculate_quebec_specific_credits(self, income: IncomeDetails, deductions: DeductionsCredits,
+                                        personal: PersonalInfo, net_income: float) -> Dict[str, float]:
+        """Calculate Quebec-specific tax credits and deductions"""
+        credits = {}
+        
+        # Quebec medical expense credit (different threshold)
+        if deductions.medical_expenses > 0:
+            quebec_threshold = max(net_income * self.quebec_specific['medical_expense_threshold_rate'],
+                                 self.quebec_specific['medical_expense_minimum'])
+            eligible_medical = max(0, deductions.medical_expenses - quebec_threshold)
+            credits['quebec_medical'] = eligible_medical * 0.20
+        
+        # Quebec childcare credit (refundable)
+        if deductions.childcare_expenses > 0:
+            max_childcare = min(deductions.childcare_expenses, self.quebec_specific['childcare_maximum'])
+            # Income-tested credit rate
+            if net_income <= 50000:
+                credit_rate = 0.75
+            elif net_income <= 100000:
+                credit_rate = 0.75 - ((net_income - 50000) / 50000) * 0.25
+            else:
+                credit_rate = 0.50
+            credits['quebec_childcare'] = max_childcare * credit_rate
+        
+        # Quebec political contribution credit (different rates)
+        if deductions.quebec_political_contribution > 0:
+            contrib = deductions.quebec_political_contribution
+            if contrib <= 200:
+                credits['quebec_political'] = contrib * 0.75
+            elif contrib <= 600:
+                credits['quebec_political'] = 150 + (contrib - 200) * 0.50
+            else:
+                credits['quebec_political'] = 350 + (contrib - 600) * 0.167
+        
+        # Quebec solidarity tax (for high earners)
+        if net_income > self.quebec_specific['solidarity_tax_threshold']:
+            excess = net_income - self.quebec_specific['solidarity_tax_threshold']
+            credits['quebec_solidarity_tax'] = -excess * 0.03  # Negative = additional tax
+        
+        return credits
+    
+    def calculate_indigenous_exemptions(self, income: IncomeDetails, personal: PersonalInfo) -> float:
+        """Calculate Indian Act exemptions for on-reserve income"""
+        if not personal.is_indigenous_on_reserve:
+            return 0
+        
+        # Employment income earned on reserve is exempt
+        exempt_amount = min(income.employment_income, personal.reserve_income_exempt)
+        
+        # Business income from reserve-based business may be exempt
+        if income.business_income > 0:
+            # Simplified rule - would need complex connecting factors analysis
+            exempt_amount += income.business_income * 0.5  # Partial exemption
+        
+        return exempt_amount
+    
+    def calculate_diplomatic_military_exemptions(self, income: IncomeDetails, 
+                                               personal: PersonalInfo) -> float:
+        """Calculate diplomatic and military overseas exemptions"""
+        exemptions = 0
+        
+        if SpecialStatus.DIPLOMAT in personal.special_status:
+            # Diplomatic exemption (simplified)
+            exemptions += income.employment_income * 0.8  # Most employment income exempt
+        
+        if SpecialStatus.MILITARY_OVERSEAS in personal.special_status:
+            # Military overseas pay exemption
+            exemptions += income.overseas_employment_exempt
+        
+        return exemptions
+    
+    def calculate_lump_sum_averaging(self, lump_sum: float, years_applicable: int) -> float:
+        """Calculate tax relief for lump sum payments"""
+        if lump_sum <= 0 or years_applicable <= 1:
+            return 0
+        
+        # Simplified lump sum averaging
+        annual_amount = lump_sum / years_applicable
+        
+        # Tax relief approximation
+        if annual_amount > 50000:
+            return lump_sum * 0.15  # Approximate tax savings
+        
+        return 0
+    
+    def calculate_flow_through_share_benefits(self, flow_through_deduction: float,
+                                            resource_income: float) -> Tuple[float, float]:
+        """Calculate flow-through share deductions and recapture"""
+        # Flow-through share deduction (immediate)
+        current_deduction = flow_through_deduction
+        
+        # Future recapture when shares sold (simplified)
+        future_recapture = flow_through_deduction * 0.5  # Eventual inclusion
+        
+        return current_deduction, future_recapture
+    
+    def calculate_scientific_research_credits(self, sr_expenditures: float,
+                                            business_income: float) -> float:
+        """Calculate scientific research and experimental development credits"""
+        if sr_expenditures <= 0:
+            return 0
+        
+        # Investment tax credit for SR&ED
+        # Simplified rates - actual calculation is very complex
+        if business_income < 500000:  # Small business
+            credit_rate = 0.35  # 35% credit
+        else:
+            credit_rate = 0.15  # 15% credit
+        
+        return sr_expenditures * credit_rate
+    
+    def calculate_canada_workers_benefit(self, employment_income: float, business_income: float,
+                                       net_income: float, personal: PersonalInfo) -> float:
+        """Calculate Canada Workers Benefit"""
+        working_income = employment_income + business_income
+        
+        if personal.is_married:
+            max_benefit = self.cwb_family_max
+            family_income = net_income + personal.spouse_income
+            income_threshold = 32244
+        else:
+            max_benefit = self.cwb_single_max
+            family_income = net_income
+            income_threshold = 24573
+        
+        if working_income < 3000:
+            return 0
+        
+        if working_income <= 7000:
+            benefit = working_income * 0.26
+        else:
+            benefit = min(max_benefit, 1820 + (working_income - 7000) * 0.12)
+        
+        if family_income > income_threshold:
+            reduction = (family_income - income_threshold) * 0.12
+            benefit = max(0, benefit - reduction)
+        
+        if personal.has_disability:
+            disability_supplement = min(self.cwb_disability_supplement, working_income * 0.125)
+            benefit += disability_supplement
+        
+        return benefit
+    
+    def calculate_provincial_specialized_credits(self, deductions: DeductionsCredits, 
+                                               personal: PersonalInfo, province: str,
+                                               net_income: float) -> Dict[str, float]:
+        """Calculate specialized provincial credits"""
+        credits = {}
+        
+        if province == 'ON':
+            # Ontario First-Time Home Buyer Credit
+            if personal.is_first_time_buyer and deductions.ontario_first_time_home_buyer > 0:
+                credits['on_first_home'] = min(deductions.ontario_first_time_home_buyer, 4000) * 0.05
+            
+            # Ontario Senior Homeowner Property Tax Grant
+            if personal.age >= 64 and deductions.ontario_senior_homeowner_grant > 0:
+                if net_income <= 35000:
+                    credits['on_senior_grant'] = min(deductions.ontario_senior_homeowner_grant, 500)
+        
+        elif province == 'BC':
+            # BC Training Tax Credit
+            if deductions.bc_training_tax_credit > 0:
+                credits['bc_training'] = min(deductions.bc_training_tax_credit, 1000) * 0.8
+            
+            # BC Climate Action Credit (enhanced)
+            if deductions.bc_climate_action_credit > 0:
+                credits['bc_climate'] = deductions.bc_climate_action_credit
+        
+        elif province == 'SK':
+            # Saskatchewan Active Families Benefit
+            if personal.num_dependants > 0 and deductions.saskatchewan_active_families > 0:
+                per_child = min(deductions.saskatchewan_active_families / personal.num_dependants, 150)
+                credits['sk_active_families'] = per_child * personal.num_dependants
+        
+        elif province == 'MB':
+            # Manitoba Property Tax Credit
+            if deductions.manitoba_property_tax_credit > 0:
+                base_credit = min(deductions.manitoba_property_tax_credit, 1000)
+                if net_income > 35000:
+                    reduction = (net_income - 35000) * 0.01
+                    base_credit = max(0, base_credit - reduction)
+                credits['mb_property'] = base_credit
+        
+        elif province == 'AB':
+            # Alberta Family Employment Tax Credit
+            if personal.is_married and personal.num_dependants > 0:
+                family_income = net_income + personal.spouse_income
+                if family_income <= 95000:
+                    credits['ab_family_employment'] = min(family_income * 0.11, 2760)
+        
+        return credits
+    
+    def calculate_tax(self, 
+                     income: IncomeDetails, 
+                     deductions: DeductionsCredits, 
+                     advanced: AdvancedDeductions,
+                     personal: PersonalInfo, 
+                     foreign_tax: ForeignTaxPaid = None,
+                     pension_splitting: PensionSplitting = None,
+                     province: str = 'ON') -> TaxResult:
+        """
+        Calculate comprehensive income tax with ALL advanced features and edge cases
+        """
+        
+        if province not in self.provincial_data:
+            raise ValueError(f"Invalid province code: {province}")
+        
+        if foreign_tax is None:
+            foreign_tax = ForeignTaxPaid()
+        if pension_splitting is None:
+            pension_splitting = PensionSplitting()
+        
+        # Apply specialized income adjustments
+        
+        # 1. Farming/Fishing Income Averaging
+        adjusted_farming_income = income.farming_income
+        adjusted_fishing_income = income.fishing_income
+        farming_tax_savings = 0
+        fishing_tax_savings = 0
+        
+        if personal.business_type == BusinessType.FARMING and income.farming_income_previous_years:
+            adjusted_farming_income, farming_tax_savings = self.calculate_farming_fishing_averaging(
+                income.farming_income, income.farming_income_previous_years, BusinessType.FARMING
+            )
+        
+        if personal.business_type == BusinessType.FISHING:
+            adjusted_fishing_income, fishing_tax_savings = self.calculate_farming_fishing_averaging(
+                income.fishing_income, [], BusinessType.FISHING
+            )
+        
+        # 2. Artist Income Averaging
+        adjusted_artistic_income = income.artistic_income_current
+        artist_averaging_amount = 0
+        if (SpecialStatus.ARTIST in personal.special_status and 
+            deductions.artist_income_averaging_elected and 
+            income.artistic_income_previous_years):
+            adjusted_artistic_income, artist_averaging_amount = self.calculate_artist_income_averaging(
+                income.artistic_income_current, income.artistic_income_previous_years
+            )
+        
+        # 3. Superficial Loss Adjustment
+        superficial_loss_denied = self.calculate_superficial_loss_adjustment(
+            income.capital_losses_current, income.superficial_losses_denied
+        )
+        adjusted_capital_losses = income.capital_losses_current - superficial_loss_denied
+        
+        # 4. Restricted Farm Loss
+        farm_loss_allowed = 0
+        farm_loss_restricted = 0
+        if personal.business_type == BusinessType.FARMING:
+            farm_loss_allowed, farm_loss_restricted = self.calculate_restricted_farm_loss(
+                adjusted_farming_income, advanced.business_expenses, 
+                income.employment_income + income.professional_income
+            )
+        
+        # 5. Indigenous Exemptions
+        indigenous_exempt_income = self.calculate_indigenous_exemptions(income, personal)
+        
+        # 6. Diplomatic/Military Exemptions
+        diplomatic_exempt_income = self.calculate_diplomatic_military_exemptions(income, personal)
+        
+        # 7. Resource Deductions
+        resource_deductions = self.calculate_resource_deductions(
+            income.resource_income, advanced.canadian_exploration_expense,
+            advanced.canadian_development_expense
+        )
+        
+        # 8. Flow-through Share Benefits
+        flow_through_deduction, flow_through_future_recapture = self.calculate_flow_through_share_benefits(
+            income.flow_through_share_deductions, income.resource_income
+        )
+        
+        # 9. Scientific Research Credits
+        sr_credit = self.calculate_scientific_research_credits(
+            income.scientific_research_expenditures, income.business_income
+        )
+        
+        # Calculate total income with adjustments
+        employment_total = (income.employment_income + income.employment_benefits + 
+                          income.stock_option_benefit + income.commission_income + 
+                          income.tips_gratuities - income.overseas_employment_exempt)
+        
+        business_total = (income.business_income + income.professional_income + 
+                         adjusted_farming_income + adjusted_fishing_income + 
+                         income.partnership_income + income.resource_income +
+                         adjusted_artistic_income + income.film_production_income)
+        
+        # Gross up eligible Canadian dividends
+        dividend_total = (income.canadian_dividend_income * self.federal_amounts['dividend_gross_up'] + 
+                         income.foreign_dividend_income)
+        
+        investment_total = (income.interest_income + dividend_total + income.rental_income + 
+                          income.royalty_income + income.foreign_business_income + 
+                          income.foreign_non_business_income + income.trust_income)
+        
+        # Capital gains (50% inclusion rate, adjusted for losses and superficial losses)
+        capital_gains_total = max(0, (income.capital_gains - adjusted_capital_losses) * 0.5)
+        capital_gains_total = max(0, capital_gains_total - income.net_capital_losses_applied)
+        
+        pension_total = (income.cpp_qpp_benefits + income.oas_benefits + income.private_pension + 
+                        income.foreign_pension + income.rrif_withdrawals + income.lif_withdrawals + 
+                        income.annuity_income + income.lump_sum_payment)
+        
+        other_total = (income.ei_benefits + income.alimony_received + 
+                      income.scholarship_income + income.bursary_income +
+                      income.death_benefits + income.other_income)
+        
+        # Apply exemptions
+        total_income_before_exemptions = (employment_total + business_total + investment_total + 
+                                        capital_gains_total + pension_total + other_total)
+        
+        total_income = total_income_before_exemptions - indigenous_exempt_income - diplomatic_exempt_income
+        
+        # Apply pension income splitting
+        split_amount, split_savings = self.calculate_pension_income_splitting(pension_splitting, personal)
+        
+        # Calculate net income (total income minus deductions)
+        total_deductions = (deductions.rrsp_contribution + deductions.pension_contribution +
+                          deductions.union_dues + deductions.professional_dues +
+                          deductions.childcare_expenses + deductions.alimony_paid +
+                          deductions.moving_expenses + deductions.northern_residents_deduction +
+                          deductions.clergy_residence + deductions.student_loan_interest +
+                          advanced.carrying_charges + advanced.interest_investment_loans +
+                          advanced.non_capital_losses_applied + advanced.farm_losses_applied +
+                          farm_loss_allowed + flow_through_deduction)
+        
+        # Add resource deductions
+        total_deductions += sum(resource_deductions.values())
+        
+        # Add stock option deduction if eligible
+        if income.stock_option_deduction_eligible:
+            total_deductions += income.stock_option_benefit * self.stock_option_deduction_rate
+        
+        net_income = max(0, total_income - total_deductions)
+        
+        # Calculate taxable income
+        taxable_income = net_income
+        
+        # Calculate regular tax
+        federal_tax = self.calculate_tax_on_brackets(taxable_income, self.federal_brackets)
+        provincial_tax = self.calculate_tax_on_brackets(
+            taxable_income, 
+            self.provincial_data[province]['brackets']
+        )
+        
+        total_tax_before_credits = federal_tax + provincial_tax
+        
+        # Calculate Alternative Minimum Tax
+        amt_income, amt_tax = self.calculate_alternative_minimum_tax(
+            income, taxable_income, deductions, advanced
+        )
+        
+        # Calculate Tax on Split Income
+        tosi_tax = self.calculate_tax_on_split_income(income, personal)
+        
+        # Calculate non-refundable credits
+        credits = self.calculate_non_refundable_credits(
+            income, deductions, personal, province, net_income, taxable_income, foreign_tax
+        )
+        
+        # Add specialized provincial credits
+        provincial_specialized = self.calculate_provincial_specialized_credits(
+            deductions, personal, province, net_income
+        )
+        credits.update(provincial_specialized)
+        
+        # Add Quebec-specific credits if applicable
+        if province == 'QC':
+            quebec_credits = self.calculate_quebec_specific_credits(
+                income, deductions, personal, net_income
+            )
+            credits.update(quebec_credits)
+        
+        # Add scientific research credit
+        if sr_credit > 0:
+            credits['scientific_research'] = sr_credit
+        
+        total_non_refundable_credits = sum([v for v in credits.values() if v > 0])
+        
+        # Apply credits to reduce tax
+        total_tax_after_credits = max(0, total_tax_before_credits - total_non_refundable_credits)
+        
+        # Add provincial surtax
+        provincial_surtax = self.calculate_provincial_surtax(provincial_tax, province)
+        total_tax_after_credits += provincial_surtax
+        
+        # Add Ontario Health Premium if applicable
+        if province == 'ON':
+            total_tax_after_credits += self.calculate_ontario_health_premium(taxable_income)
+        
+        # Add Quebec-specific taxes (negative credits are additional taxes)
+        quebec_additional_tax = sum([abs(v) for v in credits.values() if v < 0])
+        total_tax_after_credits += quebec_additional_tax
+        
+        # Apply AMT if higher than regular tax
+        if amt_tax > total_tax_after_credits:
+            amt_carryforward = 0
+            total_tax_after_credits = amt_tax
+        else:
+            amt_carryforward = max(0, total_tax_after_credits - amt_tax)
+        
+        # Add TOSI tax
+        total_tax_after_credits += tosi_tax
+        
+        # Calculate payroll contributions
+        cpp_contribution = self.calculate_cpp_contribution(
+            income.employment_income, income.business_income, 
+            income.professional_income, province
+        )
+        ei_contribution = self.calculate_ei_contribution(income.employment_income, province)
+        
+        # Calculate refundable credits
+        gst_hst_credit = self.calculate_gst_hst_credit(net_income, personal)
+        canada_workers_benefit = self.calculate_canada_workers_benefit(
+            income.employment_income, income.business_income, net_income, personal
+        )
+        
+        # Calculate Canada Child Benefit
+        family_net_income = net_income + personal.spouse_income if personal.is_married else net_income
+        canada_child_benefit = self.calculate_canada_child_benefit(personal, family_net_income)
+        
+        # Climate Action Incentive
+        climate_incentive = 0
+        if province in ['AB', 'SK', 'MB', 'ON', 'NB', 'PE', 'NS', 'NL']:
+            base_amounts = {'AB': 386, 'SK': 376, 'MB': 376, 'ON': 488, 
+                           'NB': 368, 'PE': 440, 'NS': 414, 'NL': 599}
+            climate_incentive = base_amounts.get(province, 0)
+            if personal.is_married:
+                climate_incentive += climate_incentive * 0.5
+            climate_incentive += len(personal.dependant_ages) * (climate_incentive * 0.25)
+        
+        # Add Quebec refundable childcare credit if applicable
+        quebec_refundable_credits = 0
+        if province == 'QC' and 'quebec_childcare' in credits:
+            quebec_refundable_credits = credits['quebec_childcare']
+        
+        total_refundable_credits = (gst_hst_credit + canada_workers_benefit + 
+                                  canada_child_benefit + climate_incentive + 
+                                  quebec_refundable_credits)
+        
+        # Calculate clawbacks
+        oas_clawback = self.calculate_oas_clawback(income.oas_benefits, net_income)
+        ei_benefit_clawback = self.calculate_ei_benefit_clawback(income.ei_benefits, net_income)
+        social_benefit_repayment = income.uic_benefit_repayment
+        
+        total_clawbacks = oas_clawback + ei_benefit_clawback + social_benefit_repayment
+        
+        # Final calculations
+        total_payable = (total_tax_after_credits + cpp_contribution + ei_contribution + 
+                        total_clawbacks)
+        net_income_after_tax = (total_income - total_payable + total_refundable_credits)
+        
+        # Tax rates
+        average_tax_rate = (total_tax_after_credits / total_income * 100) if total_income > 0 else 0
+        
+        # Marginal rate calculation (including potential clawback effects)
+        marginal_rate = 0
+        for bracket in self.federal_brackets:
+            if bracket.min_income <= taxable_income < bracket.max_income:
+                marginal_rate = bracket.rate
+                break
+        
+        for bracket in self.provincial_data[province]['brackets']:
+            if bracket.min_income <= taxable_income < bracket.max_income:
+                marginal_rate += bracket.rate
+                break
+        
+        # Add clawback effects to marginal rate
+        if income.oas_benefits > 0 and net_income > self.oas_clawback_threshold:
+            marginal_rate += 0.15  # OAS clawback
+        
+        marginal_tax_rate = marginal_rate * 100
+        
+        return TaxResult(
+            total_income=total_income,
+            net_income=net_income,
+            taxable_income=taxable_income,
+            split_income_subject_to_tosi=income.split_income_amount,
+            federal_tax=federal_tax,
+            provincial_tax=provincial_tax,
+            total_tax_before_credits=total_tax_before_credits,
+            amt_income=amt_income,
+            amt_tax=amt_tax,
+            amt_carryforward=amt_carryforward,
+            tosi_tax=tosi_tax,
+            basic_personal_credit=credits.get('basic_personal', 0),
+            spouse_credit=credits.get('spouse', 0),
+            dependant_credit=credits.get('dependant', 0),
+            age_credit=credits.get('age', 0),
+            pension_credit=credits.get('pension', 0),
+            disability_credit=credits.get('disability', 0),
+            tuition_credit=credits.get('tuition', 0),
+            medical_credit=credits.get('medical', 0),
+            charitable_credit=credits.get('charitable', 0),
+            political_credit=credits.get('political', 0),
+            foreign_tax_credit=credits.get('foreign_tax_credit', 0),
+            total_non_refundable_credits=total_non_refundable_credits,
+            provincial_surtax=provincial_surtax,
+            total_tax_after_credits=total_tax_after_credits,
+            cpp_contribution=cpp_contribution,
+            ei_contribution=ei_contribution,
+            gst_hst_credit=gst_hst_credit,
+            canada_workers_benefit=canada_workers_benefit,
+            canada_child_benefit=canada_child_benefit,
+            climate_action_incentive=climate_incentive,
+            working_income_tax_benefit=0,
+            total_refundable_credits=total_refundable_credits,
+            oas_clawback=oas_clawback,
+            ei_benefit_clawback=ei_benefit_clawback,
+            social_benefit_repayment=social_benefit_repayment,
+            total_clawbacks=total_clawbacks,
+            total_payable=total_payable,
+            net_income_after_tax=net_income_after_tax,
+            average_tax_rate=average_tax_rate,
+            marginal_tax_rate=marginal_tax_rate
+        )
+    
+    def calculate_ontario_health_premium(self, taxable_income: float) -> float:
+        """Calculate Ontario Health Premium"""
+        if taxable_income <= 20000:
+            return 0
+        elif taxable_income <= 25000:
+            return min(300, (taxable_income - 20000) * 0.06)
+        elif taxable_income <= 36000:
+            return 300
+        elif taxable_income <= 38500:
+            return min(450, 300 + (taxable_income - 36000) * 0.06)
+        elif taxable_income <= 48000:
+            return 450
+        elif taxable_income <= 48600:
+            return min(600, 450 + (taxable_income - 48000) * 0.25)
+        elif taxable_income <= 72000:
+            return 600
+        elif taxable_income <= 72600:
+            return min(750, 600 + (taxable_income - 72000) * 0.25)
+        elif taxable_income <= 200000:
+            return 750
+        else:
+            return min(900, 750 + (taxable_income - 200000) * 0.25)
+    
+    def print_comprehensive_summary(self, result: TaxResult, province: str):
+        """Print a detailed tax summary with all advanced components"""
+        print("\n" + "="*70)
+        print("COMPLETE COMPREHENSIVE CANADIAN TAX CALCULATION - 2024")
+        print("="*70)
+        print(f"Province/Territory: {province}")
+        
+        print("\nINCOME SUMMARY:")
+        print(f"  Total Income:           ${result.total_income:,.2f}")
+        print(f"  Net Income:             ${result.net_income:,.2f}")
+        print(f"  Taxable Income:         ${result.taxable_income:,.2f}")
+        if result.split_income_subject_to_tosi > 0:
+            print(f"  Split Income (TOSI):    ${result.split_income_subject_to_tosi:,.2f}")
+        
+        print("\nREGULAR TAX CALCULATION:")
+        print(f"  Federal Tax:            ${result.federal_tax:,.2f}")
+        print(f"  Provincial Tax:         ${result.provincial_tax:,.2f}")
+        print(f"  Tax Before Credits:     ${result.total_tax_before_credits:,.2f}")
+        
+        print("\nALTERNATIVE MINIMUM TAX:")
+        print(f"  AMT Income:             ${result.amt_income:,.2f}")
+        print(f"  AMT Tax:                ${result.amt_tax:,.2f}")
+        if result.amt_carryforward > 0:
+            print(f"  AMT Carryforward:       ${result.amt_carryforward:,.2f}")
+        
+        if result.tosi_tax > 0:
+            print("\nTAX ON SPLIT INCOME:")
+            print(f"  TOSI Tax:               ${result.tosi_tax:,.2f}")
+        
+        print("\nNON-REFUNDABLE CREDITS:")
+        print(f"  Basic Personal:         ${result.basic_personal_credit:,.2f}")
+        print(f"  Spouse/Equivalent:      ${result.spouse_credit:,.2f}")
+        print(f"  Dependant:             ${result.dependant_credit:,.2f}")
+        print(f"  Age Credit:            ${result.age_credit:,.2f}")
+        print(f"  Pension Credit:        ${result.pension_credit:,.2f}")
+        print(f"  Disability Credit:     ${result.disability_credit:,.2f}")
+        print(f"  Tuition Credit:        ${result.tuition_credit:,.2f}")
+        print(f"  Medical Credit:        ${result.medical_credit:,.2f}")
+        print(f"  Charitable Credit:     ${result.charitable_credit:,.2f}")
+        print(f"  Political Credit:      ${result.political_credit:,.2f}")
+        if result.foreign_tax_credit > 0:
+            print(f"  Foreign Tax Credit:    ${result.foreign_tax_credit:,.2f}")
+        print(f"  Total Credits:         ${result.total_non_refundable_credits:,.2f}")
+        
+        if result.provincial_surtax > 0:
+            print(f"\nPROVINCIAL SURTAX:       ${result.provincial_surtax:,.2f}")
+        
+        print("\nFINAL TAX:")
+        print(f"  Tax After Credits:      ${result.total_tax_after_credits:,.2f}")
+        
+        print("\nPAYROLL DEDUCTIONS:")
+        print(f"  CPP/QPP:               ${result.cpp_contribution:,.2f}")
+        print(f"  EI/QPIP:               ${result.ei_contribution:,.2f}")
+        
+        print("\nREFUNDABLE CREDITS:")
+        print(f"  GST/HST Credit:        ${result.gst_hst_credit:,.2f}")
+        print(f"  Workers Benefit:       ${result.canada_workers_benefit:,.2f}")
+        print(f"  Child Benefit:         ${result.canada_child_benefit:,.2f}")
+        print(f"  Climate Incentive:     ${result.climate_action_incentive:,.2f}")
+        print(f"  Total Refundable:      ${result.total_refundable_credits:,.2f}")
+        
+        if result.total_clawbacks > 0:
+            print("\nCLAWBACKS & REPAYMENTS:")
+            if result.oas_clawback > 0:
+                print(f"  OAS Clawback:          ${result.oas_clawback:,.2f}")
+            if result.ei_benefit_clawback > 0:
+                print(f"  EI Benefit Clawback:   ${result.ei_benefit_clawback:,.2f}")
+            if result.social_benefit_repayment > 0:
+                print(f"  Other Repayments:      ${result.social_benefit_repayment:,.2f}")
+            print(f"  Total Clawbacks:       ${result.total_clawbacks:,.2f}")
+        
+        print("\nFINAL RESULTS:")
+        print(f"  Total Payable:         ${result.total_payable:,.2f}")
+        print(f"  Net After-Tax Income:  ${result.net_income_after_tax:,.2f}")
+        print(f"  Average Tax Rate:      {result.average_tax_rate:.2f}%")
+        print(f"  Marginal Tax Rate:     {result.marginal_tax_rate:.2f}%")
+        print("="*70)
+
+
+# Example usage demonstrating all advanced features
+if __name__ == "__main__":
+    calculator = ComprehensiveCanadianTaxCalculator2024()
+    
+    # Example 1: High-income business owner with AMT and TOSI
+    print("EXAMPLE 1: High-Income Business Owner with Advanced Features")
+    
+    complex_income = IncomeDetails(
+        employment_income=150000,
+        business_income=75000,
+        stock_option_benefit=50000,
+        stock_option_deduction_eligible=True,
+        canadian_dividend_income=20000,
+        foreign_business_income=30000,
+        capital_gains=100000,
+        split_income_amount=25000,
+        split_income_from_related_business=True
+    )
+    
+    complex_deductions = DeductionsCredits(
+        rrsp_contribution=30000,
+        charitable_donations=15000,
+        medical_expenses=8000,
+        political_contributions=1000
+    )
+    
+    complex_advanced = AdvancedDeductions(
+        capital_cost_allowance=40000,
+        business_expenses=25000,
+        carrying_charges=5000,
+        non_capital_losses_applied=10000
+    )
+    
+    complex_personal = PersonalInfo(
+        age=45,
+        is_married=True,
+        spouse_income=60000,
+        num_dependants=2,
+        dependant_ages=[16, 19],
+        business_type=BusinessType.SOLE_PROPRIETORSHIP
+    )
+    
+    complex_foreign_tax = ForeignTaxPaid(
+        foreign_business_tax=4500,
+        foreign_non_business_tax=1200
+    )
+    
+    result1 = calculator.calculate_tax(
+        complex_income, complex_deductions, complex_advanced, 
+        complex_personal, complex_foreign_tax, province='ON'
+    )
+    calculator.print_comprehensive_summary(result1, 'ON')
+    
+    # Example 2: Senior with pension splitting and clawbacks
+    print("\n\nEXAMPLE 2: Senior with Pension Splitting and OAS Clawback")
+    
+    senior_income = IncomeDetails(
+        employment_income=40000,
+        cpp_qpp_benefits=18000,
+        oas_benefits=7200,
+        private_pension=35000,
+        investment_income=25000
+    )
+    
+    senior_deductions = DeductionsCredits(
+        medical_expenses=12000,
+        charitable_donations=5000
+    )
+    
+    senior_advanced = AdvancedDeductions()
+    
+    senior_personal = PersonalInfo(
+        age=68,
+        is_married=True,
+        spouse_income=20000,
+        spouse_age=65,
+        has_disability=False
+    )
+    
+    pension_split = PensionSplitting(
+        eligible_pension_income=35000,
+        amount_to_split=17500,
+        split_with_spouse=True
+    )
+    
+    result2 = calculator.calculate_tax(
+        senior_income, senior_deductions, senior_advanced, 
+        senior_personal, pension_splitting=pension_split, province='BC'
+    )
+    calculator.print_comprehensive_summary(result2, 'BC')
+    
+    # Example 3: Professional with foreign income and loss carryovers
+    print("\n\nEXAMPLE 3: Professional with Foreign Income and Loss Carryovers")
+    
+    prof_income = IncomeDetails(
+        professional_income=180000,
+        foreign_business_income=40000,
+        foreign_non_business_income=8000,
+        capital_gains=50000,
+        net_capital_losses_applied=15000
+    )
+    
+    prof_deductions = DeductionsCredits(
+        rrsp_contribution=29000,
+        professional_dues=2500,
+        home_accessibility_expenses=8000,
+        charitable_donations=10000
+    )
+    
+    prof_advanced = AdvancedDeductions(
+        business_expenses=35000,
+        home_office_employment=6000,
+        non_capital_losses_applied=25000,
+        accounting_fees=4000
+    )
+    
+    prof_personal = PersonalInfo(
+        age=38,
+        is_married=True,
+        spouse_income=45000,
+        num_dependants=1,
+        dependant_ages=[8],
+        employment_type=EmploymentType.REGULAR,
+        business_type=BusinessType.PROFESSIONAL
+    )
+    
+    prof_foreign_tax = ForeignTaxPaid(
+        foreign_business_tax=6000,
+        foreign_non_business_tax=800
+    )
+    
+    result3 = calculator.calculate_tax(
+        prof_income, prof_deductions, prof_advanced, 
+        prof_personal, prof_foreign_tax, province='AB'
+    )
+    calculator.print_comprehensive_summary(result3, 'AB')
