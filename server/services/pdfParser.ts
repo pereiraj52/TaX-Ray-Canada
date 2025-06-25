@@ -327,6 +327,30 @@ export class T1PDFParser {
       }
     }
 
+    // Extract Schedule 7 fields
+    if (comprehensiveData.schedule7) {
+      const schedule7Mapping = {
+        repayments_hbp: { code: '24600', name: 'HBP Repayments' },
+        repayments_llp: { code: '24630', name: 'LLP Repayments' },
+        rrsp_deduction_claimed: { code: '20800', name: 'RRSP Deduction Claimed' },
+        fhsa_deduction: { code: '20805', name: 'FHSA Deduction' },
+        spp_contributions: { code: '24640', name: 'SPP Contributions' },
+        transfers_in: { code: '24650', name: 'Transfers In' },
+      };
+
+      for (const [fieldKey, mapping] of Object.entries(schedule7Mapping)) {
+        const value = comprehensiveData.schedule7[fieldKey];
+        if (value !== null && value !== undefined) {
+          formFields.push({
+            fieldName: mapping.name,
+            fieldCode: mapping.code,
+            fieldValue: value.toString(),
+            fieldType: 'currency',
+          });
+        }
+      }
+    }
+
     extractedData.formFields = formFields;
     return extractedData;
   }
