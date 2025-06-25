@@ -642,6 +642,24 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                         <span className="font-mono">$0.00</span>
                       </div>
                     </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Total CDSB Received:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">CDSB Room 2024:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">CDSB Remaining:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
