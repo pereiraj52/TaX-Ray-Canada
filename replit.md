@@ -192,6 +192,7 @@ Changelog:
 - June 25, 2025. Updated RESP grant field names to use CESG (Canada Education Savings Grant) terminology for clarity
 - June 25, 2025. Added three CLB (Canada Learning Bond) fields to RESP section: Total CLB Received, CLB Room 2024, and CLB Remaining
 - June 25, 2025. Fixed font styling in Accounts tab by changing all monetary values from font-mono to font-medium text-primary to match other tabs
+- June 25, 2025. Added comprehensive manual account data entry system with dollar sign icon and popup modal for all registered accounts (RRSP, TFSA, FHSA, RESP, RDSP, Capital Loss) with full field coverage for balances, contribution rooms, and government program benefits
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)

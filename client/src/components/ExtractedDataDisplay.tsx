@@ -120,6 +120,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
   // For household-level fields (like RESP), these are shared across all household members
   const getHouseholdFieldValue = (fieldType: string): string => {
+    // Check if manual entry data exists first
+    if (manualAccountData[fieldType as keyof typeof manualAccountData]) {
+      return manualAccountData[fieldType as keyof typeof manualAccountData];
+    }
+    
     // These values would normally come from a household-level data source
     // For now, returning consistent values that will be the same for both household members
     const householdFields = {
@@ -131,10 +136,44 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       'resp_2024_contribution': '0',
       'resp_clb_received': '0',
       'resp_clb_room_2024': '0',
-      'resp_clb_remaining': '0'
+      'resp_clb_remaining': '0',
+      'rrsp_account_balance': '0',
+      'rrsp_contribution_room': '0',
+      'tfsa_account_balance': '0',
+      'tfsa_contribution_room': '0',
+      'tfsa_2024_contribution': '0',
+      'fhsa_account_balance': '0',
+      'fhsa_contribution_room': '0',
+      'rdsp_account_balance': '0',
+      'rdsp_contribution_room': '0',
+      'rdsp_2024_contribution': '0',
+      'rdsp_cdsg_received': '0',
+      'rdsp_cdsg_room_2024': '0',
+      'rdsp_cdsg_remaining': '0',
+      'rdsp_cdsb_received': '0',
+      'rdsp_cdsb_room_2024': '0',
+      'rdsp_cdsb_remaining': '0',
+      'capital_loss_available': '0'
     };
     
     return householdFields[fieldType as keyof typeof householdFields] || '0';
+  };
+
+  const handleManualEntrySave = () => {
+    // Here you would typically save to backend/database
+    console.log('Saving manual account data:', manualAccountData);
+    setIsManualEntryOpen(false);
+  };
+
+  const handleManualEntryCancel = () => {
+    setIsManualEntryOpen(false);
+  };
+
+  const handleManualEntryChange = (field: string, value: string) => {
+    setManualAccountData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const renderField = (fieldCode: string, label: string, isCurrency = true) => {
@@ -648,37 +687,37 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Total CDSG Received:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_received'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSG Room 2024:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_room_2024'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSG Remaining:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_remaining'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Total CDSB Received:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_received'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSB Room 2024:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_room_2024'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSB Remaining:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_remaining'))}</span>
                       </div>
                     </div>
                   </div>
@@ -706,7 +745,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Available Losses:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('capital_loss_available'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
