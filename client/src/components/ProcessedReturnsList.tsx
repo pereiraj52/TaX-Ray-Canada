@@ -354,16 +354,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                                       onChange={(e) => handleManualEntryChange('hbp_required_2024', e.target.value)}
                                     />
                                   </div>
-                                  <div className="space-y-2">
-                                    <Label htmlFor="hbp_repaid_2024">2024 HBP Repaid</Label>
-                                    <Input
-                                      id="hbp_repaid_2024"
-                                      type="text"
-                                      placeholder="$0.00"
-                                      value={manualAccountData.hbp_repaid_2024}
-                                      onChange={(e) => handleManualEntryChange('hbp_repaid_2024', e.target.value)}
-                                    />
-                                  </div>
+
                                   <div className="space-y-2">
                                     <Label htmlFor="llp_balance">LLP Balance</Label>
                                     <Input
@@ -384,16 +375,7 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                                       onChange={(e) => handleManualEntryChange('llp_required_2024', e.target.value)}
                                     />
                                   </div>
-                                  <div className="space-y-2">
-                                    <Label htmlFor="llp_repaid_2024">2024 LLP Repaid</Label>
-                                    <Input
-                                      id="llp_repaid_2024"
-                                      type="text"
-                                      placeholder="$0.00"
-                                      value={manualAccountData.llp_repaid_2024}
-                                      onChange={(e) => handleManualEntryChange('llp_repaid_2024', e.target.value)}
-                                    />
-                                  </div>
+
                                 </div>
 
                                 {/* TFSA Section */}
