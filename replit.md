@@ -189,6 +189,7 @@ Changelog:
 - June 25, 2025. Programmed RESP fields to be shared at household level so both household members see the same RESP account information
 - June 25, 2025. Added three CDSG (Canada Disability Savings Grant) fields to RDSP section: Total CDSG Received, CDSG Room 2024, and CDSG Remaining
 - June 25, 2025. Added three CDSB (Canada Disability Savings Bond) fields to RDSP section: Total CDSB Received, CDSB Room 2024, and CDSB Remaining
+- June 25, 2025. Updated RESP grant field names to use CESG (Canada Education Savings Grant) terminology for clarity
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)

@@ -567,19 +567,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total Grant Received:</span>
+                      <span className="font-medium text-primary">Total CESG Received:</span>
                       <div className="text-right">
                         <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_total_grant'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Grant Room 2024:</span>
+                      <span className="font-medium text-primary">CESG Room 2024:</span>
                       <div className="text-right">
                         <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_grant_room_2024'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Grant Remaining:</span>
+                      <span className="font-medium text-primary">CESG Remaining:</span>
                       <div className="text-right">
                         <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
                       </div>
