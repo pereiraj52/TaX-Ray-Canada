@@ -121,10 +121,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
   // For household-level fields (like RESP), these are shared across all household members
   const getHouseholdFieldValue = (fieldType: string): string => {
-    // Check if manual entry data exists first
-    if (manualAccountData[fieldType as keyof typeof manualAccountData]) {
-      return manualAccountData[fieldType as keyof typeof manualAccountData];
-    }
+    // For now, these are placeholder values that would come from household-level data
     
     // These values would normally come from a household-level data source
     // For now, returning consistent values that will be the same for both household members
@@ -158,6 +155,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       'hbp_balance': '0',
       'hbp_required_2024': '0',
       'hbp_repaid_2024': '0',
+      'llp_balance': '0',
+      'llp_required_2024': '0',
+      'llp_repaid_2024': '0',
       'llp_balance': '0',
       'llp_required_2024': '0',
       'llp_repaid_2024': '0'
@@ -493,6 +493,42 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="font-medium text-primary">2024 Contribution:</span>
                       <div className="text-right">
                         <span className="font-medium text-primary">{formatCurrency(getFieldValue("20800"))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">HBP Balance:</span>
+                      <div className="text-right">
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 HBP Required:</span>
+                      <div className="text-right">
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_required_2024'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 HBP Repaid:</span>
+                      <div className="text-right">
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_repaid_2024'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">LLP Balance:</span>
+                      <div className="text-right">
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_balance'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 LLP Required:</span>
+                      <div className="text-right">
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_required_2024'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 LLP Repaid:</span>
+                      <div className="text-right">
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_repaid_2024'))}</span>
                       </div>
                     </div>
                   </div>
