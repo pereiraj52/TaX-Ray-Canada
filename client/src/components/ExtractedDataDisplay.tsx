@@ -154,7 +154,13 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       'rdsp_cdsb_received': '0',
       'rdsp_cdsb_room_2024': '0',
       'rdsp_cdsb_remaining': '0',
-      'capital_loss_available': '0'
+      'capital_loss_available': '0',
+      'hbp_balance': '0',
+      'hbp_required_2024': '0',
+      'hbp_repaid_2024': '0',
+      'llp_balance': '0',
+      'llp_required_2024': '0',
+      'llp_repaid_2024': '0'
     };
     
     return householdFields[fieldType as keyof typeof householdFields] || '0';

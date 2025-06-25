@@ -55,7 +55,14 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
     rdsp_cdsb_room_2024: '',
     rdsp_cdsb_remaining: '',
     // Capital Loss
-    capital_loss_available: ''
+    capital_loss_available: '',
+    // HBP/LLP
+    hbp_balance: '',
+    hbp_required_2024: '',
+    hbp_repaid_2024: '',
+    llp_balance: '',
+    llp_required_2024: '',
+    llp_repaid_2024: ''
   });
 
   const generateReportMutation = useMutation({
@@ -325,6 +332,66 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                                       placeholder="$0.00"
                                       value={manualAccountData.rrsp_contribution_room}
                                       onChange={(e) => handleManualEntryChange('rrsp_contribution_room', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="hbp_balance">HBP Balance</Label>
+                                    <Input
+                                      id="hbp_balance"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.hbp_balance}
+                                      onChange={(e) => handleManualEntryChange('hbp_balance', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="hbp_required_2024">2024 HBP Required</Label>
+                                    <Input
+                                      id="hbp_required_2024"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.hbp_required_2024}
+                                      onChange={(e) => handleManualEntryChange('hbp_required_2024', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="hbp_repaid_2024">2024 HBP Repaid</Label>
+                                    <Input
+                                      id="hbp_repaid_2024"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.hbp_repaid_2024}
+                                      onChange={(e) => handleManualEntryChange('hbp_repaid_2024', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="llp_balance">LLP Balance</Label>
+                                    <Input
+                                      id="llp_balance"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.llp_balance}
+                                      onChange={(e) => handleManualEntryChange('llp_balance', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="llp_required_2024">2024 LLP Required</Label>
+                                    <Input
+                                      id="llp_required_2024"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.llp_required_2024}
+                                      onChange={(e) => handleManualEntryChange('llp_required_2024', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="llp_repaid_2024">2024 LLP Repaid</Label>
+                                    <Input
+                                      id="llp_repaid_2024"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.llp_repaid_2024}
+                                      onChange={(e) => handleManualEntryChange('llp_repaid_2024', e.target.value)}
                                     />
                                   </div>
                                 </div>
