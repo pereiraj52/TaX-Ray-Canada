@@ -200,8 +200,6 @@ Changelog:
 - June 25, 2025. Updated Capital Loss Applied This Year field to reference line 25200 instead of line 25300 for correct tax form mapping
 - June 25, 2025. Added AMT section to Accounts tab with AMT Carry Forward field referencing line 40427 for Alternative Minimum Tax tracking
 - June 25, 2025. Expanded RRSP/RRIF section with HBP and LLP tracking fields: HBP Balance, 2024 HBP Required, 2024 HBP Repaid, LLP Balance, 2024 LLP Required, 2024 LLP Repaid for comprehensive retirement plan management
-- June 25, 2025. Enhanced PDF parser to extract HBP Balance ($15,003) from RRSP/PRPP/SPP Deduction Worksheet page 2 repayable balance section for accurate HBP tracking
-- June 25, 2025. Corrected HBP balance extraction to target RRSP/PRPP/SPP Deduction Worksheet "Summary of withdrawal and repayments" section rather than Schedule 7
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)

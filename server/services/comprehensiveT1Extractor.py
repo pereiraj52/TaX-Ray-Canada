@@ -583,10 +583,8 @@ class Schedule7Fields:
     rrsp_contributions: Optional[Decimal] = None  # Schedule 7, box 2 (was rrsp_contributions_line2)
     RRSP_60days: Optional[Decimal] = None  # Schedule 7, box 3
     repayments_hbp: Optional[Decimal] = None     # Line 24600
-    hbp_balance: Optional[Decimal] = None        # HBP repayable balance from Schedule 7
     spp_contributions: Optional[Decimal] = None  # Line 24640
     repayments_llp: Optional[Decimal] = None     # Line 24630
-    llp_balance: Optional[Decimal] = None        # LLP repayable balance from Schedule 7
     transfers_in: Optional[Decimal] = None       # Line 24650
     excess_contributions: Optional[Decimal] = None # Line 23200 (if relevant)
     unused_contributions_current: Optional[Decimal] = None # Line 24400
@@ -747,14 +745,6 @@ class ComprehensiveT1Extractor:
         
         # Extract Schedule 7 fields
         t1_return.schedule7 = self._extract_schedule7_fields(text)
-        
-        # Extract HBP and LLP balances from RRSP/PRPP/SPP Deduction Worksheet
-        # Note: These are extracted from the worksheet, not Schedule 7, but stored in schedule7 for convenience
-        hbp_balance, llp_balance = self._extract_rrsp_worksheet_balances(text)
-        if hbp_balance:
-            t1_return.schedule7.hbp_balance = hbp_balance
-        if llp_balance:
-            t1_return.schedule7.llp_balance = llp_balance
         
         return t1_return
     
@@ -1739,9 +1729,6 @@ class ComprehensiveT1Extractor:
         fields.RRSP_60days = line3
         if rrsp_limit is not None:
             fields.rrsp_deduction_limit = rrsp_limit
-        
-        # Note: HBP/LLP balances are extracted from RRSP/PRPP/SPP Deduction Worksheet, not Schedule 7
-        
         # print(f'FINAL VALUES - line1: {line1}, line2: {line2}, line3: {line3}')
         # Debug: Print all lines containing '11' and 5 lines before/after
         # for i, line in enumerate(lines):
@@ -1752,73 +1739,6 @@ class ComprehensiveT1Extractor:
         #         for l in lines[start:end]:
         #             print(f'DEBUG-S7-LINE: {l}')
         return fields
-    
-    def _extract_rrsp_worksheet_balances(self, text: str) -> tuple[Optional[Decimal], Optional[Decimal]]:
-        """Extract HBP and LLP repayable balances from RRSP/PRPP/SPP Deduction Worksheet"""
-        lines = text.splitlines()
-        hbp_balance = None
-        llp_balance = None
-        
-        # Look for the "Summary of withdrawal and repayments" section
-        in_summary_section = False
-        for i, line in enumerate(lines):
-            # Check if we're in the summary section of the RRSP/PRPP/SPP Deduction Worksheet
-            if re.search(r'(?:summary.*withdrawal.*repayment|RRSP.*PRPP.*SPP.*deduction.*worksheet)', line, re.IGNORECASE):
-                in_summary_section = True
-                
-                # Look in the following lines for repayable balance entries
-                search_lines = lines[i:min(len(lines), i+20)]  # Look ahead up to 20 lines
-                
-                for j, search_line in enumerate(search_lines):
-                    # Look for "Repayable balance" specifically
-                    if re.search(r'repayable.*balance', search_line, re.IGNORECASE):
-                        
-                        # Check if this line contains HBP context
-                        if re.search(r'HBP|home.*buyer', search_line, re.IGNORECASE):
-                            # Extract amount from this line or nearby lines
-                            amount_lines = search_lines[max(0, j-2):min(len(search_lines), j+3)]
-                            for amount_line in amount_lines:
-                                amount_match = re.search(r'15,?003(?:\.00)?|(\d{1,3}(?:,\d{3})*)\s+(\d{2})', amount_line)
-                                if amount_match:
-                                    try:
-                                        if '15' in amount_match.group(0):
-                                            amount_str = '15003.00'
-                                        else:
-                                            dollars = amount_match.group(1).replace(',', '') if amount_match.group(1) else '0'
-                                            cents = amount_match.group(2) if amount_match.group(2) else '00'
-                                            amount_str = f"{dollars}.{cents}"
-                                        hbp_balance = Decimal(amount_str)
-                                        break
-                                    except Exception:
-                                        continue
-                        
-                        # Check if this line contains LLP context
-                        elif re.search(r'LLP|lifelong.*learning', search_line, re.IGNORECASE):
-                            # Extract amount for LLP balance
-                            amount_lines = search_lines[max(0, j-2):min(len(search_lines), j+3)]
-                            for amount_line in amount_lines:
-                                amount_match = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})', amount_line)
-                                if amount_match:
-                                    try:
-                                        dollars = amount_match.group(1).replace(',', '')
-                                        cents = amount_match.group(2)
-                                        amount_str = f"{dollars}.{cents}"
-                                        llp_balance = Decimal(amount_str)
-                                        break
-                                    except Exception:
-                                        continue
-        
-        # Fallback: Look for the specific 15,003 amount anywhere in the document with HBP context
-        if not hbp_balance:
-            for line in lines:
-                if ('15003' in line or '15,003' in line) and re.search(r'(?:HBP|repay|balance)', line, re.IGNORECASE):
-                    try:
-                        hbp_balance = Decimal('15003.00')
-                        break
-                    except Exception:
-                        continue
-        
-        return hbp_balance, llp_balance
 
 def decimal_serializer(obj):
     """JSON serializer for Decimal objects"""

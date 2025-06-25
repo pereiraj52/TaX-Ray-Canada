@@ -18,47 +18,6 @@ type TabType = 'summary' | 'income' | 'deductions' | 'credits' | 'taxes' | 'acco
 export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayProps) {
   const [activeTab, setActiveTab] = useState<TabType>('summary');
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [manualAccountData, setManualAccountData] = useState({
-    // RRSP
-    rrsp_account_balance: '',
-    rrsp_contribution_room: '',
-    // TFSA
-    tfsa_account_balance: '',
-    tfsa_contribution_room: '',
-    tfsa_2024_contribution: '',
-    // FHSA
-    fhsa_account_balance: '',
-    fhsa_contribution_room: '',
-    // RESP
-    resp_account_balance: '',
-    resp_contribution_room: '',
-    resp_2024_contribution: '',
-    resp_total_grant: '',
-    resp_grant_room_2024: '',
-    resp_grant_remaining: '',
-    resp_clb_received: '',
-    resp_clb_room_2024: '',
-    resp_clb_remaining: '',
-    // RDSP
-    rdsp_account_balance: '',
-    rdsp_contribution_room: '',
-    rdsp_2024_contribution: '',
-    rdsp_cdsg_received: '',
-    rdsp_cdsg_room_2024: '',
-    rdsp_cdsg_remaining: '',
-    rdsp_cdsb_received: '',
-    rdsp_cdsb_room_2024: '',
-    rdsp_cdsb_remaining: '',
-    // Capital Loss
-    capital_loss_available: '',
-    // HBP/LLP
-    hbp_balance: '',
-    hbp_required_2024: '',
-    hbp_repaid_2024: '',
-    llp_balance: '',
-    llp_required_2024: '',
-    llp_repaid_2024: ''
-  });
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
     'employment': true,
     'pension': true,
@@ -539,7 +498,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">HBP Balance:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue('hbp_balance') || getHouseholdFieldValue('hbp_balance'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
