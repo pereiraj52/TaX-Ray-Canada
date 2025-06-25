@@ -195,6 +195,7 @@ Changelog:
 - June 25, 2025. Added comprehensive manual account data entry system with dollar sign icon and popup modal for all registered accounts (RRSP, TFSA, FHSA, RESP, RDSP, Capital Loss) with full field coverage for balances, contribution rooms, and government program benefits
 - June 25, 2025. Changed Income tab icon from DollarSign to TrendingUp to match the Accounts section icon for visual consistency
 - June 25, 2025. Updated manual entry button icon from DollarSign to TrendingUp to match the Accounts section icon in Tax Reports area
+- June 25, 2025. Moved manual entry button to be positioned before the Edit T1 data icon in Tax Reports section
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)

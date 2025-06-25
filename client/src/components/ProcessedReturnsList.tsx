@@ -278,16 +278,6 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                           >
                             <RefreshCw className="h-3 w-3" />
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => onEditClick?.(t1Return.id)}
-                            disabled={t1Return.processingStatus !== 'completed'}
-                            className="h-6 w-6 p-0 text-orange-500 hover:text-orange-700 hover:bg-orange-50"
-                            title="Edit T1 data"
-                          >
-                            <Edit className="h-3 w-3" />
-                          </Button>
                           <Dialog open={isManualEntryOpen} onOpenChange={setIsManualEntryOpen}>
                             <DialogTrigger asChild>
                               <Button
@@ -299,6 +289,16 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                                 <TrendingUp className="h-3 w-3" />
                               </Button>
                             </DialogTrigger>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onEditClick?.(t1Return.id)}
+                            disabled={t1Return.processingStatus !== 'completed'}
+                            className="h-6 w-6 p-0 text-orange-500 hover:text-orange-700 hover:bg-orange-50"
+                            title="Edit T1 data"
+                          >
+                            <Edit className="h-3 w-3" />
+                          </Button>
                             <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
                               <DialogHeader>
                                 <DialogTitle>Manual Account Data Entry</DialogTitle>
