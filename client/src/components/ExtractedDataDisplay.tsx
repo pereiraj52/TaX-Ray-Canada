@@ -39,7 +39,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     'personal-situation-credits': true,
     'education-medical-credits': true,
     'ontario-credits': true,
-    'refundable-credits': true
+    'refundable-credits': true,
+    // Account sections
+    'rrsp-section': true,
+    'tfsa-section': true,
+    'fhsa-section': true,
+    'resp-section': true,
+    'rdsp-section': true,
+    'capital-loss-section': true
   });
   const { toast } = useToast();
 
@@ -389,147 +396,237 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             </div>
             
             {/* RRSP/RRIF Section */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-primary">RRSP/RRIF</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Account Balance:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
+            <div className="mt-6">
+              <button
+                onClick={() => toggleSection('rrsp-section')}
+                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  {collapsedSections['rrsp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                  <span>RRSP/RRIF</span>
+                </div>
+                <span className="text-primary font-medium">
+                  {formatCurrency(getFieldValue("20800"))}
+                </span>
+              </button>
+              {!collapsedSections['rrsp-section'] && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Account Balance:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Contribution Room:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 Contribution:</span>
+                      <div className="text-right">
+                        <span className="font-mono">{formatCurrency(getFieldValue("20800"))}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Contribution Room:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">2024 Contribution:</span>
-                  <div className="text-right">
-                    <span className="font-mono">{formatCurrency(getFieldValue("20800"))}</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* TFSA Section */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-primary">TFSA</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Account Balance:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
+            <div className="mt-6">
+              <button
+                onClick={() => toggleSection('tfsa-section')}
+                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  {collapsedSections['tfsa-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                  <span>TFSA</span>
+                </div>
+                <span className="text-gray-400">
+                  $0.00
+                </span>
+              </button>
+              {!collapsedSections['tfsa-section'] && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Account Balance:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Contribution Room:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 Contribution:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Contribution Room:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">2024 Contribution:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* FHSA Section */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-primary">FHSA</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Account Balance:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
+            <div className="mt-6">
+              <button
+                onClick={() => toggleSection('fhsa-section')}
+                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  {collapsedSections['fhsa-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                  <span>FHSA</span>
+                </div>
+                <span className="text-primary font-medium">
+                  {formatCurrency(getFieldValue("20805"))}
+                </span>
+              </button>
+              {!collapsedSections['fhsa-section'] && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Account Balance:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Contribution Room:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 Contribution:</span>
+                      <div className="text-right">
+                        <span className="font-mono">{formatCurrency(getFieldValue("20805"))}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Contribution Room:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">2024 Contribution:</span>
-                  <div className="text-right">
-                    <span className="font-mono">{formatCurrency(getFieldValue("20805"))}</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* RESP Section */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-primary">RESP</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Account Balance:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
+            <div className="mt-6">
+              <button
+                onClick={() => toggleSection('resp-section')}
+                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  {collapsedSections['resp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                  <span>RESP</span>
+                </div>
+                <span className="text-gray-400">
+                  $0.00
+                </span>
+              </button>
+              {!collapsedSections['resp-section'] && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Account Balance:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Contribution Room:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 Contribution:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Contribution Room:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">2024 Contribution:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* RDSP Section */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-primary">RDSP</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Account Balance:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
+            <div className="mt-6">
+              <button
+                onClick={() => toggleSection('rdsp-section')}
+                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  {collapsedSections['rdsp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                  <span>RDSP</span>
+                </div>
+                <span className="text-gray-400">
+                  $0.00
+                </span>
+              </button>
+              {!collapsedSections['rdsp-section'] && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Account Balance:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Contribution Room:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">2024 Contribution:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Contribution Room:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">2024 Contribution:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Capital Loss Carry Forwards Section */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-primary">Capital Loss Carry Forwards</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Available Losses:</span>
-                  <div className="text-right">
-                    <span className="font-mono">$0.00</span>
+            <div className="mt-6">
+              <button
+                onClick={() => toggleSection('capital-loss-section')}
+                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  {collapsedSections['capital-loss-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                  <span>Capital Loss Carry Forwards</span>
+                </div>
+                <span className="text-primary font-medium">
+                  {formatCurrency(getFieldValue("25300"))}
+                </span>
+              </button>
+              {!collapsedSections['capital-loss-section'] && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Available Losses:</span>
+                      <div className="text-right">
+                        <span className="font-mono">$0.00</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Applied This Year:</span>
+                      <div className="text-right">
+                        <span className="font-mono">{formatCurrency(getFieldValue("25300"))}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="font-medium text-primary">Applied This Year:</span>
-                  <div className="text-right">
-                    <span className="font-mono">{formatCurrency(getFieldValue("25300"))}</span>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         )}

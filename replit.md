@@ -184,6 +184,7 @@ Changelog:
 - June 24, 2025. Connected FHSA 2024 Contribution field to line 20805 (FHSA deduction) for accurate data display
 - June 24, 2025. Connected Capital Loss Applied This Year field to line 25300 for accurate display of capital losses claimed
 - June 24, 2025. Fixed font styling consistency in Accounts tab by changing field labels from text-gray-700 to font-medium text-primary to match other tabs
+- June 24, 2025. Made all account sections collapsible with chevron icons, showing relevant amounts on right side when collapsed (RRSP shows line 20800, FHSA shows line 20805, Capital Loss shows line 25300)
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
