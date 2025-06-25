@@ -736,7 +736,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   <span>Capital Loss Carry Forwards</span>
                 </div>
                 <span className="text-primary font-medium">
-                  {formatCurrency(getFieldValue("25300"))}
+                  {formatCurrency(getFieldValue("25200"))}
                 </span>
               </button>
               {!collapsedSections['capital-loss-section'] && (
@@ -751,7 +751,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Applied This Year:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("25300"))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("25200"))}</span>
                       </div>
                     </div>
                   </div>
