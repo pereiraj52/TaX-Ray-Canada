@@ -59,10 +59,8 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
     // HBP/LLP
     hbp_balance: '',
     hbp_required_2024: '',
-    hbp_repaid_2024: '',
     llp_balance: '',
-    llp_required_2024: '',
-    llp_repaid_2024: ''
+    llp_required_2024: ''
   });
 
   const generateReportMutation = useMutation({
