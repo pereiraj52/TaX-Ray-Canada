@@ -46,7 +46,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     'fhsa-section': true,
     'resp-section': true,
     'rdsp-section': true,
-    'capital-loss-section': true
+    'capital-loss-section': true,
+    'amt-section': true
   });
   const { toast } = useToast();
 
@@ -752,6 +753,34 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="font-medium text-primary">Applied This Year:</span>
                       <div className="text-right">
                         <span className="font-medium text-primary">{formatCurrency(getFieldValue("25200"))}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* AMT Section */}
+            <div className="mt-6">
+              <button
+                onClick={() => toggleSection('amt-section')}
+                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  {collapsedSections['amt-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                  <span>AMT</span>
+                </div>
+                <span className="text-primary font-medium">
+                  {formatCurrency(getFieldValue("40427"))}
+                </span>
+              </button>
+              {!collapsedSections['amt-section'] && (
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">AMT Carry Forward:</span>
+                      <div className="text-right">
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("40427"))}</span>
                       </div>
                     </div>
                   </div>
