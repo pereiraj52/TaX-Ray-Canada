@@ -474,19 +474,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Contribution Room:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 Contribution:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                   </div>
@@ -514,13 +514,13 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Contribution Room:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
