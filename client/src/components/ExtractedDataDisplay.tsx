@@ -434,19 +434,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Contribution Room:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 Contribution:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getFieldValue("20800"))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("20800"))}</span>
                       </div>
                     </div>
                   </div>
@@ -554,7 +554,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_account_balance'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_account_balance'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
@@ -630,55 +630,55 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Contribution Room:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 Contribution:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Total CDSG Received:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSG Room 2024:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSG Remaining:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Total CDSB Received:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSB Room 2024:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">CDSB Remaining:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                   </div>
@@ -706,13 +706,13 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Available Losses:</span>
                       <div className="text-right">
-                        <span className="font-mono">$0.00</span>
+                        <span className="font-medium text-primary">$0.00</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Applied This Year:</span>
                       <div className="text-right">
-                        <span className="font-mono">{formatCurrency(getFieldValue("25300"))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("25300"))}</span>
                       </div>
                     </div>
                   </div>
