@@ -620,39 +620,54 @@ export default function TaxReport() {
                           {/* Individual Bar Chart */}
                           {chartData.length > 0 && (
                             <div>
-                              <h4 className="font-medium text-gray-900 mb-4 text-sm">Tax by Bracket</h4>
-                              <div className="h-64">
-                                <ResponsiveContainer width="100%" height="100%">
+                              <h4 className="font-medium text-gray-900 mb-4 text-sm">{spouse.clientName.split(' ')[0]}'s Federal Tax</h4>
+                              <div className="h-80 relative">
+                                <div className="absolute right-0 top-0 text-right">
+                                  <div className="text-xs text-gray-500 mb-2">Taxable Income</div>
+                                  <div className="space-y-1">
+                                    {chartData.map((item, idx) => (
+                                      <div key={idx} className="text-xs">
+                                        <div className="font-semibold">${(item.income / 1000).toFixed(0)}k</div>
+                                        <div className="text-gray-600">{item.rate}</div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                                <ResponsiveContainer width="85%" height="100%">
                                   <BarChart
                                     data={chartData}
+                                    layout="horizontal"
                                     margin={{
-                                      top: 10,
-                                      right: 10,
-                                      left: 10,
-                                      bottom: 20,
+                                      top: 20,
+                                      right: 5,
+                                      left: 40,
+                                      bottom: 5,
                                     }}
                                   >
-                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <CartesianGrid strokeDasharray="2 2" />
                                     <XAxis 
-                                      dataKey="rate" 
-                                      fontSize={12}
+                                      type="number"
+                                      domain={[0, Math.max(...chartData.map(d => d.income)) * 1.1]}
+                                      tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+                                      fontSize={10}
                                     />
                                     <YAxis 
-                                      fontSize={12}
-                                      tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                                      type="category"
+                                      dataKey="rate"
+                                      fontSize={11}
+                                      width={35}
                                     />
                                     <Tooltip 
-                                      formatter={(value: number, name: string) => [
+                                      formatter={(value: number) => [
                                         `$${value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
-                                        name === 'income' ? 'Taxable Income' : 'Federal Tax'
+                                        'Taxable Income'
                                       ]}
-                                      labelFormatter={(label) => `Tax Rate: ${label}`}
+                                      labelFormatter={(label) => `${label} Tax Bracket`}
                                     />
                                     <Bar 
                                       dataKey="income" 
-                                      fill="#3b82f6" 
-                                      name="income"
-                                      radius={[2, 2, 0, 0]}
+                                      fill="#006226"
+                                      radius={[0, 3, 3, 0]}
                                     />
                                   </BarChart>
                                 </ResponsiveContainer>
