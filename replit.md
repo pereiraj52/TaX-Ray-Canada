@@ -206,6 +206,7 @@ Changelog:
 - June 25, 2025. Installed comprehensive Canadian tax calculator with advanced features: AMT calculations, TOSI analysis, loss carryovers, foreign tax credits, pension splitting, CCA, provincial specifics, and business calculations
 - June 25, 2025. Added comprehensive tax API endpoints: /api/comprehensive-tax/calculate, /marginal-rates, /optimization-scenarios, /calculate-from-t1, and /enhanced-marginal-analysis for advanced tax planning
 - June 25, 2025. Implemented Marginal Effective Rate calculation using comprehensive tax calculator: runs calculation twice with $1 employment income increase to measure true tax impact including all benefits, clawbacks, and complex interactions
+- June 25, 2025. Removed processing summary section from household tax reports for cleaner interface focused on financial data only
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
