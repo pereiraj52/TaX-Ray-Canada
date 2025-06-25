@@ -128,7 +128,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       'resp_grant_remaining': '0',
       'resp_account_balance': '0',
       'resp_contribution_room': '0',
-      'resp_2024_contribution': '0'
+      'resp_2024_contribution': '0',
+      'resp_clb_received': '0',
+      'resp_clb_room_2024': '0',
+      'resp_clb_remaining': '0'
     };
     
     return householdFields[fieldType as keyof typeof householdFields] || '0';
@@ -582,6 +585,24 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="font-medium text-primary">CESG Remaining:</span>
                       <div className="text-right">
                         <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">Total CLB Received:</span>
+                      <div className="text-right">
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_clb_received'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">CLB Room 2024:</span>
+                      <div className="text-right">
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_clb_room_2024'))}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-medium text-primary">CLB Remaining:</span>
+                      <div className="text-right">
+                        <span className="font-mono">{formatCurrency(getHouseholdFieldValue('resp_clb_remaining'))}</span>
                       </div>
                     </div>
                   </div>
