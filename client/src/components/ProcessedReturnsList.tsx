@@ -128,6 +128,27 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
     },
   });
 
+  const handleManualEntrySave = () => {
+    // Here you would typically save to backend/database
+    console.log('Saving manual account data:', manualAccountData);
+    setIsManualEntryOpen(false);
+    toast({
+      title: "Success",
+      description: "Manual account data saved successfully",
+    });
+  };
+
+  const handleManualEntryCancel = () => {
+    setIsManualEntryOpen(false);
+  };
+
+  const handleManualEntryChange = (field: string, value: string) => {
+    setManualAccountData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   if (!household) {
     return null;
   }
