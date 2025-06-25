@@ -228,6 +228,323 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                           >
                             <Edit className="h-3 w-3" />
                           </Button>
+                          <Dialog open={isManualEntryOpen} onOpenChange={setIsManualEntryOpen}>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 text-green-500 hover:text-green-700 hover:bg-green-50"
+                                title="Manual account data entry"
+                              >
+                                <DollarSign className="h-3 w-3" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                              <DialogHeader>
+                                <DialogTitle>Manual Account Data Entry</DialogTitle>
+                              </DialogHeader>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* RRSP Section */}
+                                <div className="space-y-4">
+                                  <h3 className="font-semibold text-primary border-b pb-2">RRSP</h3>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="rrsp_account_balance">Account Balance</Label>
+                                    <Input
+                                      id="rrsp_account_balance"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.rrsp_account_balance}
+                                      onChange={(e) => handleManualEntryChange('rrsp_account_balance', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="rrsp_contribution_room">Contribution Room</Label>
+                                    <Input
+                                      id="rrsp_contribution_room"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.rrsp_contribution_room}
+                                      onChange={(e) => handleManualEntryChange('rrsp_contribution_room', e.target.value)}
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* TFSA Section */}
+                                <div className="space-y-4">
+                                  <h3 className="font-semibold text-primary border-b pb-2">TFSA</h3>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="tfsa_account_balance">Account Balance</Label>
+                                    <Input
+                                      id="tfsa_account_balance"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.tfsa_account_balance}
+                                      onChange={(e) => handleManualEntryChange('tfsa_account_balance', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="tfsa_contribution_room">Contribution Room</Label>
+                                    <Input
+                                      id="tfsa_contribution_room"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.tfsa_contribution_room}
+                                      onChange={(e) => handleManualEntryChange('tfsa_contribution_room', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="tfsa_2024_contribution">2024 Contribution</Label>
+                                    <Input
+                                      id="tfsa_2024_contribution"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.tfsa_2024_contribution}
+                                      onChange={(e) => handleManualEntryChange('tfsa_2024_contribution', e.target.value)}
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* FHSA Section */}
+                                <div className="space-y-4">
+                                  <h3 className="font-semibold text-primary border-b pb-2">FHSA</h3>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="fhsa_account_balance">Account Balance</Label>
+                                    <Input
+                                      id="fhsa_account_balance"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.fhsa_account_balance}
+                                      onChange={(e) => handleManualEntryChange('fhsa_account_balance', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="fhsa_contribution_room">Contribution Room</Label>
+                                    <Input
+                                      id="fhsa_contribution_room"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.fhsa_contribution_room}
+                                      onChange={(e) => handleManualEntryChange('fhsa_contribution_room', e.target.value)}
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* RESP Section */}
+                                <div className="space-y-4">
+                                  <h3 className="font-semibold text-primary border-b pb-2">RESP</h3>
+                                  <div className="grid grid-cols-1 gap-2">
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_account_balance">Account Balance</Label>
+                                      <Input
+                                        id="resp_account_balance"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_account_balance}
+                                        onChange={(e) => handleManualEntryChange('resp_account_balance', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_contribution_room">Contribution Room</Label>
+                                      <Input
+                                        id="resp_contribution_room"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_contribution_room}
+                                        onChange={(e) => handleManualEntryChange('resp_contribution_room', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_2024_contribution">2024 Contribution</Label>
+                                      <Input
+                                        id="resp_2024_contribution"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_2024_contribution}
+                                        onChange={(e) => handleManualEntryChange('resp_2024_contribution', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_total_grant">Total CESG Received</Label>
+                                      <Input
+                                        id="resp_total_grant"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_total_grant}
+                                        onChange={(e) => handleManualEntryChange('resp_total_grant', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_grant_room_2024">CESG Room 2024</Label>
+                                      <Input
+                                        id="resp_grant_room_2024"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_grant_room_2024}
+                                        onChange={(e) => handleManualEntryChange('resp_grant_room_2024', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_grant_remaining">CESG Remaining</Label>
+                                      <Input
+                                        id="resp_grant_remaining"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_grant_remaining}
+                                        onChange={(e) => handleManualEntryChange('resp_grant_remaining', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_clb_received">Total CLB Received</Label>
+                                      <Input
+                                        id="resp_clb_received"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_clb_received}
+                                        onChange={(e) => handleManualEntryChange('resp_clb_received', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_clb_room_2024">CLB Room 2024</Label>
+                                      <Input
+                                        id="resp_clb_room_2024"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_clb_room_2024}
+                                        onChange={(e) => handleManualEntryChange('resp_clb_room_2024', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="resp_clb_remaining">CLB Remaining</Label>
+                                      <Input
+                                        id="resp_clb_remaining"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.resp_clb_remaining}
+                                        onChange={(e) => handleManualEntryChange('resp_clb_remaining', e.target.value)}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* RDSP Section */}
+                                <div className="space-y-4">
+                                  <h3 className="font-semibold text-primary border-b pb-2">RDSP</h3>
+                                  <div className="grid grid-cols-1 gap-2">
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_account_balance">Account Balance</Label>
+                                      <Input
+                                        id="rdsp_account_balance"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_account_balance}
+                                        onChange={(e) => handleManualEntryChange('rdsp_account_balance', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_contribution_room">Contribution Room</Label>
+                                      <Input
+                                        id="rdsp_contribution_room"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_contribution_room}
+                                        onChange={(e) => handleManualEntryChange('rdsp_contribution_room', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_2024_contribution">2024 Contribution</Label>
+                                      <Input
+                                        id="rdsp_2024_contribution"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_2024_contribution}
+                                        onChange={(e) => handleManualEntryChange('rdsp_2024_contribution', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_cdsg_received">Total CDSG Received</Label>
+                                      <Input
+                                        id="rdsp_cdsg_received"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_cdsg_received}
+                                        onChange={(e) => handleManualEntryChange('rdsp_cdsg_received', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_cdsg_room_2024">CDSG Room 2024</Label>
+                                      <Input
+                                        id="rdsp_cdsg_room_2024"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_cdsg_room_2024}
+                                        onChange={(e) => handleManualEntryChange('rdsp_cdsg_room_2024', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_cdsg_remaining">CDSG Remaining</Label>
+                                      <Input
+                                        id="rdsp_cdsg_remaining"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_cdsg_remaining}
+                                        onChange={(e) => handleManualEntryChange('rdsp_cdsg_remaining', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_cdsb_received">Total CDSB Received</Label>
+                                      <Input
+                                        id="rdsp_cdsb_received"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_cdsb_received}
+                                        onChange={(e) => handleManualEntryChange('rdsp_cdsb_received', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_cdsb_room_2024">CDSB Room 2024</Label>
+                                      <Input
+                                        id="rdsp_cdsb_room_2024"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_cdsb_room_2024}
+                                        onChange={(e) => handleManualEntryChange('rdsp_cdsb_room_2024', e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor="rdsp_cdsb_remaining">CDSB Remaining</Label>
+                                      <Input
+                                        id="rdsp_cdsb_remaining"
+                                        type="text"
+                                        placeholder="$0.00"
+                                        value={manualAccountData.rdsp_cdsb_remaining}
+                                        onChange={(e) => handleManualEntryChange('rdsp_cdsb_remaining', e.target.value)}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Capital Loss Section */}
+                                <div className="space-y-4">
+                                  <h3 className="font-semibold text-primary border-b pb-2">Capital Loss Carry Forward</h3>
+                                  <div className="space-y-2">
+                                    <Label htmlFor="capital_loss_available">Available Losses</Label>
+                                    <Input
+                                      id="capital_loss_available"
+                                      type="text"
+                                      placeholder="$0.00"
+                                      value={manualAccountData.capital_loss_available}
+                                      onChange={(e) => handleManualEntryChange('capital_loss_available', e.target.value)}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <div className="flex justify-end space-x-2 mt-6 pt-4 border-t">
+                                <Button variant="outline" onClick={handleManualEntryCancel}>Cancel</Button>
+                                <Button onClick={handleManualEntrySave} className="bg-primary">Save</Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                           <Button
                             variant="ghost"
                             size="sm"
