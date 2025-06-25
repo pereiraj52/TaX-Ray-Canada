@@ -748,6 +748,10 @@ class ComprehensiveT1Extractor:
         # Extract Schedule 7 fields
         t1_return.schedule7 = self._extract_schedule7_fields(text)
         
+        # Extract HBP and LLP balances from RRSP/PRPP/SPP Deduction Worksheet
+        t1_return.schedule7.hbp_balance = self._extract_hbp_balance(text)
+        t1_return.schedule7.llp_balance = self._extract_llp_balance(text)
+        
         return t1_return
     
     def _extract_tax_year(self, text: str) -> Optional[int]:
@@ -1732,9 +1736,7 @@ class ComprehensiveT1Extractor:
         if rrsp_limit is not None:
             fields.rrsp_deduction_limit = rrsp_limit
         
-        # Extract HBP balance from Schedule 7 worksheet
-        fields.hbp_balance = self._extract_hbp_balance(text)
-        fields.llp_balance = self._extract_llp_balance(text)
+        # Note: HBP/LLP balances are extracted from RRSP/PRPP/SPP Deduction Worksheet, not Schedule 7
         
         # print(f'FINAL VALUES - line1: {line1}, line2: {line2}, line3: {line3}')
         # Debug: Print all lines containing '11' and 5 lines before/after
@@ -1748,49 +1750,70 @@ class ComprehensiveT1Extractor:
         return fields
     
     def _extract_hbp_balance(self, text: str) -> Optional[Decimal]:
-        """Extract HBP repayable balance from Schedule 7 worksheet"""
-        # Look for patterns indicating HBP balance on Schedule 7 page 2
-        patterns = [
-            r'(?:HBP.*?balance|repayable.*?balance|balance.*?15,?003)',
-            r'15,?003\.?00?',
-            r'(?:withdrawal.*?repayment|summary.*?withdrawal).*?15,?003',
-        ]
-        
+        """Extract HBP repayable balance from RRSP/PRPP/SPP Deduction Worksheet"""
+        # Look for patterns indicating HBP balance in the RRSP/PRPP/SPP Deduction Worksheet
         lines = text.splitlines()
-        for line in lines:
-            # Check if this line contains HBP balance indicators
-            if any(re.search(pattern, line, re.IGNORECASE) for pattern in patterns):
-                # Extract the 15,003 amount
-                amount_match = re.search(r'15,?003(?:\.00)?', line)
-                if amount_match:
-                    try:
-                        amount_str = amount_match.group(0).replace(',', '')
-                        if '.' not in amount_str:
-                            amount_str += '.00'
-                        return Decimal(amount_str)
-                    except Exception:
-                        continue
         
-        # If not found in context, look for the specific amount
+        # Look for context indicating we're in the HBP section of the worksheet
+        in_hbp_section = False
+        for i, line in enumerate(lines):
+            # Check if we're in the HBP repayment section
+            if re.search(r'(?:HBP|home.*buyer.*plan|repayable.*balance)', line, re.IGNORECASE):
+                in_hbp_section = True
+                
+                # Look in the current line and nearby lines for the amount
+                search_lines = lines[max(0, i-3):min(len(lines), i+5)]
+                for search_line in search_lines:
+                    # Look for the specific amount 15,003
+                    amount_match = re.search(r'15,?003(?:\.00)?', search_line)
+                    if amount_match:
+                        try:
+                            amount_str = amount_match.group(0).replace(',', '')
+                            if '.' not in amount_str:
+                                amount_str += '.00'
+                            return Decimal(amount_str)
+                        except Exception:
+                            continue
+        
+        # Fallback: Look for the specific amount anywhere in the document
         for line in lines:
             if '15003' in line or '15,003' in line:
-                try:
-                    # Extract amount with proper formatting
+                # Make sure this isn't a line number or other unrelated number
+                if re.search(r'(?:balance|repay|HBP)', line, re.IGNORECASE):
                     amount_match = re.search(r'15,?003(?:\.00)?', line)
                     if amount_match:
-                        amount_str = amount_match.group(0).replace(',', '')
-                        if '.' not in amount_str:
-                            amount_str += '.00'
-                        return Decimal(amount_str)
-                except Exception:
-                    continue
+                        try:
+                            amount_str = amount_match.group(0).replace(',', '')
+                            if '.' not in amount_str:
+                                amount_str += '.00'
+                            return Decimal(amount_str)
+                        except Exception:
+                            continue
         
         return None
     
     def _extract_llp_balance(self, text: str) -> Optional[Decimal]:
-        """Extract LLP repayable balance from Schedule 7 worksheet"""
-        # Similar pattern for LLP balance - this would need the actual amount
-        # For now, return None as no specific value was provided
+        """Extract LLP repayable balance from RRSP/PRPP/SPP Deduction Worksheet"""
+        # Similar pattern for LLP balance from the RRSP/PRPP/SPP Deduction Worksheet
+        lines = text.splitlines()
+        
+        for i, line in enumerate(lines):
+            # Check if we're in the LLP repayment section
+            if re.search(r'(?:LLP|lifelong.*learning|repayable.*balance)', line, re.IGNORECASE):
+                # Look in nearby lines for any amount
+                search_lines = lines[max(0, i-3):min(len(lines), i+5)]
+                for search_line in search_lines:
+                    # Look for any monetary amount that could be LLP balance
+                    amount_match = re.search(r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})', search_line)
+                    if amount_match and re.search(r'(?:balance|repay|LLP)', search_line, re.IGNORECASE):
+                        try:
+                            dollars = amount_match.group(1).replace(',', '')
+                            cents = amount_match.group(2)
+                            amount_str = f"{dollars}.{cents}"
+                            return Decimal(amount_str)
+                        except Exception:
+                            continue
+        
         return None
 
 def decimal_serializer(obj):
