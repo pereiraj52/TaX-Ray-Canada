@@ -260,6 +260,27 @@ export class T1PDFParser {
       }
     }
 
+    // Add Schedule 7 fields for HBP/LLP balances
+    if (comprehensiveData.schedule7) {
+      if (comprehensiveData.schedule7.hbp_balance) {
+        formFields.push({
+          fieldName: 'HBP Balance',
+          fieldCode: 'hbp_balance',
+          fieldValue: comprehensiveData.schedule7.hbp_balance.toString(),
+          fieldType: 'currency',
+        });
+      }
+      
+      if (comprehensiveData.schedule7.llp_balance) {
+        formFields.push({
+          fieldName: 'LLP Balance',
+          fieldCode: 'llp_balance',
+          fieldValue: comprehensiveData.schedule7.llp_balance.toString(),
+          fieldType: 'currency',
+        });
+      }
+    }
+
     // Add text fields for personal information
     const textFields = [
       { code: 'first_name', name: 'First Name', value: extractedData.firstName },
