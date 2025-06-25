@@ -510,7 +510,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 HBP Repaid:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_repaid_2024'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue('24600'))}</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center py-2">
@@ -528,7 +528,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">2024 LLP Repaid:</span>
                       <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_repaid_2024'))}</span>
+                        <span className="font-medium text-primary">{formatCurrency(getFieldValue('24630'))}</span>
                       </div>
                     </div>
                   </div>
