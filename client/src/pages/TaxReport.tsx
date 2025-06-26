@@ -448,7 +448,22 @@ export default function TaxReport() {
                   }
                 });
                 
-                const netIncomeSum = totalIncomeSum - federalTaxSum - provincialTaxSum - totalCppSum - totalEiSum;
+                // Calculate net income using the same method as household financial summary
+                let householdNetIncome = 0;
+                taxYearReturns.forEach(t1Return => {
+                  const t1WithFields = t1Return as any;
+                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                    const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                    
+                    const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    
+                    if (!isNaN(income) && !isNaN(tax)) {
+                      householdNetIncome += (income - tax);
+                    }
+                  }
+                });
                 
                 // Debug: Log the calculated values
                 console.log('Chart Data Values:', {
@@ -457,13 +472,13 @@ export default function TaxReport() {
                   provincialTaxSum,
                   totalCppSum,
                   totalEiSum,
-                  netIncomeSum
+                  householdNetIncome
                 });
                 
                 const pieData = [
                   {
                     name: 'Net Income',
-                    value: netIncomeSum,
+                    value: householdNetIncome,
                     color: '#22c55e'
                   },
                   {
