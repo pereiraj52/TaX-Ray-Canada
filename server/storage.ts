@@ -16,6 +16,7 @@ import {
   type InsertT1FormField,
   type HouseholdWithClients,
   type ClientWithT1Returns,
+  type ChildWithT1Returns,
   type T1ReturnWithFields
 } from "@shared/schema";
 import { db } from "./db";
@@ -36,6 +37,7 @@ export interface IStorage {
   deleteClient(id: number): Promise<void>;
   
   // Children operations
+  getChild(id: number): Promise<ChildWithT1Returns | undefined>;
   createChild(child: InsertChild): Promise<Child>;
   updateChild(id: number, updates: Partial<InsertChild>): Promise<Child | undefined>;
   deleteChild(id: number): Promise<void>;

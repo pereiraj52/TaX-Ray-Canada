@@ -36,7 +36,8 @@ export const children = pgTable("children", {
 
 export const t1Returns = pgTable("t1_returns", {
   id: serial("id").primaryKey(),
-  clientId: integer("client_id").references(() => clients.id).notNull(),
+  clientId: integer("client_id").references(() => clients.id),
+  childId: integer("child_id").references(() => children.id),
   taxYear: integer("tax_year").notNull(),
   fileName: text("file_name").notNull(),
   filePath: text("file_path"), // Store the actual file path for reprocessing
@@ -70,17 +71,22 @@ export const clientsRelations = relations(clients, ({ one, many }) => ({
   t1Returns: many(t1Returns),
 }));
 
-export const childrenRelations = relations(children, ({ one }) => ({
+export const childrenRelations = relations(children, ({ one, many }) => ({
   household: one(households, {
     fields: [children.householdId],
     references: [households.id],
   }),
+  t1Returns: many(t1Returns),
 }));
 
 export const t1ReturnsRelations = relations(t1Returns, ({ one, many }) => ({
   client: one(clients, {
     fields: [t1Returns.clientId],
     references: [clients.id],
+  }),
+  child: one(children, {
+    fields: [t1Returns.childId],
+    references: [children.id],
   }),
   formFields: many(t1FormFields),
 }));
@@ -160,14 +166,19 @@ export type TaxBracket = typeof taxBrackets.$inferSelect;
 // Extended types for API responses
 export type HouseholdWithClients = Household & {
   clients: ClientWithT1Returns[];
-  children: Child[];
+  children: ChildWithT1Returns[];
 };
 
 export type ClientWithT1Returns = Client & {
   t1Returns: (T1Return & { formFields?: T1FormField[] })[];
 };
 
+export type ChildWithT1Returns = Child & {
+  t1Returns: (T1Return & { formFields?: T1FormField[] })[];
+};
+
 export type T1ReturnWithFields = T1Return & {
   formFields: T1FormField[];
-  client: Client;
+  client?: Client;
+  child?: Child;
 };
