@@ -220,6 +220,7 @@ Changelog:
 - June 26, 2025. Integrated children display in household detail page showing children with avatars, names, and calculated ages below primary/secondary clients in the same card
 - June 26, 2025. Updated dashboard to display children count alongside client count under household names with proper pluralization
 - June 26, 2025. Simplified dashboard interface by removing year filter and moving "New Household" button to search bar for cleaner layout
+- June 26, 2025. Enhanced new household creation form to include children management with add/remove functionality, form validation, and integrated database operations for complete family setup in single workflow
 ```
 
 ## User Preferences

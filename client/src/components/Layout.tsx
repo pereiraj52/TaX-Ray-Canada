@@ -1,4 +1,3 @@
-import { Home } from "lucide-react";
 import { Link } from "wouter";
 
 interface LayoutProps {
@@ -17,8 +16,11 @@ export default function Layout({ children, title, subtitle, actions }: LayoutPro
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <Home className="h-6 w-6 text-primary mr-3" />
-                <h1 className="text-xl font-bold text-secondary">Tax-Ray Canada</h1>
+                <img 
+                  src="/attached_assets/Download TaxRay_Logo_1750967900646.gif" 
+                  alt="Tax-Ray Canada" 
+                  className="h-8 w-auto"
+                />
               </Link>
             </div>
             {actions && (
