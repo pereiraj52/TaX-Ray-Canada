@@ -55,6 +55,10 @@ export class HouseholdAPI {
   static async deleteClient(id: number): Promise<void> {
     await apiRequest("DELETE", `/api/clients/${id}`);
   }
+
+  static async deleteHousehold(id: number): Promise<void> {
+    await apiRequest("DELETE", `/api/households/${id}`);
+  }
 }
 
 export class T1API {

@@ -1,23 +1,44 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Plus, Search } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Plus, Search, Trash2 } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import HouseholdForm from "@/components/HouseholdForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: households = [], isLoading } = useQuery<HouseholdWithClients[]>({
     queryKey: ["/api/households"],
     queryFn: () => HouseholdAPI.getHouseholds(),
+  });
+
+  const deleteHouseholdMutation = useMutation({
+    mutationFn: (householdId: number) => HouseholdAPI.deleteHousehold(householdId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/households"] });
+      toast({
+        title: "Success",
+        description: "Household deleted successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to delete household",
+        variant: "destructive",
+      });
+    },
   });
 
   const filteredHouseholds = households.filter(household => {
@@ -117,7 +138,7 @@ export default function Dashboard() {
                     Last Updated
                   </th>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Open
+                    Actions
                   </th>
                 </tr>
               </thead>
