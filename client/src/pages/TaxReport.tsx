@@ -708,37 +708,21 @@ export default function TaxReport() {
 
                           {/* Single Vertical Tax Bracket Bar */}
                           <div className="relative">
-                            {/* Main vertical bar container */}
-                            <div className="flex items-end justify-center">
-                              {/* Income threshold labels on bottom */}
-                              <div className="mb-4 flex justify-between w-full text-xs text-gray-700 font-medium">
-                                <div className="text-center">
-                                  <div>$0</div>
-                                </div>
-                                <div className="text-center">
-                                  <div>$50k</div>
-                                </div>
-                                <div className="text-center">
-                                  <div>$100k</div>
-                                </div>
-                                <div className="text-center">
-                                  <div>$150k</div>
-                                </div>
-                                <div className="text-center">
-                                  <div>$200k</div>
-                                </div>
-                                <div className="text-center">
-                                  <div>$250k</div>
-                                </div>
-                                <div className="text-center">
-                                  <div>&gt;$300k</div>
-                                </div>
+                            {/* Vertical bar chart with scale */}
+                            <div className="flex items-start">
+                              {/* Income scale labels on left (vertical axis) */}
+                              <div className="w-16 h-80 flex flex-col justify-between text-xs text-gray-700 font-medium mr-4">
+                                <div className="text-right">$300k</div>
+                                <div className="text-right">$250k</div>
+                                <div className="text-right">$200k</div>
+                                <div className="text-right">$150k</div>
+                                <div className="text-right">$100k</div>
+                                <div className="text-right">$50k</div>
+                                <div className="text-right">$0</div>
                               </div>
-                            </div>
-                            
-                            {/* Vertical bar chart */}
-                            <div className="flex justify-center">
-                              <div className="relative w-24 h-80 bg-gray-100 border">
+                              
+                              {/* Vertical bar */}
+                              <div className="relative w-32 h-80 bg-gray-100 border">
                                 {/* Individual tax bracket segments stacked vertically */}
                                 {combinedBrackets.map((bracket, idx) => {
                                   const isCurrentBracket = currentIncome > bracket.min && currentIncome <= bracket.max;
@@ -755,7 +739,7 @@ export default function TaxReport() {
                                         height: `${heightPercent}%`
                                       }}
                                     >
-                                      <span className="text-xs font-medium text-white transform -rotate-90 whitespace-nowrap">
+                                      <span className="text-xs font-medium text-white whitespace-nowrap">
                                         {bracket.label}
                                       </span>
                                     </div>
@@ -770,7 +754,7 @@ export default function TaxReport() {
                                   }}
                                 >
                                   {/* Income label to the right of the bar */}
-                                  <div className="absolute left-28 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
+                                  <div className="absolute left-36 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
                                     Taxable Income: ${Math.round(currentIncome / 1000)}k
                                   </div>
                                 </div>
