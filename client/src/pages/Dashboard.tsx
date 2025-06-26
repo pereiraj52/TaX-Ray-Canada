@@ -6,7 +6,7 @@ import Layout from "@/components/Layout";
 import HouseholdForm from "@/components/HouseholdForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
@@ -14,8 +14,6 @@ import { HouseholdWithClients } from "@shared/schema";
 export default function Dashboard() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [yearFilter, setYearFilter] = useState("all");
 
   const { data: households = [], isLoading } = useQuery<HouseholdWithClients[]>({
     queryKey: ["/api/households"],
@@ -52,19 +50,13 @@ export default function Dashboard() {
     return colors[index % colors.length];
   };
 
-  const headerActions = (
-    <Button onClick={() => setCreateModalOpen(true)}>
-      <Plus className="mr-2 h-4 w-4" />
-      New Household
-    </Button>
-  );
+
 
   if (isLoading) {
     return (
       <Layout 
         title="" 
         subtitle=""
-        actions={headerActions}
       >
         <div className="p-6">
           Loading households...
@@ -77,7 +69,6 @@ export default function Dashboard() {
     <Layout 
       title="" 
       subtitle=""
-      actions={headerActions}
     >
       <div className="p-6">
 
@@ -97,17 +88,10 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex items-center space-x-4">
-                <Select value={yearFilter} onValueChange={setYearFilter}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue placeholder="All Years" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Years</SelectItem>
-                    <SelectItem value="2024">2024</SelectItem>
-                    <SelectItem value="2023">2023</SelectItem>
-                    <SelectItem value="2022">2022</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Button onClick={() => setCreateModalOpen(true)}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Household
+                </Button>
               </div>
             </div>
           </CardContent>

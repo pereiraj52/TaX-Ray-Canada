@@ -216,6 +216,9 @@ Changelog:
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position
 - June 24, 2025. Updated Total Tax dashboard item to use line 43700 (line 43500 was not extracted from T1 forms)
+- June 26, 2025. Added comprehensive children management feature with database schema, API endpoints, and full CRUD operations for tracking household children with first name, last name, and date of birth
+- June 26, 2025. Integrated children display in household detail page showing children with avatars, names, and calculated ages below primary/secondary clients in the same card
+- June 26, 2025. Updated dashboard to display children count alongside client count under household names with proper pluralization
 ```
 
 ## User Preferences
