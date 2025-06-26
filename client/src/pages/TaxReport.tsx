@@ -411,7 +411,8 @@ export default function TaxReport() {
               {(() => {
                 // Calculate all the components
                 let totalIncomeSum = 0;
-                let totalTaxSum = 0;
+                let federalTaxSum = 0;
+                let provincialTaxSum = 0;
                 let totalCppSum = 0;
                 let totalEiSum = 0;
                 
@@ -419,7 +420,8 @@ export default function TaxReport() {
                   const t1WithFields = t1Return as any;
                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                     const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                    const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                    const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
                     const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
                     const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                     
@@ -427,9 +429,13 @@ export default function TaxReport() {
                       const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
                       if (!isNaN(value)) totalIncomeSum += value;
                     }
-                    if (taxField?.fieldValue) {
-                      const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
-                      if (!isNaN(value)) totalTaxSum += value;
+                    if (federalTaxField?.fieldValue) {
+                      const value = parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) federalTaxSum += value;
+                    }
+                    if (provincialTaxField?.fieldValue) {
+                      const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) provincialTaxSum += value;
                     }
                     if (cppField?.fieldValue) {
                       const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
@@ -442,7 +448,7 @@ export default function TaxReport() {
                   }
                 });
                 
-                const netIncomeSum = totalIncomeSum - totalTaxSum - totalCppSum - totalEiSum;
+                const netIncomeSum = totalIncomeSum - federalTaxSum - provincialTaxSum - totalCppSum - totalEiSum;
                 
                 const pieData = [
                   {
@@ -451,8 +457,13 @@ export default function TaxReport() {
                     color: '#22c55e'
                   },
                   {
-                    name: 'Income Tax',
-                    value: totalTaxSum,
+                    name: 'Federal Tax',
+                    value: federalTaxSum,
+                    color: '#dc2626'
+                  },
+                  {
+                    name: 'Provincial Tax',
+                    value: provincialTaxSum,
                     color: '#ef4444'
                   },
                   {
