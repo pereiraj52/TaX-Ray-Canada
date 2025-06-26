@@ -352,38 +352,42 @@ export default function TaxReport() {
                           <div className="text-right">
                             <span className="font-medium text-primary">
                               ${(() => {
-                                let total = 0;
+                                let totalNetIncome = 0;
                                 taxYearReturns.forEach(t1Return => {
                                   const t1WithFields = t1Return as any;
                                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                                    const netIncomeField = t1WithFields.formFields.find((field: any) => 
-                                      field.fieldCode === '23600'
-                                    );
-                                    if (netIncomeField?.fieldValue) {
-                                      const value = parseFloat(String(netIncomeField.fieldValue).replace(/[,$\s]/g, ''));
-                                      if (!isNaN(value)) total += value;
+                                    const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                                    
+                                    const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    
+                                    if (!isNaN(income) && !isNaN(tax)) {
+                                      totalNetIncome += (income - tax);
                                     }
                                   }
                                 });
-                                return total.toLocaleString('en-US', {
+                                return totalNetIncome.toLocaleString('en-US', {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2
                                 });
                               })()} <span className="text-sm text-gray-500">({(() => {
-                                let total = 0;
+                                let totalNetIncome = 0;
                                 taxYearReturns.forEach(t1Return => {
                                   const t1WithFields = t1Return as any;
                                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                                    const netIncomeField = t1WithFields.formFields.find((field: any) => 
-                                      field.fieldCode === '23600'
-                                    );
-                                    if (netIncomeField?.fieldValue) {
-                                      const value = parseFloat(String(netIncomeField.fieldValue).replace(/[,$\s]/g, ''));
-                                      if (!isNaN(value)) total += value;
+                                    const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                                    
+                                    const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    
+                                    if (!isNaN(income) && !isNaN(tax)) {
+                                      totalNetIncome += (income - tax);
                                     }
                                   }
                                 });
-                                return calculatePercentage(total);
+                                return calculatePercentage(totalNetIncome);
                               })()})</span>
                             </span>
                           </div>
