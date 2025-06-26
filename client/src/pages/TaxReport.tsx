@@ -750,29 +750,29 @@ export default function TaxReport() {
                                       { 
                                         name: 'Eligible Dividends', 
                                         brackets: [
-                                          { rate: -5.36, min: 0, max: 49231, label: "-5.36%" },
-                                          { rate: 2.74, min: 49231, max: 55867, label: "2.74%" },
-                                          { rate: 23.61, min: 55867, max: 98463, label: "23.61%" },
-                                          { rate: 28.33, min: 98463, max: 111733, label: "28.33%" },
-                                          { rate: 34.67, min: 111733, max: 150000, label: "34.67%" },
-                                          { rate: 42.57, min: 150000, max: 173205, label: "42.57%" },
-                                          { rate: 45.30, min: 173205, max: 220000, label: "45.30%" },
-                                          { rate: 47.74, min: 220000, max: 246752, label: "47.74%" },
-                                          { rate: 54.79, min: 246752, max: 300000, label: "54.79%" }
+                                          { rate: 27.67, min: 0, max: 49231, label: "27.67%" },
+                                          { rate: 27.67, min: 49231, max: 55867, label: "27.67%" },
+                                          { rate: 40.92, min: 55867, max: 98463, label: "40.92%" },
+                                          { rate: 45.57, min: 98463, max: 111733, label: "45.57%" },
+                                          { rate: 59.91, min: 111733, max: 150000, label: "59.91%" },
+                                          { rate: 62.06, min: 150000, max: 173205, label: "62.06%" },
+                                          { rate: 66.20, min: 173205, max: 220000, label: "66.20%" },
+                                          { rate: 68.35, min: 220000, max: 246752, label: "68.35%" },
+                                          { rate: 73.87, min: 246752, max: 300000, label: "73.87%" }
                                         ]
                                       },
                                       { 
                                         name: 'Non-Eligible Dividends', 
                                         brackets: [
-                                          { rate: 4.54, min: 0, max: 49231, label: "4.54%" },
-                                          { rate: 11.34, min: 49231, max: 55867, label: "11.34%" },
-                                          { rate: 23.97, min: 55867, max: 98463, label: "23.97%" },
-                                          { rate: 27.42, min: 98463, max: 111733, label: "27.42%" },
-                                          { rate: 32.58, min: 111733, max: 150000, label: "32.58%" },
-                                          { rate: 39.34, min: 150000, max: 173205, label: "39.34%" },
-                                          { rate: 41.67, min: 173205, max: 220000, label: "41.67%" },
-                                          { rate: 43.70, min: 220000, max: 246752, label: "43.70%" },
-                                          { rate: 48.67, min: 246752, max: 300000, label: "48.67%" }
+                                          { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+                                          { rate: 20.05, min: 49231, max: 55867, label: "20.05%" },
+                                          { rate: 29.65, min: 55867, max: 98463, label: "29.65%" },
+                                          { rate: 32.35, min: 98463, max: 111733, label: "32.35%" },
+                                          { rate: 43.41, min: 111733, max: 150000, label: "43.41%" },
+                                          { rate: 44.97, min: 150000, max: 173205, label: "44.97%" },
+                                          { rate: 47.97, min: 173205, max: 220000, label: "47.97%" },
+                                          { rate: 49.53, min: 220000, max: 246752, label: "49.53%" },
+                                          { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
                                         ]
                                       }
                                     ];
