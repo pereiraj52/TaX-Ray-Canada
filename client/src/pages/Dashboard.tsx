@@ -171,11 +171,42 @@ export default function Dashboard() {
                       {new Date(household.updatedAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                      <Link href={`/household/${household.id}`}>
-                        <Button variant="outline" size="sm">
-                          Open
-                        </Button>
-                      </Link>
+                      <div className="flex items-center justify-center space-x-2">
+                        <Link href={`/household/${household.id}`}>
+                          <Button variant="outline" size="sm">
+                            Open
+                          </Button>
+                        </Link>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Household</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{household.name}"? This action will permanently delete the household, all associated clients, children, and T1 returns. This cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deleteHouseholdMutation.mutate(household.id)}
+                                disabled={deleteHouseholdMutation.isPending}
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                {deleteHouseholdMutation.isPending ? "Deleting..." : "Delete"}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </td>
                   </tr>
                 ))}

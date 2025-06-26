@@ -581,6 +581,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete household
+  app.delete("/api/households/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid household ID" });
+      }
+
+      // Check if household exists
+      const household = await storage.getHousehold(id);
+      if (!household) {
+        return res.status(404).json({ message: "Household not found" });
+      }
+
+      await storage.deleteHousehold(id);
+      res.status(200).json({ message: "Household deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting household:", error);
+      res.status(500).json({ message: "Failed to delete household" });
+    }
+  });
+
   // Create client
   app.post("/api/clients", async (req, res) => {
     try {

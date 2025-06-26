@@ -27,6 +27,7 @@ export interface IStorage {
   getHousehold(id: number): Promise<HouseholdWithClients | undefined>;
   createHousehold(household: InsertHousehold): Promise<Household>;
   updateHousehold(id: number, updates: Partial<InsertHousehold>): Promise<Household | undefined>;
+  deleteHousehold(id: number): Promise<void>;
   
   // Client operations
   getClient(id: number): Promise<ClientWithT1Returns | undefined>;
@@ -135,6 +136,25 @@ export class DatabaseStorage implements IStorage {
       .where(eq(households.id, id))
       .returning();
     return result || undefined;
+  }
+
+  async deleteHousehold(id: number): Promise<void> {
+    // First get all clients in the household
+    const householdClients = await db
+      .select({ id: clients.id })
+      .from(clients)
+      .where(eq(clients.householdId, id));
+    
+    // Delete all clients (this will cascade to delete T1 returns)
+    for (const client of householdClients) {
+      await this.deleteClient(client.id);
+    }
+    
+    // Delete all children in the household
+    await db.delete(children).where(eq(children.householdId, id));
+    
+    // Finally delete the household
+    await db.delete(households).where(eq(households.id, id));
   }
 
   async deleteClient(id: number): Promise<void> {
