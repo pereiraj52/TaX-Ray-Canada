@@ -771,7 +771,7 @@ export default function TaxReport() {
                                     }}
                                   >
                                     {/* Income label to the left of the bar */}
-                                    <div className="absolute right-44 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
+                                    <div className="absolute right-52 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
                                       Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
                                     </div>
                                   </div>
