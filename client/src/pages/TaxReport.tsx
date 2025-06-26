@@ -494,9 +494,9 @@ export default function TaxReport() {
           </Card>
         </div>
 
-        {/* Federal Tax Bracket Analysis Table */}
+        {/* Combined Tax Bracket Analysis Table */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Bracket Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
           
           {(() => {
             // Get individual taxable incomes for each spouse
@@ -522,18 +522,28 @@ export default function TaxReport() {
               return { clientName, taxableIncome, t1Return };
             });
 
-            // 2024 Canadian Federal Tax Brackets
-            const federalBrackets = [
-              { rate: 15.0, min: 0, max: 55867, label: "15%" },
-              { rate: 20.5, min: 55867, max: 111733, label: "20.5%" },
-              { rate: 26.0, min: 111733, max: 173205, label: "26%" },
-              { rate: 29.0, min: 173205, max: 246752, label: "29%" },
-              { rate: 33.0, min: 246752, max: Infinity, label: "33%" }
+            // Get province from first return for combined brackets
+            const firstReturn = taxYearReturns[0];
+            const firstReturnFields = (firstReturn as any)?.formFields || [];
+            const provinceField = firstReturnFields.find((field: any) => field.fieldCode === 'province');
+            const province = provinceField?.fieldValue || 'ON';
+
+            // 2024 Combined Federal + Provincial Tax Brackets (Ontario example)
+            const combinedBrackets = [
+              { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+              { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
+              { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
+              { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+              { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+              { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+              { rate: 46.16, min: 173205, max: 220000, label: "46.16%" },
+              { rate: 47.74, min: 220000, max: 246752, label: "47.74%" },
+              { rate: 53.53, min: 246752, max: Infinity, label: "53.53%" }
             ];
 
             // Function to calculate individual tax breakdown for a spouse
             const calculateSpouseTaxBreakdown = (spouseIncome: number) => {
-              return federalBrackets.map(bracket => {
+              return combinedBrackets.map(bracket => {
                 let incomeInBracket = 0;
                 let taxFromBracket = 0;
 
@@ -565,7 +575,7 @@ export default function TaxReport() {
                         <div className="space-y-4">
                           <div>
                             <h3 className="font-medium text-gray-900 mb-4">
-                              Federal marginal tax rate for {spouse.clientName}:
+                              Combined marginal tax rate for {spouse.clientName}:
                             </h3>
                             <p className="text-sm text-gray-600 mb-4">
                               Taxable Income: ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -619,9 +629,9 @@ export default function TaxReport() {
           })()}
         </div>
 
-        {/* Combined Federal + Provincial Tax Bracket Analysis */}
+        {/* Tax Bracket Visualization */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Bracket Visualization</h2>
           
           {(() => {
             // Get individual taxable incomes and provinces for each spouse
