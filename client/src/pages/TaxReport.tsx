@@ -389,7 +389,7 @@ export default function TaxReport() {
                   const t1WithFields = t1Return as any;
                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                     const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
                     const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
                     const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                     
@@ -494,16 +494,17 @@ export default function TaxReport() {
           </Card>
         </div>
 
-        {/* Federal Tax Bracket Analysis - Individual Spouse Breakdowns */}
+        {/* Combined Federal + Provincial Tax Bracket Analysis */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Bracket Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
           
           {(() => {
-            // Get individual taxable incomes for each spouse
+            // Get individual taxable incomes and provinces for each spouse
             const spouseData = taxYearReturns.map(t1Return => {
               const t1WithFields = t1Return as any;
               let taxableIncome = 0;
               let clientName = 'Unknown';
+              let province = 'ON'; // Default to Ontario
               
               if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                 const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
@@ -513,167 +514,129 @@ export default function TaxReport() {
                 }
               }
               
-              // Get client name from household clients
+              // Get client name and province from household clients
               const client = household?.clients.find(c => c.id === t1Return.clientId);
               if (client) {
                 clientName = `${client.firstName} ${client.lastName}`;
+                province = client.province || 'ON';
               }
               
-              return { clientName, taxableIncome, t1Return };
+              return { clientName, taxableIncome, province, t1Return };
             });
 
-            // 2024 Canadian Federal Tax Brackets
-            const federalBrackets = [
-              { rate: 15.0, min: 0, max: 55867, label: "15%" },
-              { rate: 20.5, min: 55867, max: 111733, label: "20.5%" },
-              { rate: 26.0, min: 111733, max: 173205, label: "26%" },
-              { rate: 29.0, min: 173205, max: 246752, label: "29%" },
-              { rate: 33.0, min: 246752, max: Infinity, label: "33%" }
+            // Combined federal + provincial tax brackets for Ontario (example)
+            // This should be dynamic based on province in real implementation
+            const combinedBrackets = [
+              { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+              { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
+              { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
+              { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+              { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+              { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+              { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
+              { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+              { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
             ];
-
-            // Function to calculate individual tax breakdown for a spouse
-            const calculateSpouseTaxBreakdown = (spouseIncome: number) => {
-              return federalBrackets.map(bracket => {
-                let incomeInBracket = 0;
-                let taxFromBracket = 0;
-
-                if (spouseIncome > bracket.min) {
-                  const maxForBracket = Math.min(spouseIncome, bracket.max);
-                  incomeInBracket = maxForBracket - bracket.min;
-                  taxFromBracket = incomeInBracket * (bracket.rate / 100);
-                }
-
-                return {
-                  rate: bracket.label,
-                  threshold: `$${bracket.min.toLocaleString()} to ${bracket.max === Infinity ? 'above' : '$' + bracket.max.toLocaleString()}`,
-                  incomeInBracket: incomeInBracket,
-                  tax: taxFromBracket,
-                  ratePercent: bracket.rate
-                };
-              });
-            };
 
             return (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {spouseData.map((spouse, spouseIndex) => {
-                  const bracketBreakdown = calculateSpouseTaxBreakdown(spouse.taxableIncome);
-                  const totalTax = bracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+                  const maxScale = 300000; // Scale to $300k as requested
+                  const currentIncome = spouse.taxableIncome;
                   
-                  // Prepare data for individual bar chart
-                  const chartData = bracketBreakdown.filter(b => b.incomeInBracket > 0).map(bracket => ({
-                    rate: bracket.rate,
-                    income: bracket.incomeInBracket,
-                    tax: bracket.tax
-                  }));
+                  // Find current marginal rate bracket
+                  let currentBracket = combinedBrackets[0];
+                  for (let i = combinedBrackets.length - 1; i >= 0; i--) {
+                    if (currentIncome > combinedBrackets[i].min) {
+                      currentBracket = combinedBrackets[i];
+                      break;
+                    }
+                  }
 
                   return (
                     <Card key={spouseIndex}>
                       <CardContent className="p-6">
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                           <div>
-                            <h3 className="font-medium text-gray-900 mb-4">
-                              Federal marginal tax rate for {spouse.clientName}:
+                            <h3 className="font-medium text-gray-900 mb-2">
+                              Combined Tax Bracket - {spouse.province}
                             </h3>
-                            <p className="text-sm text-gray-600 mb-4">
-                              Taxable Income: ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                            </p>
-                            
-                            {/* Individual Tax Bracket Table */}
-                            <div className="overflow-x-auto">
-                              <table className="w-full border-collapse text-sm">
-                                <thead>
-                                  <tr className="border-b">
-                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Rate</th>
-                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Threshold</th>
-                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Income</th>
-                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Tax</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {bracketBreakdown.map((bracket, index) => (
-                                    <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-green-50' : ''}`}>
-                                      <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
-                                      <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
-                                      <td className="py-2 px-2 text-right font-mono text-xs">
-                                        ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                      </td>
-                                      <td className="py-2 px-2 text-right font-mono text-xs">
-                                        ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                  <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
-                                    <td className="py-2 px-2">Total</td>
-                                    <td className="py-2 px-2"></td>
-                                    <td className="py-2 px-2 text-right font-mono text-xs">
-                                      ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                    </td>
-                                    <td className="py-2 px-2 text-right font-mono text-xs">
-                                      ${totalTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
+                            <div className="text-right mb-4">
+                              <div className="text-3xl font-bold text-primary">
+                                {currentBracket.label}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                Effective Combined Tax Rate
+                              </div>
                             </div>
                           </div>
 
-                          {/* Individual Bar Chart */}
-                          {chartData.length > 0 && (
-                            <div>
-                              <h4 className="font-medium text-gray-900 mb-4 text-sm">{spouse.clientName.split(' ')[0]}'s Federal Tax</h4>
-                              <div className="h-80 relative">
-                                <div className="absolute right-0 top-0 text-right">
-                                  <div className="text-xs text-gray-500 mb-2">Taxable Income</div>
-                                  <div className="space-y-1">
-                                    {chartData.map((item, idx) => (
-                                      <div key={idx} className="text-xs">
-                                        <div className="font-semibold">${(item.income / 1000).toFixed(0)}k</div>
-                                        <div className="text-gray-600">{item.rate}</div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                                <ResponsiveContainer width="85%" height="100%">
-                                  <BarChart
-                                    data={chartData}
-                                    layout="horizontal"
-                                    margin={{
-                                      top: 20,
-                                      right: 5,
-                                      left: 40,
-                                      bottom: 5,
-                                    }}
-                                  >
-                                    <CartesianGrid strokeDasharray="2 2" />
-                                    <XAxis 
-                                      type="number"
-                                      domain={[0, Math.max(...chartData.map(d => d.income)) * 1.1]}
-                                      tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
-                                      fontSize={10}
-                                    />
-                                    <YAxis 
-                                      type="category"
-                                      dataKey="rate"
-                                      fontSize={11}
-                                      width={35}
-                                    />
-                                    <Tooltip 
-                                      formatter={(value: number) => [
-                                        `$${value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
-                                        'Taxable Income'
-                                      ]}
-                                      labelFormatter={(label) => `${label} Tax Bracket`}
-                                    />
-                                    <Bar 
-                                      dataKey="income" 
-                                      fill="#006226"
-                                      radius={[0, 3, 3, 0]}
-                                    />
-                                  </BarChart>
-                                </ResponsiveContainer>
+                          {/* Horizontal Tax Bracket Chart */}
+                          <div className="relative">
+                            <div className="flex flex-col space-y-1">
+                              {/* Scale markers */}
+                              <div className="flex justify-between text-xs text-gray-500 mb-2">
+                                <span>$0</span>
+                                <span>$100k</span>
+                                <span>$200k</span>
+                                <span>&gt;$300k</span>
                               </div>
+                              
+                              {/* Tax brackets as horizontal bars */}
+                              {combinedBrackets.map((bracket, idx) => {
+                                const isCurrentBracket = currentIncome > bracket.min && currentIncome <= bracket.max;
+                                const bracketWidth = Math.min(bracket.max, maxScale) - bracket.min;
+                                const widthPercent = (bracketWidth / maxScale) * 100;
+                                const leftPercent = (bracket.min / maxScale) * 100;
+                                
+                                return (
+                                  <div key={idx} className="relative h-8 flex items-center">
+                                    {/* Threshold label */}
+                                    <div className="absolute left-0 w-16 text-xs text-gray-700 font-medium">
+                                      {bracket.min === 0 ? '$0' : `$${Math.round(bracket.min / 1000)}k`}
+                                    </div>
+                                    
+                                    {/* Bar container */}
+                                    <div className="ml-20 flex-1 relative h-6 bg-gray-100 border">
+                                      {/* Tax bracket bar */}
+                                      <div 
+                                        className={`absolute h-full ${isCurrentBracket ? 'bg-blue-500' : 'bg-gray-300'} flex items-center justify-center`}
+                                        style={{
+                                          left: `${leftPercent}%`,
+                                          width: `${widthPercent}%`
+                                        }}
+                                      >
+                                        <span className="text-xs font-medium text-white">
+                                          {bracket.label}
+                                        </span>
+                                      </div>
+                                      
+                                      {/* Current income indicator */}
+                                      {currentIncome > bracket.min && currentIncome <= Math.min(bracket.max, maxScale) && (
+                                        <div 
+                                          className="absolute top-0 h-full w-0.5 bg-green-500"
+                                          style={{
+                                            left: `${(currentIncome / maxScale) * 100}%`
+                                          }}
+                                        >
+                                          <div className="absolute -top-6 -left-8 text-xs text-green-600 font-semibold whitespace-nowrap">
+                                            Taxable Income
+                                          </div>
+                                          <div className="absolute -top-8 -left-6 text-xs text-green-600 font-semibold">
+                                            ${Math.round(currentIncome / 1000)}k
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
                             </div>
-                          )}
+                            
+                            <div className="mt-4 text-center text-xs text-gray-600">
+                              Marginal Income Tax Bracket
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
