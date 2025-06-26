@@ -270,6 +270,23 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="client1AmericanTaxpayer"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>American Taxpayer?</FormLabel>
+                      </div>
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
@@ -334,6 +351,23 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                         </FormControl>
                         <div className="space-y-1 leading-none">
                           <FormLabel>Disabled?</FormLabel>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="client2AmericanTaxpayer"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>American Taxpayer?</FormLabel>
                         </div>
                       </FormItem>
                     )}
@@ -432,23 +466,42 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                         </FormItem>
                       )}
                     />
-                    <FormField
-                      control={form.control}
-                      name={`children.${index}.disabled`}
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel>Disabled?</FormLabel>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name={`children.${index}.disabled`}
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>Disabled?</FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`children.${index}.americanTaxpayer`}
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>American Taxpayer?</FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}

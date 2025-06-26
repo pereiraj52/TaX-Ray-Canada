@@ -778,6 +778,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updateData = z.object({
         firstName: z.string().min(1, "First name is required"),
         lastName: z.string().min(1, "Last name is required"),
+        disabled: z.boolean(),
+        americanTaxpayer: z.boolean(),
       }).parse(req.body);
 
       const updatedClient = await storage.updateClient(id, updateData);
