@@ -518,7 +518,13 @@ export default function TaxReport() {
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
                         <Legend 
-                          formatter={(value) => value}
+                          formatter={(value, entry) => {
+                            const item = pieData.find(d => d.name === value);
+                            if (item) {
+                              return `${value}: $${item.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                            }
+                            return value;
+                          }}
                         />
                       </PieChart>
                     </ResponsiveContainer>
