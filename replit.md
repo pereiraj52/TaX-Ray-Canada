@@ -209,7 +209,7 @@ Changelog:
 - June 25, 2025. Removed processing summary section from household tax reports for cleaner interface focused on financial data only
 - June 25, 2025. Added interactive pie chart to household tax reports showing income breakdown: Net Income, Income Tax, CPP Contributions, and EI Premiums with percentages and tooltips
 - June 26, 2025. Fixed household tax report to show combined federal and provincial taxes instead of only federal taxes (changed from field 42000 to 43500)
-- June 26, 2025. Converted Tax Bracket Visualization to vertical bar chart with proper axis labeling: single vertical bar scaled to $300k with income scale on left vertical axis ($0-$300k), stacked tax bracket segments, horizontal marginal rate labels (20.05%-53.53%), current income indicator as horizontal green line capped at $300k maximum
+- June 26, 2025. Converted Tax Bracket Visualization to vertical bar chart with simplified axis: single vertical bar scaled to $300k with key threshold labels on left vertical axis ($0, tax bracket starting points like $49k/$56k/$98k etc., >$300k), stacked tax bracket segments, horizontal marginal rate labels (20.05%-53.53%), current income indicator as horizontal green line capped at $300k maximum
 - June 26, 2025. Updated first table section from "Federal Tax Bracket Analysis" to "Combined Tax Bracket Analysis" showing combined federal+provincial tax calculations for each spouse with Ontario rates (20.05%-53.53%)
 - June 24, 2025. Reverted tax report names back to "Name - Province - Year" format by removing "Tax Form"
 - June 24, 2025. Reordered T1 extraction tabs: added Summary as first tab, moved Identification to last position

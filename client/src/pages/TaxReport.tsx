@@ -710,15 +710,31 @@ export default function TaxReport() {
                           <div className="relative">
                             {/* Vertical bar chart with scale */}
                             <div className="flex items-start">
-                              {/* Income scale labels on left (vertical axis) */}
-                              <div className="w-16 h-80 flex flex-col justify-between text-xs text-gray-700 font-medium mr-4">
-                                <div className="text-right">$300k</div>
-                                <div className="text-right">$250k</div>
-                                <div className="text-right">$200k</div>
-                                <div className="text-right">$150k</div>
-                                <div className="text-right">$100k</div>
-                                <div className="text-right">$50k</div>
-                                <div className="text-right">$0</div>
+                              {/* Income scale labels on left (vertical axis) - only key thresholds */}
+                              <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                {/* >$300k at top */}
+                                <div className="absolute top-0 right-0 text-right">&gt;$300k</div>
+                                
+                                {/* Tax bracket thresholds */}
+                                {combinedBrackets.map((bracket, idx) => {
+                                  if (bracket.min === 0) return null; // Skip $0, we'll add it separately
+                                  const position = (bracket.min / maxScale) * 100;
+                                  return (
+                                    <div 
+                                      key={idx}
+                                      className="absolute right-0 text-right"
+                                      style={{
+                                        bottom: `${position}%`,
+                                        transform: 'translateY(50%)'
+                                      }}
+                                    >
+                                      ${Math.round(bracket.min / 1000)}k
+                                    </div>
+                                  );
+                                })}
+                                
+                                {/* $0 at bottom */}
+                                <div className="absolute bottom-0 right-0 text-right">$0</div>
                               </div>
                               
                               {/* Vertical bar */}
