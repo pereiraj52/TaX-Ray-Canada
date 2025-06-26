@@ -228,7 +228,7 @@ Changelog:
 - June 26, 2025. Updated household financial summary to separate Federal Tax and Provincial Tax instead of showing combined Total Tax Bill for clearer tax breakdown visibility
 - June 26, 2025. Streamlined household financial summary by removing last 4 lines (Net Income, Total CPP Contributions, Total EI Premiums, duplicate Total Tax Bill) for more focused tax display
 - June 26, 2025. Simplified household financial summary labels by removing "Total" prefix from Income and Deductions for cleaner interface
-- June 26, 2025. Added Taxable Income line between Income and Deductions in household financial summary showing combined taxable income for all household members
+- June 26, 2025. Added Taxable Income line to household financial summary showing combined taxable income for all household members, positioned after Deductions for logical flow
 ```
 
 ## User Preferences
