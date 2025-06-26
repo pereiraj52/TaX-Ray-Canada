@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
-import { ChevronRight, Home, File, User, Edit, Accessibility } from "lucide-react";
+import { File, User, Edit, Accessibility } from "lucide-react";
 import Layout from "@/components/Layout";
 import T1UploadButton from "@/components/T1UploadButton";
 import ExtractedDataDisplay from "@/components/ExtractedDataDisplay";
@@ -139,36 +139,22 @@ export default function HouseholdDetail() {
 
 
   return (
-    <Layout>
+    <Layout 
+      title={household.name}
+      subtitle="Household Details"
+      actions={
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => setIsEditModalOpen(true)}
+          className="flex items-center"
+        >
+          <Edit className="mr-2 h-4 w-4" />
+          Edit Members
+        </Button>
+      }
+    >
       <div className="p-6">
-        {/* Breadcrumb with Edit Button */}
-        <div className="flex justify-between items-center mb-6">
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-1 md:space-x-3">
-              <li className="inline-flex items-center">
-                <Link href="/" className="text-gray-500 hover:text-primary inline-flex items-center">
-                  <Home className="mr-2 h-4 w-4" />
-                  Households
-                </Link>
-              </li>
-              <li>
-                <div className="flex items-center">
-                  <ChevronRight className="text-gray-400 mx-2 h-4 w-4" />
-                  <span className="text-secondary font-medium">{household.name}</span>
-                </div>
-              </li>
-            </ol>
-          </nav>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setIsEditModalOpen(true)}
-            className="flex items-center"
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            Edit Members
-          </Button>
-        </div>
 
         {/* Household Header */}
         <Card className="mb-6">
