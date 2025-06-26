@@ -25,10 +25,12 @@ const createHouseholdSchema = z.object({
   client1FirstName: z.string().min(1, "First name is required"),
   client1LastName: z.string().min(1, "Last name is required"),
   client1Disabled: z.boolean().default(false),
+  client1AmericanTaxpayer: z.boolean().default(false),
   enableClient2: z.boolean().default(false),
   client2FirstName: z.string().optional(),
   client2LastName: z.string().optional(),
   client2Disabled: z.boolean().default(false),
+  client2AmericanTaxpayer: z.boolean().default(false),
   children: z.array(childSchema).default([]),
 }).refine((data) => {
   if (data.enableClient2) {
@@ -59,10 +61,12 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
       client1FirstName: "",
       client1LastName: "",
       client1Disabled: false,
+      client1AmericanTaxpayer: false,
       enableClient2: false,
       client2FirstName: "",
       client2LastName: "",
       client2Disabled: false,
+      client2AmericanTaxpayer: false,
       children: [],
     },
   });
@@ -75,12 +79,14 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
           firstName: formData.client1FirstName,
           lastName: formData.client1LastName,
           disabled: formData.client1Disabled,
+          americanTaxpayer: formData.client1AmericanTaxpayer,
         },
         client2: formData.enableClient2 && formData.client2FirstName && formData.client2LastName 
           ? {
               firstName: formData.client2FirstName,
               lastName: formData.client2LastName,
               disabled: formData.client2Disabled,
+              americanTaxpayer: formData.client2AmericanTaxpayer,
             } 
           : undefined,
       };
@@ -289,7 +295,7 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
                     const currentChildren = form.getValues("children");
                     form.setValue("children", [
                       ...currentChildren,
-                      { firstName: "", lastName: "", dateOfBirth: "", disabled: false }
+                      { firstName: "", lastName: "", dateOfBirth: "", disabled: false, americanTaxpayer: false }
                     ]);
                   }}
                 >

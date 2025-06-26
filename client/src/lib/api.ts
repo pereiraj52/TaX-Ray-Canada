@@ -6,11 +6,13 @@ export interface CreateHouseholdRequest {
     firstName: string;
     lastName: string;
     disabled: boolean;
+    americanTaxpayer: boolean;
   };
   client2?: {
     firstName: string;
     lastName: string;
     disabled: boolean;
+    americanTaxpayer: boolean;
   };
 }
 
