@@ -1003,6 +1003,60 @@ export default function TaxReport() {
                                           { rate: 48.38, min: 551739, max: 1103478, label: "48.38%" },
                                           { rate: 48.96, min: 1103478, max: 2000000, label: "48.96%" }
                                         ]
+                                      },
+                                      'NS': {
+                                        ordinary: [
+                                          { rate: 23.79, min: 0, max: 25000, label: "23.79%" },
+                                          { rate: 24.32, min: 25000, max: 29590, label: "24.32%" },
+                                          { rate: 30.48, min: 29590, max: 55867, label: "30.48%" },
+                                          { rate: 35.95, min: 55867, max: 59180, label: "35.95%" },
+                                          { rate: 37.70, min: 59180, max: 74999, label: "37.70%" },
+                                          { rate: 37.17, min: 74999, max: 93000, label: "37.17%" },
+                                          { rate: 38.00, min: 93000, max: 111733, label: "38.00%" },
+                                          { rate: 43.50, min: 111733, max: 150000, label: "43.50%" },
+                                          { rate: 47.33, min: 150000, max: 173205, label: "47.33%" },
+                                          { rate: 50.32, min: 173205, max: 246752, label: "50.32%" },
+                                          { rate: 54.00, min: 246752, max: 400000, label: "54.00%" }
+                                        ],
+                                        capitalGains: [
+                                          { rate: 11.90, min: 0, max: 25000, label: "11.90%" },
+                                          { rate: 12.16, min: 25000, max: 29590, label: "12.16%" },
+                                          { rate: 15.24, min: 29590, max: 55867, label: "15.24%" },
+                                          { rate: 17.99, min: 55867, max: 59180, label: "17.99%" },
+                                          { rate: 18.85, min: 59180, max: 74999, label: "18.85%" },
+                                          { rate: 18.59, min: 74999, max: 93000, label: "18.59%" },
+                                          { rate: 19.00, min: 93000, max: 111733, label: "19.00%" },
+                                          { rate: 21.75, min: 111733, max: 150000, label: "21.75%" },
+                                          { rate: 23.67, min: 150000, max: 173205, label: "23.67%" },
+                                          { rate: 25.16, min: 173205, max: 246752, label: "25.16%" },
+                                          { rate: 27.00, min: 246752, max: 400000, label: "27.00%" }
+                                        ],
+                                        eligibleDividends: [
+                                          { rate: 0.11, min: 0, max: 25000, label: "0.11%" },
+                                          { rate: 0.62, min: 25000, max: 29590, label: "0.62%" },
+                                          { rate: 9.12, min: 29590, max: 55867, label: "9.12%" },
+                                          { rate: 16.76, min: 55867, max: 59180, label: "16.76%" },
+                                          { rate: 19.09, min: 59180, max: 74999, label: "19.09%" },
+                                          { rate: 18.35, min: 74999, max: 93000, label: "18.35%" },
+                                          { rate: 19.50, min: 93000, max: 111733, label: "19.50%" },
+                                          { rate: 27.09, min: 111733, max: 150000, label: "27.09%" },
+                                          { rate: 31.32, min: 150000, max: 173205, label: "31.32%" },
+                                          { rate: 36.50, min: 173205, max: 246752, label: "36.50%" },
+                                          { rate: 41.58, min: 246752, max: 400000, label: "41.58%" }
+                                        ],
+                                        nonEligibleDividends: [
+                                          { rate: 13.01, min: 0, max: 25000, label: "13.01%" },
+                                          { rate: 14.14, min: 25000, max: 29590, label: "14.14%" },
+                                          { rate: 21.23, min: 29590, max: 55867, label: "21.23%" },
+                                          { rate: 27.59, min: 55867, max: 59180, label: "27.59%" },
+                                          { rate: 29.53, min: 59180, max: 74999, label: "29.53%" },
+                                          { rate: 28.92, min: 74999, max: 93000, label: "28.92%" },
+                                          { rate: 29.88, min: 93000, max: 111733, label: "29.88%" },
+                                          { rate: 36.20, min: 111733, max: 150000, label: "36.20%" },
+                                          { rate: 40.23, min: 150000, max: 173205, label: "40.23%" },
+                                          { rate: 44.05, min: 173205, max: 246752, label: "44.05%" },
+                                          { rate: 48.28, min: 246752, max: 400000, label: "48.28%" }
+                                        ]
                                       }
                                     };
 
@@ -1013,7 +1067,8 @@ export default function TaxReport() {
                                                         clientProvince === 'BC' ? 'BC' : 
                                                         clientProvince === 'MB' ? 'MB' : 
                                                         clientProvince === 'NB' ? 'NB' : 
-                                                        clientProvince === 'NL' ? 'NL' : 'ON';
+                                                        clientProvince === 'NL' ? 'NL' : 
+                                                        clientProvince === 'NS' ? 'NS' : 'ON';
                                     const provinceRates = taxRatesByProvince[validProvince];
                                     
                                     const incomeTypes = [
