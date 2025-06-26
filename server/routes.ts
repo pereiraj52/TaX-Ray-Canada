@@ -5,7 +5,7 @@ import path from "path";
 import { storage } from "./storage";
 import { T1PDFParser } from "./services/pdfParser";
 import { T1AuditReportGenerator } from "./services/reportGenerator";
-import { insertHouseholdSchema, insertClientSchema, t1FormFields } from "@shared/schema";
+import { insertHouseholdSchema, insertClientSchema, insertChildSchema, t1FormFields } from "@shared/schema";
 import { z } from "zod";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -642,6 +642,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting client:", error);
       res.status(500).json({ message: "Failed to delete client" });
+    }
+  });
+
+  // Create child
+  app.post("/api/children", async (req, res) => {
+    try {
+      const childData = insertChildSchema.parse(req.body);
+      const child = await storage.createChild(childData);
+      res.status(201).json(child);
+    } catch (error) {
+      console.error("Error creating child:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create child" });
+    }
+  });
+
+  // Update child
+  app.put("/api/children/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid child ID" });
+      }
+
+      const updates = insertChildSchema.partial().parse(req.body);
+      const child = await storage.updateChild(id, updates);
+      
+      if (!child) {
+        return res.status(404).json({ message: "Child not found" });
+      }
+      
+      res.json(child);
+    } catch (error) {
+      console.error("Error updating child:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update child" });
+    }
+  });
+
+  // Delete child
+  app.delete("/api/children/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid child ID" });
+      }
+
+      await storage.deleteChild(id);
+      res.json({ message: "Child deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting child:", error);
+      res.status(500).json({ message: "Failed to delete child" });
     }
   });
 

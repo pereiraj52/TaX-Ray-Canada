@@ -1,5 +1,5 @@
 import { apiRequest } from "./queryClient";
-import { HouseholdWithClients, T1ReturnWithFields } from "@shared/schema";
+import { HouseholdWithClients, T1ReturnWithFields, Child, InsertChild } from "@shared/schema";
 
 export interface CreateHouseholdRequest {
   client1: {

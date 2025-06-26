@@ -59,6 +59,9 @@ export class DatabaseStorage implements IStorage {
         clients: {
           orderBy: [desc(clients.isPrimary), clients.firstName],
         },
+        children: {
+          orderBy: [children.firstName],
+        },
       },
       orderBy: [desc(households.createdAt)],
     });
@@ -79,6 +82,9 @@ export class DatabaseStorage implements IStorage {
             },
           },
           orderBy: [desc(clients.isPrimary), clients.firstName],
+        },
+        children: {
+          orderBy: [children.firstName],
         },
       },
     });
@@ -144,6 +150,27 @@ export class DatabaseStorage implements IStorage {
     
     // Then delete the client
     await db.delete(clients).where(eq(clients.id, id));
+  }
+
+  async createChild(child: InsertChild): Promise<Child> {
+    const [result] = await db
+      .insert(children)
+      .values(child)
+      .returning();
+    return result;
+  }
+
+  async updateChild(id: number, updates: Partial<InsertChild>): Promise<Child | undefined> {
+    const [result] = await db
+      .update(children)
+      .set(updates)
+      .where(eq(children.id, id))
+      .returning();
+    return result || undefined;
+  }
+
+  async deleteChild(id: number): Promise<void> {
+    await db.delete(children).where(eq(children.id, id));
   }
 
   async getT1Return(id: number): Promise<T1ReturnWithFields | undefined> {
