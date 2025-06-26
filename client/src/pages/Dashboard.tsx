@@ -1,44 +1,23 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Search, Trash2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Plus, Search } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import HouseholdForm from "@/components/HouseholdForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
-import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   const { data: households = [], isLoading } = useQuery<HouseholdWithClients[]>({
     queryKey: ["/api/households"],
     queryFn: () => HouseholdAPI.getHouseholds(),
-  });
-
-  const deleteHouseholdMutation = useMutation({
-    mutationFn: (householdId: number) => HouseholdAPI.deleteHousehold(householdId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/households"] });
-      toast({
-        title: "Success",
-        description: "Household deleted successfully",
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: "Failed to delete household",
-        variant: "destructive",
-      });
-    },
   });
 
   const filteredHouseholds = households.filter(household => {
@@ -138,7 +117,7 @@ export default function Dashboard() {
                     Last Updated
                   </th>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Open
                   </th>
                 </tr>
               </thead>
@@ -171,42 +150,11 @@ export default function Dashboard() {
                       {new Date(household.updatedAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                      <div className="flex items-center justify-center space-x-2">
-                        <Link href={`/household/${household.id}`}>
-                          <Button variant="outline" size="sm">
-                            Open
-                          </Button>
-                        </Link>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Household</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Are you sure you want to delete "{household.name}"? This action will permanently delete the household, all associated clients, children, and T1 returns. This cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => deleteHouseholdMutation.mutate(household.id)}
-                                disabled={deleteHouseholdMutation.isPending}
-                                className="bg-red-600 hover:bg-red-700"
-                              >
-                                {deleteHouseholdMutation.isPending ? "Deleting..." : "Delete"}
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
+                      <Link href={`/household/${household.id}`}>
+                        <Button variant="outline" size="sm">
+                          Open
+                        </Button>
+                      </Link>
                     </td>
                   </tr>
                 ))}
