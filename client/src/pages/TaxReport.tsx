@@ -556,9 +556,9 @@ export default function TaxReport() {
           </div>
         </div>
 
-        {/* Combined Tax Bracket Analysis Table */}
+        {/* Individual Tax Analysis Table */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Individual Tax Analysis</h2>
           
           {(() => {
             // Get individual taxable incomes for each spouse

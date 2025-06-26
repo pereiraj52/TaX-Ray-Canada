@@ -235,6 +235,7 @@ Changelog:
 - June 26, 2025. Added Net Income line after EI Premiums in household financial summary calculating Total Income minus Total Tax for each household member with consistent formatting and percentage calculations
 - June 26, 2025. Updated pie chart Net Income calculation to match household financial summary using Total Income (15000) minus Total Tax (43500) for accurate data consistency
 - June 26, 2025. Repositioned pie chart to the right side of household financial summary in a two-column grid layout for improved page organization and visual balance
+- June 26, 2025. Changed "Combined Tax Bracket Analysis" section title to "Individual Tax Analysis" for clearer terminology reflecting individual household member analysis
 ```
 
 ## User Preferences
