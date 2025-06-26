@@ -279,7 +279,7 @@ export default function HouseholdDetail() {
                                   <div className="flex items-center gap-2">
                                     <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
                                     {child.disabled && (
-                                      <Accessibility className="h-4 w-4 text-gray-500" title="Disabled" />
+                                      <Accessibility className="h-4 w-4 text-gray-500" />
                                     )}
                                   </div>
                                   <p className="text-sm text-gray-500">Child Age ({age})</p>
@@ -311,7 +311,12 @@ export default function HouseholdDetail() {
                                     {child.firstName[0]}{child.lastName[0]}
                                   </div>
                                   <div className="ml-3">
-                                    <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                    <div className="flex items-center gap-2">
+                                      <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                      {child.disabled && (
+                                        <Accessibility className="h-4 w-4 text-gray-500" />
+                                      )}
+                                    </div>
                                     <p className="text-sm text-gray-500">Child Age ({age})</p>
                                   </div>
                                 </div>
@@ -333,7 +338,12 @@ export default function HouseholdDetail() {
                                       {child.firstName[0]}{child.lastName[0]}
                                     </div>
                                     <div className="ml-3">
-                                      <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                      <div className="flex items-center gap-2">
+                                        <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                        {child.disabled && (
+                                          <Accessibility className="h-4 w-4 text-gray-500" />
+                                        )}
+                                      </div>
                                       <p className="text-sm text-gray-500">Child Age ({age})</p>
                                     </div>
                                   </div>
