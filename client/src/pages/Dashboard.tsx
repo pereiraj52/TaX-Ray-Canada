@@ -142,7 +142,12 @@ export default function Dashboard() {
                   <tr key={household.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="font-medium text-secondary">{household.name}</div>
-                      <div className="text-sm text-gray-500">{household.clients.length} client{household.clients.length !== 1 ? 's' : ''}</div>
+                      <div className="text-sm text-gray-500">
+                        {household.clients.length} client{household.clients.length !== 1 ? 's' : ''}
+                        {household.children && household.children.length > 0 && (
+                          <span>, {household.children.length} child{household.children.length !== 1 ? 'ren' : ''}</span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex -space-x-2">
