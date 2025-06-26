@@ -9,8 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { HouseholdAPI, CreateHouseholdRequest } from "@/lib/api";
+import { HouseholdAPI, CreateHouseholdRequest, ChildrenAPI } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import { Trash2, Plus } from "lucide-react";
+
+const childSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+});
 
 const createHouseholdSchema = z.object({
   client1FirstName: z.string().min(1, "First name is required"),
@@ -18,6 +25,7 @@ const createHouseholdSchema = z.object({
   enableClient2: z.boolean().default(false),
   client2FirstName: z.string().optional(),
   client2LastName: z.string().optional(),
+  children: z.array(childSchema).default([]),
 }).refine((data) => {
   if (data.enableClient2) {
     return data.client2FirstName && data.client2FirstName.length > 0 &&
@@ -30,6 +38,7 @@ const createHouseholdSchema = z.object({
 });
 
 type CreateHouseholdForm = z.infer<typeof createHouseholdSchema>;
+type ChildForm = z.infer<typeof childSchema>;
 
 interface HouseholdFormProps {
   open: boolean;
@@ -48,11 +57,42 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
       enableClient2: false,
       client2FirstName: "",
       client2LastName: "",
+      children: [],
     },
   });
 
   const createHouseholdMutation = useMutation({
-    mutationFn: (data: CreateHouseholdRequest) => HouseholdAPI.createHousehold(data),
+    mutationFn: async (formData: CreateHouseholdForm) => {
+      // Create the household first
+      const householdData: CreateHouseholdRequest = {
+        client1: {
+          firstName: formData.client1FirstName,
+          lastName: formData.client1LastName,
+        },
+        client2: formData.enableClient2 && formData.client2FirstName && formData.client2LastName 
+          ? {
+              firstName: formData.client2FirstName,
+              lastName: formData.client2LastName,
+            } 
+          : undefined,
+      };
+      
+      const household = await HouseholdAPI.createHousehold(householdData);
+      
+      // Create children if any
+      if (formData.children && formData.children.length > 0) {
+        for (const child of formData.children) {
+          await ChildrenAPI.createChild({
+            householdId: household.id,
+            firstName: child.firstName,
+            lastName: child.lastName,
+            dateOfBirth: child.dateOfBirth,
+          });
+        }
+      }
+      
+      return household;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/households"] });
       toast({
@@ -92,21 +132,7 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
   };
 
   const onSubmit = (data: CreateHouseholdForm) => {
-    const request: CreateHouseholdRequest = {
-      client1: {
-        firstName: data.client1FirstName,
-        lastName: data.client1LastName,
-      },
-    };
-
-    if (data.enableClient2 && data.client2FirstName && data.client2LastName) {
-      request.client2 = {
-        firstName: data.client2FirstName,
-        lastName: data.client2LastName,
-      };
-    }
-
-    createHouseholdMutation.mutate(request);
+    createHouseholdMutation.mutate(data);
   };
 
   return (
@@ -204,6 +230,93 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
                   />
                 </div>
               )}
+            </div>
+
+            {/* Children Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-lg font-semibold">Children (Optional)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const currentChildren = form.getValues("children");
+                    form.setValue("children", [
+                      ...currentChildren,
+                      { firstName: "", lastName: "", dateOfBirth: "" }
+                    ]);
+                  }}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Child
+                </Button>
+              </div>
+
+              {form.watch("children").map((child, index) => (
+                <div key={index} className="border rounded-lg p-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-medium">Child {index + 1}</h4>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const currentChildren = form.getValues("children");
+                        const newChildren = currentChildren.filter((_, i) => i !== index);
+                        form.setValue("children", newChildren);
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4">
+                    <FormField
+                      control={form.control}
+                      name={`children.${index}.firstName`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="First name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`children.${index}.lastName`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Last name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`children.${index}.dateOfBirth`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date of Birth</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="date" 
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Household Name Preview */}

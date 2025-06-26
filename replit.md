@@ -219,6 +219,7 @@ Changelog:
 - June 26, 2025. Added comprehensive children management feature with database schema, API endpoints, and full CRUD operations for tracking household children with first name, last name, and date of birth
 - June 26, 2025. Integrated children display in household detail page showing children with avatars, names, and calculated ages below primary/secondary clients in the same card
 - June 26, 2025. Updated dashboard to display children count alongside client count under household names with proper pluralization
+- June 26, 2025. Simplified dashboard interface by removing year filter and moving "New Household" button to search bar for cleaner layout
 ```
 
 ## User Preferences
