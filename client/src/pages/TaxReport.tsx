@@ -1263,6 +1263,40 @@ export default function TaxReport() {
                                           { rate: 33.56, min: 173205, max: 246752, label: "33.56%" },
                                           { rate: 37.79, min: 246752, max: 400000, label: "37.79%" }
                                         ]
+                                      },
+                                      'YT': {
+                                        ordinary: [
+                                          { rate: 22.40, min: 0, max: 55867, label: "22.40%" },
+                                          { rate: 29.50, min: 55867, max: 111733, label: "29.50%" },
+                                          { rate: 36.90, min: 111733, max: 173205, label: "36.90%" },
+                                          { rate: 42.25, min: 173205, max: 246752, label: "42.25%" },
+                                          { rate: 46.60, min: 246752, max: 500000, label: "46.60%" },
+                                          { rate: 48.00, min: 500000, max: 1000000, label: "48.00%" }
+                                        ],
+                                        capitalGains: [
+                                          { rate: 11.20, min: 0, max: 55867, label: "11.20%" },
+                                          { rate: 14.75, min: 55867, max: 111733, label: "14.75%" },
+                                          { rate: 18.45, min: 111733, max: 173205, label: "18.45%" },
+                                          { rate: 21.13, min: 173205, max: 246752, label: "21.13%" },
+                                          { rate: 23.30, min: 246752, max: 500000, label: "23.30%" },
+                                          { rate: 24.00, min: 500000, max: 1000000, label: "24.00%" }
+                                        ],
+                                        eligibleDividends: [
+                                          { rate: -7.68, min: 0, max: 55867, label: "-7.68%" },
+                                          { rate: 3.40, min: 55867, max: 111733, label: "3.40%" },
+                                          { rate: 13.61, min: 111733, max: 173205, label: "13.61%" },
+                                          { rate: 20.99, min: 173205, max: 246752, label: "20.99%" },
+                                          { rate: 25.59, min: 246752, max: 500000, label: "25.59%" },
+                                          { rate: 28.93, min: 500000, max: 1000000, label: "28.93%" }
+                                        ],
+                                        nonEligibleDividends: [
+                                          { rate: 13.45, min: 0, max: 55867, label: "13.45%" },
+                                          { rate: 22.77, min: 55867, max: 111733, label: "22.77%" },
+                                          { rate: 31.28, min: 111733, max: 173205, label: "31.28%" },
+                                          { rate: 37.43, min: 173205, max: 246752, label: "37.43%" },
+                                          { rate: 41.31, min: 246752, max: 500000, label: "41.31%" },
+                                          { rate: 44.04, min: 500000, max: 1000000, label: "44.04%" }
+                                        ]
                                       }
                                     };
 
@@ -1279,7 +1313,8 @@ export default function TaxReport() {
                                                         clientProvince === 'QC' ? 'QC' : 
                                                         clientProvince === 'SK' ? 'SK' : 
                                                         clientProvince === 'NT' ? 'NT' : 
-                                                        clientProvince === 'NU' ? 'NU' : 'ON';
+                                                        clientProvince === 'NU' ? 'NU' : 
+                                                        clientProvince === 'YT' ? 'YT' : 'ON';
                                     const provinceRates = taxRatesByProvince[validProvince];
                                     
                                     const incomeTypes = [
