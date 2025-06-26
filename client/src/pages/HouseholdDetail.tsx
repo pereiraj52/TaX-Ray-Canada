@@ -80,6 +80,31 @@ export default function HouseholdDetail() {
     return client.dateOfBirth || 'Not provided';
   };
 
+  const calculateAge = (dateOfBirth: string) => {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
+
+  const getChildAvatarColor = (index: number) => {
+    const colors = [
+      'bg-green-500',
+      'bg-blue-500', 
+      'bg-purple-500',
+      'bg-orange-500',
+      'bg-pink-500',
+      'bg-indigo-500'
+    ];
+    return colors[index % colors.length];
+  };
+
   if (isLoading) {
     return (
       <Layout title="Loading..." subtitle="Loading household details">
@@ -210,6 +235,31 @@ export default function HouseholdDetail() {
                 );
               })}
             </div>
+
+            {/* Children Section */}
+            {household.children && household.children.length > 0 && (
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-lg font-medium text-secondary mb-4">Children</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {household.children.map((child, index) => {
+                    const age = calculateAge(child.dateOfBirth);
+                    return (
+                      <div key={child.id} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex items-center">
+                          <div className={`w-10 h-10 ${getChildAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium`}>
+                            {child.firstName[0]}{child.lastName[0]}
+                          </div>
+                          <div className="ml-3">
+                            <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                            <p className="text-sm text-gray-500">Child Age ({age})</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
