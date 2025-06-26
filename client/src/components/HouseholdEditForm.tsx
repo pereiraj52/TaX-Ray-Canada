@@ -117,6 +117,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
             firstName: child.firstName,
             lastName: child.lastName,
             dateOfBirth: child.dateOfBirth,
+            disabled: child.disabled,
           });
         } else {
           // Create new child
@@ -125,6 +126,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
             firstName: child.firstName,
             lastName: child.lastName,
             dateOfBirth: child.dateOfBirth,
+            disabled: child.disabled,
           });
         }
       }
@@ -239,6 +241,25 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                   )}
                 />
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="client1Disabled"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>Disabled?</FormLabel>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
 
             {/* Secondary Client */}
@@ -287,6 +308,27 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                   )}
                 />
               </div>
+              {secondaryClient && (
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="client2Disabled"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>Disabled?</FormLabel>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Children Section */}
@@ -376,6 +418,23 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                             />
                           </FormControl>
                           <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`children.${index}.disabled`}
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>Disabled?</FormLabel>
+                          </div>
                         </FormItem>
                       )}
                     />
