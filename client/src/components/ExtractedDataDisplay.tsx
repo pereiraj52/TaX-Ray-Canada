@@ -193,11 +193,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         ...prev,
         'employment': true,
         'pension': true,
-        'benefits': true,
+        'government': true,
         'investment': true,
         'other': true,
         'selfemployment': true,
-        'other-sources': true,
       }));
     }
     setActiveTab(tabId);
