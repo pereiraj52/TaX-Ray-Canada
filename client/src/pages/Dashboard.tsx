@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Plus, Search } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Plus, Search, Archive } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import HouseholdForm from "@/components/HouseholdForm";
@@ -10,15 +10,48 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { HouseholdAPI } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [archiveConfirmingId, setArchiveConfirmingId] = useState<number | null>(null);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: households = [], isLoading } = useQuery<HouseholdWithClients[]>({
     queryKey: ["/api/households"],
     queryFn: () => HouseholdAPI.getHouseholds(),
   });
+
+  const archiveHouseholdMutation = useMutation({
+    mutationFn: (householdId: number) => HouseholdAPI.archiveHousehold(householdId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/households"] });
+      setArchiveConfirmingId(null);
+      toast({
+        title: "Success",
+        description: "Household archived successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to archive household",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Auto-cancel archive confirmation after 5 seconds
+  useEffect(() => {
+    if (archiveConfirmingId !== null) {
+      const timeout = setTimeout(() => {
+        setArchiveConfirmingId(null);
+      }, 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [archiveConfirmingId]);
 
   const filteredHouseholds = households.filter(household => {
     const matchesSearch = household.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -117,7 +150,7 @@ export default function Dashboard() {
                     Last Updated
                   </th>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Open
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -150,11 +183,32 @@ export default function Dashboard() {
                       {new Date(household.updatedAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                      <Link href={`/household/${household.id}`}>
-                        <Button variant="outline" size="sm">
-                          Open
-                        </Button>
-                      </Link>
+                      <div className="flex items-center justify-center space-x-2">
+                        <Link href={`/household/${household.id}`}>
+                          <Button variant="outline" size="sm">
+                            Open
+                          </Button>
+                        </Link>
+                        {archiveConfirmingId === household.id ? (
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => archiveHouseholdMutation.mutate(household.id)}
+                            disabled={archiveHouseholdMutation.isPending}
+                          >
+                            {archiveHouseholdMutation.isPending ? "Archiving..." : "Confirm Archive"}
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setArchiveConfirmingId(household.id)}
+                            className="text-gray-600 hover:text-red-600"
+                          >
+                            <Archive className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
