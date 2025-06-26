@@ -346,6 +346,157 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upload T1 PDF for Children
+  app.post("/api/children/:childId/t1-upload", upload.single('t1File'), async (req, res) => {
+    try {
+      const childId = parseInt(req.params.childId);
+      if (isNaN(childId)) {
+        return res.status(400).json({ message: "Invalid child ID" });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const child = await storage.getChild(childId);
+      if (!child) {
+        return res.status(404).json({ message: "Child not found" });
+      }
+
+      // Create T1 return record for child
+      const t1Return = await storage.createT1Return({
+        childId: childId,
+        taxYear: 2024, // Will be updated after extraction
+        fileName: req.file.originalname,
+        filePath: req.file.path,
+        fileSize: req.file.size,
+        processingStatus: "processing",
+      });
+
+      // Process the PDF in the background
+      setTimeout(async () => {
+        try {
+          const extractedData = await T1PDFParser.extractT1Data(req.file!.path);
+          
+          // Update T1 return with extracted data
+          await storage.updateT1Return(t1Return.id, {
+            taxYear: extractedData.taxYear,
+            extractedData: extractedData as any,
+            processingStatus: "completed",
+          });
+
+          // For children, we don't update their personal info from T1 since it's usually already known
+          // Create form fields
+          const formFields = extractedData.formFields.map(field => ({
+            ...field,
+            t1ReturnId: t1Return.id,
+          }));
+
+          await storage.createT1FormFields(formFields);
+        } catch (error) {
+          console.error("Error processing child T1 PDF:", error);
+          await storage.updateT1Return(t1Return.id, {
+            processingStatus: "failed",
+          });
+        }
+      }, 100);
+
+      res.json({ 
+        message: "File uploaded successfully, processing started",
+        t1ReturnId: t1Return.id 
+      });
+    } catch (error) {
+      console.error("Error uploading child T1 file:", error);
+      res.status(500).json({ message: "Failed to upload T1 file" });
+    }
+  });
+
+  // Upload Multiple T1 PDFs for Children
+  app.post("/api/children/:childId/t1-upload-multiple", upload.array('t1Files', 10), async (req, res) => {
+    try {
+      const childId = parseInt(req.params.childId);
+      if (isNaN(childId)) {
+        return res.status(400).json({ message: "Invalid child ID" });
+      }
+
+      const files = req.files as Express.Multer.File[];
+      if (!files || files.length === 0) {
+        return res.status(400).json({ message: "No files uploaded" });
+      }
+
+      const child = await storage.getChild(childId);
+      if (!child) {
+        return res.status(404).json({ message: "Child not found" });
+      }
+
+      // Create T1 return record for child
+      const t1Return = await storage.createT1Return({
+        childId: childId,
+        taxYear: 2024, // Will be updated after extraction
+        fileName: files.map(f => f.originalname).join(', '),
+        filePath: files.map(f => f.path).join('|'),
+        fileSize: files.reduce((total, file) => total + file.size, 0),
+        processingStatus: "processing",
+      });
+
+      // Process all PDFs in the background
+      setTimeout(async () => {
+        try {
+          let combinedData: any = null;
+          let allFormFields: any[] = [];
+
+          for (const file of files) {
+            const extractedData = await T1PDFParser.extractT1Data(file.path);
+            
+            if (!combinedData) {
+              combinedData = extractedData;
+            } else {
+              // Merge form fields from multiple files
+              const existingFieldCodes = new Set(combinedData.formFields.map((f: any) => f.fieldCode));
+              const newFields = extractedData.formFields.filter((f: any) => !existingFieldCodes.has(f.fieldCode));
+              combinedData.formFields = [...combinedData.formFields, ...newFields];
+            }
+            
+            allFormFields = [...allFormFields, ...extractedData.formFields];
+          }
+
+          if (combinedData) {
+            await storage.updateT1Return(t1Return.id, {
+              taxYear: combinedData.taxYear,
+              extractedData: combinedData as any,
+              processingStatus: "completed",
+            });
+
+            // Create form fields
+            const formFields = allFormFields.map(field => ({
+              ...field,
+              t1ReturnId: t1Return.id,
+            }));
+
+            await storage.createT1FormFields(formFields);
+          } else {
+            await storage.updateT1Return(t1Return.id, {
+              processingStatus: "failed",
+            });
+          }
+        } catch (error) {
+          console.error("Error processing multiple child T1 PDFs:", error);
+          await storage.updateT1Return(t1Return.id, {
+            processingStatus: "failed",
+          });
+        }
+      }, 100);
+
+      res.json({ 
+        message: `${files.length} files uploaded successfully, processing started`,
+        t1ReturnId: t1Return.id 
+      });
+    } catch (error) {
+      console.error("Error uploading multiple child T1 files:", error);
+      res.status(500).json({ message: "Failed to upload T1 files" });
+    }
+  });
+
   // Generate audit report for specific client
   app.post("/api/clients/:clientId/audit-report", async (req, res) => {
     try {

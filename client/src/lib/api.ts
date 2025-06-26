@@ -136,4 +136,42 @@ export class ChildrenAPI {
   static async deleteChild(id: number): Promise<void> {
     await apiRequest("DELETE", `/api/children/${id}`);
   }
+
+  static async uploadT1File(childId: number, file: File): Promise<{ message: string; t1ReturnId: number }> {
+    const formData = new FormData();
+    formData.append('t1File', file);
+
+    const response = await fetch(`/api/children/${childId}/t1-upload`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Upload failed');
+    }
+
+    return response.json();
+  }
+
+  static async uploadT1Files(childId: number, files: File[]): Promise<{ message: string; t1ReturnId: number }> {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append('t1Files', file);
+    });
+
+    const response = await fetch(`/api/children/${childId}/t1-upload-multiple`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Upload failed');
+    }
+
+    return response.json();
+  }
 }
