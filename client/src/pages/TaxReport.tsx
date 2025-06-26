@@ -619,192 +619,165 @@ export default function TaxReport() {
                               </table>
                             </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            );
-          })()}
-        </div>
 
-        {/* Tax Bracket Visualization */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Bracket Visualization</h2>
-          
-          {(() => {
-            // Get individual taxable incomes and provinces for each spouse
-            const spouseData = taxYearReturns.map(t1Return => {
-              const t1WithFields = t1Return as any;
-              let taxableIncome = 0;
-              let clientName = 'Unknown';
-              let province = 'ON'; // Default to Ontario
-              
-              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
-                if (taxableField?.fieldValue) {
-                  const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
-                  if (!isNaN(value)) taxableIncome = value;
-                }
-              }
-              
-              // Get client name and province from household clients
-              const client = household?.clients.find(c => c.id === t1Return.clientId);
-              if (client) {
-                clientName = `${client.firstName} ${client.lastName}`;
-                province = client.province || 'ON';
-              }
-              
-              return { clientName, taxableIncome, province, t1Return };
-            });
-
-            // Combined federal + provincial tax brackets for Ontario (example)
-            // This should be dynamic based on province in real implementation
-            const combinedBrackets = [
-              { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
-              { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
-              { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
-              { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
-              { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
-              { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
-              { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
-              { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
-              { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
-            ];
-
-            return (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {spouseData.map((spouse, spouseIndex) => {
-                  const maxScale = 300000; // Scale to $300k as requested
-                  const currentIncome = spouse.taxableIncome;
-                  
-                  // Find current marginal rate bracket
-                  let currentBracket = combinedBrackets[0];
-                  for (let i = combinedBrackets.length - 1; i >= 0; i--) {
-                    if (currentIncome > combinedBrackets[i].min) {
-                      currentBracket = combinedBrackets[i];
-                      break;
-                    }
-                  }
-
-                  return (
-                    <Card key={spouseIndex}>
-                      <CardContent className="p-6">
-                        <div className="space-y-4">
-                          <div>
-                            <h3 className="font-medium text-gray-900 mb-2">
-                              Combined Tax Bracket - {spouse.province}
-                            </h3>
+                          {/* Vertical Tax Bracket Visualization */}
+                          <div className="mt-6">
                             <div className="text-right mb-4">
                               <div className="text-3xl font-bold text-primary">
-                                {currentBracket.label}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                Effective Combined Tax Rate
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Single Vertical Tax Bracket Bar */}
-                          <div className="relative">
-                            {/* Vertical bar chart with scale */}
-                            <div className="flex items-start justify-center">
-                              {/* Income scale labels on left (vertical axis) - only key thresholds */}
-                              <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
-                                {/* $300k at top */}
-                                <div className="absolute top-0 right-0 text-right">$300k</div>
-                                
-                                {/* Tax bracket thresholds with spacing adjustments */}
                                 {(() => {
-                                  const thresholds = combinedBrackets
-                                    .filter(bracket => bracket.min > 0 && bracket.min < maxScale)
-                                    .map(bracket => ({
-                                      value: bracket.min,
-                                      position: (bracket.min / maxScale) * 100,
-                                      label: `$${Math.round(bracket.min / 1000)}k`
-                                    }))
-                                    .sort((a, b) => a.value - b.value);
-
-                                  // Adjust positions to prevent overlap (minimum 8% spacing)
-                                  for (let i = 1; i < thresholds.length; i++) {
-                                    const current = thresholds[i];
-                                    const previous = thresholds[i - 1];
-                                    const minSpacing = 8; // 8% minimum spacing
-                                    
-                                    if (current.position - previous.position < minSpacing) {
-                                      current.position = previous.position + minSpacing;
+                                  // Find current marginal rate bracket for this spouse
+                                  const combinedBrackets = [
+                                    { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+                                    { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
+                                    { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
+                                    { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+                                    { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+                                    { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+                                    { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
+                                    { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+                                    { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
+                                  ];
+                                  
+                                  let currentBracket = combinedBrackets[0];
+                                  for (let i = combinedBrackets.length - 1; i >= 0; i--) {
+                                    if (spouse.taxableIncome > combinedBrackets[i].min) {
+                                      currentBracket = combinedBrackets[i];
+                                      break;
                                     }
                                   }
-
-                                  return thresholds.map((threshold, idx) => (
-                                    <div 
-                                      key={idx}
-                                      className="absolute right-0 text-right"
-                                      style={{
-                                        bottom: `${Math.min(threshold.position, 90)}%`, // Cap at 90% to avoid overlapping with $300k
-                                        transform: 'translateY(50%)'
-                                      }}
-                                    >
-                                      {threshold.label}
-                                    </div>
-                                  ));
+                                  return currentBracket.label;
                                 })()}
-                                
-                                {/* $0 at bottom */}
-                                <div className="absolute bottom-0 right-0 text-right">$0</div>
                               </div>
-                              
-                              {/* Vertical bar */}
-                              <div className="relative w-32 h-80 bg-gray-100 border">
-                                {/* Individual tax bracket segments stacked vertically */}
-                                {combinedBrackets.map((bracket, idx) => {
-                                  // Skip brackets that start above $300k
-                                  if (bracket.min >= maxScale) return null;
+                              <div className="text-sm text-gray-600">
+                                Combined Marginal Tax Rate
+                              </div>
+                            </div>
+
+                            {/* Single Vertical Tax Bracket Bar */}
+                            <div className="relative">
+                              {/* Vertical bar chart with scale */}
+                              <div className="flex items-start justify-center">
+                                {/* Income scale labels on left (vertical axis) - only key thresholds */}
+                                <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                  {/* $300k at top */}
+                                  <div className="absolute top-0 right-0 text-right">$300k</div>
                                   
-                                  // For high earners (>$247k), highlight the top bracket
-                                  const isCurrentBracket = currentIncome > bracket.min && 
-                                    (currentIncome <= bracket.max || (currentIncome > 247000 && bracket.min === 246752));
+                                  {/* Tax bracket thresholds with spacing adjustments */}
+                                  {(() => {
+                                    const combinedBrackets = [
+                                      { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+                                      { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
+                                      { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
+                                      { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+                                      { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+                                      { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+                                      { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
+                                      { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+                                      { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
+                                    ];
+                                    const maxScale = 300000;
+                                    
+                                    const thresholds = combinedBrackets
+                                      .filter(bracket => bracket.min > 0 && bracket.min < maxScale)
+                                      .map(bracket => ({
+                                        value: bracket.min,
+                                        position: (bracket.min / maxScale) * 100,
+                                        label: `$${Math.round(bracket.min / 1000)}k`
+                                      }))
+                                      .sort((a, b) => a.value - b.value);
+
+                                    // Adjust positions to prevent overlap (minimum 8% spacing)
+                                    for (let i = 1; i < thresholds.length; i++) {
+                                      const current = thresholds[i];
+                                      const previous = thresholds[i - 1];
+                                      const minSpacing = 8; // 8% minimum spacing
+                                      
+                                      if (current.position - previous.position < minSpacing) {
+                                        current.position = previous.position + minSpacing;
+                                      }
+                                    }
+
+                                    return thresholds.map((threshold, idx) => (
+                                      <div 
+                                        key={idx}
+                                        className="absolute right-0 text-right"
+                                        style={{
+                                          bottom: `${Math.min(threshold.position, 90)}%`, // Cap at 90% to avoid overlapping with $300k
+                                          transform: 'translateY(50%)'
+                                        }}
+                                      >
+                                        {threshold.label}
+                                      </div>
+                                    ));
+                                  })()}
                                   
-                                  const bracketTop = Math.min(bracket.max, maxScale);
-                                  const bracketHeight = bracketTop - bracket.min;
-                                  const heightPercent = (bracketHeight / maxScale) * 100;
-                                  const bottomPercent = (bracket.min / maxScale) * 100;
-                                  
-                                  return (
-                                    <div 
-                                      key={idx}
-                                      className={`absolute w-full ${isCurrentBracket ? 'bg-blue-500' : 'bg-gray-300'} flex items-center justify-center border-t border-white`}
-                                      style={{
-                                        bottom: `${bottomPercent}%`,
-                                        height: `${heightPercent}%`
-                                      }}
-                                    >
-                                      <span className="text-xs font-medium text-white whitespace-nowrap">
-                                        {bracket.label}
-                                      </span>
-                                    </div>
-                                  );
-                                })}
+                                  {/* $0 at bottom */}
+                                  <div className="absolute bottom-0 right-0 text-right">$0</div>
+                                </div>
                                 
-                                {/* Current income indicator line */}
-                                <div 
-                                  className="absolute left-0 w-full h-1 bg-green-500 z-10"
-                                  style={{
-                                    bottom: `${currentIncome > 247000 ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`
-                                  }}
-                                >
-                                  {/* Income label to the right of the bar */}
-                                  <div className="absolute left-36 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
-                                    Taxable Income: ${Math.round(currentIncome / 1000)}k
+                                {/* Vertical bar */}
+                                <div className="relative w-32 h-80 bg-gray-100 border">
+                                  {/* Individual tax bracket segments stacked vertically */}
+                                  {(() => {
+                                    const combinedBrackets = [
+                                      { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+                                      { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
+                                      { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
+                                      { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+                                      { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+                                      { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+                                      { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
+                                      { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+                                      { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
+                                    ];
+                                    const maxScale = 300000;
+                                    const currentIncome = spouse.taxableIncome;
+                                    
+                                    return combinedBrackets.map((bracket, idx) => {
+                                      // Skip brackets that start above $300k
+                                      if (bracket.min >= maxScale) return null;
+                                      
+                                      // For high earners (>$247k), highlight the top bracket
+                                      const isCurrentBracket = currentIncome > bracket.min && 
+                                        (currentIncome <= bracket.max || (currentIncome > 247000 && bracket.min === 246752));
+                                      
+                                      const bracketTop = Math.min(bracket.max, maxScale);
+                                      const bracketHeight = bracketTop - bracket.min;
+                                      const heightPercent = (bracketHeight / maxScale) * 100;
+                                      const bottomPercent = (bracket.min / maxScale) * 100;
+                                      
+                                      return (
+                                        <div 
+                                          key={idx}
+                                          className={`absolute w-full ${isCurrentBracket ? 'bg-blue-500' : 'bg-gray-300'} flex items-center justify-center border-t border-white`}
+                                          style={{
+                                            bottom: `${bottomPercent}%`,
+                                            height: `${heightPercent}%`
+                                          }}
+                                        >
+                                          <span className="text-xs font-medium text-white whitespace-nowrap">
+                                            {bracket.label}
+                                          </span>
+                                        </div>
+                                      );
+                                    });
+                                  })()}
+                                  
+                                  {/* Current income indicator line */}
+                                  <div 
+                                    className="absolute left-0 w-full h-1 bg-green-500 z-10"
+                                    style={{
+                                      bottom: `${spouse.taxableIncome > 247000 ? '100%' : Math.min(spouse.taxableIncome / 300000, 1) * 100 + '%'}`
+                                    }}
+                                  >
+                                    {/* Income label to the right of the bar */}
+                                    <div className="absolute left-36 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
+                                      Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            
-                            <div className="mt-4 text-center text-xs text-gray-600">
-                              Marginal Income Tax Bracket
-                            </div>
                           </div>
                         </div>
                       </CardContent>
@@ -815,6 +788,8 @@ export default function TaxReport() {
             );
           })()}
         </div>
+
+
 
       </div>
     </Layout>
