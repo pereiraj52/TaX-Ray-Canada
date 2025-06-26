@@ -146,7 +146,7 @@ export default function TaxReport() {
                     return (
                       <>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Total Income:</span>
+                          <span className="text-gray-600">Income:</span>
                           <div className="text-right">
                             <span className="font-medium text-primary">
                               ${totalIncomeSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">(100.0%)</span>
@@ -154,7 +154,7 @@ export default function TaxReport() {
                           </div>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Total Deductions:</span>
+                          <span className="text-gray-600">Deductions:</span>
                           <div className="text-right">
                             <span className="font-medium text-primary">
                               ${totalDeductionsSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(totalDeductionsSum)})</span>

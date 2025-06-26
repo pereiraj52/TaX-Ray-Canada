@@ -227,6 +227,7 @@ Changelog:
 - June 26, 2025. Implemented comprehensive American Taxpayer tracking with database schema updates, form integration, and API support for both clients and children throughout the household management system
 - June 26, 2025. Updated household financial summary to separate Federal Tax and Provincial Tax instead of showing combined Total Tax Bill for clearer tax breakdown visibility
 - June 26, 2025. Streamlined household financial summary by removing last 4 lines (Net Income, Total CPP Contributions, Total EI Premiums, duplicate Total Tax Bill) for more focused tax display
+- June 26, 2025. Simplified household financial summary labels by removing "Total" prefix from Income and Deductions for cleaner interface
 ```
 
 ## User Preferences
