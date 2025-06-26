@@ -238,26 +238,104 @@ export default function HouseholdDetail() {
 
             {/* Children Section */}
             {household.children && household.children.length > 0 && (
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h4 className="text-lg font-medium text-secondary mb-4">Children</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {household.children.map((child, index) => {
-                    const age = calculateAge(child.dateOfBirth);
+              <div className="mt-6">
+                {(() => {
+                  // Sort children by age (oldest first)
+                  const sortedChildren = [...household.children].sort((a, b) => {
+                    const ageA = calculateAge(a.dateOfBirth);
+                    const ageB = calculateAge(b.dateOfBirth);
+                    return ageB - ageA; // Oldest first
+                  });
+
+                  // Calculate responsive grid classes based on number of children
+                  const getGridClasses = (count: number) => {
+                    if (count === 1) return "grid grid-cols-1";
+                    if (count === 2) return "grid grid-cols-2";
+                    if (count === 3) return "grid grid-cols-3";
+                    if (count === 4) return "grid grid-cols-4";
+                    // For 5+ children, show first 4 on one line, rest on new line
+                    return "space-y-4";
+                  };
+
+                  const childrenCount = sortedChildren.length;
+
+                  if (childrenCount <= 4) {
                     return (
-                      <div key={child.id} className="border border-gray-200 rounded-lg p-4">
-                        <div className="flex items-center">
-                          <div className={`w-10 h-10 ${getChildAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium`}>
-                            {child.firstName[0]}{child.lastName[0]}
-                          </div>
-                          <div className="ml-3">
-                            <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
-                            <p className="text-sm text-gray-500">Child Age ({age})</p>
-                          </div>
-                        </div>
+                      <div className={`${getGridClasses(childrenCount)} gap-4`}>
+                        {sortedChildren.map((child, index) => {
+                          const age = calculateAge(child.dateOfBirth);
+                          return (
+                            <div key={child.id} className="border border-gray-200 rounded-lg p-4">
+                              <div className="flex items-center">
+                                <div className={`w-10 h-10 ${getChildAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium`}>
+                                  {child.firstName[0]}{child.lastName[0]}
+                                </div>
+                                <div className="ml-3">
+                                  <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                  <p className="text-sm text-gray-500">Child Age ({age})</p>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     );
-                  })}
-                </div>
+                  } else {
+                    // For 5+ children, show first 4 on top row, rest on bottom row
+                    const firstRow = sortedChildren.slice(0, 4);
+                    const remainingRows = [];
+                    for (let i = 4; i < sortedChildren.length; i += 4) {
+                      remainingRows.push(sortedChildren.slice(i, i + 4));
+                    }
+
+                    return (
+                      <div className="space-y-4">
+                        {/* First row - always 4 columns */}
+                        <div className="grid grid-cols-4 gap-4">
+                          {firstRow.map((child, index) => {
+                            const age = calculateAge(child.dateOfBirth);
+                            return (
+                              <div key={child.id} className="border border-gray-200 rounded-lg p-4">
+                                <div className="flex items-center">
+                                  <div className={`w-10 h-10 ${getChildAvatarColor(index)} rounded-full flex items-center justify-center text-white font-medium`}>
+                                    {child.firstName[0]}{child.lastName[0]}
+                                  </div>
+                                  <div className="ml-3">
+                                    <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                    <p className="text-sm text-gray-500">Child Age ({age})</p>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Remaining rows */}
+                        {remainingRows.map((row, rowIndex) => (
+                          <div key={rowIndex} className={`grid ${getGridClasses(row.length)} gap-4`}>
+                            {row.map((child, index) => {
+                              const age = calculateAge(child.dateOfBirth);
+                              const colorIndex = 4 + (rowIndex * 4) + index; // Continue color sequence
+                              return (
+                                <div key={child.id} className="border border-gray-200 rounded-lg p-4">
+                                  <div className="flex items-center">
+                                    <div className={`w-10 h-10 ${getChildAvatarColor(colorIndex)} rounded-full flex items-center justify-center text-white font-medium`}>
+                                      {child.firstName[0]}{child.lastName[0]}
+                                    </div>
+                                    <div className="ml-3">
+                                      <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                      <p className="text-sm text-gray-500">Child Age ({age})</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                })()}
               </div>
             )}
           </CardContent>
