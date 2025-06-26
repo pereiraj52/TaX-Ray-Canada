@@ -865,13 +865,53 @@ export default function TaxReport() {
                                           { rate: 44.64, min: 246752, max: 252752, label: "44.64%" },
                                           { rate: 48.89, min: 252752, max: 400000, label: "48.89%" }
                                         ]
+                                      },
+                                      'MB': {
+                                        ordinary: [
+                                          { rate: 25.80, min: 0, max: 47000, label: "25.80%" },
+                                          { rate: 27.75, min: 47000, max: 55867, label: "27.75%" },
+                                          { rate: 33.25, min: 55867, max: 100000, label: "33.25%" },
+                                          { rate: 37.90, min: 100000, max: 111733, label: "37.90%" },
+                                          { rate: 43.40, min: 111733, max: 173205, label: "43.40%" },
+                                          { rate: 46.67, min: 173205, max: 246752, label: "46.67%" },
+                                          { rate: 50.40, min: 246752, max: 400000, label: "50.40%" }
+                                        ],
+                                        capitalGains: [
+                                          { rate: 12.90, min: 0, max: 47000, label: "12.90%" },
+                                          { rate: 13.88, min: 47000, max: 55867, label: "13.88%" },
+                                          { rate: 16.63, min: 55867, max: 100000, label: "16.63%" },
+                                          { rate: 18.95, min: 100000, max: 111733, label: "18.95%" },
+                                          { rate: 21.70, min: 111733, max: 173205, label: "21.70%" },
+                                          { rate: 23.34, min: 173205, max: 246752, label: "23.34%" },
+                                          { rate: 25.20, min: 246752, max: 400000, label: "25.20%" }
+                                        ],
+                                        eligibleDividends: [
+                                          { rate: 3.84, min: 0, max: 47000, label: "3.84%" },
+                                          { rate: 6.53, min: 47000, max: 55867, label: "6.53%" },
+                                          { rate: 14.12, min: 55867, max: 100000, label: "14.12%" },
+                                          { rate: 20.53, min: 100000, max: 111733, label: "20.53%" },
+                                          { rate: 28.12, min: 111733, max: 173205, label: "28.12%" },
+                                          { rate: 32.71, min: 173205, max: 246752, label: "32.71%" },
+                                          { rate: 37.78, min: 246752, max: 400000, label: "37.78%" }
+                                        ],
+                                        nonEligibleDividends: [
+                                          { rate: 18.38, min: 0, max: 47000, label: "18.38%" },
+                                          { rate: 20.63, min: 47000, max: 55867, label: "20.63%" },
+                                          { rate: 26.95, min: 55867, max: 100000, label: "26.95%" },
+                                          { rate: 32.30, min: 100000, max: 111733, label: "32.30%" },
+                                          { rate: 38.62, min: 111733, max: 173205, label: "38.62%" },
+                                          { rate: 42.44, min: 173205, max: 246752, label: "42.44%" },
+                                          { rate: 46.67, min: 246752, max: 400000, label: "46.67%" }
+                                        ]
                                       }
                                     };
 
                                     // Get the client's province from the household data
                                     const client = household?.clients.find(c => c.id === spouse.t1Return.clientId);
                                     const clientProvince = (client as any)?.province || 'ON';
-                                    const validProvince = clientProvince === 'AB' ? 'AB' : clientProvince === 'BC' ? 'BC' : 'ON';
+                                    const validProvince = clientProvince === 'AB' ? 'AB' : 
+                                                        clientProvince === 'BC' ? 'BC' : 
+                                                        clientProvince === 'MB' ? 'MB' : 'ON';
                                     const provinceRates = taxRatesByProvince[validProvince];
                                     
                                     const incomeTypes = [
