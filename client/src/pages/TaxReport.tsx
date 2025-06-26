@@ -712,12 +712,12 @@ export default function TaxReport() {
                             <div className="flex items-start">
                               {/* Income scale labels on left (vertical axis) - only key thresholds */}
                               <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
-                                {/* >$300k at top */}
-                                <div className="absolute top-0 right-0 text-right">&gt;$300k</div>
+                                {/* $300k at top */}
+                                <div className="absolute top-0 right-0 text-right">$300k</div>
                                 
                                 {/* Tax bracket thresholds */}
                                 {combinedBrackets.map((bracket, idx) => {
-                                  if (bracket.min === 0) return null; // Skip $0, we'll add it separately
+                                  if (bracket.min === 0 || bracket.min >= maxScale) return null; // Skip $0 and thresholds above $300k
                                   const position = (bracket.min / maxScale) * 100;
                                   return (
                                     <div 
@@ -741,8 +741,15 @@ export default function TaxReport() {
                               <div className="relative w-32 h-80 bg-gray-100 border">
                                 {/* Individual tax bracket segments stacked vertically */}
                                 {combinedBrackets.map((bracket, idx) => {
-                                  const isCurrentBracket = currentIncome > bracket.min && currentIncome <= bracket.max;
-                                  const bracketHeight = Math.min(bracket.max, maxScale) - bracket.min;
+                                  // Skip brackets that start above $300k
+                                  if (bracket.min >= maxScale) return null;
+                                  
+                                  // For high earners (>$247k), highlight the top bracket
+                                  const isCurrentBracket = currentIncome > bracket.min && 
+                                    (currentIncome <= bracket.max || (currentIncome > 247000 && bracket.min === 246752));
+                                  
+                                  const bracketTop = Math.min(bracket.max, maxScale);
+                                  const bracketHeight = bracketTop - bracket.min;
                                   const heightPercent = (bracketHeight / maxScale) * 100;
                                   const bottomPercent = (bracket.min / maxScale) * 100;
                                   
@@ -766,7 +773,7 @@ export default function TaxReport() {
                                 <div 
                                   className="absolute left-0 w-full h-1 bg-green-500 z-10"
                                   style={{
-                                    bottom: `${Math.min(currentIncome / maxScale, 1) * 100}%`
+                                    bottom: `${currentIncome > 247000 ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`
                                   }}
                                 >
                                   {/* Income label to the right of the bar */}
