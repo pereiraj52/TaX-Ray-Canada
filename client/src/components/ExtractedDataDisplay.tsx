@@ -197,6 +197,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         'investment': true,
         'other': true,
         'selfemployment': true,
+        'othersources': true,
       }));
     }
     setActiveTab(tabId);
