@@ -50,11 +50,11 @@ export class HouseholdAPI {
     await apiRequest("PUT", `/api/households/${id}/archive`);
   }
 
-  static async createClient(data: { householdId: number; firstName: string; lastName: string; isPrimary: boolean; disabled: boolean }): Promise<void> {
+  static async createClient(data: { householdId: number; firstName: string; lastName: string; isPrimary: boolean; disabled: boolean; americanTaxpayer: boolean }): Promise<void> {
     await apiRequest("POST", "/api/clients", data);
   }
 
-  static async updateClient(id: number, data: { firstName: string; lastName: string; disabled: boolean }): Promise<void> {
+  static async updateClient(id: number, data: { firstName: string; lastName: string; disabled: boolean; americanTaxpayer: boolean }): Promise<void> {
     await apiRequest("PATCH", `/api/clients/${id}`, data);
   }
 

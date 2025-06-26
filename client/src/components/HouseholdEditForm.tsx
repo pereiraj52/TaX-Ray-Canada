@@ -87,6 +87,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
           firstName: data.client1FirstName,
           lastName: data.client1LastName,
           disabled: data.client1Disabled,
+          americanTaxpayer: data.client1AmericanTaxpayer,
         });
       }
       
@@ -97,6 +98,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
             firstName: data.client2FirstName,
             lastName: data.client2LastName,
             disabled: data.client2Disabled,
+            americanTaxpayer: data.client2AmericanTaxpayer,
           });
         } else {
           await HouseholdAPI.createClient({
@@ -105,6 +107,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
             lastName: data.client2LastName,
             isPrimary: false,
             disabled: data.client2Disabled,
+            americanTaxpayer: data.client2AmericanTaxpayer,
           });
         }
       }
@@ -124,6 +127,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
             lastName: child.lastName,
             dateOfBirth: child.dateOfBirth,
             disabled: child.disabled,
+            americanTaxpayer: child.americanTaxpayer,
           });
         } else {
           // Create new child
@@ -133,6 +137,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
             lastName: child.lastName,
             dateOfBirth: child.dateOfBirth,
             disabled: child.disabled,
+            americanTaxpayer: child.americanTaxpayer,
           });
         }
       }
@@ -349,7 +354,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                     const currentChildren = form.getValues("children");
                     form.setValue("children", [
                       ...currentChildren,
-                      { firstName: "", lastName: "", dateOfBirth: "", disabled: false }
+                      { firstName: "", lastName: "", dateOfBirth: "", disabled: false, americanTaxpayer: false }
                     ]);
                   }}
                 >
