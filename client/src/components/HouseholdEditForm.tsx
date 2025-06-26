@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { HouseholdAPI, ChildrenAPI } from "@/lib/api";
@@ -18,14 +19,17 @@ const childSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
+  disabled: z.boolean().default(false),
 });
 
 const editHouseholdSchema = z.object({
   householdName: z.string().min(1, "Household name is required"),
   client1FirstName: z.string().min(1, "First name is required"),
   client1LastName: z.string().min(1, "Last name is required"),
+  client1Disabled: z.boolean().default(false),
   client2FirstName: z.string().optional(),
   client2LastName: z.string().optional(),
+  client2Disabled: z.boolean().default(false),
   children: z.array(childSchema).default([]),
 });
 
@@ -52,13 +56,16 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
       householdName: household.name,
       client1FirstName: primaryClient?.firstName || "",
       client1LastName: primaryClient?.lastName || "",
+      client1Disabled: primaryClient?.disabled || false,
       client2FirstName: secondaryClient?.firstName || "",
       client2LastName: secondaryClient?.lastName || "",
+      client2Disabled: secondaryClient?.disabled || false,
       children: household.children?.map(child => ({
         id: child.id,
         firstName: child.firstName,
         lastName: child.lastName,
         dateOfBirth: child.dateOfBirth,
+        disabled: child.disabled || false,
       })) || [],
     },
   });
@@ -73,6 +80,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
         await HouseholdAPI.updateClient(primaryClient.id, {
           firstName: data.client1FirstName,
           lastName: data.client1LastName,
+          disabled: data.client1Disabled,
         });
       }
       
@@ -82,6 +90,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
           await HouseholdAPI.updateClient(secondaryClient.id, {
             firstName: data.client2FirstName,
             lastName: data.client2LastName,
+            disabled: data.client2Disabled,
           });
         } else {
           await HouseholdAPI.createClient({
@@ -89,6 +98,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
             firstName: data.client2FirstName,
             lastName: data.client2LastName,
             isPrimary: false,
+            disabled: data.client2Disabled,
           });
         }
       }

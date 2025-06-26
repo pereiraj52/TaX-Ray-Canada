@@ -73,11 +73,13 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
         client1: {
           firstName: formData.client1FirstName,
           lastName: formData.client1LastName,
+          disabled: formData.client1Disabled,
         },
         client2: formData.enableClient2 && formData.client2FirstName && formData.client2LastName 
           ? {
               firstName: formData.client2FirstName,
               lastName: formData.client2LastName,
+              disabled: formData.client2Disabled,
             } 
           : undefined,
       };
@@ -92,6 +94,7 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
             firstName: child.firstName,
             lastName: child.lastName,
             dateOfBirth: child.dateOfBirth,
+            disabled: child.disabled,
           });
         }
       }
