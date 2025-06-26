@@ -507,22 +507,52 @@ export default function TaxReport() {
         {/* Combined Tax Bracket Analysis Table */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
-          <Card>
-            <CardContent className="p-6">
-              {(() => {
-                // Calculate all the components
-                let totalIncomeSum = 0;
-                let totalTaxSum = 0;
-                let totalCppSum = 0;
-                let totalEiSum = 0;
-                
-                taxYearReturns.forEach(t1Return => {
-                  const t1WithFields = t1Return as any;
-                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                    const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
-                    const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
-                    const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+          
+          {(() => {
+            // Get individual taxable incomes for each spouse
+            const spouseData = taxYearReturns.map(t1Return => {
+              const t1WithFields = t1Return as any;
+              let taxableIncome = 0;
+              let clientName = 'Unknown';
+              
+              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                if (taxableField?.fieldValue) {
+                  const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
+                  if (!isNaN(value)) taxableIncome = value;
+                }
+              }
+              
+              // Get client name from household clients
+              const client = household?.clients.find(c => c.id === t1Return.clientId);
+              if (client) {
+                clientName = `${client.firstName} ${client.lastName}`;
+              }
+              
+              return { clientName, taxableIncome, t1Return };
+            });
+
+            // Get province from first return for combined brackets
+            let province = 'ON'; // Default to Ontario
+            if (taxYearReturns.length > 0) {
+              const client = household?.clients.find(c => c.id === taxYearReturns[0].clientId);
+              if (client?.province) {
+                province = client.province;
+              }
+            }
+
+            return (
+              <div className="space-y-6">
+                {spouseData.map((spouse, spouseIndex) => (
+                  <div key={spouseIndex} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Left column - Spouse Tax Breakdown */}
+                    <div>
+                      <Card>
+                        <CardContent className="p-6">
+                          <h3 className="font-semibold text-primary mb-4">{spouse.clientName}</h3>
+                          
+                          {(() => {
+                            const taxableIncome = spouse.taxableIncome;
                     
                     if (incomeField?.fieldValue) {
                       const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
