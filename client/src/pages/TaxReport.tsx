@@ -518,12 +518,22 @@ export default function TaxReport() {
                         </Pie>
                         <Tooltip content={<CustomTooltip />} />
                         <Legend 
-                          formatter={(value, entry) => {
-                            const item = pieData.find(d => d.name === value);
-                            if (item) {
-                              return `${value}: $${item.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                            }
-                            return value;
+                          content={({ payload }) => {
+                            return (
+                              <div className="flex flex-wrap justify-center gap-4 mt-4">
+                                {payload?.map((entry, index) => (
+                                  <div key={index} className="flex items-center gap-2">
+                                    <div 
+                                      className="w-3 h-3 rounded-full"
+                                      style={{ backgroundColor: entry.color }}
+                                    />
+                                    <span className="text-sm">
+                                      {entry.value}: ${entry.payload?.value?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            );
                           }}
                         />
                       </PieChart>
