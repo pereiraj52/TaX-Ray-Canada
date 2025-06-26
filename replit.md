@@ -232,6 +232,7 @@ Changelog:
 - June 26, 2025. Added Tax Credits line after Taxable Income in household financial summary showing combined non-refundable tax credits for all household members
 - June 26, 2025. Removed "Total" prefix from CPP Contributions and EI Premiums labels in household financial summary for consistent clean labeling
 - June 26, 2025. Repositioned Federal Tax and Provincial Tax lines between Tax Credits and CPP Contributions for improved logical flow in household financial summary
+- June 26, 2025. Added Net Income line after EI Premiums in household financial summary using field code 23600 with consistent formatting and percentage calculations
 ```
 
 ## User Preferences
