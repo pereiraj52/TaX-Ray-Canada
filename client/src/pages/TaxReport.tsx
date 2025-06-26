@@ -399,160 +399,29 @@ export default function TaxReport() {
               </CardContent>
             </Card>
 
-            {/* Column 2 - Income Breakdown Pie Chart */}
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="font-medium text-gray-900 mb-4">Income Breakdown</h3>
-                {(() => {
-                  // Calculate all the components
-                  let totalIncomeSum = 0;
-                  let totalTaxSum = 0;
-                  let totalCppSum = 0;
-                  let totalEiSum = 0;
-                  
-                  taxYearReturns.forEach(t1Return => {
-                    const t1WithFields = t1Return as any;
-                    if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                      const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                      const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
-                      const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
-                      const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
-                      
-                      if (incomeField?.fieldValue) {
-                        const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
-                        if (!isNaN(value)) totalIncomeSum += value;
-                      }
-                      if (taxField?.fieldValue) {
-                        const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
-                        if (!isNaN(value)) totalTaxSum += value;
-                      }
-                      if (cppField?.fieldValue) {
-                        const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
-                        if (!isNaN(value)) totalCppSum += value;
-                      }
-                      if (eiField?.fieldValue) {
-                        const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
-                        if (!isNaN(value)) totalEiSum += value;
-                      }
-                    }
-                  });
-
-                  const netIncomeSum = totalIncomeSum - totalTaxSum;
-
-                  // Calculate pie chart data
-                  const pieData = [
-                    { name: 'Net Income', value: netIncomeSum, color: '#10B981' },
-                    { name: 'Income Tax', value: totalTaxSum, color: '#EF4444' },
-                    { name: 'CPP Contributions', value: totalCppSum, color: '#3B82F6' },
-                    { name: 'EI Premiums', value: totalEiSum, color: '#F59E0B' }
-                  ];
-
-                  // Custom tooltip component
-                  const CustomTooltip = ({ active, payload }: any) => {
-                    if (active && payload && payload.length) {
-                      const data = payload[0];
-                      return (
-                        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-                          <p className="font-medium">{data.name}</p>
-                          <p className="text-green-600">
-                            ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {((data.value / totalIncomeSum) * 100).toFixed(1)}% of total income
-                          </p>
-                        </div>
-                      );
-                    }
-                    return null;
-                  };
-
-                  return (
-                    <div className="h-80">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={pieData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={120}
-                            fill="#8884d8"
-                            dataKey="value"
-                          >
-                            {pieData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip content={<CustomTooltip />} />
-                          <Legend 
-                            formatter={(value, entry) => {
-                              const item = pieData.find(d => d.name === value);
-                              if (item) {
-                                return `${value}: $${item.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                              }
-                              return value;
-                            }}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-                  );
-                })()}
-              </CardContent>
-            </Card>
 
           </div>
         </div>
 
-        {/* Combined Tax Bracket Analysis Table */}
+        {/* Income Breakdown Pie Chart */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
-          
-          {(() => {
-            // Get individual taxable incomes for each spouse
-            const spouseData = taxYearReturns.map(t1Return => {
-              const t1WithFields = t1Return as any;
-              let taxableIncome = 0;
-              let clientName = 'Unknown';
-              
-              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
-                if (taxableField?.fieldValue) {
-                  const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
-                  if (!isNaN(value)) taxableIncome = value;
-                }
-              }
-              
-              // Get client name from household clients
-              const client = household?.clients.find(c => c.id === t1Return.clientId);
-              if (client) {
-                clientName = `${client.firstName} ${client.lastName}`;
-              }
-              
-              return { clientName, taxableIncome, t1Return };
-            });
-
-            // Get province from first return for combined brackets
-            let province = 'ON'; // Default to Ontario
-            if (taxYearReturns.length > 0) {
-              const client = household?.clients.find(c => c.id === taxYearReturns[0].clientId);
-              if (client?.province) {
-                province = client.province;
-              }
-            }
-
-            return (
-              <div className="space-y-6">
-                {spouseData.map((spouse, spouseIndex) => (
-                  <div key={spouseIndex} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Left column - Spouse Tax Breakdown */}
-                    <div>
-                      <Card>
-                        <CardContent className="p-6">
-                          <h3 className="font-semibold text-primary mb-4">{spouse.clientName}</h3>
-                          
-                          {(() => {
-                            const taxableIncome = spouse.taxableIncome;
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Income Breakdown</h2>
+          <Card>
+            <CardContent className="p-6">
+              {(() => {
+                // Calculate all the components
+                let totalIncomeSum = 0;
+                let totalTaxSum = 0;
+                let totalCppSum = 0;
+                let totalEiSum = 0;
+                
+                taxYearReturns.forEach(t1Return => {
+                  const t1WithFields = t1Return as any;
+                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                    const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                    const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                    const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                    const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                     
                     if (incomeField?.fieldValue) {
                       const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
