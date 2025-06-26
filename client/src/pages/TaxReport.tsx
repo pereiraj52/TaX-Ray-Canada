@@ -113,6 +113,7 @@ export default function TaxReport() {
                     let totalIncomeSum = 0;
                     let totalTaxableIncomeSum = 0;
                     let totalTaxSum = 0;
+                    let totalCreditsSum = 0;
                     
                     taxYearReturns.forEach(t1Return => {
                       const t1WithFields = t1Return as any;
@@ -120,6 +121,7 @@ export default function TaxReport() {
                         const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                         const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
                         const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                        const creditsField = t1WithFields.formFields.find((field: any) => field.fieldCode === '35000');
                         
                         if (incomeField?.fieldValue) {
                           const value = parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, ''));
@@ -132,6 +134,10 @@ export default function TaxReport() {
                         if (taxField?.fieldValue) {
                           const value = parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, ''));
                           if (!isNaN(value)) totalTaxSum += value;
+                        }
+                        if (creditsField?.fieldValue) {
+                          const value = parseFloat(String(creditsField.fieldValue).replace(/[,$\s]/g, ''));
+                          if (!isNaN(value)) totalCreditsSum += value;
                         }
                       }
                     });
@@ -166,6 +172,14 @@ export default function TaxReport() {
                           <div className="text-right">
                             <span className="font-medium text-primary">
                               ${totalTaxableIncomeSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(totalTaxableIncomeSum)})</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Tax Credits:</span>
+                          <div className="text-right">
+                            <span className="font-medium text-primary">
+                              ${totalCreditsSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(totalCreditsSum)})</span>
                             </span>
                           </div>
                         </div>
