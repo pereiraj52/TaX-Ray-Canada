@@ -715,23 +715,41 @@ export default function TaxReport() {
                                 {/* $300k at top */}
                                 <div className="absolute top-0 right-0 text-right">$300k</div>
                                 
-                                {/* Tax bracket thresholds */}
-                                {combinedBrackets.map((bracket, idx) => {
-                                  if (bracket.min === 0 || bracket.min >= maxScale) return null; // Skip $0 and thresholds above $300k
-                                  const position = (bracket.min / maxScale) * 100;
-                                  return (
+                                {/* Tax bracket thresholds with spacing adjustments */}
+                                {(() => {
+                                  const thresholds = combinedBrackets
+                                    .filter(bracket => bracket.min > 0 && bracket.min < maxScale)
+                                    .map(bracket => ({
+                                      value: bracket.min,
+                                      position: (bracket.min / maxScale) * 100,
+                                      label: `$${Math.round(bracket.min / 1000)}k`
+                                    }))
+                                    .sort((a, b) => a.value - b.value);
+
+                                  // Adjust positions to prevent overlap (minimum 8% spacing)
+                                  for (let i = 1; i < thresholds.length; i++) {
+                                    const current = thresholds[i];
+                                    const previous = thresholds[i - 1];
+                                    const minSpacing = 8; // 8% minimum spacing
+                                    
+                                    if (current.position - previous.position < minSpacing) {
+                                      current.position = previous.position + minSpacing;
+                                    }
+                                  }
+
+                                  return thresholds.map((threshold, idx) => (
                                     <div 
                                       key={idx}
                                       className="absolute right-0 text-right"
                                       style={{
-                                        bottom: `${position}%`,
+                                        bottom: `${Math.min(threshold.position, 90)}%`, // Cap at 90% to avoid overlapping with $300k
                                         transform: 'translateY(50%)'
                                       }}
                                     >
-                                      ${Math.round(bracket.min / 1000)}k
+                                      {threshold.label}
                                     </div>
-                                  );
-                                })}
+                                  ));
+                                })()}
                                 
                                 {/* $0 at bottom */}
                                 <div className="absolute bottom-0 right-0 text-right">$0</div>
