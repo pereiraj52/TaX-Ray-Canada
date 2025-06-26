@@ -141,7 +141,7 @@ export default function HouseholdDetail() {
   return (
     <Layout 
       title={household.name}
-      subtitle="Household Details"
+      subtitle=""
       actions={
         <Button 
           variant="outline" 
