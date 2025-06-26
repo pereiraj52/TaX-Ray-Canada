@@ -709,7 +709,7 @@ export default function TaxReport() {
                           {/* Single Vertical Tax Bracket Bar */}
                           <div className="relative">
                             {/* Vertical bar chart with scale */}
-                            <div className="flex items-start">
+                            <div className="flex items-start justify-center">
                               {/* Income scale labels on left (vertical axis) - only key thresholds */}
                               <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
                                 {/* $300k at top */}
