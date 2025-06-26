@@ -301,7 +301,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
                     const currentChildren = form.getValues("children");
                     form.setValue("children", [
                       ...currentChildren,
-                      { firstName: "", lastName: "", dateOfBirth: "" }
+                      { firstName: "", lastName: "", dateOfBirth: "", disabled: false }
                     ]);
                   }}
                 >

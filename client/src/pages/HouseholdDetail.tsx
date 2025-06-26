@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
-import { ChevronRight, Home, File, User, Edit } from "lucide-react";
+import { ChevronRight, Home, File, User, Edit, Accessibility } from "lucide-react";
 import Layout from "@/components/Layout";
 import T1UploadButton from "@/components/T1UploadButton";
 import ExtractedDataDisplay from "@/components/ExtractedDataDisplay";
@@ -185,7 +185,12 @@ export default function HouseholdDetail() {
                           {client.firstName[0]}{client.lastName[0]}
                         </div>
                         <div className="ml-3">
-                          <h3 className="font-medium text-secondary">{client.firstName} {client.lastName}</h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-medium text-secondary">{client.firstName} {client.lastName}</h3>
+                            {client.disabled && (
+                              <Accessibility className="h-4 w-4 text-gray-500" />
+                            )}
+                          </div>
                           <p className="text-sm text-gray-500">{client.isPrimary ? 'Primary' : 'Secondary'} Client</p>
                         </div>
                       </div>
@@ -271,7 +276,12 @@ export default function HouseholdDetail() {
                                   {child.firstName[0]}{child.lastName[0]}
                                 </div>
                                 <div className="ml-3">
-                                  <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                  <div className="flex items-center gap-2">
+                                    <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                    {child.disabled && (
+                                      <Accessibility className="h-4 w-4 text-gray-500" title="Disabled" />
+                                    )}
+                                  </div>
                                   <p className="text-sm text-gray-500">Child Age ({age})</p>
                                 </div>
                               </div>
