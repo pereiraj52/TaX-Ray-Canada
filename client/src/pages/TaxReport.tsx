@@ -494,6 +494,131 @@ export default function TaxReport() {
           </Card>
         </div>
 
+        {/* Federal Tax Bracket Analysis Table */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Bracket Analysis</h2>
+          
+          {(() => {
+            // Get individual taxable incomes for each spouse
+            const spouseData = taxYearReturns.map(t1Return => {
+              const t1WithFields = t1Return as any;
+              let taxableIncome = 0;
+              let clientName = 'Unknown';
+              
+              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                if (taxableField?.fieldValue) {
+                  const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
+                  if (!isNaN(value)) taxableIncome = value;
+                }
+              }
+              
+              // Get client name from household clients
+              const client = household?.clients.find(c => c.id === t1Return.clientId);
+              if (client) {
+                clientName = `${client.firstName} ${client.lastName}`;
+              }
+              
+              return { clientName, taxableIncome, t1Return };
+            });
+
+            // 2024 Canadian Federal Tax Brackets
+            const federalBrackets = [
+              { rate: 15.0, min: 0, max: 55867, label: "15%" },
+              { rate: 20.5, min: 55867, max: 111733, label: "20.5%" },
+              { rate: 26.0, min: 111733, max: 173205, label: "26%" },
+              { rate: 29.0, min: 173205, max: 246752, label: "29%" },
+              { rate: 33.0, min: 246752, max: Infinity, label: "33%" }
+            ];
+
+            // Function to calculate individual tax breakdown for a spouse
+            const calculateSpouseTaxBreakdown = (spouseIncome: number) => {
+              return federalBrackets.map(bracket => {
+                let incomeInBracket = 0;
+                let taxFromBracket = 0;
+
+                if (spouseIncome > bracket.min) {
+                  const maxForBracket = Math.min(spouseIncome, bracket.max);
+                  incomeInBracket = maxForBracket - bracket.min;
+                  taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                }
+
+                return {
+                  rate: bracket.label,
+                  threshold: `$${bracket.min.toLocaleString()} to ${bracket.max === Infinity ? 'above' : '$' + bracket.max.toLocaleString()}`,
+                  incomeInBracket: incomeInBracket,
+                  tax: taxFromBracket,
+                  ratePercent: bracket.rate
+                };
+              });
+            };
+
+            return (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {spouseData.map((spouse, spouseIndex) => {
+                  const bracketBreakdown = calculateSpouseTaxBreakdown(spouse.taxableIncome);
+                  const totalTax = bracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+
+                  return (
+                    <Card key={spouseIndex}>
+                      <CardContent className="p-6">
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="font-medium text-gray-900 mb-4">
+                              Federal marginal tax rate for {spouse.clientName}:
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-4">
+                              Taxable Income: ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </p>
+                            
+                            {/* Individual Tax Bracket Table */}
+                            <div className="overflow-x-auto">
+                              <table className="w-full border-collapse text-sm">
+                                <thead>
+                                  <tr className="border-b">
+                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Rate</th>
+                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Threshold</th>
+                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Income</th>
+                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Tax</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {bracketBreakdown.map((bracket, index) => (
+                                    <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-green-50' : ''}`}>
+                                      <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                      <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                      <td className="py-2 px-2 text-right font-mono text-xs">
+                                        ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                      </td>
+                                      <td className="py-2 px-2 text-right font-mono text-xs">
+                                        ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
+                                    <td className="py-2 px-2">Total</td>
+                                    <td className="py-2 px-2"></td>
+                                    <td className="py-2 px-2 text-right font-mono text-xs">
+                                      ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                    </td>
+                                    <td className="py-2 px-2 text-right font-mono text-xs">
+                                      ${totalTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            );
+          })()}
+        </div>
+
         {/* Combined Federal + Provincial Tax Bracket Analysis */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
