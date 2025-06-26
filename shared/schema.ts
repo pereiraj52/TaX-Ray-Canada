@@ -6,6 +6,7 @@ import { relations } from "drizzle-orm";
 export const households = pgTable("households", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
+  archived: boolean("archived").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
