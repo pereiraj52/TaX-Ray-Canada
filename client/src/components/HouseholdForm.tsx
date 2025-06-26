@@ -17,14 +17,17 @@ const childSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
+  disabled: z.boolean().default(false),
 });
 
 const createHouseholdSchema = z.object({
   client1FirstName: z.string().min(1, "First name is required"),
   client1LastName: z.string().min(1, "Last name is required"),
+  client1Disabled: z.boolean().default(false),
   enableClient2: z.boolean().default(false),
   client2FirstName: z.string().optional(),
   client2LastName: z.string().optional(),
+  client2Disabled: z.boolean().default(false),
   children: z.array(childSchema).default([]),
 }).refine((data) => {
   if (data.enableClient2) {
@@ -175,6 +178,23 @@ export default function HouseholdForm({ open, onOpenChange }: HouseholdFormProps
                   )}
                 />
               </div>
+              <FormField
+                control={form.control}
+                name="client1Disabled"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <Label className="text-sm text-gray-600">Disabled?</Label>
+                    </div>
+                  </FormItem>
+                )}
+              />
             </div>
 
             {/* Secondary Client */}

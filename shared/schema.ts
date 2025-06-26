@@ -19,6 +19,7 @@ export const clients = pgTable("clients", {
   dateOfBirth: text("date_of_birth"),
   province: text("province"),
   isPrimary: boolean("is_primary").default(false),
+  disabled: boolean("disabled").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -28,6 +29,7 @@ export const children = pgTable("children", {
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   dateOfBirth: text("date_of_birth").notNull(),
+  disabled: boolean("disabled").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
