@@ -4,7 +4,6 @@ import { useParams, Link } from "wouter";
 import { File, User, Edit, Accessibility } from "lucide-react";
 import Layout from "@/components/Layout";
 import T1UploadButton from "@/components/T1UploadButton";
-import ChildT1UploadButton from "@/components/ChildT1UploadButton";
 import ExtractedDataDisplay from "@/components/ExtractedDataDisplay";
 import ProcessingStatus from "@/components/ProcessingStatus";
 import ProcessedReturnsList from "@/components/ProcessedReturnsList";
@@ -274,7 +273,7 @@ export default function HouseholdDetail() {
                                   </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                  <ChildT1UploadButton
+                                  <T1UploadButton
                                     childId={child.id}
                                     onUploadSuccess={handleT1UploadSuccess}
                                   />
@@ -346,7 +345,7 @@ export default function HouseholdDetail() {
                                     </div>
                                   </div>
                                   <div className="flex items-center space-x-2">
-                                    <ChildT1UploadButton
+                                    <T1UploadButton
                                       childId={child.id}
                                       onUploadSuccess={handleT1UploadSuccess}
                                     />
@@ -410,7 +409,7 @@ export default function HouseholdDetail() {
                                       </div>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                      <ChildT1UploadButton
+                                      <T1UploadButton
                                         childId={child.id}
                                         onUploadSuccess={handleT1UploadSuccess}
                                       />
