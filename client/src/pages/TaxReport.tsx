@@ -183,105 +183,173 @@ export default function TaxReport() {
                             </span>
                           </div>
                         </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Federal Tax:</span>
+                          <div className="text-right">
+                            <span className="font-medium text-primary">
+                              ${(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const federalTaxField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '42000'
+                                    );
+                                    if (federalTaxField?.fieldValue) {
+                                      const value = parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return total.toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                });
+                              })()} <span className="text-sm text-gray-500">({(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const federalTaxField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '42000'
+                                    );
+                                    if (federalTaxField?.fieldValue) {
+                                      const value = parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return calculatePercentage(total);
+                              })()})</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Provincial Tax:</span>
+                          <div className="text-right">
+                            <span className="font-medium text-primary">
+                              ${(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const provincialTaxField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '42800'
+                                    );
+                                    if (provincialTaxField?.fieldValue) {
+                                      const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return total.toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                });
+                              })()} <span className="text-sm text-gray-500">({(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const provincialTaxField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '42800'
+                                    );
+                                    if (provincialTaxField?.fieldValue) {
+                                      const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return calculatePercentage(total);
+                              })()})</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">CPP Contributions:</span>
+                          <div className="text-right">
+                            <span className="font-medium text-primary">
+                              ${(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const cppField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '30800'
+                                    );
+                                    if (cppField?.fieldValue) {
+                                      const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return total.toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                });
+                              })()} <span className="text-sm text-gray-500">({(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const cppField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '30800'
+                                    );
+                                    if (cppField?.fieldValue) {
+                                      const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return calculatePercentage(total);
+                              })()})</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">EI Premiums:</span>
+                          <div className="text-right">
+                            <span className="font-medium text-primary">
+                              ${(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const eiField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '31200'
+                                    );
+                                    if (eiField?.fieldValue) {
+                                      const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return total.toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                });
+                              })()} <span className="text-sm text-gray-500">({(() => {
+                                let total = 0;
+                                taxYearReturns.forEach(t1Return => {
+                                  const t1WithFields = t1Return as any;
+                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                    const eiField = t1WithFields.formFields.find((field: any) => 
+                                      field.fieldCode === '31200'
+                                    );
+                                    if (eiField?.fieldValue) {
+                                      const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
+                                      if (!isNaN(value)) total += value;
+                                    }
+                                  }
+                                });
+                                return calculatePercentage(total);
+                              })()})</span>
+                            </span>
+                          </div>
+                        </div>
                       </>
                     );
                   })()}
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Federal Tax:</span>
-                    <span className="font-medium">
-                      ${(() => {
-                        let total = 0;
-                        taxYearReturns.forEach(t1Return => {
-                          const t1WithFields = t1Return as any;
-                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            const federalTaxField = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '42000'
-                            );
-                            if (federalTaxField?.fieldValue) {
-                              const value = parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, ''));
-                              if (!isNaN(value)) total += value;
-                            }
-                          }
-                        });
-                        return total.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        });
-                      })()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Provincial Tax:</span>
-                    <span className="font-medium">
-                      ${(() => {
-                        let total = 0;
-                        taxYearReturns.forEach(t1Return => {
-                          const t1WithFields = t1Return as any;
-                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            const provincialTaxField = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '42800'
-                            );
-                            if (provincialTaxField?.fieldValue) {
-                              const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
-                              if (!isNaN(value)) total += value;
-                            }
-                          }
-                        });
-                        return total.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        });
-                      })()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">CPP Contributions:</span>
-                    <span className="font-medium">
-                      ${(() => {
-                        let total = 0;
-                        taxYearReturns.forEach(t1Return => {
-                          const t1WithFields = t1Return as any;
-                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            const cppField = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '30800'
-                            );
-                            if (cppField?.fieldValue) {
-                              const value = parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, ''));
-                              if (!isNaN(value)) total += value;
-                            }
-                          }
-                        });
-                        return total.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        });
-                      })()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">EI Premiums:</span>
-                    <span className="font-medium">
-                      ${(() => {
-                        let total = 0;
-                        taxYearReturns.forEach(t1Return => {
-                          const t1WithFields = t1Return as any;
-                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                            const eiField = t1WithFields.formFields.find((field: any) => 
-                              field.fieldCode === '31200'
-                            );
-                            if (eiField?.fieldValue) {
-                              const value = parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, ''));
-                              if (!isNaN(value)) total += value;
-                            }
-                          }
-                        });
-                        return total.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        });
-                      })()}
-                    </span>
-                  </div>
                 </div>
               </CardContent>
             </Card>
