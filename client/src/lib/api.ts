@@ -115,3 +115,19 @@ export class T1API {
     await apiRequest("POST", `/api/t1-form-fields`, data);
   }
 }
+
+export class ChildrenAPI {
+  static async createChild(data: InsertChild): Promise<Child> {
+    const response = await apiRequest("POST", "/api/children", data);
+    return response.json();
+  }
+
+  static async updateChild(id: number, data: Partial<InsertChild>): Promise<Child> {
+    const response = await apiRequest("PUT", `/api/children/${id}`, data);
+    return response.json();
+  }
+
+  static async deleteChild(id: number): Promise<void> {
+    await apiRequest("DELETE", `/api/children/${id}`);
+  }
+}
