@@ -797,17 +797,13 @@ export default function TaxReport() {
                                             const heightPercent = (bracketHeight / maxScale) * 100;
                                             const bottomPercent = (bracket.min / maxScale) * 100;
                                             
-                                            // Color coding: negative rates in green, positive in graduated colors
+                                            // Color coding: negative rates in green, positive in consistent blue
                                             let bgColor = 'bg-gray-300';
                                             if (isCurrentBracket) {
                                               if (bracket.rate < 0) {
                                                 bgColor = 'bg-green-500';
-                                              } else if (bracket.rate < 20) {
-                                                bgColor = 'bg-blue-400';
-                                              } else if (bracket.rate < 35) {
-                                                bgColor = 'bg-blue-500';
                                               } else {
-                                                bgColor = 'bg-blue-600';
+                                                bgColor = 'bg-blue-500';
                                               }
                                             }
                                             
