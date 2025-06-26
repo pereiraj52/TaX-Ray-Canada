@@ -158,15 +158,28 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
     return null;
   }
 
-  // Collect all T1 returns from all clients
-  const allReturns = household.clients.flatMap(client => 
+  // Collect all T1 returns from all clients and children
+  const clientReturns = household.clients.flatMap(client => 
     client.t1Returns?.map(t1Return => ({
       ...t1Return,
       clientName: `${client.firstName} ${client.lastName}`,
       clientId: client.id,
-      province: client.province
+      province: client.province,
+      isChild: false
     })) || []
   );
+
+  const childReturns = household.children?.flatMap(child => 
+    child.t1Returns?.map(t1Return => ({
+      ...t1Return,
+      clientName: `${child.firstName} ${child.lastName}`,
+      childId: child.id,
+      province: '', // Children don't have province stored separately
+      isChild: true
+    })) || []
+  ) || [];
+
+  const allReturns = [...clientReturns, ...childReturns];
 
   // Group returns by year, then by client
   const returnsByYear = allReturns.reduce((acc, t1Return) => {

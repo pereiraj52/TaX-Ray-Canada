@@ -394,20 +394,57 @@ export default function HouseholdDetail() {
                               const colorIndex = 4 + (rowIndex * 4) + index; // Continue color sequence
                               return (
                                 <div key={child.id} className="border border-gray-200 rounded-lg p-4">
-                                  <div className="flex items-center">
-                                    <div className={`w-10 h-10 ${getChildAvatarColor(colorIndex)} rounded-full flex items-center justify-center text-white font-medium`}>
-                                      {child.firstName[0]}{child.lastName[0]}
-                                    </div>
-                                    <div className="ml-3">
-                                      <div className="flex items-center gap-2">
-                                        <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
-                                        {child.disabled && (
-                                          <Accessibility className="h-4 w-4 text-gray-500" />
-                                        )}
+                                  <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center">
+                                      <div className={`w-10 h-10 ${getChildAvatarColor(colorIndex)} rounded-full flex items-center justify-center text-white font-medium`}>
+                                        {child.firstName[0]}{child.lastName[0]}
                                       </div>
-                                      <p className="text-sm text-gray-500">Child Age ({age})</p>
+                                      <div className="ml-3">
+                                        <div className="flex items-center gap-2">
+                                          <h3 className="font-medium text-secondary">{child.firstName} {child.lastName}</h3>
+                                          {child.disabled && (
+                                            <Accessibility className="h-4 w-4 text-gray-500" />
+                                          )}
+                                        </div>
+                                        <p className="text-sm text-gray-500">Child Age ({age})</p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                      <ChildT1UploadButton
+                                        childId={child.id}
+                                        onUploadSuccess={handleT1UploadSuccess}
+                                      />
                                     </div>
                                   </div>
+
+                                  {/* Show processing status if a T1 is being processed for this child */}
+                                  {Array.from(processingT1Returns).some(t1Id => {
+                                    const t1Returns = child.t1Returns || [];
+                                    return t1Returns.some((t: any) => t.id === t1Id);
+                                  }) && (
+                                    <div className="mt-3">
+                                      <ProcessingStatus 
+                                        t1ReturnId={Array.from(processingT1Returns).find(t1Id => {
+                                          const t1Returns = child.t1Returns || [];
+                                          return t1Returns.some((t: any) => t.id === t1Id);
+                                        }) || Array.from(processingT1Returns)[0]}
+                                        onStatusChange={(status) => {
+                                          if (status === "completed" || status === "failed") {
+                                            setProcessingT1Returns(prev => {
+                                              const newSet = new Set(prev);
+                                              const t1Id = Array.from(processingT1Returns).find(t1Id => {
+                                                const t1Returns = child.t1Returns || [];
+                                                return t1Returns.some((t: any) => t.id === t1Id);
+                                              });
+                                              if (t1Id) newSet.delete(t1Id);
+                                              return newSet;
+                                            });
+                                            queryClient.invalidateQueries({ queryKey: ["/api/households", householdId] });
+                                          }
+                                        }}
+                                      />
+                                    </div>
+                                  )}
                                 </div>
                               );
                             })}
