@@ -187,7 +187,7 @@ export default function TaxReport() {
                     );
                   })()}
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Total CPP Contributions:</span>
+                    <span className="text-gray-600">CPP Contributions:</span>
                     <span className="font-medium">
                       ${(() => {
                         let total = 0;
@@ -211,7 +211,7 @@ export default function TaxReport() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Total EI Premiums:</span>
+                    <span className="text-gray-600">EI Premiums:</span>
                     <span className="font-medium">
                       ${(() => {
                         let total = 0;
