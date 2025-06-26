@@ -22,6 +22,15 @@ export const clients = pgTable("clients", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const children = pgTable("children", {
+  id: serial("id").primaryKey(),
+  householdId: integer("household_id").references(() => households.id).notNull(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  dateOfBirth: text("date_of_birth").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const t1Returns = pgTable("t1_returns", {
   id: serial("id").primaryKey(),
   clientId: integer("client_id").references(() => clients.id).notNull(),
@@ -47,6 +56,7 @@ export const t1FormFields = pgTable("t1_form_fields", {
 // Relations
 export const householdsRelations = relations(households, ({ many }) => ({
   clients: many(clients),
+  children: many(children),
 }));
 
 export const clientsRelations = relations(clients, ({ one, many }) => ({
@@ -55,6 +65,13 @@ export const clientsRelations = relations(clients, ({ one, many }) => ({
     references: [households.id],
   }),
   t1Returns: many(t1Returns),
+}));
+
+export const childrenRelations = relations(children, ({ one }) => ({
+  household: one(households, {
+    fields: [children.householdId],
+    references: [households.id],
+  }),
 }));
 
 export const t1ReturnsRelations = relations(t1Returns, ({ one, many }) => ({
@@ -101,6 +118,11 @@ export const insertClientSchema = createInsertSchema(clients).omit({
   createdAt: true,
 });
 
+export const insertChildSchema = createInsertSchema(children).omit({
+  id: true,
+  createdAt: true,
+});
+
 export const insertT1ReturnSchema = createInsertSchema(t1Returns).omit({
   id: true,
   createdAt: true,
@@ -120,12 +142,14 @@ export const insertTaxBracketSchema = createInsertSchema(taxBrackets).omit({
 // Types
 export type InsertHousehold = z.infer<typeof insertHouseholdSchema>;
 export type InsertClient = z.infer<typeof insertClientSchema>;
+export type InsertChild = z.infer<typeof insertChildSchema>;
 export type InsertT1Return = z.infer<typeof insertT1ReturnSchema>;
 export type InsertT1FormField = z.infer<typeof insertT1FormFieldSchema>;
 export type InsertTaxBracket = z.infer<typeof insertTaxBracketSchema>;
 
 export type Household = typeof households.$inferSelect;
 export type Client = typeof clients.$inferSelect;
+export type Child = typeof children.$inferSelect;
 export type T1Return = typeof t1Returns.$inferSelect;
 export type T1FormField = typeof t1FormFields.$inferSelect;
 export type TaxBracket = typeof taxBrackets.$inferSelect;
@@ -133,6 +157,7 @@ export type TaxBracket = typeof taxBrackets.$inferSelect;
 // Extended types for API responses
 export type HouseholdWithClients = Household & {
   clients: ClientWithT1Returns[];
+  children: Child[];
 };
 
 export type ClientWithT1Returns = Client & {

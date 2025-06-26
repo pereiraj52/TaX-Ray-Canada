@@ -1,14 +1,17 @@
 import { 
   households, 
   clients, 
+  children,
   t1Returns, 
   t1FormFields,
   type Household, 
   type Client, 
+  type Child,
   type T1Return,
   type T1FormField,
   type InsertHousehold, 
   type InsertClient,
+  type InsertChild,
   type InsertT1Return,
   type InsertT1FormField,
   type HouseholdWithClients,
@@ -30,6 +33,11 @@ export interface IStorage {
   createClient(client: InsertClient): Promise<Client>;
   updateClient(id: number, updates: Partial<InsertClient>): Promise<Client | undefined>;
   deleteClient(id: number): Promise<void>;
+  
+  // Children operations
+  createChild(child: InsertChild): Promise<Child>;
+  updateChild(id: number, updates: Partial<InsertChild>): Promise<Child | undefined>;
+  deleteChild(id: number): Promise<void>;
   
   // T1 Return operations
   getT1Return(id: number): Promise<T1ReturnWithFields | undefined>;
