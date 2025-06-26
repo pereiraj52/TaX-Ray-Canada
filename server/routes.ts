@@ -128,6 +128,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Archive household
+  app.put("/api/households/:id/archive", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid household ID" });
+      }
+
+      const result = await storage.archiveHousehold(id);
+      if (!result) {
+        return res.status(404).json({ message: "Household not found" });
+      }
+
+      res.json({ message: "Household archived successfully", household: result });
+    } catch (error) {
+      console.error("Error archiving household:", error);
+      res.status(500).json({ message: "Failed to archive household" });
+    }
+  });
+
   // Upload T1 PDF
   app.post("/api/clients/:clientId/t1-upload", upload.single('t1File'), async (req, res) => {
     try {

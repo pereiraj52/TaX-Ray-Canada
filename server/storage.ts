@@ -27,6 +27,7 @@ export interface IStorage {
   getHousehold(id: number): Promise<HouseholdWithClients | undefined>;
   createHousehold(household: InsertHousehold): Promise<Household>;
   updateHousehold(id: number, updates: Partial<InsertHousehold>): Promise<Household | undefined>;
+  archiveHousehold(id: number): Promise<Household | undefined>;
   
   // Client operations
   getClient(id: number): Promise<ClientWithT1Returns | undefined>;
@@ -55,6 +56,7 @@ export interface IStorage {
 export class DatabaseStorage implements IStorage {
   async getHouseholds(): Promise<HouseholdWithClients[]> {
     const result = await db.query.households.findMany({
+      where: eq(households.archived, false),
       with: {
         clients: {
           orderBy: [desc(clients.isPrimary), clients.firstName],
@@ -132,6 +134,15 @@ export class DatabaseStorage implements IStorage {
     const [result] = await db
       .update(households)
       .set(updates)
+      .where(eq(households.id, id))
+      .returning();
+    return result || undefined;
+  }
+
+  async archiveHousehold(id: number): Promise<Household | undefined> {
+    const [result] = await db
+      .update(households)
+      .set({ archived: true })
       .where(eq(households.id, id))
       .returning();
     return result || undefined;

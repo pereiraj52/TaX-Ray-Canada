@@ -44,6 +44,10 @@ export class HouseholdAPI {
     await apiRequest("PATCH", `/api/households/${id}`, data);
   }
 
+  static async archiveHousehold(id: number): Promise<void> {
+    await apiRequest("PUT", `/api/households/${id}/archive`);
+  }
+
   static async createClient(data: { householdId: number; firstName: string; lastName: string; isPrimary: boolean; disabled: boolean }): Promise<void> {
     await apiRequest("POST", "/api/clients", data);
   }
