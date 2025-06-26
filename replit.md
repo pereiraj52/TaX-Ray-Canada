@@ -226,6 +226,7 @@ Changelog:
 - June 26, 2025. Added household archive functionality with 2-step confirmation process: archive icon button transforms to "Confirm Archive" button, with 5-second auto-cancel timeout and complete database integration
 - June 26, 2025. Implemented comprehensive American Taxpayer tracking with database schema updates, form integration, and API support for both clients and children throughout the household management system
 - June 26, 2025. Updated household financial summary to separate Federal Tax and Provincial Tax instead of showing combined Total Tax Bill for clearer tax breakdown visibility
+- June 26, 2025. Streamlined household financial summary by removing last 4 lines (Net Income, Total CPP Contributions, Total EI Premiums, duplicate Total Tax Bill) for more focused tax display
 ```
 
 ## User Preferences
