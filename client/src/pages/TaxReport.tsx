@@ -450,6 +450,16 @@ export default function TaxReport() {
                 
                 const netIncomeSum = totalIncomeSum - federalTaxSum - provincialTaxSum - totalCppSum - totalEiSum;
                 
+                // Debug: Log the calculated values
+                console.log('Chart Data Values:', {
+                  totalIncomeSum,
+                  federalTaxSum,
+                  provincialTaxSum,
+                  totalCppSum,
+                  totalEiSum,
+                  netIncomeSum
+                });
+                
                 const pieData = [
                   {
                     name: 'Net Income',
