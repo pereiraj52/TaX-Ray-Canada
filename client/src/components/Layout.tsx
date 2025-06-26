@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import logoPath from "@assets/Download TaxRay_Logo_1750967900646.gif";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ export default function Layout({ children, title, subtitle, actions }: LayoutPro
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
                 <img 
-                  src="/attached_assets/Download TaxRay_Logo_1750967900646.gif" 
+                  src={logoPath} 
                   alt="Tax-Ray Canada" 
                   className="h-8 w-auto"
                 />
