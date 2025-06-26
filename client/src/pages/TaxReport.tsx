@@ -903,6 +903,48 @@ export default function TaxReport() {
                                           { rate: 42.44, min: 173205, max: 246752, label: "42.44%" },
                                           { rate: 46.67, min: 246752, max: 400000, label: "46.67%" }
                                         ]
+                                      },
+                                      'NB': {
+                                        ordinary: [
+                                          { rate: 24.68, min: 0, max: 49958, label: "24.68%" },
+                                          { rate: 29.00, min: 49958, max: 55867, label: "29.00%" },
+                                          { rate: 34.50, min: 55867, max: 99916, label: "34.50%" },
+                                          { rate: 36.50, min: 99916, max: 111733, label: "36.50%" },
+                                          { rate: 42.00, min: 111733, max: 173205, label: "42.00%" },
+                                          { rate: 45.32, min: 173205, max: 185064, label: "45.32%" },
+                                          { rate: 48.82, min: 185064, max: 246752, label: "48.82%" },
+                                          { rate: 52.50, min: 246752, max: 400000, label: "52.50%" }
+                                        ],
+                                        capitalGains: [
+                                          { rate: 12.34, min: 0, max: 49958, label: "12.34%" },
+                                          { rate: 14.50, min: 49958, max: 55867, label: "14.50%" },
+                                          { rate: 17.25, min: 55867, max: 99916, label: "17.25%" },
+                                          { rate: 18.25, min: 99916, max: 111733, label: "18.25%" },
+                                          { rate: 21.00, min: 111733, max: 173205, label: "21.00%" },
+                                          { rate: 22.66, min: 173205, max: 185064, label: "22.66%" },
+                                          { rate: 24.41, min: 185064, max: 246752, label: "24.41%" },
+                                          { rate: 26.25, min: 246752, max: 400000, label: "26.25%" }
+                                        ],
+                                        eligibleDividends: [
+                                          { rate: 0.68, min: 0, max: 49958, label: "0.68%" },
+                                          { rate: 0.03, min: 49958, max: 55867, label: "0.03%" },
+                                          { rate: 7.56, min: 55867, max: 99916, label: "7.56%" },
+                                          { rate: 10.32, min: 99916, max: 111733, label: "10.32%" },
+                                          { rate: 20.19, min: 111733, max: 173205, label: "20.19%" },
+                                          { rate: 22.49, min: 173205, max: 185064, label: "22.49%" },
+                                          { rate: 27.32, min: 185064, max: 246752, label: "27.32%" },
+                                          { rate: 32.40, min: 246752, max: 400000, label: "32.40%" }
+                                        ],
+                                        nonEligibleDividends: [
+                                          { rate: 16.10, min: 0, max: 49958, label: "16.10%" },
+                                          { rate: 19.80, min: 49958, max: 55867, label: "19.80%" },
+                                          { rate: 26.13, min: 55867, max: 99916, label: "26.13%" },
+                                          { rate: 28.43, min: 99916, max: 111733, label: "28.43%" },
+                                          { rate: 34.25, min: 111733, max: 173205, label: "34.25%" },
+                                          { rate: 38.57, min: 173205, max: 185064, label: "38.57%" },
+                                          { rate: 42.60, min: 185064, max: 246752, label: "42.60%" },
+                                          { rate: 46.83, min: 246752, max: 400000, label: "46.83%" }
+                                        ]
                                       }
                                     };
 
@@ -911,7 +953,8 @@ export default function TaxReport() {
                                     const clientProvince = (client as any)?.province || 'ON';
                                     const validProvince = clientProvince === 'AB' ? 'AB' : 
                                                         clientProvince === 'BC' ? 'BC' : 
-                                                        clientProvince === 'MB' ? 'MB' : 'ON';
+                                                        clientProvince === 'MB' ? 'MB' : 
+                                                        clientProvince === 'NB' ? 'NB' : 'ON';
                                     const provinceRates = taxRatesByProvince[validProvince];
                                     
                                     const incomeTypes = [
