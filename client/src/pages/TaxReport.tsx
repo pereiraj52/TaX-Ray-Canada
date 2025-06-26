@@ -398,16 +398,11 @@ export default function TaxReport() {
                 </div>
               </CardContent>
             </Card>
-
-
-          </div>
-        </div>
-
-        {/* Income Breakdown Pie Chart */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Income Breakdown</h2>
-          <Card>
-            <CardContent className="p-6">
+            
+            {/* Column 2 - Income Breakdown Pie Chart */}
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="font-medium text-gray-900 mb-4">Income Breakdown</h3>
               {(() => {
                 // Calculate all the components
                 let totalIncomeSum = 0;
@@ -465,15 +460,7 @@ export default function TaxReport() {
                   }
                 });
                 
-                // Debug: Log the calculated values
-                console.log('Chart Data Values:', {
-                  totalIncomeSum,
-                  federalTaxSum,
-                  provincialTaxSum,
-                  totalCppSum,
-                  totalEiSum,
-                  householdNetIncome
-                });
+
                 
                 const pieData = [
                   {
@@ -564,8 +551,9 @@ export default function TaxReport() {
                   </div>
                 );
               })()}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Combined Tax Bracket Analysis Table */}
