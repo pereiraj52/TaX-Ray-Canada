@@ -45,6 +45,7 @@ export interface IStorage {
   // T1 Return operations
   getT1Return(id: number): Promise<T1ReturnWithFields | undefined>;
   getT1ReturnsByClient(clientId: number): Promise<T1Return[]>;
+  getT1ReturnsByChild(childId: number): Promise<T1Return[]>;
   createT1Return(t1Return: InsertT1Return): Promise<T1Return>;
   updateT1Return(id: number, updates: Partial<InsertT1Return>): Promise<T1Return | undefined>;
   deleteT1Return(id: number): Promise<void>;
@@ -88,6 +89,14 @@ export class DatabaseStorage implements IStorage {
           orderBy: [desc(clients.isPrimary), clients.firstName],
         },
         children: {
+          with: {
+            t1Returns: {
+              with: {
+                formFields: true,
+              },
+              orderBy: [desc(t1Returns.taxYear)],
+            },
+          },
           orderBy: [children.firstName],
         },
       },
@@ -165,6 +174,18 @@ export class DatabaseStorage implements IStorage {
     await db.delete(clients).where(eq(clients.id, id));
   }
 
+  async getChild(id: number): Promise<ChildWithT1Returns | undefined> {
+    const result = await db.query.children.findFirst({
+      where: eq(children.id, id),
+      with: {
+        t1Returns: {
+          orderBy: [desc(t1Returns.taxYear)],
+        },
+      },
+    });
+    return result as ChildWithT1Returns | undefined;
+  }
+
   async createChild(child: InsertChild): Promise<Child> {
     const [result] = await db
       .insert(children)
@@ -183,6 +204,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteChild(id: number): Promise<void> {
+    // First delete associated T1 returns and form fields
+    const childT1Returns = await db
+      .select({ id: t1Returns.id })
+      .from(t1Returns)
+      .where(eq(t1Returns.childId, id));
+    
+    for (const t1Return of childT1Returns) {
+      await this.deleteT1Return(t1Return.id);
+    }
+    
+    // Then delete the child
     await db.delete(children).where(eq(children.id, id));
   }
 
@@ -192,6 +224,7 @@ export class DatabaseStorage implements IStorage {
       with: {
         formFields: true,
         client: true,
+        child: true,
       },
     });
     return result as T1ReturnWithFields | undefined;
@@ -199,6 +232,10 @@ export class DatabaseStorage implements IStorage {
 
   async getT1ReturnsByClient(clientId: number): Promise<T1Return[]> {
     return await db.select().from(t1Returns).where(eq(t1Returns.clientId, clientId));
+  }
+
+  async getT1ReturnsByChild(childId: number): Promise<T1Return[]> {
+    return await db.select().from(t1Returns).where(eq(t1Returns.childId, childId));
   }
 
   async createT1Return(t1Return: InsertT1Return): Promise<T1Return> {
