@@ -1852,29 +1852,29 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             <div className="max-w-2xl mx-auto space-y-6">
               <div className="flex justify-between items-center">
                 <span className="font-medium text-primary">Federal Tax (Line 42000):</span>
-                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('42000'))}</span>
+                <span className="font-medium text-primary">{formatCurrency(getFieldValue('42000'))}</span>
               </div>
               
               <div className="flex justify-between items-center">
                 <span className="font-medium text-primary">Provincial Tax (Ontario):</span>
-                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('42800'))}</span>
+                <span className="font-medium text-primary">{formatCurrency(getFieldValue('42800'))}</span>
               </div>
               
               <div className="flex justify-between items-center border-t pt-4">
                 <span className="font-medium text-primary">Total Tax (Line 43500):</span>
-                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('43500'))}</span>
+                <span className="font-medium text-primary">{formatCurrency(getFieldValue('43500'))}</span>
               </div>
               
               <div className="flex justify-between items-center">
                 <span className="font-medium text-primary">Taxes Paid (Line 43700):</span>
-                <span className="font-medium text-primary font-mono">{formatCurrency(getFieldValue('43700'))}</span>
+                <span className="font-medium text-primary">{formatCurrency(getFieldValue('43700'))}</span>
               </div>
               
               <div className="flex justify-between items-center border-t pt-4 bg-gray-50 p-4 rounded-lg">
                 <span className="font-medium text-primary">
                   {getRefundOrBalance() >= 0 ? 'Refund Due:' : 'Balance Owing:'}
                 </span>
-                <span className={`font-medium font-mono ${getRefundOrBalance() >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`font-medium ${getRefundOrBalance() >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {formatCurrency(Math.abs(getRefundOrBalance()))}
                 </span>
               </div>
