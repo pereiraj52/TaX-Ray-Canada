@@ -24,11 +24,6 @@ export default function Layout({ children, title, subtitle, actions }: LayoutPro
                 />
               </Link>
             </div>
-            {actions && (
-              <div className="flex items-center space-x-3">
-                {actions}
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -41,6 +36,11 @@ export default function Layout({ children, title, subtitle, actions }: LayoutPro
               {title && <h2 className="text-2xl font-bold text-secondary">{title}</h2>}
               {subtitle && <p className="text-gray-600 mt-1">{subtitle}</p>}
             </div>
+            {actions && (
+              <div className="flex items-center space-x-3">
+                {actions}
+              </div>
+            )}
           </div>
         </div>
       )}

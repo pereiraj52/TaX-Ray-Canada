@@ -1,15 +1,16 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { T1API } from "@/lib/api";
+import { T1API, ChildrenAPI } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 interface T1UploadButtonProps {
-  clientId: number;
+  clientId?: number;
+  childId?: number;
   onUploadSuccess: (t1ReturnId: number) => void;
 }
 
-export default function T1UploadButton({ clientId, onUploadSuccess }: T1UploadButtonProps) {
+export default function T1UploadButton({ clientId, childId, onUploadSuccess }: T1UploadButtonProps) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -22,12 +23,28 @@ export default function T1UploadButton({ clientId, onUploadSuccess }: T1UploadBu
 
     try {
       let result;
+      if (!clientId && !childId) {
+        throw new Error('Either clientId or childId must be provided');
+      }
+
       if (files.length === 1) {
         // Single file upload
-        result = await T1API.uploadT1File(clientId, files[0]);
+        if (clientId) {
+          result = await T1API.uploadT1File(clientId, files[0]);
+        } else if (childId) {
+          result = await ChildrenAPI.uploadT1File(childId, files[0]);
+        }
       } else {
         // Multiple file upload
-        result = await T1API.uploadMultipleT1Files(clientId, Array.from(files));
+        if (clientId) {
+          result = await T1API.uploadT1Files(clientId, Array.from(files));
+        } else if (childId) {
+          result = await ChildrenAPI.uploadT1Files(childId, Array.from(files));
+        }
+      }
+
+      if (!result) {
+        throw new Error('Upload failed to start');
       }
 
       toast({
