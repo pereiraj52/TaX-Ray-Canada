@@ -126,8 +126,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
         title: "Success",
         description: "Household updated successfully",
       });
-      onOpenChange(false);
-      form.reset();
+      handleDialogClose(false);
     },
     onError: (error) => {
       toast({
@@ -379,7 +378,7 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => onOpenChange(false)}
+                onClick={() => handleDialogClose(false)}
               >
                 Cancel
               </Button>
