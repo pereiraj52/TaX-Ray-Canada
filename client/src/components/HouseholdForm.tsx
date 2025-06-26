@@ -18,6 +18,7 @@ const childSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   disabled: z.boolean().default(false),
+  americanTaxpayer: z.boolean().default(false),
 });
 
 const createHouseholdSchema = z.object({

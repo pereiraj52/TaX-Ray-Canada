@@ -21,6 +21,7 @@ export const clients = pgTable("clients", {
   province: text("province"),
   isPrimary: boolean("is_primary").default(false),
   disabled: boolean("disabled").default(false),
+  americanTaxpayer: boolean("american_taxpayer").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -31,6 +32,7 @@ export const children = pgTable("children", {
   lastName: text("last_name").notNull(),
   dateOfBirth: text("date_of_birth").notNull(),
   disabled: boolean("disabled").default(false),
+  americanTaxpayer: boolean("american_taxpayer").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
