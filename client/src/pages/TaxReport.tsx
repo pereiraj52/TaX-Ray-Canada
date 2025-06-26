@@ -706,51 +706,56 @@ export default function TaxReport() {
                             </div>
                           </div>
 
-                          {/* Single Horizontal Tax Bracket Bar */}
+                          {/* Single Vertical Tax Bracket Bar */}
                           <div className="relative">
-                            {/* Scale markers at top */}
-                            <div className="flex justify-between text-xs text-gray-500 mb-2 px-16">
-                              <span>$0</span>
-                              <span>$50k</span>
-                              <span>$100k</span>
-                              <span>$150k</span>
-                              <span>$200k</span>
-                              <span>$250k</span>
-                              <span>&gt;$300k</span>
+                            {/* Main vertical bar container */}
+                            <div className="flex items-end justify-center">
+                              {/* Income threshold labels on bottom */}
+                              <div className="mb-4 flex justify-between w-full text-xs text-gray-700 font-medium">
+                                <div className="text-center">
+                                  <div>$0</div>
+                                </div>
+                                <div className="text-center">
+                                  <div>$50k</div>
+                                </div>
+                                <div className="text-center">
+                                  <div>$100k</div>
+                                </div>
+                                <div className="text-center">
+                                  <div>$150k</div>
+                                </div>
+                                <div className="text-center">
+                                  <div>$200k</div>
+                                </div>
+                                <div className="text-center">
+                                  <div>$250k</div>
+                                </div>
+                                <div className="text-center">
+                                  <div>&gt;$300k</div>
+                                </div>
+                              </div>
                             </div>
                             
-                            {/* Main horizontal bar container */}
-                            <div className="flex items-center">
-                              {/* Income threshold labels on left */}
-                              <div className="w-16 flex flex-col space-y-4 text-xs text-gray-700 font-medium">
-                                <div>$5MM</div>
-                                <div>$500k</div>
-                                <div>$75k</div>
-                                <div>$40k</div>
-                                <div>$35k</div>
-                                <div>$20k</div>
-                                <div>$0</div>
-                              </div>
-                              
-                              {/* Single combined tax bracket bar */}
-                              <div className="flex-1 relative h-40 bg-gray-100 border ml-4">
-                                {/* Individual tax bracket segments */}
+                            {/* Vertical bar chart */}
+                            <div className="flex justify-center">
+                              <div className="relative w-24 h-80 bg-gray-100 border">
+                                {/* Individual tax bracket segments stacked vertically */}
                                 {combinedBrackets.map((bracket, idx) => {
                                   const isCurrentBracket = currentIncome > bracket.min && currentIncome <= bracket.max;
-                                  const bracketWidth = Math.min(bracket.max, maxScale) - bracket.min;
-                                  const widthPercent = (bracketWidth / maxScale) * 100;
-                                  const leftPercent = (bracket.min / maxScale) * 100;
+                                  const bracketHeight = Math.min(bracket.max, maxScale) - bracket.min;
+                                  const heightPercent = (bracketHeight / maxScale) * 100;
+                                  const bottomPercent = (bracket.min / maxScale) * 100;
                                   
                                   return (
                                     <div 
                                       key={idx}
-                                      className={`absolute h-full ${isCurrentBracket ? 'bg-blue-500' : 'bg-gray-300'} flex items-center justify-center border-r border-white`}
+                                      className={`absolute w-full ${isCurrentBracket ? 'bg-blue-500' : 'bg-gray-300'} flex items-center justify-center border-t border-white`}
                                       style={{
-                                        left: `${leftPercent}%`,
-                                        width: `${widthPercent}%`
+                                        bottom: `${bottomPercent}%`,
+                                        height: `${heightPercent}%`
                                       }}
                                     >
-                                      <span className="text-xs font-medium text-white">
+                                      <span className="text-xs font-medium text-white transform -rotate-90 whitespace-nowrap">
                                         {bracket.label}
                                       </span>
                                     </div>
@@ -759,17 +764,14 @@ export default function TaxReport() {
                                 
                                 {/* Current income indicator line */}
                                 <div 
-                                  className="absolute top-0 h-full w-1 bg-green-500 z-10"
+                                  className="absolute left-0 w-full h-1 bg-green-500 z-10"
                                   style={{
-                                    left: `${Math.min(currentIncome / maxScale, 1) * 100}%`
+                                    bottom: `${Math.min(currentIncome / maxScale, 1) * 100}%`
                                   }}
                                 >
-                                  {/* Income label above the bar */}
-                                  <div className="absolute -top-8 -left-8 text-xs text-green-600 font-semibold whitespace-nowrap">
-                                    Taxable Income
-                                  </div>
-                                  <div className="absolute -top-6 -left-6 text-xs text-green-600 font-semibold">
-                                    ${Math.round(currentIncome / 1000)}k
+                                  {/* Income label to the right of the bar */}
+                                  <div className="absolute left-28 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
+                                    Taxable Income: ${Math.round(currentIncome / 1000)}k
                                   </div>
                                 </div>
                               </div>
