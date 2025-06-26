@@ -225,6 +225,7 @@ Changelog:
 - June 26, 2025. Updated brand colors and typography to match TaX-Ray brand guidelines: primary green (#88AA73), accent green (#C7E6C2), neutral gray (#A3A3A3), clean background (#F9FAF8), with Inter for headings and Source Sans 3 for body text
 - June 26, 2025. Added household archive functionality with 2-step confirmation process: archive icon button transforms to "Confirm Archive" button, with 5-second auto-cancel timeout and complete database integration
 - June 26, 2025. Implemented comprehensive American Taxpayer tracking with database schema updates, form integration, and API support for both clients and children throughout the household management system
+- June 26, 2025. Updated household financial summary to separate Federal Tax and Provincial Tax instead of showing combined Total Tax Bill for clearer tax breakdown visibility
 ```
 
 ## User Preferences
