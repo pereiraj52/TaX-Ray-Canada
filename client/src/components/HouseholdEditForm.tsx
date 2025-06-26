@@ -20,6 +20,7 @@ const childSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   disabled: z.boolean().default(false),
+  americanTaxpayer: z.boolean().default(false),
 });
 
 const editHouseholdSchema = z.object({
@@ -27,9 +28,11 @@ const editHouseholdSchema = z.object({
   client1FirstName: z.string().min(1, "First name is required"),
   client1LastName: z.string().min(1, "Last name is required"),
   client1Disabled: z.boolean().default(false),
+  client1AmericanTaxpayer: z.boolean().default(false),
   client2FirstName: z.string().optional(),
   client2LastName: z.string().optional(),
   client2Disabled: z.boolean().default(false),
+  client2AmericanTaxpayer: z.boolean().default(false),
   children: z.array(childSchema).default([]),
 });
 
@@ -57,15 +60,18 @@ export default function HouseholdEditForm({ open, onOpenChange, household }: Hou
       client1FirstName: primaryClient?.firstName || "",
       client1LastName: primaryClient?.lastName || "",
       client1Disabled: primaryClient?.disabled || false,
+      client1AmericanTaxpayer: primaryClient?.americanTaxpayer || false,
       client2FirstName: secondaryClient?.firstName || "",
       client2LastName: secondaryClient?.lastName || "",
       client2Disabled: secondaryClient?.disabled || false,
+      client2AmericanTaxpayer: secondaryClient?.americanTaxpayer || false,
       children: household.children?.map(child => ({
         id: child.id,
         firstName: child.firstName,
         lastName: child.lastName,
         dateOfBirth: child.dateOfBirth,
         disabled: child.disabled || false,
+        americanTaxpayer: child.americanTaxpayer || false,
       })) || [],
     },
   });
