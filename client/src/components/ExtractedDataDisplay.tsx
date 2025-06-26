@@ -186,6 +186,23 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     }));
   };
 
+  const handleTabChange = (tabId: TabType) => {
+    // If switching to income tab, reset all income sections to collapsed
+    if (tabId === 'income') {
+      setCollapsedSections(prev => ({
+        ...prev,
+        'employment': true,
+        'pension': true,
+        'benefits': true,
+        'investment': true,
+        'other': true,
+        'selfemployment': true,
+        'other-sources': true,
+      }));
+    }
+    setActiveTab(tabId);
+  };
+
   const getSectionTotal = (fieldCodes: string[]): number => {
     return fieldCodes.reduce((total, code) => {
       const value = parseFloat(getFieldValue(code) || '0');
@@ -330,7 +347,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
               >
                 <Icon className="mr-2 h-4 w-4 inline" />
