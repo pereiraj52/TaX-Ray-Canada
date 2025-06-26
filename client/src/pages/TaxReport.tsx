@@ -770,8 +770,8 @@ export default function TaxReport() {
                                       bottom: `${spouse.taxableIncome > 247000 ? '100%' : Math.min(spouse.taxableIncome / 300000, 1) * 100 + '%'}`
                                     }}
                                   >
-                                    {/* Income label to the right of the bar */}
-                                    <div className="absolute left-36 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
+                                    {/* Income label to the left of the bar */}
+                                    <div className="absolute right-36 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
                                       Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
                                     </div>
                                   </div>
