@@ -358,12 +358,16 @@ export default function TaxReport() {
                                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                                     const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                                     const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                                    const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                                    const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                                     
                                     const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const cpp = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const ei = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     
                                     if (!isNaN(income) && !isNaN(tax)) {
-                                      totalNetIncome += (income - tax);
+                                      totalNetIncome += (income - tax - cpp - ei);
                                     }
                                   }
                                 });
@@ -378,12 +382,16 @@ export default function TaxReport() {
                                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                                     const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                                     const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                                    const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                                    const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                                     
                                     const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const cpp = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const ei = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     
                                     if (!isNaN(income) && !isNaN(tax)) {
-                                      totalNetIncome += (income - tax);
+                                      totalNetIncome += (income - tax - cpp - ei);
                                     }
                                   }
                                 });
@@ -502,12 +510,16 @@ export default function TaxReport() {
                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                     const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                     const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                    const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                    const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                     
                     const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                     const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    const cpp = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    const ei = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                     
                     if (!isNaN(income) && !isNaN(tax)) {
-                      householdNetIncome += (income - tax);
+                      householdNetIncome += (income - tax - cpp - ei);
                     }
                   }
                 });
@@ -668,7 +680,7 @@ export default function TaxReport() {
                         }
                         
                         const totalDeductions = totalIncome - totalTaxableIncome;
-                        const netIncome = totalIncome - totalTax;
+                        const netIncome = totalIncome - totalTax - cppContributions - eiPremiums;
                         
                         const calculatePercentage = (amount: number) => {
                           if (totalIncome === 0) return '0.0%';
@@ -760,16 +772,22 @@ export default function TaxReport() {
                         // Calculate individual net income percentage for KPI blocks
                         let totalIncome = 0;
                         let totalTax = 0;
+                        let cppContributions = 0;
+                        let eiPremiums = 0;
                         
                         if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                           const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                           const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                          const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                          const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                           
                           totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           totalTax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                         }
                         
-                        const netIncome = totalIncome - totalTax;
+                        const netIncome = totalIncome - totalTax - cppContributions - eiPremiums;
                         const netIncomePercentage = totalIncome > 0 ? (netIncome / totalIncome) * 100 : 0;
                         const youPaidPercentage = 100 - netIncomePercentage;
                         

@@ -246,6 +246,7 @@ Changelog:
 - June 27, 2025. Updated household income breakdown pie chart colors to match brand palette: Net Income (#88AA73 primary green), Federal Tax (#D4B26A warning), Provincial Tax (#C7E6C2 accent green), CPP (#A3A3A3 neutral gray), EI (#6B7AA2 complementary blue-gray)
 - June 27, 2025. Updated all graphics to match brand color palette: individual pie charts, tax bracket visualizations (bg-primary for negative rates, bg-accent for positive rates), income indicator lines (bg-primary), table highlighting (bg-accent/20), and text colors (text-primary) for consistent visual identity
 - June 27, 2025. Added individual Financial Summary sections under Individual Tax Analysis: created personalized financial summaries for each household member with their own income, deductions, taxes, and KPI blocks showing individual "You Kept" and "You Paid" percentages
+- June 27, 2025. Fixed net income calculations throughout application to properly subtract CPP contributions and EI premiums from total income minus taxes: corrected individual Financial Summary, household Financial Summary, pie chart data, and KPI block calculations for accurate net income reporting
 ```
 
 ## User Preferences
