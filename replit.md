@@ -249,6 +249,7 @@ Changelog:
 - June 27, 2025. Fixed net income calculations throughout application to properly subtract CPP contributions and EI premiums from total income minus taxes: corrected individual Financial Summary, household Financial Summary, pie chart data, and KPI block calculations for accurate net income reporting
 - June 27, 2025. Implemented fallback logic for missing Total Tax field (43500): system now uses Federal Tax (42000) + Provincial Tax (42800) when Total Tax field is unavailable, resolving Emilie's incorrect net income calculation issue
 - June 27, 2025. Fixed Summary tab "Key Tax Information" Net Income calculation to use simple formula (Total Income - Total Tax) with same fallback logic for missing field 43500
+- June 27, 2025. Corrected Summary tab Net Income calculation to use field 43700 (same as displayed "Total Tax" line) for consistency: Net Income = Total Income - Total Tax displayed value
 ```
 
 ## User Preferences
