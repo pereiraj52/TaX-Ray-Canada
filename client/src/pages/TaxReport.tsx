@@ -1059,6 +1059,125 @@ export default function TaxReport() {
 
             return (
               <div className="space-y-6">
+                {/* Tax Rates Section */}
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Rates</h2>
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {spouseData.map((spouse, spouseIndex) => {
+                      const spouseT1 = spouse.t1Return as any;
+                      
+                      // Calculate tax rates
+                      let totalIncome = 0;
+                      let taxableIncome = 0;
+                      let totalTax = 0;
+                      let federalTax = 0;
+                      let provincialTax = 0;
+                      
+                      if (spouseT1 && spouseT1.formFields) {
+                        const incomeField = spouseT1.formFields.find((field: any) => field.fieldCode === '15000');
+                        const taxableIncomeField = spouseT1.formFields.find((field: any) => field.fieldCode === '26000');
+                        const totalTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '43700');
+                        const federalTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42000');
+                        const provincialTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42800');
+                        
+                        totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        taxableIncome = taxableIncomeField?.fieldValue ? parseFloat(String(taxableIncomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        totalTax = totalTaxField?.fieldValue ? parseFloat(String(totalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        
+                        // Fallback: if total tax is 0, use federal + provincial
+                        if (totalTax === 0 && (federalTax > 0 || provincialTax > 0)) {
+                          totalTax = federalTax + provincialTax;
+                        }
+                      }
+                      
+                      // Calculate rates
+                      const averageRate = totalIncome > 0 ? (totalTax / totalIncome * 100) : 0;
+                      
+                      // Calculate marginal rate based on taxable income and Ontario tax brackets
+                      let marginalRate = 0;
+                      if (taxableIncome > 0) {
+                        // Combined federal + Ontario marginal rates for 2024
+                        const combinedBrackets = [
+                          { min: 0, max: 51446, rate: 20.05 },      // 15% + 5.05%
+                          { min: 51446, max: 55867, rate: 24.15 },  // 15% + 9.15%
+                          { min: 55867, max: 102894, rate: 29.65 }, // 20.5% + 9.15%
+                          { min: 102894, max: 111733, rate: 31.66 }, // 20.5% + 11.16%
+                          { min: 111733, max: 150000, rate: 37.16 }, // 26% + 11.16%
+                          { min: 150000, max: 173205, rate: 38.16 }, // 26% + 12.16%
+                          { min: 173205, max: 220000, rate: 41.16 }, // 29% + 12.16%
+                          { min: 220000, max: 246752, rate: 42.16 }, // 29% + 13.16%
+                          { min: 246752, max: Infinity, rate: 46.16 } // 33% + 13.16%
+                        ];
+                        
+                        // Find the appropriate bracket
+                        const currentBracket = combinedBrackets.find(bracket => 
+                          taxableIncome > bracket.min && taxableIncome <= bracket.max
+                        ) || combinedBrackets[combinedBrackets.length - 1];
+                        
+                        marginalRate = currentBracket.rate;
+                      }
+                      
+                      // For effective marginal rate, we'll use a simplified calculation
+                      // In practice, this would require the comprehensive tax calculator API
+                      let effectiveMarginalRate = marginalRate;
+                      
+                      // Add estimated clawback effects for higher incomes
+                      if (taxableIncome > 79054) { // OAS recovery threshold
+                        effectiveMarginalRate += 7.5; // OAS clawback effect
+                      }
+                      
+                      // Cap at reasonable maximum
+                      effectiveMarginalRate = Math.min(effectiveMarginalRate, 65);
+                      
+                      return (
+                        <Card key={`tax-rates-${spouseIndex}`}>
+                          <CardContent className="p-6">
+                            <h3 className="font-medium text-gray-900 mb-6">{spouse.clientName} - Tax Rates</h3>
+                            
+                            <div className="grid grid-cols-3 gap-4">
+                              {/* Average Rate KPI */}
+                              <div className="text-center">
+                                <div className="text-sm font-medium text-gray-700 mb-2">Average</div>
+                                <div className="text-3xl font-bold text-primary">
+                                  {averageRate.toFixed(2)}%
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1">
+                                  Total Tax / Total Income
+                                </div>
+                              </div>
+                              
+                              {/* Marginal Rate KPI */}
+                              <div className="text-center">
+                                <div className="text-sm font-medium text-gray-700 mb-2">Marginal</div>
+                                <div className="text-3xl font-bold text-primary">
+                                  {marginalRate.toFixed(2)}%
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1">
+                                  Next Dollar Tax Rate
+                                </div>
+                              </div>
+                              
+                              {/* Effective Marginal Rate KPI */}
+                              <div className="text-center">
+                                <div className="text-sm font-medium text-gray-700 mb-2">Effective Marginal</div>
+                                <div className="text-3xl font-bold text-primary">
+                                  {effectiveMarginalRate.toFixed(2)}%
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1">
+                                  Including Clawbacks
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 {/* Tax Bracket Tables */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {spouseData.map((spouse, spouseIndex) => {
@@ -1924,139 +2043,6 @@ export default function TaxReport() {
                       </Card>
                     );
                   })}
-                </div>
-
-                {/* Tax Rates Section */}
-                <div className="mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Rates</h2>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {taxYearReturns.map((t1Return, index) => {
-                      const t1WithFields = t1Return as any;
-                      
-                      // Get client name from household data
-                      let clientName = `Person ${index + 1}`;
-                      if (t1Return.clientId && household?.clients) {
-                        const client = household.clients.find(c => c.id === t1Return.clientId);
-                        if (client) {
-                          clientName = `${client.firstName} ${client.lastName}`;
-                        }
-                      } else if (t1Return.childId && household?.children) {
-                        const child = household.children.find(c => c.id === t1Return.childId);
-                        if (child) {
-                          clientName = `${child.firstName} ${child.lastName}`;
-                        }
-                      }
-                      
-                      // Calculate tax rates
-                      let totalIncome = 0;
-                      let taxableIncome = 0;
-                      let totalTax = 0;
-                      let federalTax = 0;
-                      let provincialTax = 0;
-                      
-                      if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                        const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                        const taxableIncomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
-                        const totalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43700');
-                        const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
-                        const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
-                        
-                        totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                        taxableIncome = taxableIncomeField?.fieldValue ? parseFloat(String(taxableIncomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                        totalTax = totalTaxField?.fieldValue ? parseFloat(String(totalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                        federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                        provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                        
-                        // Fallback: if total tax is 0, use federal + provincial
-                        if (totalTax === 0 && (federalTax > 0 || provincialTax > 0)) {
-                          totalTax = federalTax + provincialTax;
-                        }
-                      }
-                      
-                      // Calculate rates
-                      const averageRate = totalIncome > 0 ? (totalTax / totalIncome * 100) : 0;
-                      
-                      // Calculate marginal rate based on taxable income and Ontario tax brackets
-                      let marginalRate = 0;
-                      if (taxableIncome > 0) {
-                        // Combined federal + Ontario marginal rates for 2024
-                        const combinedBrackets = [
-                          { min: 0, max: 51446, rate: 20.05 },      // 15% + 5.05%
-                          { min: 51446, max: 55867, rate: 24.15 },  // 15% + 9.15%
-                          { min: 55867, max: 102894, rate: 29.65 }, // 20.5% + 9.15%
-                          { min: 102894, max: 111733, rate: 31.66 }, // 20.5% + 11.16%
-                          { min: 111733, max: 150000, rate: 37.16 }, // 26% + 11.16%
-                          { min: 150000, max: 173205, rate: 38.16 }, // 26% + 12.16%
-                          { min: 173205, max: 220000, rate: 41.16 }, // 29% + 12.16%
-                          { min: 220000, max: 246752, rate: 42.16 }, // 29% + 13.16%
-                          { min: 246752, max: Infinity, rate: 46.16 } // 33% + 13.16%
-                        ];
-                        
-                        // Find the appropriate bracket
-                        const currentBracket = combinedBrackets.find(bracket => 
-                          taxableIncome > bracket.min && taxableIncome <= bracket.max
-                        ) || combinedBrackets[combinedBrackets.length - 1];
-                        
-                        marginalRate = currentBracket.rate;
-                      }
-                      
-                      // For effective marginal rate, we'll use a simplified calculation
-                      // In practice, this would require the comprehensive tax calculator API
-                      let effectiveMarginalRate = marginalRate;
-                      
-                      // Add estimated clawback effects for higher incomes
-                      if (taxableIncome > 79054) { // OAS recovery threshold
-                        effectiveMarginalRate += 7.5; // OAS clawback effect
-                      }
-                      
-                      // Cap at reasonable maximum
-                      effectiveMarginalRate = Math.min(effectiveMarginalRate, 65);
-                      
-                      return (
-                        <Card key={`tax-rates-${t1Return.id}`}>
-                          <CardContent className="p-6">
-                            <h3 className="font-medium text-gray-900 mb-6">{clientName} - Tax Rates</h3>
-                            
-                            <div className="grid grid-cols-3 gap-4">
-                              {/* Average Rate KPI */}
-                              <div className="text-center">
-                                <div className="text-sm font-medium text-gray-700 mb-2">Average</div>
-                                <div className="text-3xl font-bold text-primary">
-                                  {averageRate.toFixed(2)}%
-                                </div>
-                                <div className="text-xs text-gray-500 mt-1">
-                                  Total Tax / Total Income
-                                </div>
-                              </div>
-                              
-                              {/* Marginal Rate KPI */}
-                              <div className="text-center">
-                                <div className="text-sm font-medium text-gray-700 mb-2">Marginal</div>
-                                <div className="text-3xl font-bold text-primary">
-                                  {marginalRate.toFixed(2)}%
-                                </div>
-                                <div className="text-xs text-gray-500 mt-1">
-                                  Next Dollar Tax Rate
-                                </div>
-                              </div>
-                              
-                              {/* Effective Marginal Rate KPI */}
-                              <div className="text-center">
-                                <div className="text-sm font-medium text-gray-700 mb-2">Effective Marginal</div>
-                                <div className="text-3xl font-bold text-primary">
-                                  {effectiveMarginalRate.toFixed(2)}%
-                                </div>
-                                <div className="text-xs text-gray-500 mt-1">
-                                  Including Clawbacks
-                                </div>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
                 </div>
 
                 {/* Federal Tax Bracket Analysis */}
