@@ -1065,7 +1065,7 @@ export default function TaxReport() {
                                   {bracketBreakdown.map((bracket, index) => (
                                     <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
                                       <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
-                                      <td className="py-2 px-2 font-mono text-xs">{bracket.threshold}</td>
+                                      <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
                                       <td className="py-2 px-2 text-right font-mono text-xs">
                                         ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                       </td>

@@ -268,7 +268,6 @@ Changelog:
 - June 27, 2025. Updated taxable income indicator line and label color to #D4B26A using inline styles for proper color rendering in tax bracket visualization
 - June 27, 2025. Extended taxable income indicator line to appear across all 4 bars in tax bracket visualization while keeping label only on first bar
 - June 27, 2025. Increased z-index of tax bracket text labels to z-20 to bring them to front for better visibility over indicator lines
-- June 27, 2025. Made font styling consistent in Combined Tax Bracket Analysis table by changing threshold column from text-gray-700 to font-mono to match income and tax columns
 ```
 
 ## User Preferences
