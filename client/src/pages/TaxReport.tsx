@@ -398,7 +398,7 @@ export default function TaxReport() {
                 </div>
                 
                 {/* KPI Blocks */}
-                <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="mt-6 grid grid-cols-2 gap-6">
                   {(() => {
                     // Calculate net income percentage for KPI blocks
                     let totalIncomeSum = 0;
@@ -426,22 +426,22 @@ export default function TaxReport() {
                     return (
                       <>
                         {/* You Kept Block */}
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                          <div className="text-2xl font-bold text-green-700">
-                            {netIncomePercentage.toFixed(1)}%
-                          </div>
-                          <div className="text-sm font-medium text-green-600">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center">
+                          <div className="text-lg font-medium text-green-600 mb-2">
                             You Kept
+                          </div>
+                          <div className="text-4xl font-bold text-green-700">
+                            {netIncomePercentage.toFixed(1)}%
                           </div>
                         </div>
                         
                         {/* You Paid Block */}
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                          <div className="text-2xl font-bold text-red-700">
-                            {youPaidPercentage.toFixed(1)}%
-                          </div>
-                          <div className="text-sm font-medium text-red-600">
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
+                          <div className="text-lg font-medium text-red-600 mb-2">
                             You Paid
+                          </div>
+                          <div className="text-4xl font-bold text-red-700">
+                            {youPaidPercentage.toFixed(1)}%
                           </div>
                         </div>
                       </>

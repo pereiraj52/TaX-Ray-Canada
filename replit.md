@@ -242,6 +242,7 @@ Changelog:
 - June 27, 2025. Enhanced individual pie charts with direct segment labels showing category names and percentages, plus detailed hover tooltips with dollar amounts
 - June 27, 2025. Fixed application TypeScript errors including pie chart tooltip type safety and client name access issues for stable production build
 - June 27, 2025. Added two KPI blocks at bottom of Household Financial Summary: "You Kept" showing net income percentage and "You Paid" showing 100% minus net income percentage, with green/red color coding
+- June 27, 2025. Enhanced KPI blocks layout: moved titles above percentages, increased font sizes (text-4xl for percentages, text-lg for titles), increased padding and spacing to better fill the Financial Summary card width
 ```
 
 ## User Preferences
