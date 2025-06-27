@@ -1991,11 +1991,11 @@ export default function TaxReport() {
                     ];
                     
                     const federalNonEligibleDividendBrackets = [
-                      { rate: 13.19, min: 0, max: 55867, label: "13.19%" },
-                      { rate: 19.52, min: 55867, max: 111733, label: "19.52%" },
-                      { rate: 23.34, min: 111733, max: 173205, label: "23.34%" },
-                      { rate: 27.37, min: 173205, max: 246752, label: "27.37%" },
-                      { rate: 27.37, min: 246752, max: 300000, label: "27.37%" }
+                      { rate: 6.87, min: 0, max: 55867, label: "6.87%" },
+                      { rate: 13.19, min: 55867, max: 111733, label: "13.19%" },
+                      { rate: 18.52, min: 111733, max: 173205, label: "18.52%" },
+                      { rate: 27.57, min: 173205, max: 246752, label: "27.57%" },
+                      { rate: 27.57, min: 246752, max: 300000, label: "27.57%" }
                     ];
 
                     return (
