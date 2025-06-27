@@ -1064,16 +1064,8 @@ export default function TaxReport() {
                   {spouseData.map((spouse, spouseIndex) => {
                     // Get actual tax amounts from T1 form for this spouse
                     const actualTotalTax = (() => {
-                      // Find the T1 return for this spouse
-                      const spouseT1 = taxYearReturns.find((t1: any) => {
-                        const t1WithFields = t1 as any;
-                        if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                          // Try to match by name or find first available return
-                          // For now, we'll use the order of spouses (0 = first return, 1 = second return)
-                          return taxYearReturns.indexOf(t1) === spouseIndex;
-                        }
-                        return false;
-                      }) as any;
+                      // Use the T1 return directly from spouseData
+                      const spouseT1 = spouse.t1Return as any;
                       
                       if (spouseT1 && spouseT1.formFields) {
                         const taxField = spouseT1.formFields.find((field: any) => field.fieldCode === '43500');
@@ -1987,15 +1979,8 @@ export default function TaxReport() {
 
                     // Get actual federal tax amount from T1 form for this spouse
                     const actualFederalTax = (() => {
-                      // Find the T1 return for this spouse
-                      const spouseT1 = taxYearReturns.find((t1: any) => {
-                        const t1WithFields = t1 as any;
-                        if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                          // Use the order of spouses (0 = first return, 1 = second return)
-                          return taxYearReturns.indexOf(t1) === spouseIndex;
-                        }
-                        return false;
-                      }) as any;
+                      // Use the T1 return directly from spouseData
+                      const spouseT1 = spouse.t1Return as any;
                       
                       if (spouseT1 && spouseT1.formFields) {
                         const federalTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42000');
@@ -2329,15 +2314,8 @@ export default function TaxReport() {
 
                                       // Get actual provincial tax amount from T1 form for this spouse
                                       const actualProvincialTax = (() => {
-                                        // Find the T1 return for this spouse
-                                        const spouseT1 = taxYearReturns.find((t1: any) => {
-                                          const t1WithFields = t1 as any;
-                                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                                            // Use the order of spouses (0 = first return, 1 = second return)
-                                            return taxYearReturns.indexOf(t1) === spouseIndex;
-                                          }
-                                          return false;
-                                        }) as any;
+                                        // Use the T1 return directly from spouseData
+                                        const spouseT1 = spouse.t1Return as any;
                                         
                                         if (spouseT1 && spouseT1.formFields) {
                                           const provincialTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42800');
