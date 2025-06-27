@@ -303,6 +303,7 @@ Changelog:
 - June 27, 2025. Corrected Federal Tax Bracket Visualization height mismatch: changed scale container from h-80 to h-72 to match bar height, ensuring perfect alignment between threshold labels and actual bracket boundaries
 - June 27, 2025. Adjusted $300k label positioning in Federal Tax Bracket Visualization: moved label 8% down from top edge to position it just below the line where the highest bracket starts for better visual clarity
 - June 27, 2025. Fine-tuned $300k label positioning: reduced offset from 8% to 4% down from top edge for optimal placement between chart boundary and bracket start line
+- June 27, 2025. Fixed Combined Tax Bracket Visualization scale alignment: repositioned all threshold labels ($0, $51k, $56k, $103k, $112k, $150k, $173k, $220k, $247k, $300k) to align with bracket boundaries, implemented 7% minimum spacing to prevent overlap, and applied automatic adjustment for overlapping labels by moving upper amounts upward
 ```
 
 ## User Preferences
