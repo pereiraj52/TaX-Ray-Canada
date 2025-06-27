@@ -1062,8 +1062,45 @@ export default function TaxReport() {
                 {/* Tax Bracket Tables */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {spouseData.map((spouse, spouseIndex) => {
+                    // Get actual tax amounts from T1 form for this spouse
+                    const actualTotalTax = (() => {
+                      // Find the T1 return for this spouse
+                      const spouseT1 = taxYearReturns.find((t1: any) => {
+                        const t1WithFields = t1 as any;
+                        if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                          // Try to match by name or find first available return
+                          // For now, we'll use the order of spouses (0 = first return, 1 = second return)
+                          return taxYearReturns.indexOf(t1) === spouseIndex;
+                        }
+                        return false;
+                      }) as any;
+                      
+                      if (spouseT1 && spouseT1.formFields) {
+                        const taxField = spouseT1.formFields.find((field: any) => field.fieldCode === '43500');
+                        const federalTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42000');
+                        const provincialTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42800');
+                        
+                        const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        
+                        // Use field 43500 if available, otherwise add federal + provincial
+                        return tax > 0 ? tax : (federalTax + provincialTax);
+                      }
+                      return 0;
+                    })();
+                    
                     const bracketBreakdown = calculateSpouseTaxBreakdown(spouse.taxableIncome);
-                    const totalTax = bracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+                    const calculatedTotalTax = bracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+                    
+                    // Adjust bracket breakdown to match actual total tax
+                    const adjustmentRatio = calculatedTotalTax > 0 ? actualTotalTax / calculatedTotalTax : 0;
+                    const adjustedBracketBreakdown = bracketBreakdown.map(bracket => ({
+                      ...bracket,
+                      tax: bracket.tax * adjustmentRatio
+                    }));
+                    
+                    const totalTax = actualTotalTax;
 
                     return (
                       <Card key={spouseIndex}>
@@ -1085,7 +1122,7 @@ export default function TaxReport() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {bracketBreakdown.map((bracket, index) => (
+                                  {adjustedBracketBreakdown.map((bracket, index) => (
                                     <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
                                       <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
                                       <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
