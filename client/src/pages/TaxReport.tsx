@@ -1965,13 +1965,37 @@ export default function TaxReport() {
                 {/* Federal Tax Bracket Visualizations */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {spouseData.map((spouse, spouseIndex) => {
-                    // Federal tax brackets for visualization
-                    const federalBrackets = [
+                    // Federal tax brackets for visualization - different rates for different income types
+                    const federalOrdinaryBrackets = [
                       { rate: 15.0, min: 0, max: 55867, label: "15.00%" },
                       { rate: 20.5, min: 55867, max: 111733, label: "20.50%" },
                       { rate: 26.0, min: 111733, max: 173205, label: "26.00%" },
                       { rate: 29.0, min: 173205, max: 246752, label: "29.00%" },
                       { rate: 33.0, min: 246752, max: 300000, label: "33.00%" }
+                    ];
+                    
+                    const federalCapitalGainsBrackets = [
+                      { rate: 7.5, min: 0, max: 55867, label: "7.50%" },
+                      { rate: 10.25, min: 55867, max: 111733, label: "10.25%" },
+                      { rate: 13.0, min: 111733, max: 173205, label: "13.00%" },
+                      { rate: 14.5, min: 173205, max: 246752, label: "14.50%" },
+                      { rate: 16.5, min: 246752, max: 300000, label: "16.50%" }
+                    ];
+                    
+                    const federalEligibleDividendBrackets = [
+                      { rate: -7.65, min: 0, max: 55867, label: "-7.65%" },
+                      { rate: 2.30, min: 55867, max: 111733, label: "2.30%" },
+                      { rate: 9.06, min: 111733, max: 173205, label: "9.06%" },
+                      { rate: 11.82, min: 173205, max: 246752, label: "11.82%" },
+                      { rate: 16.73, min: 246752, max: 300000, label: "16.73%" }
+                    ];
+                    
+                    const federalNonEligibleDividendBrackets = [
+                      { rate: 8.68, min: 0, max: 55867, label: "8.68%" },
+                      { rate: 15.02, min: 55867, max: 111733, label: "15.02%" },
+                      { rate: 20.72, min: 111733, max: 173205, label: "20.72%" },
+                      { rate: 24.81, min: 173205, max: 246752, label: "24.81%" },
+                      { rate: 30.67, min: 246752, max: 300000, label: "30.67%" }
                     ];
 
                     return (
@@ -1987,7 +2011,10 @@ export default function TaxReport() {
                               <div className="flex justify-center items-end space-x-4 h-80 p-4">
                                 {(() => {
                                   const incomeTypes = [
-                                    { name: 'Federal Tax', brackets: federalBrackets }
+                                    { name: 'Ordinary Income', brackets: federalOrdinaryBrackets },
+                                    { name: 'Capital Gains', brackets: federalCapitalGainsBrackets },
+                                    { name: 'Eligible Dividends', brackets: federalEligibleDividendBrackets },
+                                    { name: 'Non-Eligible Dividends', brackets: federalNonEligibleDividendBrackets }
                                   ];
 
                                   return incomeTypes.map((incomeType, typeIdx) => {
@@ -2003,8 +2030,11 @@ export default function TaxReport() {
                                             const heightPercent = (bracketHeight / maxScale) * 100;
                                             const bottomPercent = (bracket.min / maxScale) * 100;
                                             
-                                            // All bars use primary green
-                                            const bgColor = 'bg-primary';
+                                            // Color coding based on rate type
+                                            let bgColor = 'bg-primary'; // Default primary green
+                                            if (bracket.rate < 0) {
+                                              bgColor = 'bg-accent'; // Accent green for negative rates (eligible dividends)
+                                            }
                                             
                                             return (
                                               <div 
