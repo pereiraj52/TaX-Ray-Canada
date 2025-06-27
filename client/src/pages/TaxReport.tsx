@@ -2624,8 +2624,8 @@ export default function TaxReport() {
                                                 const heightPercent = (bracketHeight / maxScale) * 100;
                                                 const bottomPercent = (bracket.min / maxScale) * 100;
                                                 
-                                                // Use consistent primary color for all brackets
-                                                let bgColor = 'bg-primary';
+                                                // Highlight current bracket with accent color, others with primary
+                                                let bgColor = isCurrentBracket ? 'bg-accent' : 'bg-primary';
                                                 
                                                 return (
                                                   <div 
