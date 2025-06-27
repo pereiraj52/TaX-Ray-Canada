@@ -2308,7 +2308,7 @@ export default function TaxReport() {
                               <div className="relative">
                                 <div className="flex items-start justify-center">
                                   {/* Income scale labels on left (vertical axis) - provincial brackets */}
-                                  <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                  <div className="w-20 h-96 relative flex flex-col mr-6 text-xs text-gray-700 font-medium">
                                     {/* $300k at top */}
                                     <div className="absolute top-0 right-0 text-right">$300k</div>
                                     
@@ -2351,7 +2351,7 @@ export default function TaxReport() {
                                   </div>
                                   
                                   {/* Four Income Type Bars */}
-                                  <div className="flex space-x-3">
+                                  <div className="flex space-x-4">
                                     {(() => {
                                       const incomeTypes = [
                                         { name: 'Ordinary Income', brackets: provincialOrdinaryBrackets },
@@ -2367,7 +2367,7 @@ export default function TaxReport() {
                                         return (
                                           <div key={typeIdx} className="flex flex-col items-center">
                                             {/* Vertical bar */}
-                                            <div className="relative w-20 h-72 bg-gray-100 border">
+                                            <div className="relative w-24 h-96 bg-gray-100 border">
                                               {incomeType.brackets.map((bracket, idx) => {
                                                 // Skip brackets that start above $300k
                                                 if (bracket.min >= maxScale) return null;
