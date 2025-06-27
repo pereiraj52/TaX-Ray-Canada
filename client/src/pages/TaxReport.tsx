@@ -661,27 +661,27 @@ export default function TaxReport() {
                 {
                   name: 'Net Income',
                   value: netIncome,
-                  color: '#22c55e'
+                  color: '#88AA73' // Primary green
                 },
                 {
                   name: 'Federal Tax',
                   value: federalTax,
-                  color: '#3b82f6'
+                  color: '#D4B26A' // Warning/secondary accent
                 },
                 {
                   name: 'Provincial Tax',
                   value: provincialTax,
-                  color: '#8b5cf6'
+                  color: '#C7E6C2' // Accent green
                 },
                 {
                   name: 'CPP Contributions',
                   value: cppContributions,
-                  color: '#f59e0b'
+                  color: '#A3A3A3' // Neutral gray
                 },
                 {
                   name: 'EI Premiums',
                   value: eiPremiums,
-                  color: '#ef4444'
+                  color: '#6B7AA2' // Complementary blue-gray
                 }
               ].filter(item => item.value > 0);
               
@@ -848,7 +848,7 @@ export default function TaxReport() {
                                 </thead>
                                 <tbody>
                                   {bracketBreakdown.map((bracket, index) => (
-                                    <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-green-50' : ''}`}>
+                                    <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
                                       <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
                                       <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
                                       <td className="py-2 px-2 text-right font-mono text-xs">
@@ -1610,13 +1610,13 @@ export default function TaxReport() {
                                             const heightPercent = (bracketHeight / maxScale) * 100;
                                             const bottomPercent = (bracket.min / maxScale) * 100;
                                             
-                                            // Color coding: negative rates in green, positive in consistent blue
+                                            // Color coding using brand colors
                                             let bgColor = 'bg-gray-300';
                                             if (isCurrentBracket) {
                                               if (bracket.rate < 0) {
-                                                bgColor = 'bg-green-500';
+                                                bgColor = 'bg-primary'; // Primary green for negative rates
                                               } else {
-                                                bgColor = 'bg-blue-500';
+                                                bgColor = 'bg-accent'; // Accent green for positive rates
                                               }
                                             }
                                             
@@ -1639,13 +1639,13 @@ export default function TaxReport() {
                                           {/* Current income indicator line - only show on first bar */}
                                           {typeIdx === 0 && (
                                             <div 
-                                              className="absolute left-0 w-full h-1 bg-green-500 z-10"
+                                              className="absolute left-0 w-full h-1 bg-primary z-10"
                                               style={{
                                                 bottom: `${spouse.taxableIncome > 247000 ? '100%' : Math.min(spouse.taxableIncome / 300000, 1) * 100 + '%'}`
                                               }}
                                             >
                                               {/* Income label to the left of the bars */}
-                                              <div className="absolute right-52 -top-2 text-xs text-green-600 font-semibold whitespace-nowrap">
+                                              <div className="absolute right-52 -top-2 text-xs text-primary font-semibold whitespace-nowrap">
                                                 Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
                                               </div>
                                             </div>
