@@ -252,6 +252,8 @@ Changelog:
 - June 27, 2025. Corrected Summary tab Net Income calculation to use field 43700 (same as displayed "Total Tax" line) for consistency: Net Income = Total Income - Total Tax displayed value
 - June 27, 2025. Fixed individual Financial Summary in household tax report to use same simple Net Income calculation (Total Income - Total Tax field 43700) for consistency across all report sections
 - June 27, 2025. Updated individual KPI blocks to reflect Summary tab calculation: uses simple Net Income formula (Total Income - Total Tax field 43700) instead of complex calculation including CPP/EI deductions
+- June 27, 2025. Fixed individual pie charts to use Summary tab calculation method: changed from field 43500 to field 43700 for consistent Total Tax calculation across all visualization components
+- June 27, 2025. Updated household pie chart to use simple Net Income calculation (Total Income - Total Tax field 43700) matching Summary tab instead of complex formula with CPP/EI deductions
 ```
 
 ## User Preferences
