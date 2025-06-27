@@ -247,6 +247,7 @@ Changelog:
 - June 27, 2025. Updated all graphics to match brand color palette: individual pie charts, tax bracket visualizations (bg-primary for negative rates, bg-accent for positive rates), income indicator lines (bg-primary), table highlighting (bg-accent/20), and text colors (text-primary) for consistent visual identity
 - June 27, 2025. Added individual Financial Summary sections under Individual Tax Analysis: created personalized financial summaries for each household member with their own income, deductions, taxes, and KPI blocks showing individual "You Kept" and "You Paid" percentages
 - June 27, 2025. Fixed net income calculations throughout application to properly subtract CPP contributions and EI premiums from total income minus taxes: corrected individual Financial Summary, household Financial Summary, pie chart data, and KPI block calculations for accurate net income reporting
+- June 27, 2025. Implemented fallback logic for missing Total Tax field (43500): system now uses Federal Tax (42000) + Provincial Tax (42800) when Total Tax field is unavailable, resolving Emilie's incorrect net income calculation issue
 ```
 
 ## User Preferences
