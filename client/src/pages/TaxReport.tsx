@@ -2003,12 +2003,12 @@ export default function TaxReport() {
                         <CardContent className="p-6">
                           <div className="space-y-4">
                             <div>
-                              <h3 className="font-medium text-gray-900 mb-6">
+                              <h3 className="font-medium text-gray-900 mb-4">
                                 {spouse.clientName} - Federal Tax Bracket Visualization
                               </h3>
 
                               {/* Federal Tax Bracket Chart */}
-                              <div className="flex justify-center items-end space-x-3 h-80 p-6">
+                              <div className="flex justify-center items-end space-x-4 h-80 p-4">
                                 {(() => {
                                   const incomeTypes = [
                                     { name: 'Ordinary Income', brackets: federalOrdinaryBrackets },
@@ -2022,8 +2022,8 @@ export default function TaxReport() {
 
                                     return (
                                       <div key={typeIdx} className="flex flex-col items-center">
-                                        {/* Properly sized bars for better fit */}
-                                        <div className="relative w-18 h-72 bg-gray-200 border border-gray-300">
+                                        {/* Single bar for federal brackets */}
+                                        <div className="relative w-20 h-72 bg-gray-200 border border-gray-300">
                                           {incomeType.brackets.map((bracket, idx) => {
                                             const bracketTop = Math.min(bracket.max, maxScale);
                                             const bracketHeight = bracketTop - bracket.min;
@@ -2052,7 +2052,7 @@ export default function TaxReport() {
                                             );
                                           })}
                                           
-                                          {/* Current income indicator line - show on federal bar */}
+                                          {/* Current income indicator line - show on all bars */}
                                           <div 
                                             className="absolute left-0 w-full h-1 z-10"
                                             style={{
@@ -2063,7 +2063,7 @@ export default function TaxReport() {
                                             {/* Income label to the left of the bars - only show on first bar */}
                                             {typeIdx === 0 && (
                                               <div 
-                                                className="absolute right-24 -top-2 text-xs font-semibold whitespace-nowrap"
+                                                className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
                                                 style={{ color: '#D4B26A' }}
                                               >
                                                 Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
@@ -2072,8 +2072,8 @@ export default function TaxReport() {
                                           </div>
                                         </div>
                                         
-                                        {/* Label below the bar */}
-                                        <div className="mt-2 text-xs text-center text-gray-700 font-medium w-18">
+                                        {/* Label below each bar */}
+                                        <div className="mt-2 text-xs text-center text-gray-700 font-medium w-20">
                                           {incomeType.name}
                                         </div>
                                       </div>
