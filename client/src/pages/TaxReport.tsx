@@ -2061,31 +2061,31 @@ export default function TaxReport() {
                                     return (
                                       <div key={typeIdx} className="flex flex-col items-center">
                                         {/* Single bar for federal brackets */}
-                                        <div className="relative w-20 h-72 bg-gray-200 border border-gray-300">
+                                        <div className="relative w-20 h-80 bg-gray-100 border">
                                           {incomeType.brackets.map((bracket, idx) => {
+                                            if (bracket.min >= maxScale) return null;
+                                            
                                             const bracketTop = Math.min(bracket.max, maxScale);
                                             const bracketHeight = bracketTop - bracket.min;
                                             const heightPercent = (bracketHeight / maxScale) * 100;
                                             const bottomPercent = (bracket.min / maxScale) * 100;
                                             
-                                            // Color coding based on rate type
-                                            let bgColor = 'bg-primary'; // Default primary green
+                                            let bgColor = 'bg-primary';
                                             if (bracket.rate < 0) {
-                                              bgColor = 'bg-accent'; // Accent green for negative rates (eligible dividends)
+                                              bgColor = 'bg-accent';
                                             }
                                             
                                             return (
-                                              <div 
+                                              <div
                                                 key={idx}
-                                                className={`absolute w-full ${bgColor} flex items-center justify-center border-t border-white`}
+                                                className={`absolute w-full text-black text-xs font-medium flex items-center justify-center ${bgColor} z-20`}
                                                 style={{
+                                                  height: `${heightPercent}%`,
                                                   bottom: `${bottomPercent}%`,
-                                                  height: `${heightPercent}%`
+                                                  fontSize: '10px'
                                                 }}
                                               >
-                                                <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
-                                                  {bracket.label}
-                                                </span>
+                                                {bracket.rate.toFixed(1)}%
                                               </div>
                                             );
                                           })}
