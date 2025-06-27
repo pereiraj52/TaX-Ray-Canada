@@ -266,6 +266,7 @@ Changelog:
 - June 27, 2025. Changed default tax bracket visualization bar color from grey (bg-gray-300) to primary green (#88AA73) for consistent brand color usage
 - June 27, 2025. Changed tax bracket visualization text color from white to black for improved readability against green background
 - June 27, 2025. Updated taxable income indicator line and label color to #D4B26A using inline styles for proper color rendering in tax bracket visualization
+- June 27, 2025. Extended taxable income indicator line to appear across all 4 bars in tax bracket visualization while keeping label only on first bar
 ```
 
 ## User Preferences
