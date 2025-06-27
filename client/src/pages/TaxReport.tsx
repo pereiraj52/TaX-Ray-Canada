@@ -2239,12 +2239,17 @@ export default function TaxReport() {
                                       return federalThresholds.map((threshold, idx) => {
                                         const position = (threshold.income / 300000) * 100;
                                         
+                                        // Special positioning for $300k label - place it just below the top
+                                        const adjustedPosition = threshold.income === 300000 ? 
+                                          position - 8 : // Move down 8% from the top
+                                          position;
+                                        
                                         return (
                                           <div 
                                             key={idx}
                                             className="absolute right-0 text-right"
                                             style={{
-                                              bottom: `${position}%`,
+                                              bottom: `${adjustedPosition}%`,
                                               transform: 'translateY(0%)'
                                             }}
                                           >

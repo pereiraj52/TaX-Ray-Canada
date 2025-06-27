@@ -301,6 +301,7 @@ Changelog:
 - June 27, 2025. Removed Tax Rates section title: eliminated "Tax Rates" heading for cleaner document flow while maintaining the three KPI blocks for each household member
 - June 27, 2025. Fixed Federal Tax Bracket Visualization scale alignment: repositioned threshold labels ($0, $56k, $112k, $173k, $247k, $300k) to align precisely with where each tax bracket range starts, removed duplicate labels, and eliminated transform offset for accurate visual representation
 - June 27, 2025. Corrected Federal Tax Bracket Visualization height mismatch: changed scale container from h-80 to h-72 to match bar height, ensuring perfect alignment between threshold labels and actual bracket boundaries
+- June 27, 2025. Adjusted $300k label positioning in Federal Tax Bracket Visualization: moved label 8% down from top edge to position it just below the line where the highest bracket starts for better visual clarity
 ```
 
 ## User Preferences
