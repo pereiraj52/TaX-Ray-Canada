@@ -396,6 +396,58 @@ export default function TaxReport() {
                     );
                   })()}
                 </div>
+                
+                {/* KPI Blocks */}
+                <div className="mt-6 grid grid-cols-2 gap-4">
+                  {(() => {
+                    // Calculate net income percentage for KPI blocks
+                    let totalIncomeSum = 0;
+                    let totalNetIncome = 0;
+                    
+                    taxYearReturns.forEach(t1Return => {
+                      const t1WithFields = t1Return as any;
+                      if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                        const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                        const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                        
+                        const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        
+                        if (!isNaN(income) && !isNaN(tax)) {
+                          totalIncomeSum += income;
+                          totalNetIncome += (income - tax);
+                        }
+                      }
+                    });
+                    
+                    const netIncomePercentage = totalIncomeSum > 0 ? (totalNetIncome / totalIncomeSum) * 100 : 0;
+                    const youPaidPercentage = 100 - netIncomePercentage;
+                    
+                    return (
+                      <>
+                        {/* You Kept Block */}
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-green-700">
+                            {netIncomePercentage.toFixed(1)}%
+                          </div>
+                          <div className="text-sm font-medium text-green-600">
+                            You Kept
+                          </div>
+                        </div>
+                        
+                        {/* You Paid Block */}
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                          <div className="text-2xl font-bold text-red-700">
+                            {youPaidPercentage.toFixed(1)}%
+                          </div>
+                          <div className="text-sm font-medium text-red-600">
+                            You Paid
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
               </CardContent>
             </Card>
             
