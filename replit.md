@@ -279,6 +279,7 @@ Changelog:
 - June 27, 2025. Added comprehensive Provincial Tax Bracket Analysis and Visualization sections duplicating federal structure with authentic Ontario provincial rates (5.05%-13.16%), including separate analysis tables and visualization charts with four income types (Ordinary Income, Capital Gains, Eligible Dividends, Non-Eligible Dividends), proper income scale labels ($0-$300k with provincial thresholds at $51k, $103k, $150k, $220k), and color coding for negative dividend tax rates using accent green
 - June 27, 2025. Fixed Federal Tax Bracket Visualization eligible dividend rates to show correct authentic rates from bottom to top: -0.03%, 7.56%, 15.15%, 19.73%, 24.81%, and added color coding for negative rates using accent green to distinguish from positive rates
 - June 27, 2025. Corrected Federal Tax Bracket Visualization non-eligible dividend rates to show authentic rates from bottom to top: 6.87%, 13.19%, 18.52%, 27.57%, 27.57%
+- June 27, 2025. Changed Federal Tax Bracket Visualization color scheme to use consistent primary green for all brackets including the negative eligible dividend rate (-0.03%) for uniform appearance across all income types
 ```
 
 ## User Preferences
