@@ -2078,8 +2078,8 @@ export default function TaxReport() {
                                                 const heightPercent = (bracketHeight / maxScale) * 100;
                                                 const bottomPercent = (bracket.min / maxScale) * 100;
                                                 
-                                                // Color coding using brand colors - all federal brackets use primary green
-                                                let bgColor = 'bg-primary';
+                                                // Color coding using brand colors - highlight current bracket with accent green
+                                                let bgColor = isCurrentBracket ? 'bg-accent' : 'bg-primary';
                                                 
                                                 return (
                                                   <div 

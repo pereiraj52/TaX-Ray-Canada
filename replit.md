@@ -281,6 +281,7 @@ Changelog:
 - June 27, 2025. Corrected Federal Tax Bracket Visualization non-eligible dividend rates to show authentic rates from bottom to top: 6.87%, 13.19%, 18.52%, 27.57%, 27.57%
 - June 27, 2025. Changed Federal Tax Bracket Visualization color scheme to use consistent primary green for all brackets including the negative eligible dividend rate (-0.03%) for uniform appearance across all income types
 - June 27, 2025. Updated Provincial Tax Bracket Analysis layout to match Combined and Federal sections with three-column structure (Income Range, Rate, Tax), detailed tax calculations for each bracket, current bracket highlighting, and marginal rate summary at bottom for consistency across all analysis sections
+- June 27, 2025. Enhanced Federal Tax Bracket Visualization to highlight client's current marginal tax rate bracket with accent green color (#C7E6C2) while keeping all other brackets in primary green for clear visual identification of client's tax position
 ```
 
 ## User Preferences
