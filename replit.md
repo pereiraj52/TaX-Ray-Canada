@@ -284,6 +284,7 @@ Changelog:
 - June 27, 2025. Enhanced Federal Tax Bracket Visualization to highlight client's current marginal tax rate bracket with accent green color (#C7E6C2) while keeping all other brackets in primary green for clear visual identification of client's tax position
 - June 27, 2025. Updated Provincial Tax Bracket Analysis to match Federal Tax Bracket Analysis layout exactly: separated into two distinct sections with Provincial Tax Bracket Tables (detailed analysis tables with Rate, Threshold, Income, Tax columns) and Provincial Tax Bracket Visualizations (four-bar charts with income types), maintaining identical structure and styling throughout
 - June 27, 2025. Fixed Combined Tax Bracket Visualization threshold label alignment: removed spacing adjustment algorithm and transform offset to position income thresholds (like $112k) exactly aligned with their corresponding bracket boundary lines for precise visual reference
+- June 27, 2025. Updated Federal Tax Bracket Visualization threshold positioning to display labels at the middle of each bracket range instead of bracket boundaries: shows bracket ranges ($0-$56k, $56k-$112k, etc.) positioned at the center of each bracket segment for clearer visual reference
 ```
 
 ## User Preferences

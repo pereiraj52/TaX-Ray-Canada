@@ -2004,27 +2004,31 @@ export default function TaxReport() {
                                     {/* $300k at top */}
                                     <div className="absolute top-0 right-0 text-right">$300k</div>
                                     
-                                    {/* Federal tax bracket thresholds */}
+                                    {/* Federal tax bracket thresholds - positioned at middle of each bracket */}
                                     {(() => {
-                                      const federalThresholds = [
-                                        { income: 55867, label: "$56k" },
-                                        { income: 111733, label: "$112k" },
-                                        { income: 173205, label: "$173k" },
-                                        { income: 246752, label: "$247k" }
+                                      const federalBrackets = [
+                                        { min: 0, max: 55867, label: "$0-$56k" },
+                                        { min: 55867, max: 111733, label: "$56k-$112k" },
+                                        { min: 111733, max: 173205, label: "$112k-$173k" },
+                                        { min: 173205, max: 246752, label: "$173k-$247k" },
+                                        { min: 246752, max: 300000, label: "$247k+" }
                                       ];
 
-                                      const thresholds = federalThresholds.map(threshold => ({
-                                        position: (threshold.income / 300000) * 100,
-                                        label: threshold.label
-                                      }));
+                                      const thresholds = federalBrackets.map(bracket => {
+                                        const midpoint = (bracket.min + Math.min(bracket.max, 300000)) / 2;
+                                        return {
+                                          position: (midpoint / 300000) * 100,
+                                          label: bracket.label
+                                        };
+                                      });
 
                                       return thresholds.map((threshold, idx) => (
                                         <div 
                                           key={idx}
                                           className="absolute right-0 text-right"
                                           style={{
-                                            bottom: `${Math.min(threshold.position, 90)}%`,
-                                            transform: 'translateY(50%)'
+                                            bottom: `${threshold.position}%`,
+                                            transform: 'translateY(-50%)'
                                           }}
                                         >
                                           {threshold.label}
