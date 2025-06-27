@@ -2009,8 +2009,45 @@ export default function TaxReport() {
 
 
                               {/* Federal Tax Bracket Chart */}
-                              <div className="flex justify-center items-end space-x-2 h-80 p-4">
-                                {(() => {
+                              <div className="relative">
+                                <div className="flex items-start justify-center">
+                                  {/* Income scale labels on left (vertical axis) */}
+                                  <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                    {/* $300k at top */}
+                                    <div className="absolute top-0 right-0 text-right">$300k</div>
+                                    
+                                    {/* Federal tax bracket thresholds */}
+                                    {(() => {
+                                      const federalThresholds = [
+                                        { amount: 55867, label: '$55,867' },
+                                        { amount: 111733, label: '$111,733' },
+                                        { amount: 173205, label: '$173,205' },
+                                        { amount: 246752, label: '$246,752' }
+                                      ];
+
+                                      const maxScale = 300000;
+                                      
+                                      return federalThresholds.map((threshold, idx) => (
+                                        <div 
+                                          key={idx}
+                                          className="absolute right-0 text-right"
+                                          style={{
+                                            bottom: `${(threshold.amount / maxScale) * 100}%`,
+                                            transform: 'translateY(50%)'
+                                          }}
+                                        >
+                                          {threshold.label}
+                                        </div>
+                                      ));
+                                    })()}
+                                    
+                                    {/* $0 at bottom */}
+                                    <div className="absolute bottom-0 right-0 text-right">$0</div>
+                                  </div>
+                                  
+                                  {/* Four Income Type Bars */}
+                                  <div className="flex space-x-3">
+                                    {(() => {
                                   const incomeTypes = [
                                     { name: 'Ordinary Income', brackets: federalOrdinaryBrackets },
                                     { name: 'Capital Gains', brackets: federalCapitalGainsBrackets },
@@ -2081,6 +2118,8 @@ export default function TaxReport() {
                                     );
                                   });
                                 })()}
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
