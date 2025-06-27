@@ -1829,7 +1829,7 @@ export default function TaxReport() {
                                                   height: `${heightPercent}%`
                                                 }}
                                               >
-                                                <span className="text-xs font-medium text-black whitespace-nowrap">
+                                                <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
                                                   {bracket.label}
                                                 </span>
                                               </div>
