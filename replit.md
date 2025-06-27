@@ -261,6 +261,7 @@ Changelog:
 - June 27, 2025. Removed "of total income" text from individual pie chart tooltips for cleaner display showing only dollar amount and percentage
 - June 27, 2025. Separated tax bracket table and visualization chart into two distinct blocks: created separate cards for tax bracket analysis tables and tax bracket visualizations for cleaner organization
 - June 27, 2025. Removed taxable income display line from Combined Tax Bracket Analysis section headers for cleaner table presentation
+- June 27, 2025. Removed combined marginal tax rate number and label from tax bracket visualization section for streamlined chart display
 ```
 
 ## User Preferences
