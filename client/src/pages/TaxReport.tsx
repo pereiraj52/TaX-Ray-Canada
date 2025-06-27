@@ -358,16 +358,23 @@ export default function TaxReport() {
                                   if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                                     const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                                     const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                                    const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                                    const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
                                     const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
                                     const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                                     
                                     const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                    const provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     const cpp = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     const ei = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                                     
-                                    if (!isNaN(income) && !isNaN(tax)) {
-                                      totalNetIncome += (income - tax - cpp - ei);
+                                    // Calculate total tax (use field 43500 if available, otherwise add federal + provincial)
+                                    const calculatedTotalTax = tax > 0 ? tax : (federalTax + provincialTax);
+                                    
+                                    if (!isNaN(income)) {
+                                      totalNetIncome += (income - calculatedTotalTax - cpp - ei);
                                     }
                                   }
                                 });
@@ -680,7 +687,9 @@ export default function TaxReport() {
                         }
                         
                         const totalDeductions = totalIncome - totalTaxableIncome;
-                        const netIncome = totalIncome - totalTax - cppContributions - eiPremiums;
+                        // Calculate total tax (use field 43500 if available, otherwise add federal + provincial)
+                        const calculatedTotalTax = totalTax > 0 ? totalTax : (federalTax + provincialTax);
+                        const netIncome = totalIncome - calculatedTotalTax - cppContributions - eiPremiums;
                         
                         const calculatePercentage = (amount: number) => {
                           if (totalIncome === 0) return '0.0%';
@@ -772,22 +781,30 @@ export default function TaxReport() {
                         // Calculate individual net income percentage for KPI blocks
                         let totalIncome = 0;
                         let totalTax = 0;
+                        let federalTax = 0;
+                        let provincialTax = 0;
                         let cppContributions = 0;
                         let eiPremiums = 0;
                         
                         if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                           const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                           const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                          const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                          const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
                           const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
                           const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                           
                           totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           totalTax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                         }
                         
-                        const netIncome = totalIncome - totalTax - cppContributions - eiPremiums;
+                        // Calculate total tax (use field 43500 if available, otherwise add federal + provincial)
+                        const calculatedTotalTax = totalTax > 0 ? totalTax : (federalTax + provincialTax);
+                        const netIncome = totalIncome - calculatedTotalTax - cppContributions - eiPremiums;
                         const netIncomePercentage = totalIncome > 0 ? (netIncome / totalIncome) * 100 : 0;
                         const youPaidPercentage = 100 - netIncomePercentage;
                         
