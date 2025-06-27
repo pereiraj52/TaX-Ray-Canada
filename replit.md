@@ -258,6 +258,7 @@ Changelog:
 - June 27, 2025. Updated Combined Tax Bracket Analysis titles from "Combined marginal tax rate for Client name" to "Client Name - Combined Tax Bracket Analysis" for clearer section identification
 - June 27, 2025. Removed breadcrumb navigation from household tax report page for cleaner interface focusing on report content
 - June 27, 2025. Updated household pie chart tooltips to match individual chart format: combined dollar amount and percentage in single line for consistency across all pie chart visualizations
+- June 27, 2025. Removed "of total income" text from individual pie chart tooltips for cleaner display showing only dollar amount and percentage
 ```
 
 ## User Preferences
