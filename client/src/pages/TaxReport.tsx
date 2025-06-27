@@ -2139,96 +2139,94 @@ export default function TaxReport() {
                 {/* Provincial Tax Bracket Analysis */}
                 <div className="space-y-6">
                   <h2 className="text-xl font-semibold text-gray-900">Provincial Tax Bracket Analysis</h2>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {spouseData.map((spouse, spouseIndex) => {
-                      // Get the user's province from T1 data - defaulting to Ontario for now
-                      const province = 'ON'; // Default to Ontario since province isn't in spouse data structure
-                      
-                      // Ontario provincial tax brackets (5.05% to 13.16%)
-                      const ontarioTaxBrackets = [
-                        { rate: 5.05, min: 0, max: 51446, threshold: 51446, label: "5.05%" },
-                        { rate: 9.15, min: 51446, max: 102894, threshold: 102894, label: "9.15%" },
-                        { rate: 11.16, min: 102894, max: 150000, threshold: 150000, label: "11.16%" },
-                        { rate: 12.16, min: 150000, max: 220000, threshold: 220000, label: "12.16%" },
-                        { rate: 13.16, min: 220000, max: 300000, threshold: 300000, label: "13.16%" }
-                      ];
+                </div>
 
-                      // Calculate current bracket info
-                      const currentBracket = ontarioTaxBrackets.find(bracket => 
-                        spouse.taxableIncome > bracket.min && 
-                        (spouse.taxableIncome <= bracket.max || (spouse.taxableIncome > 220000 && bracket.min === 220000))
-                      ) || ontarioTaxBrackets[ontarioTaxBrackets.length - 1];
+                {/* Provincial Tax Bracket Tables */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                  {spouseData.map((spouse, spouseIndex) => {
+                    // Provincial tax brackets for 2024 (Ontario)
+                    const provincialBrackets = [
+                      { rate: 5.05, min: 0, max: 51446, label: "5.05%" },
+                      { rate: 9.15, min: 51446, max: 102894, label: "9.15%" },
+                      { rate: 11.16, min: 102894, max: 150000, label: "11.16%" },
+                      { rate: 12.16, min: 150000, max: 220000, label: "12.16%" },
+                      { rate: 13.16, min: 220000, max: Infinity, label: "13.16%" }
+                    ];
 
-                      return (
-                        <Card key={spouseIndex}>
-                          <CardContent className="p-6">
-                            <div className="space-y-4">
-                              <h3 className="font-medium text-primary">
-                                {spouse.clientName} - Provincial Tax Bracket Analysis
-                              </h3>
-                              
-                              <div className="bg-gray-50 rounded-lg p-4">
-                                <div className="flex justify-between items-center mb-3">
-                                  <span className="text-sm font-medium text-gray-700">Income Range</span>
-                                  <span className="text-sm font-medium text-gray-700">Rate</span>
-                                  <span className="text-sm font-medium text-gray-700">Tax</span>
-                                </div>
-                                
-                                <div className="space-y-1">
-                                  {ontarioTaxBrackets.map((bracket, idx) => {
-                                    const isCurrentBracket = spouse.taxableIncome > bracket.min && 
-                                      (spouse.taxableIncome <= bracket.max || (spouse.taxableIncome > 220000 && bracket.min === 220000));
-                                    
-                                    // Calculate tax for this bracket
-                                    const taxableInThisBracket = Math.min(
-                                      Math.max(0, spouse.taxableIncome - bracket.min),
-                                      bracket.max - bracket.min
-                                    );
-                                    const taxInThisBracket = taxableInThisBracket * (bracket.rate / 100);
-                                    
-                                    return (
-                                      <div 
-                                        key={idx} 
-                                        className={`flex justify-between items-center py-1 px-2 rounded text-xs ${
-                                          isCurrentBracket ? 'bg-accent/20 border border-accent text-gray-700' : 'text-gray-700'
-                                        }`}
-                                      >
-                                        <div className="flex-1">
-                                          {idx === 0 
-                                            ? `$0 - $${(bracket.max / 1000).toFixed(0)}k`
-                                            : idx === ontarioTaxBrackets.length - 1
-                                              ? `$${(bracket.min / 1000).toFixed(0)}k+`
-                                              : `$${(bracket.min / 1000).toFixed(0)}k - $${(bracket.max / 1000).toFixed(0)}k`
-                                          }
-                                        </div>
-                                        <div className="flex-1 text-center font-medium">
-                                          {bracket.label}
-                                        </div>
-                                        <div className="flex-1 text-right">
-                                          ${taxInThisBracket.toLocaleString('en-CA', { 
-                                            minimumFractionDigits: 0, 
-                                            maximumFractionDigits: 0 
-                                          })}
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                
-                                <div className="mt-3 pt-3 border-t border-gray-300">
-                                  <div className="flex justify-between items-center text-sm font-semibold text-primary">
-                                    <span>Provincial marginal tax rate for {spouse.clientName}</span>
-                                    <span>{currentBracket.rate.toFixed(2)}%</span>
-                                  </div>
-                                </div>
-                              </div>
+                    const calculateProvincialTaxBreakdown = (income: number) => {
+                      return provincialBrackets.map(bracket => {
+                        let incomeInBracket = 0;
+                        let taxFromBracket = 0;
+                        
+                        if (income > bracket.min) {
+                          const maxForBracket = Math.min(income, bracket.max);
+                          incomeInBracket = maxForBracket - bracket.min;
+                          taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                        }
+
+                        return {
+                          rate: bracket.label,
+                          threshold: `$${bracket.min.toLocaleString()} to ${bracket.max === Infinity ? 'above' : '$' + bracket.max.toLocaleString()}`,
+                          incomeInBracket: incomeInBracket,
+                          tax: taxFromBracket,
+                          ratePercent: bracket.rate
+                        };
+                      });
+                    };
+
+                    const provincialBracketBreakdown = calculateProvincialTaxBreakdown(spouse.taxableIncome);
+                    const totalProvincialTax = provincialBracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+
+                    return (
+                      <Card key={spouseIndex}>
+                        <CardContent className="p-6">
+                          <div>
+                            <h3 className="font-medium text-gray-900 mb-4">
+                              {spouse.clientName} - Provincial Tax Bracket Analysis
+                            </h3>
+                            
+                            {/* Provincial Tax Bracket Table */}
+                            <div className="overflow-x-auto">
+                              <table className="w-full border-collapse text-sm">
+                                <thead>
+                                  <tr className="border-b">
+                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Rate</th>
+                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Threshold</th>
+                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Income</th>
+                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Tax</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {provincialBracketBreakdown.map((bracket, index) => (
+                                    <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
+                                      <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                      <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                        ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                      </td>
+                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                        ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
+                                    <td className="py-2 px-2">Total</td>
+                                    <td className="py-2 px-2"></td>
+                                    <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                      ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                    </td>
+                                    <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                      ${totalProvincialTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
                             </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
 
                 {/* Provincial Tax Bracket Visualizations */}
