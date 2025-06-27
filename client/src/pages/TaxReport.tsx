@@ -1103,7 +1103,7 @@ export default function TaxReport() {
                           <div className="space-y-4">
                             <div>
                               <h3 className="font-medium text-gray-900 mb-4">
-                                {spouse.clientName} - Tax Bracket Visualization
+                                {spouse.clientName} - Combined Tax Bracket Visualization
                               </h3>
 
 

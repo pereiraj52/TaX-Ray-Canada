@@ -272,6 +272,7 @@ Changelog:
 - June 27, 2025. Added Federal Tax Bracket Analysis and Federal Tax Bracket Visualization sections with authentic 2024 federal tax brackets (15%, 20.5%, 26%, 29%, 33%) for comprehensive tax planning analysis
 - June 27, 2025. Enhanced Federal Tax Bracket Visualization to include four income types: Ordinary Income, Capital Gains (50% inclusion rate), Eligible Dividends (with negative rates for tax credits), and Non-Eligible Dividends with authentic federal marginal tax rates
 - June 27, 2025. Removed Federal Tax Bracket Visualization section while maintaining Federal Tax Bracket Analysis tables for cleaner interface
+- June 27, 2025. Changed title from "Tax Bracket Visualization" to "Combined Tax Bracket Visualization" for better distinction from federal-only analysis
 ```
 
 ## User Preferences
