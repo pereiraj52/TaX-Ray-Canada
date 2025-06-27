@@ -572,9 +572,8 @@ export default function TaxReport() {
                       <div className="bg-white p-3 border rounded shadow-lg">
                         <p className="font-medium">{data.name}</p>
                         <p className="text-sm text-gray-600">
-                          ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({percentage}%)
                         </p>
-                        <p className="text-sm text-gray-600">{percentage}% of total income</p>
                       </div>
                     );
                   }
@@ -603,7 +602,7 @@ export default function TaxReport() {
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                           </Pie>
-                          <Tooltip />
+                          <Tooltip content={CustomTooltip} />
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
