@@ -285,6 +285,8 @@ Changelog:
 - June 27, 2025. Restructured Provincial Tax Bracket Analysis to match Federal layout: converted to professional table format with Rate, Threshold, Income, and Tax columns, added current bracket highlighting, included total row with border emphasis, and maintained authentic Ontario tax calculations
 - June 27, 2025. Fixed Provincial Tax Bracket Analysis styling to exactly match Federal and Combined sections: updated header color from text-primary to text-gray-900, changed table structure to use border-collapse text-sm, matched py-2 px-2 spacing, aligned font styling with text-gray-700 for data rows and text-gray-900 for headers, and corrected JSX structure for proper rendering
 - June 27, 2025. Corrected Provincial Tax Bracket Analysis rate column styling to match Federal section: changed from text-gray-700 to font-medium text-primary for rate values, and applied text-xs to threshold, income, and tax columns for consistent visual hierarchy
+- June 27, 2025. Updated Combined Tax Bracket Analysis and Visualization to use correct 2024 tax thresholds: changed from 2023 thresholds ($49,231, $98,463) to authentic 2024 Ontario thresholds ($51,446, $102,894) for all income types including ordinary income, capital gains, eligible dividends, and non-eligible dividends with recalculated marginal tax rates
+- June 27, 2025. Verified and confirmed 2024 tax thresholds across all major analysis sections: Federal Tax Bracket Analysis uses authentic 2024 federal thresholds ($55,867, $111,733, $173,205, $246,752), Provincial Tax Bracket Analysis uses 2024 Ontario thresholds ($51,446, $102,894, $150,000, $220,000), and Combined Tax Bracket Analysis integrates both for accurate tax calculations
 ```
 
 ## User Preferences
