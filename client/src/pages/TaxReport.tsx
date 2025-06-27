@@ -1061,8 +1061,6 @@ export default function TaxReport() {
               <div className="space-y-6">
                 {/* Tax Rates Section */}
                 <div className="mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Rates</h2>
-                  
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {spouseData.map((spouse, spouseIndex) => {
                       const spouseT1 = spouse.t1Return as any;
