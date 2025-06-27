@@ -273,6 +273,7 @@ Changelog:
 - June 27, 2025. Enhanced Federal Tax Bracket Visualization to include four income types: Ordinary Income, Capital Gains (50% inclusion rate), Eligible Dividends (with negative rates for tax credits), and Non-Eligible Dividends with authentic federal marginal tax rates
 - June 27, 2025. Removed Federal Tax Bracket Visualization section while maintaining Federal Tax Bracket Analysis tables for cleaner interface
 - June 27, 2025. Changed title from "Tax Bracket Visualization" to "Combined Tax Bracket Visualization" for better distinction from federal-only analysis
+- June 27, 2025. Added Federal Tax Bracket Visualization section with authentic 2024 federal rates for four income types: Ordinary Income (15%-33%), Capital Gains (7.5%-16.5%), Eligible Dividends (7.56%-24.81%), and Non-Eligible Dividends (13.19%-27.37%)
 ```
 
 ## User Preferences
