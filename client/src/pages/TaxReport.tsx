@@ -1926,8 +1926,12 @@ export default function TaxReport() {
                   })}
                 </div>
 
-                {/* Federal Tax Bracket Tables */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                {/* Federal Tax Bracket Analysis */}
+                <div className="space-y-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Federal Tax Bracket Analysis</h2>
+                  
+                  {/* Federal Tax Bracket Tables */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
                   {spouseData.map((spouse, spouseIndex) => {
                     // Federal tax brackets for 2024
                     const federalBrackets = [
@@ -2226,6 +2230,7 @@ export default function TaxReport() {
                       </Card>
                     );
                   })}
+                </div>
                 </div>
 
                 {/* Provincial Tax Bracket Analysis */}
