@@ -449,20 +449,20 @@ export default function TaxReport() {
                       <>
                         {/* You Kept Block */}
                         <div className="rounded-lg p-8 text-center" style={{ backgroundColor: '#88AA73' }}>
-                          <div className="text-lg font-medium mb-2" style={{ color: '#111111' }}>
+                          <div className="text-lg font-medium mb-2" style={{ color: '#F9FAF8' }}>
                             You Kept
                           </div>
-                          <div className="text-4xl font-bold" style={{ color: '#111111' }}>
+                          <div className="text-4xl font-bold" style={{ color: '#F9FAF8' }}>
                             {netIncomePercentage.toFixed(2)}%
                           </div>
                         </div>
                         
                         {/* You Paid Block */}
                         <div className="rounded-lg p-8 text-center" style={{ backgroundColor: '#D4B26A' }}>
-                          <div className="text-lg font-medium mb-2" style={{ color: '#111111' }}>
+                          <div className="text-lg font-medium mb-2" style={{ color: '#F9FAF8' }}>
                             You Paid
                           </div>
-                          <div className="text-4xl font-bold" style={{ color: '#111111' }}>
+                          <div className="text-4xl font-bold" style={{ color: '#F9FAF8' }}>
                             {youPaidPercentage.toFixed(2)}%
                           </div>
                         </div>
@@ -803,20 +803,20 @@ export default function TaxReport() {
                           <>
                             {/* You Kept Block */}
                             <div className="rounded-lg p-6 text-center" style={{ backgroundColor: '#88AA73' }}>
-                              <div className="text-base font-medium mb-2" style={{ color: '#111111' }}>
+                              <div className="text-base font-medium mb-2" style={{ color: '#F9FAF8' }}>
                                 You Kept
                               </div>
-                              <div className="text-3xl font-bold" style={{ color: '#111111' }}>
+                              <div className="text-3xl font-bold" style={{ color: '#F9FAF8' }}>
                                 {netIncomePercentage.toFixed(2)}%
                               </div>
                             </div>
                             
                             {/* You Paid Block */}
                             <div className="rounded-lg p-6 text-center" style={{ backgroundColor: '#D4B26A' }}>
-                              <div className="text-base font-medium mb-2" style={{ color: '#111111' }}>
+                              <div className="text-base font-medium mb-2" style={{ color: '#F9FAF8' }}>
                                 You Paid
                               </div>
-                              <div className="text-3xl font-bold" style={{ color: '#111111' }}>
+                              <div className="text-3xl font-bold" style={{ color: '#F9FAF8' }}>
                                 {youPaidPercentage.toFixed(2)}%
                               </div>
                             </div>
