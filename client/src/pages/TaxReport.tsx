@@ -1985,8 +1985,37 @@ export default function TaxReport() {
                       }));
                     };
 
+                    // Get actual federal tax amount from T1 form for this spouse
+                    const actualFederalTax = (() => {
+                      // Find the T1 return for this spouse
+                      const spouseT1 = taxYearReturns.find((t1: any) => {
+                        const t1WithFields = t1 as any;
+                        if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                          // Use the order of spouses (0 = first return, 1 = second return)
+                          return taxYearReturns.indexOf(t1) === spouseIndex;
+                        }
+                        return false;
+                      }) as any;
+                      
+                      if (spouseT1 && spouseT1.formFields) {
+                        const federalTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42000');
+                        const federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        return federalTax;
+                      }
+                      return 0;
+                    })();
+                    
                     const federalBracketBreakdown = calculateFederalTaxBreakdown(spouse.taxableIncome);
-                    const totalFederalTax = federalBracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+                    const calculatedFederalTax = federalBracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+                    
+                    // Adjust bracket breakdown to match actual federal tax
+                    const adjustmentRatio = calculatedFederalTax > 0 ? actualFederalTax / calculatedFederalTax : 0;
+                    const adjustedFederalBracketBreakdown = federalBracketBreakdown.map(bracket => ({
+                      ...bracket,
+                      tax: bracket.tax * adjustmentRatio
+                    }));
+                    
+                    const totalFederalTax = actualFederalTax;
 
                     return (
                       <Card key={spouseIndex}>
@@ -2008,7 +2037,7 @@ export default function TaxReport() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {federalBracketBreakdown.map((bracket, index) => (
+                                  {adjustedFederalBracketBreakdown.map((bracket, index) => (
                                     <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
                                       <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
                                       <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
@@ -2298,12 +2327,41 @@ export default function TaxReport() {
                                         }));
                                       };
 
+                                      // Get actual provincial tax amount from T1 form for this spouse
+                                      const actualProvincialTax = (() => {
+                                        // Find the T1 return for this spouse
+                                        const spouseT1 = taxYearReturns.find((t1: any) => {
+                                          const t1WithFields = t1 as any;
+                                          if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                            // Use the order of spouses (0 = first return, 1 = second return)
+                                            return taxYearReturns.indexOf(t1) === spouseIndex;
+                                          }
+                                          return false;
+                                        }) as any;
+                                        
+                                        if (spouseT1 && spouseT1.formFields) {
+                                          const provincialTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42800');
+                                          const provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                                          return provincialTax;
+                                        }
+                                        return 0;
+                                      })();
+                                      
                                       const provincialBracketBreakdown = calculateProvincialTaxBreakdown(spouse.taxableIncome);
-                                      const totalProvincialTax = provincialBracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+                                      const calculatedProvincialTax = provincialBracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+                                      
+                                      // Adjust bracket breakdown to match actual provincial tax
+                                      const adjustmentRatio = calculatedProvincialTax > 0 ? actualProvincialTax / calculatedProvincialTax : 0;
+                                      const adjustedProvincialBracketBreakdown = provincialBracketBreakdown.map(bracket => ({
+                                        ...bracket,
+                                        tax: bracket.tax * adjustmentRatio
+                                      }));
+                                      
+                                      const totalProvincialTax = actualProvincialTax;
 
                                       return (
                                         <>
-                                          {provincialBracketBreakdown.map((bracket, index) => (
+                                          {adjustedProvincialBracketBreakdown.map((bracket, index) => (
                                             <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
                                               <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
                                               <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
