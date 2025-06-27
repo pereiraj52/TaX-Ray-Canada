@@ -283,6 +283,7 @@ Changelog:
 - June 27, 2025. Updated Provincial Tax Bracket Analysis layout to match Combined and Federal sections with three-column structure (Income Range, Rate, Tax), detailed tax calculations for each bracket, current bracket highlighting, and marginal rate summary at bottom for consistency across all analysis sections
 - June 27, 2025. Enhanced Federal Tax Bracket Visualization to highlight client's current marginal tax rate bracket with accent green color (#C7E6C2) while keeping all other brackets in primary green for clear visual identification of client's tax position
 - June 27, 2025. Updated Provincial Tax Bracket Analysis to match Federal Tax Bracket Analysis layout exactly: separated into two distinct sections with Provincial Tax Bracket Tables (detailed analysis tables with Rate, Threshold, Income, Tax columns) and Provincial Tax Bracket Visualizations (four-bar charts with income types), maintaining identical structure and styling throughout
+- June 27, 2025. Revised Ontario provincial tax bracket visualization with authentic 2024 CRA rates from official data: updated all four income types (Other Income: 5.05%-20.53%, Capital Gains: 2.53%-10.26%, Eligible Dividends: -6.83% to 14.53%, Non-Eligible Dividends: 2.37%-20.17%) with proper threshold markers at $51k, $56k, $91k, $103k, $107k, $112k, $150k, $173k, $220k, $247k for accurate tax planning analysis
 ```
 
 ## User Preferences

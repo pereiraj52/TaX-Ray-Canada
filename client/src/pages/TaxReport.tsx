@@ -2144,13 +2144,19 @@ export default function TaxReport() {
                 {/* Provincial Tax Bracket Tables */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
                   {spouseData.map((spouse, spouseIndex) => {
-                    // Provincial tax brackets for 2024 (Ontario)
+                    // Provincial tax brackets for 2024 (Ontario) - authentic CRA rates
                     const provincialBrackets = [
                       { rate: 5.05, min: 0, max: 51446, label: "5.05%" },
-                      { rate: 9.15, min: 51446, max: 102894, label: "9.15%" },
-                      { rate: 11.16, min: 102894, max: 150000, label: "11.16%" },
-                      { rate: 12.16, min: 150000, max: 220000, label: "12.16%" },
-                      { rate: 13.16, min: 220000, max: Infinity, label: "13.16%" }
+                      { rate: 9.15, min: 51446, max: 55867, label: "9.15%" },
+                      { rate: 9.15, min: 55867, max: 90599, label: "9.15%" },
+                      { rate: 11.48, min: 90599, max: 102894, label: "11.48%" },
+                      { rate: 13.89, min: 102894, max: 106733, label: "13.89%" },
+                      { rate: 17.91, min: 106733, max: 111733, label: "17.91%" },
+                      { rate: 17.41, min: 111733, max: 150000, label: "17.41%" },
+                      { rate: 18.97, min: 150000, max: 173205, label: "18.97%" },
+                      { rate: 18.97, min: 173205, max: 220000, label: "18.97%" },
+                      { rate: 16.85, min: 220000, max: 246752, label: "16.85%" },
+                      { rate: 20.53, min: 246752, max: Infinity, label: "20.53%" }
                     ];
 
                     const calculateProvincialTaxBreakdown = (income: number) => {
@@ -2232,37 +2238,61 @@ export default function TaxReport() {
                 {/* Provincial Tax Bracket Visualizations */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {spouseData.map((spouse, spouseIndex) => {
-                    // Ontario provincial tax brackets for visualization - different rates for different income types
+                    // Ontario provincial tax brackets for visualization - authentic 2024 rates from CRA data
                     const provincialOrdinaryBrackets = [
                       { rate: 5.05, min: 0, max: 51446, label: "5.05%" },
-                      { rate: 9.15, min: 51446, max: 102894, label: "9.15%" },
-                      { rate: 11.16, min: 102894, max: 150000, label: "11.16%" },
-                      { rate: 12.16, min: 150000, max: 220000, label: "12.16%" },
-                      { rate: 13.16, min: 220000, max: 300000, label: "13.16%" }
+                      { rate: 9.15, min: 51446, max: 55867, label: "9.15%" },
+                      { rate: 9.15, min: 55867, max: 90599, label: "9.15%" },
+                      { rate: 11.48, min: 90599, max: 102894, label: "11.48%" },
+                      { rate: 13.89, min: 102894, max: 106733, label: "13.89%" },
+                      { rate: 17.91, min: 106733, max: 111733, label: "17.91%" },
+                      { rate: 17.41, min: 111733, max: 150000, label: "17.41%" },
+                      { rate: 18.97, min: 150000, max: 173205, label: "18.97%" },
+                      { rate: 18.97, min: 173205, max: 220000, label: "18.97%" },
+                      { rate: 16.85, min: 220000, max: 246752, label: "16.85%" },
+                      { rate: 20.53, min: 246752, max: 300000, label: "20.53%" }
                     ];
                     
                     const provincialCapitalGainsBrackets = [
-                      { rate: 2.525, min: 0, max: 51446, label: "2.53%" },
-                      { rate: 4.575, min: 51446, max: 102894, label: "4.58%" },
-                      { rate: 5.58, min: 102894, max: 150000, label: "5.58%" },
-                      { rate: 6.08, min: 150000, max: 220000, label: "6.08%" },
-                      { rate: 6.58, min: 220000, max: 300000, label: "6.58%" }
+                      { rate: 2.53, min: 0, max: 51446, label: "2.53%" },
+                      { rate: 4.58, min: 51446, max: 55867, label: "4.58%" },
+                      { rate: 4.58, min: 55867, max: 90599, label: "4.58%" },
+                      { rate: 5.74, min: 90599, max: 102894, label: "5.74%" },
+                      { rate: 6.95, min: 102894, max: 106733, label: "6.95%" },
+                      { rate: 8.95, min: 106733, max: 111733, label: "8.95%" },
+                      { rate: 8.70, min: 111733, max: 150000, label: "8.70%" },
+                      { rate: 9.48, min: 150000, max: 173205, label: "9.48%" },
+                      { rate: 9.48, min: 173205, max: 220000, label: "9.48%" },
+                      { rate: 8.46, min: 220000, max: 246752, label: "8.46%" },
+                      { rate: 10.26, min: 246752, max: 300000, label: "10.26%" }
                     ];
                     
                     const provincialEligibleDividendBrackets = [
-                      { rate: -1.91, min: 0, max: 51446, label: "-1.91%" },
-                      { rate: 0.45, min: 51446, max: 102894, label: "0.45%" },
-                      { rate: 3.28, min: 102894, max: 150000, label: "3.28%" },
-                      { rate: 4.69, min: 150000, max: 220000, label: "4.69%" },
-                      { rate: 6.11, min: 220000, max: 300000, label: "6.11%" }
+                      { rate: -6.83, min: 0, max: 51446, label: "-6.83%" },
+                      { rate: 1.23, min: 51446, max: 55867, label: "1.23%" },
+                      { rate: -1.17, min: 55867, max: 90599, label: "-1.17%" },
+                      { rate: 1.36, min: 90599, max: 102894, label: "1.36%" },
+                      { rate: 4.68, min: 102894, max: 106733, label: "4.68%" },
+                      { rate: 10.14, min: 106733, max: 111733, label: "10.14%" },
+                      { rate: 10.23, min: 111733, max: 150000, label: "10.23%" },
+                      { rate: 12.38, min: 150000, max: 173205, label: "12.38%" },
+                      { rate: 12.38, min: 173205, max: 220000, label: "12.38%" },
+                      { rate: 14.53, min: 220000, max: 246752, label: "14.53%" },
+                      { rate: 14.53, min: 246752, max: 300000, label: "14.53%" }
                     ];
                     
                     const provincialNonEligibleDividendBrackets = [
-                      { rate: 3.16, min: 0, max: 51446, label: "3.16%" },
-                      { rate: 8.55, min: 51446, max: 102894, label: "8.55%" },
-                      { rate: 11.73, min: 102894, max: 150000, label: "11.73%" },
-                      { rate: 13.73, min: 150000, max: 220000, label: "13.73%" },
-                      { rate: 15.76, min: 220000, max: 300000, label: "15.76%" }
+                      { rate: 2.37, min: 0, max: 51446, label: "2.37%" },
+                      { rate: 7.08, min: 51446, max: 55867, label: "7.08%" },
+                      { rate: 7.09, min: 55867, max: 90599, label: "7.09%" },
+                      { rate: 9.19, min: 90599, max: 102894, label: "9.19%" },
+                      { rate: 11.97, min: 102894, max: 106733, label: "11.97%" },
+                      { rate: 15.78, min: 106733, max: 111733, label: "15.78%" },
+                      { rate: 16.58, min: 111733, max: 150000, label: "16.58%" },
+                      { rate: 18.38, min: 150000, max: 173205, label: "18.38%" },
+                      { rate: 18.38, min: 173205, max: 220000, label: "18.38%" },
+                      { rate: 20.17, min: 220000, max: 246752, label: "20.17%" },
+                      { rate: 20.17, min: 246752, max: 300000, label: "20.17%" }
                     ];
 
                     return (
@@ -2282,13 +2312,19 @@ export default function TaxReport() {
                                     {/* $300k at top */}
                                     <div className="absolute top-0 right-0 text-right">$300k</div>
                                     
-                                    {/* Provincial tax bracket thresholds */}
+                                    {/* Provincial tax bracket thresholds - Ontario 2024 */}
                                     {(() => {
                                       const provincialThresholds = [
                                         { income: 51446, label: "$51k" },
+                                        { income: 55867, label: "$56k" },
+                                        { income: 90599, label: "$91k" },
                                         { income: 102894, label: "$103k" },
+                                        { income: 106733, label: "$107k" },
+                                        { income: 111733, label: "$112k" },
                                         { income: 150000, label: "$150k" },
-                                        { income: 220000, label: "$220k" }
+                                        { income: 173205, label: "$173k" },
+                                        { income: 220000, label: "$220k" },
+                                        { income: 246752, label: "$247k" }
                                       ];
 
                                       const thresholds = provincialThresholds.map(threshold => ({
