@@ -1962,7 +1962,8 @@ export default function TaxReport() {
                   })}
                 </div>
 
-
+                {/* Federal Tax Bracket Visualizations */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {spouseData.map((spouse, spouseIndex) => {
                     // Federal tax brackets for visualization - different rates for different income types
                     const federalOrdinaryBrackets = [
@@ -2006,47 +2007,9 @@ export default function TaxReport() {
                                 {spouse.clientName} - Federal Tax Bracket Visualization
                               </h3>
 
-
                               {/* Federal Tax Bracket Chart */}
-                              <div className="relative">
-                                <div className="flex items-start justify-center">
-                                  {/* Income scale labels on left (vertical axis) */}
-                                  <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
-                                    {/* $300k at top */}
-                                    <div className="absolute top-0 right-0 text-right">$300k</div>
-                                    
-                                    {/* Federal tax bracket thresholds */}
-                                    {(() => {
-                                      const federalThresholds = [
-                                        { amount: 55867, label: '$55,867' },
-                                        { amount: 111733, label: '$111,733' },
-                                        { amount: 173205, label: '$173,205' },
-                                        { amount: 246752, label: '$246,752' }
-                                      ];
-
-                                      const maxScale = 300000;
-                                      
-                                      return federalThresholds.map((threshold, idx) => (
-                                        <div 
-                                          key={idx}
-                                          className="absolute right-0 text-right"
-                                          style={{
-                                            bottom: `${(threshold.amount / maxScale) * 100}%`,
-                                            transform: 'translateY(50%)'
-                                          }}
-                                        >
-                                          {threshold.label}
-                                        </div>
-                                      ));
-                                    })()}
-                                    
-                                    {/* $0 at bottom */}
-                                    <div className="absolute bottom-0 right-0 text-right">$0</div>
-                                  </div>
-                                  
-                                  {/* Four Income Type Bars */}
-                                  <div className="flex space-x-3">
-                                    {(() => {
+                              <div className="flex justify-center items-end space-x-4 h-80 p-4">
+                                {(() => {
                                   const incomeTypes = [
                                     { name: 'Ordinary Income', brackets: federalOrdinaryBrackets },
                                     { name: 'Capital Gains', brackets: federalCapitalGainsBrackets },
@@ -2060,36 +2023,36 @@ export default function TaxReport() {
                                     return (
                                       <div key={typeIdx} className="flex flex-col items-center">
                                         {/* Single bar for federal brackets */}
-                                        <div className="relative w-20 h-80 bg-gray-100 border">
+                                        <div className="relative w-20 h-72 bg-gray-200 border border-gray-300">
                                           {incomeType.brackets.map((bracket, idx) => {
-                                            if (bracket.min >= maxScale) return null;
-                                            
                                             const bracketTop = Math.min(bracket.max, maxScale);
                                             const bracketHeight = bracketTop - bracket.min;
                                             const heightPercent = (bracketHeight / maxScale) * 100;
                                             const bottomPercent = (bracket.min / maxScale) * 100;
                                             
-                                            let bgColor = 'bg-primary';
+                                            // Color coding based on rate type
+                                            let bgColor = 'bg-primary'; // Default primary green
                                             if (bracket.rate < 0) {
-                                              bgColor = 'bg-accent';
+                                              bgColor = 'bg-accent'; // Accent green for negative rates (eligible dividends)
                                             }
                                             
                                             return (
-                                              <div
+                                              <div 
                                                 key={idx}
-                                                className={`absolute w-full text-black text-xs font-medium flex items-center justify-center ${bgColor} z-20`}
+                                                className={`absolute w-full ${bgColor} flex items-center justify-center border-t border-white`}
                                                 style={{
-                                                  height: `${heightPercent}%`,
                                                   bottom: `${bottomPercent}%`,
-                                                  fontSize: '10px'
+                                                  height: `${heightPercent}%`
                                                 }}
                                               >
-                                                {bracket.rate.toFixed(1)}%
+                                                <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
+                                                  {bracket.label}
+                                                </span>
                                               </div>
                                             );
                                           })}
                                           
-                                          {/* Current income indicator line - show on all bars */}
+                                          {/* Current income indicator line - show on federal bar */}
                                           <div 
                                             className="absolute left-0 w-full h-1 z-10"
                                             style={{
@@ -2109,7 +2072,7 @@ export default function TaxReport() {
                                           </div>
                                         </div>
                                         
-                                        {/* Label below each bar */}
+                                        {/* Label below the bar */}
                                         <div className="mt-2 text-xs text-center text-gray-700 font-medium w-20">
                                           {incomeType.name}
                                         </div>
@@ -2117,8 +2080,6 @@ export default function TaxReport() {
                                     );
                                   });
                                 })()}
-                                  </div>
-                                </div>
                               </div>
                             </div>
                           </div>
