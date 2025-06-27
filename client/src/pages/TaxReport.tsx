@@ -1140,24 +1140,13 @@ export default function TaxReport() {
                                       }))
                                       .sort((a, b) => a.value - b.value);
 
-                                    // Adjust positions to prevent overlap (minimum 8% spacing)
-                                    for (let i = 1; i < thresholds.length; i++) {
-                                      const current = thresholds[i];
-                                      const previous = thresholds[i - 1];
-                                      const minSpacing = 8; // 8% minimum spacing
-                                      
-                                      if (current.position - previous.position < minSpacing) {
-                                        current.position = previous.position + minSpacing;
-                                      }
-                                    }
-
                                     return thresholds.map((threshold, idx) => (
                                       <div 
                                         key={idx}
                                         className="absolute right-0 text-right"
                                         style={{
-                                          bottom: `${Math.min(threshold.position, 90)}%`, // Cap at 90% to avoid overlapping with $300k
-                                          transform: 'translateY(50%)'
+                                          bottom: `${threshold.position}%`,
+                                          transform: 'translateY(0%)'
                                         }}
                                       >
                                         {threshold.label}
