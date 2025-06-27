@@ -560,10 +560,358 @@ export default function TaxReport() {
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Individual Tax Analysis</h2>
           
-          {/* Individual Income Breakdown Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {taxYearReturns.map((t1Return, index) => {
+          {(() => {
+            // Get individual taxable incomes for each spouse to match charts with tables
+            const spouseData = taxYearReturns.map(t1Return => {
               const t1WithFields = t1Return as any;
+              let taxableIncome = 0;
+              let clientName = 'Unknown';
+              
+              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                if (taxableField?.fieldValue) {
+                  const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
+                  if (!isNaN(value)) taxableIncome = value;
+                }
+              }
+              
+              // Get client name from household clients
+              const client = household?.clients.find(c => c.id === t1Return.clientId);
+              if (client) {
+                clientName = `${client.firstName} ${client.lastName}`;
+              }
+              
+              return { clientName, taxableIncome, t1Return };
+            });
+
+            return (
+              <div className="space-y-12">
+                {/* Connected Individual Analysis */}
+                {spouseData.map((spouse, spouseIndex) => {
+                  const t1WithFields = spouse.t1Return as any;
+                  
+                  // Calculate individual components for pie chart
+                  let totalIncome = 0;
+                  let federalTax = 0;
+                  let provincialTax = 0;
+                  let cppContributions = 0;
+                  let eiPremiums = 0;
+                  
+                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                    const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                    const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                    const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                    const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                    const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+                    
+                    totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                    eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                  }
+                  
+                  // Calculate net income using same method as household summary
+                  const totalTaxField = t1WithFields.formFields?.find((field: any) => field.fieldCode === '43500');
+                  const totalTax = totalTaxField?.fieldValue ? parseFloat(String(totalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                  const netIncome = totalIncome - totalTax;
+                  
+                  const individualPieData = [
+                    {
+                      name: 'Net Income',
+                      value: netIncome,
+                      color: '#22c55e'
+                    },
+                    {
+                      name: 'Federal Tax',
+                      value: federalTax,
+                      color: '#3b82f6'
+                    },
+                    {
+                      name: 'Provincial Tax',
+                      value: provincialTax,
+                      color: '#8b5cf6'
+                    },
+                    {
+                      name: 'CPP Contributions',
+                      value: cppContributions,
+                      color: '#f59e0b'
+                    },
+                    {
+                      name: 'EI Premiums',
+                      value: eiPremiums,
+                      color: '#ef4444'
+                    }
+                  ].filter(item => item.value > 0);
+
+                  return (
+                    <div key={spouse.t1Return.id} className="relative">
+                      {/* Left border connection line */}
+                      <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-primary to-primary opacity-60"></div>
+                      <div className="absolute -left-8 top-8 w-4 h-4 bg-primary rounded-full border-4 border-white shadow-lg"></div>
+                      
+                      {/* Individual Analysis Container */}
+                      <div className="pl-6">
+                        {/* Top Card - Income Breakdown Pie Chart */}
+                        <Card className="mb-6 shadow-lg border-2 border-primary/20">
+                          <CardContent className="p-6">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-3 h-3 bg-primary rounded-full"></div>
+                              <h3 className="font-medium text-gray-900 text-lg">{spouse.clientName} - Income Breakdown</h3>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                              {/* Pie Chart */}
+                              <div className="h-64">
+                                <ResponsiveContainer width="100%" height="100%">
+                                  <PieChart>
+                                    <Pie
+                                      data={individualPieData}
+                                      cx="50%"
+                                      cy="50%"
+                                      outerRadius={80}
+                                      fill="#8884d8"
+                                      dataKey="value"
+                                      label={false}
+                                    >
+                                      {individualPieData.map((entry, pieIndex) => (
+                                        <Cell key={`cell-${pieIndex}`} fill={entry.color} />
+                                      ))}
+                                    </Pie>
+                                    <Tooltip />
+                                  </PieChart>
+                                </ResponsiveContainer>
+                              </div>
+                              
+                              {/* Custom Legend */}
+                              <div className="space-y-3">
+                                {individualPieData.map((entry, legendIndex) => (
+                                  <div key={legendIndex} className="flex items-center gap-3">
+                                    <div 
+                                      className="w-4 h-4 rounded-full"
+                                      style={{ backgroundColor: entry.color }}
+                                    />
+                                    <span className="text-sm font-medium">
+                                      {entry.name}: ${entry.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        
+                        {/* Connecting Arrow */}
+                        <div className="flex justify-center mb-6">
+                          <div className="flex flex-col items-center">
+                            <div className="w-0.5 h-8 bg-primary"></div>
+                            <div className="w-4 h-4 bg-primary transform rotate-45 border-t-2 border-r-2 border-primary rounded-tr-sm"></div>
+                          </div>
+                        </div>
+                        
+                        {/* Bottom Card - Tax Analysis Table */}
+                        <Card className="shadow-lg border-2 border-primary/20">
+                          <CardContent className="p-6" id={`tax-analysis-${spouseIndex}`}>
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-3 h-3 bg-primary rounded-full"></div>
+                              <h3 className="font-medium text-gray-900 text-lg">{spouse.clientName} - Tax Bracket Analysis</h3>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-4">
+                              Taxable Income: ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </p>
+                            
+                            {/* Tax Analysis Logic */}
+                            {(() => {
+                              // Get province from first return for combined brackets
+                              const firstReturn = taxYearReturns[0];
+                              const firstReturnFields = (firstReturn as any)?.formFields || [];
+                              const provinceField = firstReturnFields.find((field: any) => field.fieldCode === 'province');
+                              const province = provinceField?.fieldValue || 'ON';
+
+                              // 2024 Combined Federal + Provincial Tax Brackets (Ontario example)
+                              const combinedBrackets = [
+                                { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+                                { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
+                                { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
+                                { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+                                { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+                                { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+                                { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
+                                { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+                                { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
+                              ];
+
+                              // Function to calculate individual tax breakdown for a spouse
+                              const calculateSpouseTaxBreakdown = (spouseIncome: number) => {
+                                return combinedBrackets.map(bracket => {
+                                  let incomeInBracket = 0;
+                                  let taxFromBracket = 0;
+
+                                  if (spouseIncome > bracket.min) {
+                                    const maxForBracket = Math.min(spouseIncome, bracket.max);
+                                    incomeInBracket = maxForBracket - bracket.min;
+                                    taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                                  }
+
+                                  return {
+                                    rate: bracket.label,
+                                    threshold: `$${bracket.min.toLocaleString()} to ${bracket.max === 300000 ? '$300k+' : '$' + bracket.max.toLocaleString()}`,
+                                    incomeInBracket: incomeInBracket,
+                                    tax: taxFromBracket
+                                  };
+                                });
+                              };
+
+                              const bracketBreakdown = calculateSpouseTaxBreakdown(spouse.taxableIncome);
+                              const totalTax = bracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+
+                              return (
+                                <div>
+                                  {/* Individual Tax Bracket Table */}
+                                  <div className="overflow-x-auto mb-6">
+                                    <table className="w-full border-collapse text-sm">
+                                      <thead>
+                                        <tr className="border-b">
+                                          <th className="text-left py-2 px-2 font-medium text-gray-900">Rate</th>
+                                          <th className="text-left py-2 px-2 font-medium text-gray-900">Threshold</th>
+                                          <th className="text-right py-2 px-2 font-medium text-gray-900">Income</th>
+                                          <th className="text-right py-2 px-2 font-medium text-gray-900">Tax</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {bracketBreakdown.map((bracket, index) => (
+                                          <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-green-50' : ''}`}>
+                                            <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                            <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                            <td className="py-2 px-2 text-right font-mono text-xs">
+                                              ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                            </td>
+                                            <td className="py-2 px-2 text-right font-mono text-xs">
+                                              ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                            </td>
+                                          </tr>
+                                        ))}
+                                        <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
+                                          <td className="py-2 px-2">Total</td>
+                                          <td className="py-2 px-2"></td>
+                                          <td className="py-2 px-2 text-right font-mono text-xs">
+                                            ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                          </td>
+                                          <td className="py-2 px-2 text-right font-mono text-xs">
+                                            ${totalTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+
+                                  {/* Marginal Rate Display and Visualization */}
+                                  <div className="mt-6">
+                                    <div className="text-right mb-4">
+                                      <div className="text-3xl font-bold text-primary">
+                                        {(() => {
+                                          // Find current marginal rate bracket for this spouse
+                                          let currentBracket = combinedBrackets[0];
+                                          for (let i = combinedBrackets.length - 1; i >= 0; i--) {
+                                            if (spouse.taxableIncome > combinedBrackets[i].min) {
+                                              currentBracket = combinedBrackets[i];
+                                              break;
+                                            }
+                                          }
+                                          return currentBracket.label;
+                                        })()}
+                                      </div>
+                                      <div className="text-sm text-gray-600">
+                                        Combined Marginal Tax Rate
+                                      </div>
+                                    </div>
+
+                                    {/* Vertical Tax Bracket Visualization */}
+                                    <div className="relative">
+                                      <div className="flex items-start justify-center">
+                                        {/* Income scale labels on left (vertical axis) */}
+                                        <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                          {/* $300k at top */}
+                                          <div className="absolute top-0 right-0 text-right">$300k</div>
+                                          
+                                          {/* Tax bracket thresholds */}
+                                          {(() => {
+                                            const maxScale = 300000;
+                                            const chartHeight = 320; // 80 * 4 (h-80)
+                                            
+                                            return combinedBrackets.map((bracket, index) => {
+                                              if (bracket.min === 0) return null; // Skip $0
+                                              
+                                              const position = ((maxScale - bracket.min) / maxScale) * chartHeight;
+                                              const isAbove247k = bracket.min > 246752;
+                                              
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  className="absolute right-0 text-right text-xs"
+                                                  style={{ top: `${position}px` }}
+                                                >
+                                                  ${bracket.min >= 1000 ? (bracket.min / 1000).toFixed(0) + 'k' : bracket.min}
+                                                </div>
+                                              );
+                                            });
+                                          })()}
+                                          
+                                          {/* $0 at bottom */}
+                                          <div className="absolute bottom-0 right-0 text-right">$0</div>
+                                        </div>
+
+                                        {/* Main vertical bar */}
+                                        <div className="relative">
+                                          <div className="w-12 h-80 bg-gradient-to-t from-green-200 via-yellow-300 via-yellow-400 via-orange-400 via-red-400 to-red-600 rounded-lg shadow-lg">
+                                            {/* Income position indicator */}
+                                            {(() => {
+                                              const maxScale = 300000;
+                                              const chartHeight = 320; // 80 * 4
+                                              const incomePosition = spouse.taxableIncome > maxScale 
+                                                ? 0 
+                                                : ((maxScale - spouse.taxableIncome) / maxScale) * chartHeight;
+                                              
+                                              return (
+                                                <div
+                                                  className="absolute -right-2 w-4 h-1 bg-black rounded"
+                                                  style={{ top: `${incomePosition}px` }}
+                                                  title={`Income: $${spouse.taxableIncome.toLocaleString()}`}
+                                                />
+                                              );
+                                            })()}
+                                          </div>
+                                          
+                                          {/* Tax rate labels on right */}
+                                          <div className="absolute -right-16 top-0 h-80 flex flex-col justify-between text-xs font-medium text-gray-700">
+                                            <div>53.53%</div>
+                                            <div className="text-center">Higher<br/>Rates</div>
+                                            <div className="text-center">Middle<br/>Rates</div>
+                                            <div className="text-center">Lower<br/>Rates</div>
+                                            <div>20.05%</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
+        </div>
+
+      </div>
+    </Layout>
+  );
+}
               const clientName = t1WithFields.client?.firstName && t1WithFields.client?.lastName 
                 ? `${t1WithFields.client.firstName} ${t1WithFields.client.lastName}`
                 : t1WithFields.child?.firstName && t1WithFields.child?.lastName
