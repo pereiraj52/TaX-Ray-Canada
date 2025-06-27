@@ -1059,7 +1059,7 @@ export default function TaxReport() {
                         <div className="space-y-4">
                           <div>
                             <h3 className="font-medium text-gray-900 mb-4">
-                              Combined marginal tax rate for {spouse.clientName}:
+                              {spouse.clientName} - Combined Tax Bracket Analysis
                             </h3>
                             <p className="text-sm text-gray-600 mb-4">
                               Taxable Income: ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
