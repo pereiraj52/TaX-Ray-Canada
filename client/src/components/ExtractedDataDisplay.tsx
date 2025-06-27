@@ -54,12 +54,16 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
 
   const generateReportMutation = useMutation({
-    mutationFn: () => HouseholdAPI.generateClientAuditReport(t1Return.clientId),
+    mutationFn: () => {
+      if (!t1Return.clientId) throw new Error('Client ID is required');
+      return HouseholdAPI.generateClientAuditReport(t1Return.clientId);
+    },
     onSuccess: (blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `audit-report-${t1Return.client.firstName}-${t1Return.client.lastName}-${t1Return.taxYear}.pdf`;
+      const clientName = t1Return.client ? `${t1Return.client.firstName}-${t1Return.client.lastName}` : 'client';
+      a.download = `audit-report-${clientName}-${t1Return.taxYear}.pdf`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -108,9 +112,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   const currencyFields = t1Return.formFields?.filter(f => f.fieldType === 'currency') || [];
   const textFields = t1Return.formFields?.filter(f => f.fieldType === 'text') || [];
 
-  const formatCurrency = (value: string | null | undefined): string => {
+  const formatCurrency = (value: string | number | null | undefined): string => {
     if (!value) return '$0.00';
-    const num = parseFloat(value);
+    const num = typeof value === 'number' ? value : parseFloat(value);
     return `$${num.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
@@ -292,7 +296,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-primary">
-          {t1Return.client.firstName} {t1Return.client.lastName} - {getTextFieldValue('province')} - {t1Return.taxYear}
+          {t1Return.client ? `${t1Return.client.firstName} ${t1Return.client.lastName}` : 'Client'} - {getTextFieldValue('province')} - {t1Return.taxYear}
         </h2>
         <div className="flex items-center space-x-3">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">

@@ -658,22 +658,20 @@ export default function TaxReport() {
                             ))}
                           </Pie>
                           <Tooltip 
-                            content={({ active, payload }) => {
+                            content={({ active, payload }: any) => {
                               if (active && payload && payload.length) {
                                 const data = payload[0];
-                                if (data && typeof data.value === 'number') {
-                                  const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
-                                  const percentage = ((data.value / total) * 100).toFixed(1);
-                                  return (
-                                    <div className="bg-white p-3 border rounded shadow-lg">
-                                      <p className="font-medium">{data.name}</p>
-                                      <p className="text-sm text-gray-600">
-                                        ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                      </p>
-                                      <p className="text-sm text-gray-600">{percentage}% of total income</p>
-                                    </div>
-                                  );
-                                }
+                                const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
+                                const percentage = ((data.value / total) * 100).toFixed(1);
+                                return (
+                                  <div className="bg-white p-3 border rounded shadow-lg">
+                                    <p className="font-medium">{data.name}</p>
+                                    <p className="text-sm text-gray-600">
+                                      ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    </p>
+                                    <p className="text-sm text-gray-600">{percentage}% of total income</p>
+                                  </div>
+                                );
                               }
                               return null;
                             }}
