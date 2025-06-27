@@ -1035,15 +1035,16 @@ export default function TaxReport() {
             };
 
             return (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {spouseData.map((spouse, spouseIndex) => {
-                  const bracketBreakdown = calculateSpouseTaxBreakdown(spouse.taxableIncome);
-                  const totalTax = bracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+              <div className="space-y-6">
+                {/* Tax Bracket Tables */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {spouseData.map((spouse, spouseIndex) => {
+                    const bracketBreakdown = calculateSpouseTaxBreakdown(spouse.taxableIncome);
+                    const totalTax = bracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
 
-                  return (
-                    <Card key={spouseIndex}>
-                      <CardContent className="p-6">
-                        <div className="space-y-4">
+                    return (
+                      <Card key={spouseIndex}>
+                        <CardContent className="p-6">
                           <div>
                             <h3 className="font-medium text-gray-900 mb-4">
                               {spouse.clientName} - Combined Tax Bracket Analysis
@@ -1090,42 +1091,56 @@ export default function TaxReport() {
                               </table>
                             </div>
                           </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
 
-                          {/* Vertical Tax Bracket Visualization */}
-                          <div className="mt-6">
-                            <div className="text-right mb-4">
-                              <div className="text-3xl font-bold text-primary">
-                                {(() => {
-                                  // Find current marginal rate bracket for this spouse
-                                  const combinedBrackets = [
-                                    { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
-                                    { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
-                                    { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
-                                    { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
-                                    { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
-                                    { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
-                                    { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
-                                    { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
-                                    { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
-                                  ];
-                                  
-                                  let currentBracket = combinedBrackets[0];
-                                  for (let i = combinedBrackets.length - 1; i >= 0; i--) {
-                                    if (spouse.taxableIncome > combinedBrackets[i].min) {
-                                      currentBracket = combinedBrackets[i];
-                                      break;
+                {/* Tax Bracket Visualizations */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {spouseData.map((spouse, spouseIndex) => {
+                    return (
+                      <Card key={spouseIndex}>
+                        <CardContent className="p-6">
+                          <div className="space-y-4">
+                            <div>
+                              <h3 className="font-medium text-gray-900 mb-4">
+                                {spouse.clientName} - Tax Bracket Visualization
+                              </h3>
+                              <div className="text-right mb-4">
+                                <div className="text-3xl font-bold text-primary">
+                                  {(() => {
+                                    // Find current marginal rate bracket for this spouse
+                                    const combinedBrackets = [
+                                      { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
+                                      { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
+                                      { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
+                                      { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+                                      { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+                                      { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+                                      { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
+                                      { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+                                      { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
+                                    ];
+                                    
+                                    let currentBracket = combinedBrackets[0];
+                                    for (let i = combinedBrackets.length - 1; i >= 0; i--) {
+                                      if (spouse.taxableIncome > combinedBrackets[i].min) {
+                                        currentBracket = combinedBrackets[i];
+                                        break;
+                                      }
                                     }
-                                  }
-                                  return currentBracket.label;
-                                })()}
+                                    return currentBracket.label;
+                                  })()}
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  Combined Marginal Tax Rate
+                                </div>
                               </div>
-                              <div className="text-sm text-gray-600">
-                                Combined Marginal Tax Rate
-                              </div>
-                            </div>
 
-                            {/* Multiple Tax Type Bars */}
-                            <div className="relative">
+                              {/* Multiple Tax Type Bars */}
+                              <div className="relative">
                               {/* Vertical bar chart with scale */}
                               <div className="flex items-start justify-center">
                                 {/* Income scale labels on left (vertical axis) - only key thresholds */}
@@ -1879,12 +1894,13 @@ export default function TaxReport() {
                                 </div>
                               </div>
                             </div>
+                            </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
               </div>
             );
           })()}
