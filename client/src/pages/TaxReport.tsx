@@ -1001,10 +1001,10 @@ export default function TaxReport() {
 
             // 2024 Combined Federal + Provincial Tax Brackets (Ontario example)
             const combinedBrackets = [
-              { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
-              { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
-              { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
-              { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+              { rate: 20.05, min: 0, max: 51446, label: "20.05%" },
+              { rate: 24.15, min: 51446, max: 55867, label: "24.15%" },
+              { rate: 29.65, min: 55867, max: 102894, label: "29.65%" },
+              { rate: 31.48, min: 102894, max: 111733, label: "31.48%" },
               { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
               { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
               { rate: 46.16, min: 173205, max: 220000, label: "46.16%" },
@@ -1119,14 +1119,14 @@ export default function TaxReport() {
                                   {/* Tax bracket thresholds with spacing adjustments */}
                                   {(() => {
                                     const combinedBrackets = [
-                                      { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
-                                      { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
-                                      { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
-                                      { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+                                      { rate: 20.05, min: 0, max: 51446, label: "20.05%" },
+                                      { rate: 24.15, min: 51446, max: 55867, label: "24.15%" },
+                                      { rate: 29.65, min: 55867, max: 102894, label: "29.65%" },
+                                      { rate: 31.48, min: 102894, max: 111733, label: "31.48%" },
                                       { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
                                       { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
-                                      { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
-                                      { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+                                      { rate: 46.16, min: 173205, max: 220000, label: "46.16%" },
+                                      { rate: 47.74, min: 220000, max: 246752, label: "47.74%" },
                                       { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
                                     ];
                                     const maxScale = 300000;
@@ -1176,47 +1176,47 @@ export default function TaxReport() {
                                     const taxRatesByProvince = {
                                       'ON': {
                                         ordinary: [
-                                          { rate: 20.05, min: 0, max: 49231, label: "20.05%" },
-                                          { rate: 24.15, min: 49231, max: 55867, label: "24.15%" },
-                                          { rate: 31.48, min: 55867, max: 98463, label: "31.48%" },
-                                          { rate: 33.89, min: 98463, max: 111733, label: "33.89%" },
+                                          { rate: 20.05, min: 0, max: 51446, label: "20.05%" },
+                                          { rate: 24.15, min: 51446, max: 55867, label: "24.15%" },
+                                          { rate: 29.65, min: 55867, max: 102894, label: "29.65%" },
+                                          { rate: 31.48, min: 102894, max: 111733, label: "31.48%" },
                                           { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
                                           { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
-                                          { rate: 44.97, min: 173205, max: 220000, label: "44.97%" },
-                                          { rate: 46.16, min: 220000, max: 246752, label: "46.16%" },
+                                          { rate: 46.16, min: 173205, max: 220000, label: "46.16%" },
+                                          { rate: 47.74, min: 220000, max: 246752, label: "47.74%" },
                                           { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
                                         ],
                                         capitalGains: [
-                                          { rate: 10.03, min: 0, max: 49231, label: "10.03%" },
-                                          { rate: 12.08, min: 49231, max: 55867, label: "12.08%" },
-                                          { rate: 15.74, min: 55867, max: 98463, label: "15.74%" },
-                                          { rate: 16.95, min: 98463, max: 111733, label: "16.95%" },
+                                          { rate: 10.03, min: 0, max: 51446, label: "10.03%" },
+                                          { rate: 12.08, min: 51446, max: 55867, label: "12.08%" },
+                                          { rate: 14.83, min: 55867, max: 102894, label: "14.83%" },
+                                          { rate: 15.74, min: 102894, max: 111733, label: "15.74%" },
                                           { rate: 18.95, min: 111733, max: 150000, label: "18.95%" },
                                           { rate: 21.70, min: 150000, max: 173205, label: "21.70%" },
-                                          { rate: 22.49, min: 173205, max: 220000, label: "22.49%" },
-                                          { rate: 23.08, min: 220000, max: 246752, label: "23.08%" },
+                                          { rate: 23.08, min: 173205, max: 220000, label: "23.08%" },
+                                          { rate: 23.87, min: 220000, max: 246752, label: "23.87%" },
                                           { rate: 26.76, min: 246752, max: 300000, label: "26.76%" }
                                         ],
                                         eligibleDividends: [
-                                          { rate: -6.86, min: 0, max: 49231, label: "-6.86%" },
-                                          { rate: 1.20, min: 49231, max: 55867, label: "1.20%" },
-                                          { rate: 6.39, min: 55867, max: 98463, label: "6.39%" },
-                                          { rate: 8.92, min: 98463, max: 111733, label: "8.92%" },
+                                          { rate: -6.86, min: 0, max: 51446, label: "-6.86%" },
+                                          { rate: 1.20, min: 51446, max: 55867, label: "1.20%" },
+                                          { rate: 4.31, min: 55867, max: 102894, label: "4.31%" },
+                                          { rate: 6.39, min: 102894, max: 111733, label: "6.39%" },
                                           { rate: 17.79, min: 111733, max: 150000, label: "17.79%" },
                                           { rate: 25.38, min: 150000, max: 173205, label: "25.38%" },
-                                          { rate: 27.53, min: 173205, max: 220000, label: "27.53%" },
-                                          { rate: 32.11, min: 220000, max: 246752, label: "32.11%" },
-                                          { rate: 34.24, min: 246752, max: 300000, label: "34.24%" }
+                                          { rate: 32.11, min: 173205, max: 220000, label: "32.11%" },
+                                          { rate: 34.73, min: 220000, max: 246752, label: "34.73%" },
+                                          { rate: 39.34, min: 246752, max: 300000, label: "39.34%" }
                                         ],
                                         nonEligibleDividends: [
-                                          { rate: 9.24, min: 0, max: 49231, label: "9.24%" },
-                                          { rate: 13.93, min: 49231, max: 55867, label: "13.93%" },
-                                          { rate: 20.28, min: 55867, max: 98463, label: "20.28%" },
-                                          { rate: 22.38, min: 98463, max: 111733, label: "22.38%" },
+                                          { rate: 9.24, min: 0, max: 51446, label: "9.24%" },
+                                          { rate: 13.93, min: 51446, max: 55867, label: "13.93%" },
+                                          { rate: 18.39, min: 55867, max: 102894, label: "18.39%" },
+                                          { rate: 20.28, min: 102894, max: 111733, label: "20.28%" },
                                           { rate: 25.16, min: 111733, max: 150000, label: "25.16%" },
                                           { rate: 36.10, min: 150000, max: 173205, label: "36.10%" },
-                                          { rate: 37.90, min: 173205, max: 220000, label: "37.90%" },
-                                          { rate: 41.72, min: 220000, max: 246752, label: "41.72%" },
+                                          { rate: 41.72, min: 173205, max: 220000, label: "41.72%" },
+                                          { rate: 43.94, min: 220000, max: 246752, label: "43.94%" },
                                           { rate: 47.74, min: 246752, max: 300000, label: "47.74%" }
                                         ]
                                       },
