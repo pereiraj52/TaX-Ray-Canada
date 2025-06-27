@@ -603,7 +603,7 @@ export default function TaxReport() {
                             cy="50%"
                             labelLine={false}
                             label={({ name, value }) => {
-                              const percentage = ((value / totalIncomeSum) * 100).toFixed(1);
+                              const percentage = ((value / totalIncomeSum) * 100).toFixed(2);
                               return `${name}: ${percentage}%`;
                             }}
                             outerRadius={120}
@@ -709,7 +709,7 @@ export default function TaxReport() {
                         
                         const calculatePercentage = (amount: number) => {
                           if (totalIncome === 0) return '0.0%';
-                          return `${((amount / totalIncome) * 100).toFixed(1)}%`;
+                          return `${((amount / totalIncome) * 100).toFixed(2)}%`;
                         };
                         
                         return (
@@ -819,7 +819,7 @@ export default function TaxReport() {
                                 You Kept
                               </div>
                               <div className="text-3xl font-bold text-green-700">
-                                {netIncomePercentage.toFixed(1)}%
+                                {netIncomePercentage.toFixed(2)}%
                               </div>
                             </div>
                             
@@ -829,7 +829,7 @@ export default function TaxReport() {
                                 You Paid
                               </div>
                               <div className="text-3xl font-bold text-red-700">
-                                {youPaidPercentage.toFixed(1)}%
+                                {youPaidPercentage.toFixed(2)}%
                               </div>
                             </div>
                           </>
@@ -931,7 +931,7 @@ export default function TaxReport() {
                             dataKey="value"
                             label={({ name, value }) => {
                               const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
-                              const percentage = ((value / total) * 100).toFixed(1);
+                              const percentage = ((value / total) * 100).toFixed(2);
                               return `${name}: ${percentage}%`;
                             }}
                           >
@@ -944,7 +944,7 @@ export default function TaxReport() {
                               if (active && payload && payload.length) {
                                 const data = payload[0];
                                 const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
-                                const percentage = ((data.value / total) * 100).toFixed(1);
+                                const percentage = ((data.value / total) * 100).toFixed(2);
                                 return (
                                   <div className="bg-white p-3 border rounded shadow-lg">
                                     <p className="font-medium">{data.name}</p>
