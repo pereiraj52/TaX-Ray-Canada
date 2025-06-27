@@ -271,6 +271,7 @@ Changelog:
 - June 27, 2025. Standardized font styling in Combined Tax Bracket Analysis table by changing income and tax columns from font-mono to text-gray-700 text-xs to match threshold column styling
 - June 27, 2025. Added Federal Tax Bracket Analysis and Federal Tax Bracket Visualization sections with authentic 2024 federal tax brackets (15%, 20.5%, 26%, 29%, 33%) for comprehensive tax planning analysis
 - June 27, 2025. Enhanced Federal Tax Bracket Visualization to include four income types: Ordinary Income, Capital Gains (50% inclusion rate), Eligible Dividends (with negative rates for tax credits), and Non-Eligible Dividends with authentic federal marginal tax rates
+- June 27, 2025. Fixed Federal Tax Bracket Visualization spacing and layout: reduced bar width from w-20 to w-16, decreased spacing from space-x-4 to space-x-2, adjusted label positioning from right-32 to right-20 for proper fit with four bars
 ```
 
 ## User Preferences
