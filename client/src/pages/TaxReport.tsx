@@ -2011,40 +2011,42 @@ export default function TaxReport() {
                               <div className="relative">
                                 <div className="flex items-start justify-center">
                                   {/* Income scale labels on left (vertical axis) - federal brackets */}
-                                  <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                  <div className="w-16 h-72 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
                                     {/* $300k at top */}
                                     <div className="absolute top-0 right-0 text-right">$300k</div>
                                     
-                                    {/* Federal tax bracket thresholds */}
+                                    {/* Federal tax bracket thresholds - aligned with bracket boundaries */}
                                     {(() => {
+                                      const maxScale = 300000;
                                       const federalThresholds = [
+                                        { income: 0, label: "$0k" },
                                         { income: 55867, label: "$56k" },
                                         { income: 111733, label: "$112k" },
                                         { income: 173205, label: "$173k" },
-                                        { income: 246752, label: "$247k" }
+                                        { income: 246752, label: "$247k" },
+                                        { income: 300000, label: "$300k" }
                                       ];
 
-                                      const thresholds = federalThresholds.map(threshold => ({
-                                        position: (threshold.income / 300000) * 100,
-                                        label: threshold.label
-                                      }));
-
-                                      return thresholds.map((threshold, idx) => (
-                                        <div 
-                                          key={idx}
-                                          className="absolute right-0 text-right"
-                                          style={{
-                                            bottom: `${Math.min(threshold.position, 90)}%`,
-                                            transform: 'translateY(50%)'
-                                          }}
-                                        >
-                                          {threshold.label}
-                                        </div>
-                                      ));
+                                      return federalThresholds.map((threshold, idx) => {
+                                        const position = (threshold.income / maxScale) * 100;
+                                        
+                                        // Skip $300k label as it's already positioned at top
+                                        if (threshold.income === 300000) return null;
+                                        
+                                        return (
+                                          <div 
+                                            key={idx}
+                                            className="absolute right-0 text-right"
+                                            style={{
+                                              bottom: `${position}%`,
+                                              transform: 'translateY(50%)'
+                                            }}
+                                          >
+                                            {threshold.label}
+                                          </div>
+                                        );
+                                      });
                                     })()}
-                                    
-                                    {/* $0 at bottom */}
-                                    <div className="absolute bottom-0 right-0 text-right">$0</div>
                                   </div>
                                   
                                   {/* Four Income Type Bars */}
