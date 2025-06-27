@@ -68,17 +68,6 @@ export default function TaxReport() {
   return (
     <Layout title="" subtitle="">
       <div className="p-6">
-        {/* Breadcrumb */}
-        <nav className="flex items-center space-x-2 text-sm text-gray-500 mb-6">
-          <Link href="/" className="hover:text-gray-700">Dashboard</Link>
-          <span>/</span>
-          <Link href={`/household/${householdId}`} className="hover:text-gray-700">
-            {household.name}
-          </Link>
-          <span>/</span>
-          <span className="text-gray-900">Tax Report {taxYear}</span>
-        </nav>
-
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">

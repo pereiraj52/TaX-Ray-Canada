@@ -256,6 +256,7 @@ Changelog:
 - June 27, 2025. Updated household pie chart to use simple Net Income calculation (Total Income - Total Tax field 43700) matching Summary tab instead of complex formula with CPP/EI deductions
 - June 27, 2025. Changed all percentage displays throughout the application from one decimal place (toFixed(1)) to two decimal places (toFixed(2)) for more precise financial reporting across Summary tab, pie charts, KPI blocks, and tooltip displays
 - June 27, 2025. Updated Combined Tax Bracket Analysis titles from "Combined marginal tax rate for Client name" to "Client Name - Combined Tax Bracket Analysis" for clearer section identification
+- June 27, 2025. Removed breadcrumb navigation from household tax report page for cleaner interface focusing on report content
 ```
 
 ## User Preferences
