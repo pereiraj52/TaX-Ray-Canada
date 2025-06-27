@@ -1811,7 +1811,7 @@ export default function TaxReport() {
                                             const bottomPercent = (bracket.min / maxScale) * 100;
                                             
                                             // Color coding using brand colors
-                                            let bgColor = 'bg-gray-300';
+                                            let bgColor = 'bg-primary'; // Primary green for all bars
                                             if (isCurrentBracket) {
                                               if (bracket.rate < 0) {
                                                 bgColor = 'bg-primary'; // Primary green for negative rates
