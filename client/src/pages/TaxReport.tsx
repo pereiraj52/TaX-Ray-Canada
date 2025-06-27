@@ -2022,8 +2022,8 @@ export default function TaxReport() {
 
                                     return (
                                       <div key={typeIdx} className="flex flex-col items-center">
-                                        {/* Single bar for federal brackets */}
-                                        <div className="relative w-20 h-72 bg-gray-200 border border-gray-300">
+                                        {/* Vertical bar */}
+                                        <div className="relative w-20 h-80 bg-gray-100 border">
                                           {incomeType.brackets.map((bracket, idx) => {
                                             const bracketTop = Math.min(bracket.max, maxScale);
                                             const bracketHeight = bracketTop - bracket.min;
