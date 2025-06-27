@@ -518,27 +518,27 @@ export default function TaxReport() {
                   {
                     name: 'Net Income',
                     value: householdNetIncome,
-                    color: '#22c55e'
+                    color: '#88AA73' // Primary green
                   },
                   {
                     name: 'Federal Tax',
                     value: federalTaxSum,
-                    color: '#dc2626'
+                    color: '#D4B26A' // Warning/Secondary accent
                   },
                   {
                     name: 'Provincial Tax',
                     value: provincialTaxSum,
-                    color: '#ef4444'
+                    color: '#C7E6C2' // Accent green
                   },
                   {
                     name: 'CPP Contributions',
                     value: totalCppSum,
-                    color: '#3b82f6'
+                    color: '#A3A3A3' // Neutral gray
                   },
                   {
                     name: 'EI Premiums',
                     value: totalEiSum,
-                    color: '#f59e0b'
+                    color: '#6B7AA2' // Muted blue-gray complementary to brand
                   }
                 ].filter(item => item.value > 0);
 
