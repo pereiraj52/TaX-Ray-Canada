@@ -299,6 +299,7 @@ Changelog:
 - June 27, 2025. Added Tax Rates section after Individual Tax Analysis: created comprehensive tax rate analysis for each household member featuring three KPIs (Average Rate, Marginal Rate, Effective Marginal Rate) with authentic 2024 Ontario tax bracket calculations, OAS clawback effects, and detailed explanatory labels for professional tax planning insights
 - June 27, 2025. Repositioned Tax Rates section before Combined Tax Bracket Analysis: moved from after Individual Tax Analysis to improve document flow and provide key rate insights immediately before detailed bracket analysis sections
 - June 27, 2025. Removed Tax Rates section title: eliminated "Tax Rates" heading for cleaner document flow while maintaining the three KPI blocks for each household member
+- June 27, 2025. Fixed Federal Tax Bracket Visualization scale alignment: repositioned threshold labels ($0, $56k, $112k, $173k, $247k, $300k) to align precisely with where each tax bracket range starts, removed duplicate labels, and eliminated transform offset for accurate visual representation
 ```
 
 ## User Preferences
