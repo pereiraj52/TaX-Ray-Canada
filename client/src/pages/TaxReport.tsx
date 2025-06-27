@@ -1014,7 +1014,13 @@ export default function TaxReport() {
 
             // Function to calculate individual tax breakdown for a spouse
             const calculateSpouseTaxBreakdown = (spouseIncome: number) => {
-              return combinedBrackets.map(bracket => {
+              // 2024 Basic Personal Amounts
+              const federalBPA = 15705;
+              const ontarioBPA = 12399;
+              
+              // Calculate gross combined tax first
+              let grossCombinedTax = 0;
+              const breakdown = combinedBrackets.map(bracket => {
                 let incomeInBracket = 0;
                 let taxFromBracket = 0;
 
@@ -1022,6 +1028,7 @@ export default function TaxReport() {
                   const maxForBracket = Math.min(spouseIncome, bracket.max);
                   incomeInBracket = maxForBracket - bracket.min;
                   taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                  grossCombinedTax += taxFromBracket;
                 }
 
                 return {
@@ -1032,6 +1039,22 @@ export default function TaxReport() {
                   ratePercent: bracket.rate
                 };
               });
+              
+              // Calculate basic personal amount credits
+              // Federal BPA credit at 15% (lowest federal rate)
+              const federalBPACredit = federalBPA * 0.15;
+              // Ontario BPA credit at 5.05% (lowest Ontario rate)  
+              const ontarioBPACredit = ontarioBPA * 0.0505;
+              const totalBPACredits = federalBPACredit + ontarioBPACredit;
+              
+              // Adjust the tax in each bracket proportionally to account for BPA credits
+              const netCombinedTax = Math.max(0, grossCombinedTax - totalBPACredits);
+              const adjustmentRatio = grossCombinedTax > 0 ? netCombinedTax / grossCombinedTax : 0;
+              
+              return breakdown.map(bracket => ({
+                ...bracket,
+                tax: bracket.tax * adjustmentRatio
+              }));
             };
 
             return (
@@ -1887,7 +1910,12 @@ export default function TaxReport() {
                     ];
 
                     const calculateFederalTaxBreakdown = (income: number) => {
-                      return federalBrackets.map(bracket => {
+                      // 2024 Federal Basic Personal Amount
+                      const federalBPA = 15705;
+                      
+                      // Calculate gross federal tax first
+                      let grossFederalTax = 0;
+                      const breakdown = federalBrackets.map(bracket => {
                         let incomeInBracket = 0;
                         let taxFromBracket = 0;
                         
@@ -1895,6 +1923,7 @@ export default function TaxReport() {
                           const maxForBracket = Math.min(income, bracket.max);
                           incomeInBracket = maxForBracket - bracket.min;
                           taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                          grossFederalTax += taxFromBracket;
                         }
 
                         return {
@@ -1905,6 +1934,18 @@ export default function TaxReport() {
                           ratePercent: bracket.rate
                         };
                       });
+                      
+                      // Calculate basic personal amount credit (lowest tax rate applied to BPA)
+                      const federalBPACredit = federalBPA * (federalBrackets[0].rate / 100);
+                      
+                      // Adjust the tax in each bracket proportionally to account for BPA credit
+                      const netFederalTax = Math.max(0, grossFederalTax - federalBPACredit);
+                      const adjustmentRatio = grossFederalTax > 0 ? netFederalTax / grossFederalTax : 0;
+                      
+                      return breakdown.map(bracket => ({
+                        ...bracket,
+                        tax: bracket.tax * adjustmentRatio
+                      }));
                     };
 
                     const federalBracketBreakdown = calculateFederalTaxBreakdown(spouse.taxableIncome);
@@ -2182,7 +2223,12 @@ export default function TaxReport() {
                                   <tbody>
                                     {(() => {
                                       const calculateProvincialTaxBreakdown = (income: number) => {
-                                        return ontarioTaxBrackets.map(bracket => {
+                                        // 2024 Ontario Basic Personal Amount
+                                        const ontarioBPA = 12399;
+                                        
+                                        // Calculate gross provincial tax first
+                                        let grossProvincialTax = 0;
+                                        const breakdown = ontarioTaxBrackets.map(bracket => {
                                           let incomeInBracket = 0;
                                           let taxFromBracket = 0;
                                           
@@ -2190,6 +2236,7 @@ export default function TaxReport() {
                                             const maxForBracket = Math.min(income, bracket.max);
                                             incomeInBracket = maxForBracket - bracket.min;
                                             taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                                            grossProvincialTax += taxFromBracket;
                                           }
 
                                           return {
@@ -2200,6 +2247,18 @@ export default function TaxReport() {
                                             ratePercent: bracket.rate
                                           };
                                         });
+                                        
+                                        // Calculate basic personal amount credit (lowest tax rate applied to BPA)
+                                        const ontarioBPACredit = ontarioBPA * (ontarioTaxBrackets[0].rate / 100);
+                                        
+                                        // Adjust the tax in each bracket proportionally to account for BPA credit
+                                        const netProvincialTax = Math.max(0, grossProvincialTax - ontarioBPACredit);
+                                        const adjustmentRatio = grossProvincialTax > 0 ? netProvincialTax / grossProvincialTax : 0;
+                                        
+                                        return breakdown.map(bracket => ({
+                                          ...bracket,
+                                          tax: bracket.tax * adjustmentRatio
+                                        }));
                                       };
 
                                       const provincialBracketBreakdown = calculateProvincialTaxBreakdown(spouse.taxableIncome);
