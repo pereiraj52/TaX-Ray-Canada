@@ -2136,6 +2136,248 @@ export default function TaxReport() {
                   })}
                 </div>
 
+                {/* Provincial Tax Bracket Analysis */}
+                <div className="space-y-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Provincial Tax Bracket Analysis</h2>
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {spouseData.map((spouse, spouseIndex) => {
+                      // Get the user's province from T1 data - defaulting to Ontario for now
+                      const province = 'ON'; // Default to Ontario since province isn't in spouse data structure
+                      
+                      // Ontario provincial tax brackets (5.05% to 13.16%)
+                      const ontarioTaxBrackets = [
+                        { rate: 5.05, min: 0, max: 51446, threshold: 51446, label: "5.05%" },
+                        { rate: 9.15, min: 51446, max: 102894, threshold: 102894, label: "9.15%" },
+                        { rate: 11.16, min: 102894, max: 150000, threshold: 150000, label: "11.16%" },
+                        { rate: 12.16, min: 150000, max: 220000, threshold: 220000, label: "12.16%" },
+                        { rate: 13.16, min: 220000, max: 300000, threshold: 300000, label: "13.16%" }
+                      ];
+
+                      return (
+                        <Card key={spouseIndex}>
+                          <CardContent className="p-6">
+                            <div className="space-y-4">
+                              <h3 className="font-medium text-primary">
+                                {spouse.clientName} - Provincial Tax Bracket Analysis
+                              </h3>
+                              
+                              <div className="bg-gray-50 rounded-lg p-4">
+                                <div className="flex justify-between items-center mb-3">
+                                  <span className="text-sm font-medium text-gray-700">Taxable Income</span>
+                                  <span className="text-sm font-medium text-gray-700">Provincial Rate</span>
+                                </div>
+                                
+                                <div className="space-y-2">
+                                  {ontarioTaxBrackets.map((bracket, idx) => {
+                                    const isCurrentBracket = spouse.taxableIncome > bracket.min && 
+                                      (spouse.taxableIncome <= bracket.max || (spouse.taxableIncome > 220000 && bracket.min === 220000));
+                                    
+                                    return (
+                                      <div 
+                                        key={idx} 
+                                        className={`flex justify-between items-center py-2 px-3 rounded ${
+                                          isCurrentBracket ? 'bg-accent/20 border border-accent' : 'bg-white'
+                                        }`}
+                                      >
+                                        <div className="text-xs text-gray-700">
+                                          {idx === 0 
+                                            ? `$0 - $${(bracket.max / 1000).toFixed(0)}k`
+                                            : idx === ontarioTaxBrackets.length - 1
+                                              ? `$${(bracket.min / 1000).toFixed(0)}k+`
+                                              : `$${(bracket.min / 1000).toFixed(0)}k - $${(bracket.max / 1000).toFixed(0)}k`
+                                          }
+                                        </div>
+                                        <div className="text-xs text-gray-700 font-medium">
+                                          {bracket.label}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Provincial Tax Bracket Visualizations */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {spouseData.map((spouse, spouseIndex) => {
+                    // Ontario provincial tax brackets for visualization - different rates for different income types
+                    const provincialOrdinaryBrackets = [
+                      { rate: 5.05, min: 0, max: 51446, label: "5.05%" },
+                      { rate: 9.15, min: 51446, max: 102894, label: "9.15%" },
+                      { rate: 11.16, min: 102894, max: 150000, label: "11.16%" },
+                      { rate: 12.16, min: 150000, max: 220000, label: "12.16%" },
+                      { rate: 13.16, min: 220000, max: 300000, label: "13.16%" }
+                    ];
+                    
+                    const provincialCapitalGainsBrackets = [
+                      { rate: 2.525, min: 0, max: 51446, label: "2.53%" },
+                      { rate: 4.575, min: 51446, max: 102894, label: "4.58%" },
+                      { rate: 5.58, min: 102894, max: 150000, label: "5.58%" },
+                      { rate: 6.08, min: 150000, max: 220000, label: "6.08%" },
+                      { rate: 6.58, min: 220000, max: 300000, label: "6.58%" }
+                    ];
+                    
+                    const provincialEligibleDividendBrackets = [
+                      { rate: -1.91, min: 0, max: 51446, label: "-1.91%" },
+                      { rate: 0.45, min: 51446, max: 102894, label: "0.45%" },
+                      { rate: 3.28, min: 102894, max: 150000, label: "3.28%" },
+                      { rate: 4.69, min: 150000, max: 220000, label: "4.69%" },
+                      { rate: 6.11, min: 220000, max: 300000, label: "6.11%" }
+                    ];
+                    
+                    const provincialNonEligibleDividendBrackets = [
+                      { rate: 3.16, min: 0, max: 51446, label: "3.16%" },
+                      { rate: 8.55, min: 51446, max: 102894, label: "8.55%" },
+                      { rate: 11.73, min: 102894, max: 150000, label: "11.73%" },
+                      { rate: 13.73, min: 150000, max: 220000, label: "13.73%" },
+                      { rate: 15.76, min: 220000, max: 300000, label: "15.76%" }
+                    ];
+
+                    return (
+                      <Card key={spouseIndex}>
+                        <CardContent className="p-6">
+                          <div className="space-y-4">
+                            <div>
+                              <h3 className="font-medium text-gray-900 mb-4">
+                                {spouse.clientName} - Provincial Tax Bracket Visualization
+                              </h3>
+
+                              {/* Provincial Tax Bracket Chart */}
+                              <div className="relative">
+                                <div className="flex items-start justify-center">
+                                  {/* Income scale labels on left (vertical axis) - provincial brackets */}
+                                  <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                    {/* $300k at top */}
+                                    <div className="absolute top-0 right-0 text-right">$300k</div>
+                                    
+                                    {/* Provincial tax bracket thresholds */}
+                                    {(() => {
+                                      const provincialThresholds = [
+                                        { income: 51446, label: "$51k" },
+                                        { income: 102894, label: "$103k" },
+                                        { income: 150000, label: "$150k" },
+                                        { income: 220000, label: "$220k" }
+                                      ];
+
+                                      const thresholds = provincialThresholds.map(threshold => ({
+                                        position: (threshold.income / 300000) * 100,
+                                        label: threshold.label
+                                      }));
+
+                                      return thresholds.map((threshold, idx) => (
+                                        <div 
+                                          key={idx}
+                                          className="absolute right-0 text-right"
+                                          style={{
+                                            bottom: `${Math.min(threshold.position, 90)}%`,
+                                            transform: 'translateY(50%)'
+                                          }}
+                                        >
+                                          {threshold.label}
+                                        </div>
+                                      ));
+                                    })()}
+                                    
+                                    {/* $0 at bottom */}
+                                    <div className="absolute bottom-0 right-0 text-right">$0</div>
+                                  </div>
+                                  
+                                  {/* Four Income Type Bars */}
+                                  <div className="flex space-x-3">
+                                    {(() => {
+                                      const incomeTypes = [
+                                        { name: 'Ordinary Income', brackets: provincialOrdinaryBrackets },
+                                        { name: 'Capital Gains', brackets: provincialCapitalGainsBrackets },
+                                        { name: 'Eligible Dividends', brackets: provincialEligibleDividendBrackets },
+                                        { name: 'Non-Eligible Dividends', brackets: provincialNonEligibleDividendBrackets }
+                                      ];
+
+                                      return incomeTypes.map((incomeType, typeIdx) => {
+                                        const maxScale = 300000; // Scale chart to $300k max
+                                        const currentIncome = spouse.taxableIncome;
+
+                                        return (
+                                          <div key={typeIdx} className="flex flex-col items-center">
+                                            {/* Vertical bar */}
+                                            <div className="relative w-20 h-72 bg-gray-100 border">
+                                              {incomeType.brackets.map((bracket, idx) => {
+                                                // Skip brackets that start above $300k
+                                                if (bracket.min >= maxScale) return null;
+                                                
+                                                // For high earners (>$220k), highlight the top bracket
+                                                const isCurrentBracket = currentIncome > bracket.min && 
+                                                  (currentIncome <= bracket.max || (currentIncome > 220000 && bracket.min === 220000));
+                                                
+                                                const bracketTop = Math.min(bracket.max, maxScale);
+                                                const bracketHeight = bracketTop - bracket.min;
+                                                const heightPercent = (bracketHeight / maxScale) * 100;
+                                                const bottomPercent = (bracket.min / maxScale) * 100;
+                                                
+                                                // Color coding using brand colors - negative rates use accent, positive use primary
+                                                let bgColor = bracket.rate < 0 ? 'bg-accent' : 'bg-primary';
+                                                
+                                                return (
+                                                  <div 
+                                                    key={idx}
+                                                    className={`absolute w-full ${bgColor} flex items-center justify-center border-t border-white`}
+                                                    style={{
+                                                      bottom: `${bottomPercent}%`,
+                                                      height: `${heightPercent}%`
+                                                    }}
+                                                  >
+                                                    <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
+                                                      {bracket.label}
+                                                    </span>
+                                                  </div>
+                                                );
+                                              })}
+                                              
+                                              {/* Current income indicator line - show across all 4 bars */}
+                                              <div 
+                                                className="absolute left-0 w-full h-1 z-10"
+                                                style={{
+                                                  bottom: `${currentIncome > 220000 ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`,
+                                                  backgroundColor: '#D4B26A'
+                                                }}
+                                              >
+                                                {/* Income label to the left of the bars - only show on first bar */}
+                                                {typeIdx === 0 && (
+                                                  <div 
+                                                    className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
+                                                    style={{ color: '#D4B26A' }}
+                                                  >
+                                                    Taxable Income: ${Math.round(currentIncome / 1000)}k
+                                                  </div>
+                                                )}
+                                              </div>
+                                            </div>
+                                            
+                                            {/* Label below the bar */}
+                                            <div className="mt-2 text-xs text-center text-gray-700 font-medium w-20">
+                                              {incomeType.name}
+                                            </div>
+                                          </div>
+                                        );
+                                      });
+                                    })()}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+
 
               </div>
             );

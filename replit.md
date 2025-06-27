@@ -276,6 +276,7 @@ Changelog:
 - June 27, 2025. Added Federal Tax Bracket Visualization section with authentic 2024 federal rates for four income types: Ordinary Income (15%-33%), Capital Gains (7.5%-16.5%), Eligible Dividends (7.56%-24.81%), and Non-Eligible Dividends (13.19%-27.37%)
 - June 27, 2025. Fixed Federal Tax Bracket Visualization bar alignment to match Combined visualization structure using h-80 height and bg-gray-100 background for consistent bottom alignment across all bars
 - June 27, 2025. Corrected Federal Tax Bracket Visualization alignment by copying exact structure from Combined visualization: h-72 bar height, proper bracket filtering, currentIncome variable, and isCurrentBracket logic for consistent bottom alignment
+- June 27, 2025. Added comprehensive Provincial Tax Bracket Analysis and Visualization sections duplicating federal structure with authentic Ontario provincial rates (5.05%-13.16%), including separate analysis tables and visualization charts with four income types (Ordinary Income, Capital Gains, Eligible Dividends, Non-Eligible Dividends), proper income scale labels ($0-$300k with provincial thresholds at $51k, $103k, $150k, $220k), and color coding for negative dividend tax rates using accent green
 ```
 
 ## User Preferences
