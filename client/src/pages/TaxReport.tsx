@@ -805,33 +805,20 @@ export default function TaxReport() {
                     {/* Individual KPI Blocks */}
                     <div className="mt-6 grid grid-cols-2 gap-6">
                       {(() => {
-                        // Calculate individual net income percentage for KPI blocks
+                        // Calculate individual net income percentage for KPI blocks - same as Summary tab
                         let totalIncome = 0;
-                        let totalTax = 0;
-                        let federalTax = 0;
-                        let provincialTax = 0;
-                        let cppContributions = 0;
-                        let eiPremiums = 0;
+                        let taxPaid = 0;
                         
                         if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                           const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                          const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
-                          const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
-                          const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
-                          const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
-                          const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+                          const taxPaidField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43700');
                           
                           totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                          totalTax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                          federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                          provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                          cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                          eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          taxPaid = taxPaidField?.fieldValue ? parseFloat(String(taxPaidField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                         }
                         
-                        // Calculate total tax (use field 43500 if available, otherwise add federal + provincial)
-                        const calculatedTotalTax = totalTax > 0 ? totalTax : (federalTax + provincialTax);
-                        const netIncome = totalIncome - calculatedTotalTax - cppContributions - eiPremiums;
+                        // Use same calculation as Summary tab: Net Income = Total Income - Total Tax (field 43700)
+                        const netIncome = totalIncome - taxPaid;
                         const netIncomePercentage = totalIncome > 0 ? (netIncome / totalIncome) * 100 : 0;
                         const youPaidPercentage = 100 - netIncomePercentage;
                         
