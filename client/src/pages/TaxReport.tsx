@@ -1066,10 +1066,10 @@ export default function TaxReport() {
                                     <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
                                       <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
                                       <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
-                                      <td className="py-2 px-2 text-right font-mono text-xs">
+                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                         ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                       </td>
-                                      <td className="py-2 px-2 text-right font-mono text-xs">
+                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                         ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                       </td>
                                     </tr>
@@ -1077,10 +1077,10 @@ export default function TaxReport() {
                                   <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
                                     <td className="py-2 px-2">Total</td>
                                     <td className="py-2 px-2"></td>
-                                    <td className="py-2 px-2 text-right font-mono text-xs">
+                                    <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                       ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                     </td>
-                                    <td className="py-2 px-2 text-right font-mono text-xs">
+                                    <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                       ${totalTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                     </td>
                                   </tr>
