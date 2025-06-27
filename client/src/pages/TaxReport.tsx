@@ -2544,39 +2544,53 @@ export default function TaxReport() {
                                 <div className="flex items-start justify-center">
                                   {/* Income scale labels on left (vertical axis) - provincial brackets */}
                                   <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
-                                    {/* $300k at top */}
-                                    <div className="absolute top-0 right-0 text-right">$300k</div>
-                                    
                                     {/* Provincial tax bracket thresholds */}
                                     {(() => {
                                       const provincialThresholds = [
+                                        { income: 0, label: "$0" },
                                         { income: 51446, label: "$51k" },
                                         { income: 102894, label: "$103k" },
                                         { income: 150000, label: "$150k" },
-                                        { income: 220000, label: "$220k" }
+                                        { income: 220000, label: "$220k" },
+                                        { income: 300000, label: "$300k" }
                                       ];
 
-                                      const thresholds = provincialThresholds.map(threshold => ({
-                                        position: (threshold.income / 300000) * 100,
-                                        label: threshold.label
+                                      // Calculate positions and handle overlaps
+                                      let adjustedThresholds = provincialThresholds.map(threshold => ({
+                                        ...threshold,
+                                        position: (threshold.income / 300000) * 100
                                       }));
 
-                                      return thresholds.map((threshold, idx) => (
+                                      // Adjust positions to prevent overlap (minimum 7% spacing)
+                                      for (let i = 1; i < adjustedThresholds.length; i++) {
+                                        const current = adjustedThresholds[i];
+                                        const previous = adjustedThresholds[i - 1];
+                                        const minSpacing = 7; // 7% minimum spacing
+                                        
+                                        if (current.position - previous.position < minSpacing) {
+                                          current.position = previous.position + minSpacing;
+                                        }
+                                      }
+
+                                      // Special positioning for $300k label
+                                      const topThreshold = adjustedThresholds[adjustedThresholds.length - 1];
+                                      if (topThreshold.income === 300000) {
+                                        topThreshold.position = 100 - 4; // 4% down from top
+                                      }
+
+                                      return adjustedThresholds.map((threshold, idx) => (
                                         <div 
                                           key={idx}
                                           className="absolute right-0 text-right"
                                           style={{
-                                            bottom: `${Math.min(threshold.position, 90)}%`,
-                                            transform: 'translateY(50%)'
+                                            bottom: `${threshold.position}%`,
+                                            transform: 'translateY(0%)'
                                           }}
                                         >
                                           {threshold.label}
                                         </div>
                                       ));
                                     })()}
-                                    
-                                    {/* $0 at bottom */}
-                                    <div className="absolute bottom-0 right-0 text-right">$0</div>
                                   </div>
                                   
                                   {/* Four Income Type Bars */}
