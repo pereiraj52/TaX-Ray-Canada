@@ -2543,7 +2543,7 @@ export default function TaxReport() {
                               <div className="relative">
                                 <div className="flex items-start justify-center">
                                   {/* Income scale labels on left (vertical axis) - provincial brackets */}
-                                  <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                  <div className="w-16 h-72 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
                                     {/* Provincial tax bracket thresholds */}
                                     {(() => {
                                       const provincialThresholds = [
