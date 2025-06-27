@@ -2168,60 +2168,77 @@ export default function TaxReport() {
                                 {spouse.clientName} - Provincial Tax Bracket Analysis
                               </h3>
                               
-                              <div className="bg-gray-50 rounded-lg p-4">
-                                <div className="flex justify-between items-center mb-3">
-                                  <span className="text-sm font-medium text-gray-700">Income Range</span>
-                                  <span className="text-sm font-medium text-gray-700">Rate</span>
-                                  <span className="text-sm font-medium text-gray-700">Tax</span>
-                                </div>
-                                
-                                <div className="space-y-1">
-                                  {ontarioTaxBrackets.map((bracket, idx) => {
-                                    const isCurrentBracket = spouse.taxableIncome > bracket.min && 
-                                      (spouse.taxableIncome <= bracket.max || (spouse.taxableIncome > 220000 && bracket.min === 220000));
-                                    
-                                    // Calculate tax for this bracket
-                                    const taxableInThisBracket = Math.min(
-                                      Math.max(0, spouse.taxableIncome - bracket.min),
-                                      bracket.max - bracket.min
-                                    );
-                                    const taxInThisBracket = taxableInThisBracket * (bracket.rate / 100);
-                                    
-                                    return (
-                                      <div 
-                                        key={idx} 
-                                        className={`flex justify-between items-center py-1 px-2 rounded text-xs ${
-                                          isCurrentBracket ? 'bg-accent/20 border border-accent text-gray-700' : 'text-gray-700'
-                                        }`}
-                                      >
-                                        <div className="flex-1">
-                                          {idx === 0 
-                                            ? `$0 - $${(bracket.max / 1000).toFixed(0)}k`
-                                            : idx === ontarioTaxBrackets.length - 1
-                                              ? `$${(bracket.min / 1000).toFixed(0)}k+`
-                                              : `$${(bracket.min / 1000).toFixed(0)}k - $${(bracket.max / 1000).toFixed(0)}k`
-                                          }
-                                        </div>
-                                        <div className="flex-1 text-center font-medium">
-                                          {bracket.label}
-                                        </div>
-                                        <div className="flex-1 text-right">
-                                          ${taxInThisBracket.toLocaleString('en-CA', { 
-                                            minimumFractionDigits: 0, 
-                                            maximumFractionDigits: 0 
-                                          })}
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                
-                                <div className="mt-3 pt-3 border-t border-gray-300">
-                                  <div className="flex justify-between items-center text-sm font-semibold text-primary">
-                                    <span>Provincial marginal tax rate for {spouse.clientName}</span>
-                                    <span>{currentBracket.rate.toFixed(2)}%</span>
-                                  </div>
-                                </div>
+                              <div className="bg-gray-50 rounded-lg p-6">
+                                <table className="w-full">
+                                  <thead>
+                                    <tr className="border-b border-gray-300">
+                                      <th className="text-left py-3 text-sm font-medium text-gray-700">Rate</th>
+                                      <th className="text-left py-3 text-sm font-medium text-gray-700">Threshold</th>
+                                      <th className="text-right py-3 text-sm font-medium text-gray-700">Income</th>
+                                      <th className="text-right py-3 text-sm font-medium text-gray-700">Tax</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {ontarioTaxBrackets.map((bracket, idx) => {
+                                      const isCurrentBracket = spouse.taxableIncome > bracket.min && 
+                                        (spouse.taxableIncome <= bracket.max || (spouse.taxableIncome > 220000 && bracket.min === 220000));
+                                      
+                                      // Calculate income and tax for this bracket
+                                      const taxableInThisBracket = Math.min(
+                                        Math.max(0, spouse.taxableIncome - bracket.min),
+                                        bracket.max - bracket.min
+                                      );
+                                      const taxInThisBracket = taxableInThisBracket * (bracket.rate / 100);
+                                      
+                                      // Format threshold range
+                                      const thresholdText = idx === 0 
+                                        ? `$0 to $${bracket.max.toLocaleString()}`
+                                        : idx === ontarioTaxBrackets.length - 1
+                                          ? `$${bracket.min.toLocaleString()} to above`
+                                          : `$${bracket.min.toLocaleString()} to $${bracket.max.toLocaleString()}`;
+                                      
+                                      return (
+                                        <tr 
+                                          key={idx}
+                                          className={`border-b border-gray-200 ${
+                                            isCurrentBracket ? 'bg-accent/20' : ''
+                                          }`}
+                                        >
+                                          <td className="py-3 text-sm text-gray-700">{bracket.rate.toFixed(2)}%</td>
+                                          <td className="py-3 text-sm text-gray-700">{thresholdText}</td>
+                                          <td className="py-3 text-sm text-gray-700 text-right">
+                                            {taxableInThisBracket > 0 
+                                              ? `$${taxableInThisBracket.toLocaleString()}`
+                                              : '$0'
+                                            }
+                                          </td>
+                                          <td className="py-3 text-sm text-gray-700 text-right">
+                                            {taxInThisBracket > 0 
+                                              ? `$${Math.round(taxInThisBracket).toLocaleString()}`
+                                              : '$0'
+                                            }
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                    <tr className="border-t-2 border-gray-800 font-semibold">
+                                      <td className="py-3 text-sm text-gray-900">Total</td>
+                                      <td className="py-3 text-sm text-gray-900"></td>
+                                      <td className="py-3 text-sm text-gray-900 text-right">
+                                        ${spouse.taxableIncome.toLocaleString()}
+                                      </td>
+                                      <td className="py-3 text-sm text-gray-900 text-right">
+                                        ${Math.round(ontarioTaxBrackets.reduce((total, bracket) => {
+                                          const taxableInThisBracket = Math.min(
+                                            Math.max(0, spouse.taxableIncome - bracket.min),
+                                            bracket.max - bracket.min
+                                          );
+                                          return total + (taxableInThisBracket * (bracket.rate / 100));
+                                        }, 0)).toLocaleString()}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
                               </div>
                             </div>
                           </CardContent>
