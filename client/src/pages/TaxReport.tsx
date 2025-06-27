@@ -612,146 +612,6 @@ export default function TaxReport() {
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Individual Tax Analysis</h2>
           
-          {/* Individual Income Breakdown Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {taxYearReturns.map((t1Return, index) => {
-              const t1WithFields = t1Return as any;
-              
-              // Get client name from household data
-              let clientName = `Person ${index + 1}`;
-              if (t1Return.clientId && household?.clients) {
-                const client = household.clients.find(c => c.id === t1Return.clientId);
-                if (client) {
-                  clientName = `${client.firstName} ${client.lastName}`;
-                }
-              } else if (t1Return.childId && household?.children) {
-                const child = household.children.find(c => c.id === t1Return.childId);
-                if (child) {
-                  clientName = `${child.firstName} ${child.lastName}`;
-                }
-              }
-              
-              // Calculate individual components
-              let totalIncome = 0;
-              let federalTax = 0;
-              let provincialTax = 0;
-              let cppContributions = 0;
-              let eiPremiums = 0;
-              
-              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
-                const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
-                const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
-                const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
-                
-                totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-              }
-              
-              // Calculate net income using same method as household summary
-              const totalTaxField = t1WithFields.formFields?.find((field: any) => field.fieldCode === '43500');
-              const totalTax = totalTaxField?.fieldValue ? parseFloat(String(totalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-              const netIncome = totalIncome - totalTax;
-              
-              const individualPieData = [
-                {
-                  name: 'Net Income',
-                  value: netIncome,
-                  color: '#88AA73' // Primary green
-                },
-                {
-                  name: 'Federal Tax',
-                  value: federalTax,
-                  color: '#D4B26A' // Warning/secondary accent
-                },
-                {
-                  name: 'Provincial Tax',
-                  value: provincialTax,
-                  color: '#C7E6C2' // Accent green
-                },
-                {
-                  name: 'CPP Contributions',
-                  value: cppContributions,
-                  color: '#A3A3A3' // Neutral gray
-                },
-                {
-                  name: 'EI Premiums',
-                  value: eiPremiums,
-                  color: '#6B7AA2' // Complementary blue-gray
-                }
-              ].filter(item => item.value > 0);
-              
-              return (
-                <Card key={t1Return.id}>
-                  <CardContent className="p-6">
-                    <h3 className="font-medium text-gray-900 mb-4">{clientName} - Income Breakdown</h3>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={individualPieData}
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="value"
-                            label={({ name, value }) => {
-                              const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
-                              const percentage = ((value / total) * 100).toFixed(1);
-                              return `${name}: ${percentage}%`;
-                            }}
-                          >
-                            {individualPieData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip 
-                            content={({ active, payload }: any) => {
-                              if (active && payload && payload.length) {
-                                const data = payload[0];
-                                const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
-                                const percentage = ((data.value / total) * 100).toFixed(1);
-                                return (
-                                  <div className="bg-white p-3 border rounded shadow-lg">
-                                    <p className="font-medium">{data.name}</p>
-                                    <p className="text-sm text-gray-600">
-                                      ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                    </p>
-                                    <p className="text-sm text-gray-600">{percentage}% of total income</p>
-                                  </div>
-                                );
-                              }
-                              return null;
-                            }}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-                    
-                    {/* Custom Legend with Dollar Amounts */}
-                    <div className="flex flex-wrap justify-center gap-4 mt-4">
-                      {individualPieData.map((entry, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <div 
-                            className="w-3 h-3 rounded-full"
-                            style={{ backgroundColor: entry.color }}
-                          />
-                          <span className="text-sm">
-                            {entry.name}: ${entry.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-          
           {/* Individual Financial Summary */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {taxYearReturns.map((t1Return, index) => {
@@ -937,6 +797,146 @@ export default function TaxReport() {
                           </>
                         );
                       })()}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+          
+          {/* Individual Income Breakdown Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {taxYearReturns.map((t1Return, index) => {
+              const t1WithFields = t1Return as any;
+              
+              // Get client name from household data
+              let clientName = `Person ${index + 1}`;
+              if (t1Return.clientId && household?.clients) {
+                const client = household.clients.find(c => c.id === t1Return.clientId);
+                if (client) {
+                  clientName = `${client.firstName} ${client.lastName}`;
+                }
+              } else if (t1Return.childId && household?.children) {
+                const child = household.children.find(c => c.id === t1Return.childId);
+                if (child) {
+                  clientName = `${child.firstName} ${child.lastName}`;
+                }
+              }
+              
+              // Calculate individual components
+              let totalIncome = 0;
+              let federalTax = 0;
+              let provincialTax = 0;
+              let cppContributions = 0;
+              let eiPremiums = 0;
+              
+              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+                
+                totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+              }
+              
+              // Calculate net income using same method as household summary
+              const totalTaxField = t1WithFields.formFields?.find((field: any) => field.fieldCode === '43500');
+              const totalTax = totalTaxField?.fieldValue ? parseFloat(String(totalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+              const netIncome = totalIncome - totalTax;
+              
+              const individualPieData = [
+                {
+                  name: 'Net Income',
+                  value: netIncome,
+                  color: '#88AA73' // Primary green
+                },
+                {
+                  name: 'Federal Tax',
+                  value: federalTax,
+                  color: '#D4B26A' // Warning/secondary accent
+                },
+                {
+                  name: 'Provincial Tax',
+                  value: provincialTax,
+                  color: '#C7E6C2' // Accent green
+                },
+                {
+                  name: 'CPP Contributions',
+                  value: cppContributions,
+                  color: '#A3A3A3' // Neutral gray
+                },
+                {
+                  name: 'EI Premiums',
+                  value: eiPremiums,
+                  color: '#6B7AA2' // Complementary blue-gray
+                }
+              ].filter(item => item.value > 0);
+              
+              return (
+                <Card key={t1Return.id}>
+                  <CardContent className="p-6">
+                    <h3 className="font-medium text-gray-900 mb-4">{clientName} - Income Breakdown</h3>
+                    <div className="h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={individualPieData}
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={80}
+                            fill="#8884d8"
+                            dataKey="value"
+                            label={({ name, value }) => {
+                              const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
+                              const percentage = ((value / total) * 100).toFixed(1);
+                              return `${name}: ${percentage}%`;
+                            }}
+                          >
+                            {individualPieData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip 
+                            content={({ active, payload }: any) => {
+                              if (active && payload && payload.length) {
+                                const data = payload[0];
+                                const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
+                                const percentage = ((data.value / total) * 100).toFixed(1);
+                                return (
+                                  <div className="bg-white p-3 border rounded shadow-lg">
+                                    <p className="font-medium">{data.name}</p>
+                                    <p className="text-sm text-gray-600">
+                                      ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    </p>
+                                    <p className="text-sm text-gray-600">{percentage}% of total income</p>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            }}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                    
+                    {/* Custom Legend with Dollar Amounts */}
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                      {individualPieData.map((entry, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <div 
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: entry.color }}
+                          />
+                          <span className="text-sm">
+                            {entry.name}: ${entry.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
