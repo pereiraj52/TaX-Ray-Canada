@@ -448,11 +448,11 @@ export default function TaxReport() {
                     return (
                       <>
                         {/* You Kept Block */}
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center">
-                          <div className="text-lg font-medium text-green-600 mb-2">
+                        <div className="rounded-lg p-8 text-center" style={{ backgroundColor: '#C7E6C2' }}>
+                          <div className="text-lg font-medium mb-2" style={{ color: '#88AA73' }}>
                             You Kept
                           </div>
-                          <div className="text-4xl font-bold text-green-700">
+                          <div className="text-4xl font-bold" style={{ color: '#88AA73' }}>
                             {netIncomePercentage.toFixed(2)}%
                           </div>
                         </div>
@@ -802,11 +802,11 @@ export default function TaxReport() {
                         return (
                           <>
                             {/* You Kept Block */}
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-                              <div className="text-base font-medium text-green-600 mb-2">
+                            <div className="rounded-lg p-6 text-center" style={{ backgroundColor: '#C7E6C2' }}>
+                              <div className="text-base font-medium mb-2" style={{ color: '#88AA73' }}>
                                 You Kept
                               </div>
-                              <div className="text-3xl font-bold text-green-700">
+                              <div className="text-3xl font-bold" style={{ color: '#88AA73' }}>
                                 {netIncomePercentage.toFixed(2)}%
                               </div>
                             </div>
