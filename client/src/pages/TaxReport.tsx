@@ -1983,8 +1983,8 @@ export default function TaxReport() {
                     ];
                     
                     const federalEligibleDividendBrackets = [
-                      { rate: 7.56, min: 0, max: 55867, label: "7.56%" },
-                      { rate: 15.18, min: 55867, max: 111733, label: "15.18%" },
+                      { rate: -0.03, min: 0, max: 55867, label: "-0.03%" },
+                      { rate: 7.56, min: 55867, max: 111733, label: "7.56%" },
                       { rate: 15.15, min: 111733, max: 173205, label: "15.15%" },
                       { rate: 19.73, min: 173205, max: 246752, label: "19.73%" },
                       { rate: 24.81, min: 246752, max: 300000, label: "24.81%" }
@@ -2078,8 +2078,8 @@ export default function TaxReport() {
                                                 const heightPercent = (bracketHeight / maxScale) * 100;
                                                 const bottomPercent = (bracket.min / maxScale) * 100;
                                                 
-                                                // Color coding using brand colors
-                                                let bgColor = 'bg-primary'; // Default primary green
+                                                // Color coding using brand colors - negative rates use accent, positive use primary
+                                                let bgColor = bracket.rate < 0 ? 'bg-accent' : 'bg-primary';
                                                 
                                                 return (
                                                   <div 
