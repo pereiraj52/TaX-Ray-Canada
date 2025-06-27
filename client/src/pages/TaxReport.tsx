@@ -685,6 +685,7 @@ export default function TaxReport() {
                         let totalIncome = 0;
                         let totalTaxableIncome = 0;
                         let totalTax = 0;
+                        let taxPaid = 0;
                         let totalCredits = 0;
                         let federalTax = 0;
                         let provincialTax = 0;
@@ -695,6 +696,7 @@ export default function TaxReport() {
                           const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
                           const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
                           const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                          const taxPaidField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43700');
                           const creditsField = t1WithFields.formFields.find((field: any) => field.fieldCode === '35000');
                           const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
                           const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
@@ -704,6 +706,7 @@ export default function TaxReport() {
                           totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           totalTaxableIncome = taxableField?.fieldValue ? parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           totalTax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          taxPaid = taxPaidField?.fieldValue ? parseFloat(String(taxPaidField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           totalCredits = creditsField?.fieldValue ? parseFloat(String(creditsField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
@@ -712,9 +715,8 @@ export default function TaxReport() {
                         }
                         
                         const totalDeductions = totalIncome - totalTaxableIncome;
-                        // Calculate total tax (use field 43500 if available, otherwise add federal + provincial)
-                        const calculatedTotalTax = totalTax > 0 ? totalTax : (federalTax + provincialTax);
-                        const netIncome = totalIncome - calculatedTotalTax - cppContributions - eiPremiums;
+                        // Use the same calculation method as Summary tab: Total Income - Total Tax (field 43700)
+                        const netIncome = totalIncome - taxPaid;
                         
                         const calculatePercentage = (amount: number) => {
                           if (totalIncome === 0) return '0.0%';

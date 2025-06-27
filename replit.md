@@ -250,6 +250,7 @@ Changelog:
 - June 27, 2025. Implemented fallback logic for missing Total Tax field (43500): system now uses Federal Tax (42000) + Provincial Tax (42800) when Total Tax field is unavailable, resolving Emilie's incorrect net income calculation issue
 - June 27, 2025. Fixed Summary tab "Key Tax Information" Net Income calculation to use simple formula (Total Income - Total Tax) with same fallback logic for missing field 43500
 - June 27, 2025. Corrected Summary tab Net Income calculation to use field 43700 (same as displayed "Total Tax" line) for consistency: Net Income = Total Income - Total Tax displayed value
+- June 27, 2025. Fixed individual Financial Summary in household tax report to use same simple Net Income calculation (Total Income - Total Tax field 43700) for consistency across all report sections
 ```
 
 ## User Preferences
