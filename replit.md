@@ -274,6 +274,7 @@ Changelog:
 - June 27, 2025. Fixed Federal Tax Bracket Visualization spacing and layout: reduced bar width from w-20 to w-16, decreased spacing from space-x-4 to space-x-2, adjusted label positioning from right-32 to right-20 for proper fit with four bars
 - June 27, 2025. Further improved Federal Tax Bracket Visualization spacing: increased bar width to w-18, improved spacing to space-x-3, increased padding to p-6, increased title margin to mb-6, adjusted label positioning to right-24 for better visual balance
 - June 27, 2025. Reverted Federal Tax Bracket Visualization to proper layout: restored w-20 bar width, space-x-4 spacing, p-4 padding, mb-4 title margin, and right-32 label positioning to match combined visualization format with stacked horizontal segments
+- June 27, 2025. Fixed Federal Tax Bracket Visualization spacing to match combined visualization: added extra line break after title for consistent vertical spacing and reduced bar spacing to space-x-2 for proper visual alignment
 ```
 
 ## User Preferences

@@ -2007,8 +2007,9 @@ export default function TaxReport() {
                                 {spouse.clientName} - Federal Tax Bracket Visualization
                               </h3>
 
+
                               {/* Federal Tax Bracket Chart */}
-                              <div className="flex justify-center items-end space-x-4 h-80 p-4">
+                              <div className="flex justify-center items-end space-x-2 h-80 p-4">
                                 {(() => {
                                   const incomeTypes = [
                                     { name: 'Ordinary Income', brackets: federalOrdinaryBrackets },
