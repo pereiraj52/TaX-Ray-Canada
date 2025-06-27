@@ -295,6 +295,7 @@ Changelog:
 - June 27, 2025. Revised "You Kept" KPI block colors for improved contrast: changed background to primary green (#88AA73) and font color to dark gray (#111111) for both household and individual Financial Summary sections, ensuring better readability while maintaining brand consistency
 - June 27, 2025. Updated "You Paid" KPI block colors to match brand palette: changed background to warning color (#D4B26A) and font color to dark gray (#111111) for both household and individual Financial Summary sections, creating consistent styling across all KPI blocks with brand-appropriate colors for tax-related indicators
 - June 27, 2025. Changed KPI block font colors to clean background (#F9FAF8): updated both "You Kept" and "You Paid" blocks to use light text for improved contrast against the green (#88AA73) and gold (#D4B26A) backgrounds, maintaining brand consistency while ensuring optimal readability across all Financial Summary sections
+- June 27, 2025. Added Federal Tax Bracket Analysis section title: positioned between Combined Tax Bracket Visualization and Provincial Tax Bracket Analysis sections for improved document structure and navigation clarity
 ```
 
 ## User Preferences
