@@ -564,11 +564,20 @@ export default function TaxReport() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {taxYearReturns.map((t1Return, index) => {
               const t1WithFields = t1Return as any;
-              const clientName = t1WithFields.client?.firstName && t1WithFields.client?.lastName 
-                ? `${t1WithFields.client.firstName} ${t1WithFields.client.lastName}`
-                : t1WithFields.child?.firstName && t1WithFields.child?.lastName
-                ? `${t1WithFields.child.firstName} ${t1WithFields.child.lastName}`
-                : `Person ${index + 1}`;
+              
+              // Get client name from household data
+              let clientName = `Person ${index + 1}`;
+              if (t1Return.clientId && household?.clients) {
+                const client = household.clients.find(c => c.id === t1Return.clientId);
+                if (client) {
+                  clientName = `${client.firstName} ${client.lastName}`;
+                }
+              } else if (t1Return.childId && household?.children) {
+                const child = household.children.find(c => c.id === t1Return.childId);
+                if (child) {
+                  clientName = `${child.firstName} ${child.lastName}`;
+                }
+              }
               
               // Calculate individual components
               let totalIncome = 0;
