@@ -1962,8 +1962,7 @@ export default function TaxReport() {
                   })}
                 </div>
 
-                {/* Federal Tax Bracket Visualizations */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
                   {spouseData.map((spouse, spouseIndex) => {
                     // Federal tax brackets for visualization - different rates for different income types
                     const federalOrdinaryBrackets = [
