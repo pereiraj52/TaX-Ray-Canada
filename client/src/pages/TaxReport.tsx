@@ -458,11 +458,11 @@ export default function TaxReport() {
                         </div>
                         
                         {/* You Paid Block */}
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
-                          <div className="text-lg font-medium text-red-600 mb-2">
+                        <div className="rounded-lg p-8 text-center" style={{ backgroundColor: '#D4B26A' }}>
+                          <div className="text-lg font-medium mb-2" style={{ color: '#111111' }}>
                             You Paid
                           </div>
-                          <div className="text-4xl font-bold text-red-700">
+                          <div className="text-4xl font-bold" style={{ color: '#111111' }}>
                             {youPaidPercentage.toFixed(2)}%
                           </div>
                         </div>
@@ -812,11 +812,11 @@ export default function TaxReport() {
                             </div>
                             
                             {/* You Paid Block */}
-                            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                              <div className="text-base font-medium text-red-600 mb-2">
+                            <div className="rounded-lg p-6 text-center" style={{ backgroundColor: '#D4B26A' }}>
+                              <div className="text-base font-medium mb-2" style={{ color: '#111111' }}>
                                 You Paid
                               </div>
-                              <div className="text-3xl font-bold text-red-700">
+                              <div className="text-3xl font-bold" style={{ color: '#111111' }}>
                                 {youPaidPercentage.toFixed(2)}%
                               </div>
                             </div>

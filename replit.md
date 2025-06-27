@@ -293,6 +293,7 @@ Changelog:
 - June 27, 2025. Fixed spouse matching issue in tax bracket analysis sections: corrected T1 return data access to use spouse.t1Return directly from spouseData instead of index-based matching, ensuring Jason Pereira and Emilie Pereira federal/provincial tax amounts correctly match their respective T1 form data rather than potentially accessing wrong spouse's tax information due to array ordering mismatches
 - June 27, 2025. Updated "You Kept" KPI block colors to match brand palette: changed font color to primary green (#88AA73) and background to accent green (#C7E6C2) for both household Financial Summary and individual Financial Summary sections, maintaining consistent brand identity across all positive financial indicators
 - June 27, 2025. Revised "You Kept" KPI block colors for improved contrast: changed background to primary green (#88AA73) and font color to dark gray (#111111) for both household and individual Financial Summary sections, ensuring better readability while maintaining brand consistency
+- June 27, 2025. Updated "You Paid" KPI block colors to match brand palette: changed background to warning color (#D4B26A) and font color to dark gray (#111111) for both household and individual Financial Summary sections, creating consistent styling across all KPI blocks with brand-appropriate colors for tax-related indicators
 ```
 
 ## User Preferences
