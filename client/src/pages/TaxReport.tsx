@@ -752,6 +752,198 @@ export default function TaxReport() {
             })}
           </div>
           
+          {/* Individual Financial Summary */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {taxYearReturns.map((t1Return, index) => {
+              const t1WithFields = t1Return as any;
+              
+              // Get client name from household data
+              let clientName = `Person ${index + 1}`;
+              if (t1Return.clientId && household?.clients) {
+                const client = household.clients.find(c => c.id === t1Return.clientId);
+                if (client) {
+                  clientName = `${client.firstName} ${client.lastName}`;
+                }
+              } else if (t1Return.childId && household?.children) {
+                const child = household.children.find(c => c.id === t1Return.childId);
+                if (child) {
+                  clientName = `${child.firstName} ${child.lastName}`;
+                }
+              }
+              
+              return (
+                <Card key={`financial-${t1Return.id}`}>
+                  <CardContent className="p-6">
+                    <h3 className="font-medium text-gray-900 mb-4">{clientName} - Financial Summary</h3>
+                    <div className="space-y-3">
+                      {(() => {
+                        // Calculate individual totals
+                        let totalIncome = 0;
+                        let totalTaxableIncome = 0;
+                        let totalTax = 0;
+                        let totalCredits = 0;
+                        let federalTax = 0;
+                        let provincialTax = 0;
+                        let cppContributions = 0;
+                        let eiPremiums = 0;
+                        
+                        if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                          const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                          const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                          const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                          const creditsField = t1WithFields.formFields.find((field: any) => field.fieldCode === '35000');
+                          const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                          const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                          const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                          const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+                          
+                          totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          totalTaxableIncome = taxableField?.fieldValue ? parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          totalTax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          totalCredits = creditsField?.fieldValue ? parseFloat(String(creditsField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        }
+                        
+                        const totalDeductions = totalIncome - totalTaxableIncome;
+                        const netIncome = totalIncome - totalTax;
+                        
+                        const calculatePercentage = (amount: number) => {
+                          if (totalIncome === 0) return '0.0%';
+                          return `${((amount / totalIncome) * 100).toFixed(1)}%`;
+                        };
+                        
+                        return (
+                          <>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Income:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">(100.0%)</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Deductions:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${totalDeductions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(totalDeductions)})</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Taxable Income:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${totalTaxableIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(totalTaxableIncome)})</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Tax Credits:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${totalCredits.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(totalCredits)})</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Federal Tax:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${federalTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(federalTax)})</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Provincial Tax:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${provincialTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(provincialTax)})</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">CPP Contributions:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${cppContributions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(cppContributions)})</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">EI Premiums:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${eiPremiums.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(eiPremiums)})</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600">Net Income:</span>
+                              <div className="text-right">
+                                <span className="font-medium text-primary">
+                                  ${netIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-500">({calculatePercentage(netIncome)})</span>
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                    
+                    {/* Individual KPI Blocks */}
+                    <div className="mt-6 grid grid-cols-2 gap-6">
+                      {(() => {
+                        // Calculate individual net income percentage for KPI blocks
+                        let totalIncome = 0;
+                        let totalTax = 0;
+                        
+                        if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                          const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                          const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                          
+                          totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          totalTax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        }
+                        
+                        const netIncome = totalIncome - totalTax;
+                        const netIncomePercentage = totalIncome > 0 ? (netIncome / totalIncome) * 100 : 0;
+                        const youPaidPercentage = 100 - netIncomePercentage;
+                        
+                        return (
+                          <>
+                            {/* You Kept Block */}
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+                              <div className="text-base font-medium text-green-600 mb-2">
+                                You Kept
+                              </div>
+                              <div className="text-3xl font-bold text-green-700">
+                                {netIncomePercentage.toFixed(1)}%
+                              </div>
+                            </div>
+                            
+                            {/* You Paid Block */}
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+                              <div className="text-base font-medium text-red-600 mb-2">
+                                You Paid
+                              </div>
+                              <div className="text-3xl font-bold text-red-700">
+                                {youPaidPercentage.toFixed(1)}%
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+          
           {(() => {
             // Get individual taxable incomes for each spouse
             const spouseData = taxYearReturns.map(t1Return => {
