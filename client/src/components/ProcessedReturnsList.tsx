@@ -668,12 +668,8 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => {
-                              if (t1Return.clientId) {
-                                generateReportMutation.mutate(t1Return.clientId);
-                              }
-                            }}
-                            disabled={generateReportMutation.isPending || t1Return.processingStatus !== 'completed' || !t1Return.clientId}
+                            onClick={() => generateReportMutation.mutate(t1Return.clientId)}
+                            disabled={generateReportMutation.isPending || t1Return.processingStatus !== 'completed'}
                             className="h-6 w-6 p-0 text-green-500 hover:text-green-700 hover:bg-green-50"
                             title="Generate audit report"
                           >
