@@ -284,6 +284,7 @@ Changelog:
 - June 27, 2025. Enhanced Federal Tax Bracket Visualization to highlight client's current marginal tax rate bracket with accent green color (#C7E6C2) while keeping all other brackets in primary green for clear visual identification of client's tax position
 - June 27, 2025. Restructured Provincial Tax Bracket Analysis to match Federal layout: converted to professional table format with Rate, Threshold, Income, and Tax columns, added current bracket highlighting, included total row with border emphasis, and maintained authentic Ontario tax calculations
 - June 27, 2025. Fixed Provincial Tax Bracket Analysis styling to exactly match Federal and Combined sections: updated header color from text-primary to text-gray-900, changed table structure to use border-collapse text-sm, matched py-2 px-2 spacing, aligned font styling with text-gray-700 for data rows and text-gray-900 for headers, and corrected JSX structure for proper rendering
+- June 27, 2025. Corrected Provincial Tax Bracket Analysis rate column styling to match Federal section: changed from text-gray-700 to font-medium text-primary for rate values, and applied text-xs to threshold, income, and tax columns for consistent visual hierarchy
 ```
 
 ## User Preferences

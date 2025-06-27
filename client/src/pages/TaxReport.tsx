@@ -2209,12 +2209,12 @@ export default function TaxReport() {
                                         <>
                                           {provincialBracketBreakdown.map((bracket, index) => (
                                             <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
-                                              <td className="py-2 px-2 text-gray-700">{bracket.rate}</td>
-                                              <td className="py-2 px-2 text-gray-700">{bracket.threshold}</td>
-                                              <td className="py-2 px-2 text-gray-700 text-right">
+                                              <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                              <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                              <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                                 ${bracket.incomeInBracket.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                               </td>
-                                              <td className="py-2 px-2 text-gray-700 text-right">
+                                              <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                                 ${bracket.tax.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                               </td>
                                             </tr>
