@@ -1839,13 +1839,17 @@ export default function TaxReport() {
                                           {/* Current income indicator line - only show on first bar */}
                                           {typeIdx === 0 && (
                                             <div 
-                                              className="absolute left-0 w-full h-1 bg-warning z-10"
+                                              className="absolute left-0 w-full h-1 z-10"
                                               style={{
-                                                bottom: `${spouse.taxableIncome > 247000 ? '100%' : Math.min(spouse.taxableIncome / 300000, 1) * 100 + '%'}`
+                                                bottom: `${spouse.taxableIncome > 247000 ? '100%' : Math.min(spouse.taxableIncome / 300000, 1) * 100 + '%'}`,
+                                                backgroundColor: '#D4B26A'
                                               }}
                                             >
                                               {/* Income label to the left of the bars */}
-                                              <div className="absolute right-32 -top-2 text-xs text-warning font-semibold whitespace-nowrap">
+                                              <div 
+                                                className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
+                                                style={{ color: '#D4B26A' }}
+                                              >
                                                 Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
                                               </div>
                                             </div>
