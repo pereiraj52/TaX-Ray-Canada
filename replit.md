@@ -292,6 +292,7 @@ Changelog:
 - June 27, 2025. Aligned Federal and Provincial Tax Bracket Analysis with actual T1 form amounts: Federal Tax Bracket Analysis now matches authentic federal tax amounts (field 42000) from T1 returns, Provincial Tax Bracket Analysis matches actual provincial tax amounts (field 42800), ensuring all three tax bracket analysis sections display exact tax amounts from Financial Summary with proportional bracket-by-bracket adjustments for complete consistency across theoretical analysis and actual T1 form data
 - June 27, 2025. Fixed spouse matching issue in tax bracket analysis sections: corrected T1 return data access to use spouse.t1Return directly from spouseData instead of index-based matching, ensuring Jason Pereira and Emilie Pereira federal/provincial tax amounts correctly match their respective T1 form data rather than potentially accessing wrong spouse's tax information due to array ordering mismatches
 - June 27, 2025. Updated "You Kept" KPI block colors to match brand palette: changed font color to primary green (#88AA73) and background to accent green (#C7E6C2) for both household Financial Summary and individual Financial Summary sections, maintaining consistent brand identity across all positive financial indicators
+- June 27, 2025. Revised "You Kept" KPI block colors for improved contrast: changed background to primary green (#88AA73) and font color to dark gray (#111111) for both household and individual Financial Summary sections, ensuring better readability while maintaining brand consistency
 ```
 
 ## User Preferences
