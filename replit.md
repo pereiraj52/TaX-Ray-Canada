@@ -236,6 +236,7 @@ Changelog:
 - June 26, 2025. Updated pie chart Net Income calculation to match household financial summary using Total Income (15000) minus Total Tax (43500) for accurate data consistency
 - June 26, 2025. Repositioned pie chart to the right side of household financial summary in a two-column grid layout for improved page organization and visual balance
 - June 26, 2025. Changed "Combined Tax Bracket Analysis" section title to "Individual Tax Analysis" for clearer terminology reflecting individual household member analysis
+- June 26, 2025. Added individual pie charts for each household member in Individual Tax Analysis section showing personal income breakdown (Net Income, Federal Tax, Provincial Tax, CPP, EI) positioned before the tax analysis tables
 ```
 
 ## User Preferences

@@ -529,7 +529,7 @@ export default function TaxReport() {
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                           </Pie>
-                          <Tooltip content={<CustomTooltip />} />
+                          <Tooltip />
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
@@ -559,6 +559,115 @@ export default function TaxReport() {
         {/* Individual Tax Analysis Table */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Individual Tax Analysis</h2>
+          
+          {/* Individual Income Breakdown Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {taxYearReturns.map((t1Return, index) => {
+              const t1WithFields = t1Return as any;
+              const clientName = t1WithFields.client?.firstName && t1WithFields.client?.lastName 
+                ? `${t1WithFields.client.firstName} ${t1WithFields.client.lastName}`
+                : t1WithFields.child?.firstName && t1WithFields.child?.lastName
+                ? `${t1WithFields.child.firstName} ${t1WithFields.child.lastName}`
+                : `Person ${index + 1}`;
+              
+              // Calculate individual components
+              let totalIncome = 0;
+              let federalTax = 0;
+              let provincialTax = 0;
+              let cppContributions = 0;
+              let eiPremiums = 0;
+              
+              if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+                
+                totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                eiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+              }
+              
+              // Calculate net income using same method as household summary
+              const totalTaxField = t1WithFields.formFields?.find((field: any) => field.fieldCode === '43500');
+              const totalTax = totalTaxField?.fieldValue ? parseFloat(String(totalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+              const netIncome = totalIncome - totalTax;
+              
+              const individualPieData = [
+                {
+                  name: 'Net Income',
+                  value: netIncome,
+                  color: '#22c55e'
+                },
+                {
+                  name: 'Federal Tax',
+                  value: federalTax,
+                  color: '#3b82f6'
+                },
+                {
+                  name: 'Provincial Tax',
+                  value: provincialTax,
+                  color: '#8b5cf6'
+                },
+                {
+                  name: 'CPP Contributions',
+                  value: cppContributions,
+                  color: '#f59e0b'
+                },
+                {
+                  name: 'EI Premiums',
+                  value: eiPremiums,
+                  color: '#ef4444'
+                }
+              ].filter(item => item.value > 0);
+              
+              return (
+                <Card key={t1Return.id}>
+                  <CardContent className="p-6">
+                    <h3 className="font-medium text-gray-900 mb-4">{clientName} - Income Breakdown</h3>
+                    <div className="h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={individualPieData}
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={80}
+                            fill="#8884d8"
+                            dataKey="value"
+                            label={false}
+                          >
+                            {individualPieData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                    
+                    {/* Custom Legend with Dollar Amounts */}
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                      {individualPieData.map((entry, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <div 
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: entry.color }}
+                          />
+                          <span className="text-sm">
+                            {entry.name}: ${entry.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
           
           {(() => {
             // Get individual taxable incomes for each spouse
