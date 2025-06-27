@@ -2019,19 +2019,27 @@ export default function TaxReport() {
 
                                   return incomeTypes.map((incomeType, typeIdx) => {
                                     const maxScale = 300000; // Scale chart to $300k max
+                                    const currentIncome = spouse.taxableIncome;
 
                                     return (
                                       <div key={typeIdx} className="flex flex-col items-center">
                                         {/* Vertical bar */}
-                                        <div className="relative w-20 h-80 bg-gray-100 border">
+                                        <div className="relative w-20 h-72 bg-gray-100 border">
                                           {incomeType.brackets.map((bracket, idx) => {
+                                            // Skip brackets that start above $300k
+                                            if (bracket.min >= maxScale) return null;
+                                            
+                                            // For high earners (>$247k), highlight the top bracket
+                                            const isCurrentBracket = currentIncome > bracket.min && 
+                                              (currentIncome <= bracket.max || (currentIncome > 247000 && bracket.min === 246752));
+                                            
                                             const bracketTop = Math.min(bracket.max, maxScale);
                                             const bracketHeight = bracketTop - bracket.min;
                                             const heightPercent = (bracketHeight / maxScale) * 100;
                                             const bottomPercent = (bracket.min / maxScale) * 100;
                                             
-                                            // All bars use primary green
-                                            const bgColor = 'bg-primary';
+                                            // Color coding using brand colors
+                                            let bgColor = 'bg-primary'; // Default primary green
                                             
                                             return (
                                               <div 
@@ -2049,11 +2057,11 @@ export default function TaxReport() {
                                             );
                                           })}
                                           
-                                          {/* Current income indicator line - show on all bars */}
+                                          {/* Current income indicator line - show across all 4 bars */}
                                           <div 
                                             className="absolute left-0 w-full h-1 z-10"
                                             style={{
-                                              bottom: `${spouse.taxableIncome > 247000 ? '100%' : Math.min(spouse.taxableIncome / 300000, 1) * 100 + '%'}`,
+                                              bottom: `${currentIncome > 247000 ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`,
                                               backgroundColor: '#D4B26A'
                                             }}
                                           >
@@ -2063,7 +2071,7 @@ export default function TaxReport() {
                                                 className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
                                                 style={{ color: '#D4B26A' }}
                                               >
-                                                Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
+                                                Taxable Income: ${Math.round(currentIncome / 1000)}k
                                               </div>
                                             )}
                                           </div>
