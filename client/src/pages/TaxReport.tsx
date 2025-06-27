@@ -647,13 +647,37 @@ export default function TaxReport() {
                             outerRadius={80}
                             fill="#8884d8"
                             dataKey="value"
-                            label={false}
+                            label={({ name, value }) => {
+                              const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
+                              const percentage = ((value / total) * 100).toFixed(1);
+                              return `${name}: ${percentage}%`;
+                            }}
                           >
                             {individualPieData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                           </Pie>
-                          <Tooltip />
+                          <Tooltip 
+                            content={({ active, payload }) => {
+                              if (active && payload && payload.length) {
+                                const data = payload[0];
+                                if (data && typeof data.value === 'number') {
+                                  const total = individualPieData.reduce((sum, item) => sum + item.value, 0);
+                                  const percentage = ((data.value / total) * 100).toFixed(1);
+                                  return (
+                                    <div className="bg-white p-3 border rounded shadow-lg">
+                                      <p className="font-medium">{data.name}</p>
+                                      <p className="text-sm text-gray-600">
+                                        ${data.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                      </p>
+                                      <p className="text-sm text-gray-600">{percentage}% of total income</p>
+                                    </div>
+                                  );
+                                }
+                              }
+                              return null;
+                            }}
+                          />
                         </PieChart>
                       </ResponsiveContainer>
                     </div>

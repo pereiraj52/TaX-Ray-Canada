@@ -238,6 +238,8 @@ Changelog:
 - June 26, 2025. Changed "Combined Tax Bracket Analysis" section title to "Individual Tax Analysis" for clearer terminology reflecting individual household member analysis
 - June 26, 2025. Added individual pie charts for each household member in Individual Tax Analysis section showing personal income breakdown (Net Income, Federal Tax, Provincial Tax, CPP, EI) positioned before the tax analysis tables
 - June 26, 2025. Fixed incorrect EI Premiums extraction for Jason Pereira by removing erroneous $300.21 value from field 31200 in database, correcting PDF parsing error
+- June 27, 2025. Replaced "Person 1" and "Person 2" labels in individual pie charts with actual client names (Jason Pereira, Emilie Pereira) using household data
+- June 27, 2025. Enhanced individual pie charts with direct segment labels showing category names and percentages, plus detailed hover tooltips with dollar amounts
 ```
 
 ## User Preferences
