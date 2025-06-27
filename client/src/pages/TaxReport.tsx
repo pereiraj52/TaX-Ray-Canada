@@ -2163,80 +2163,75 @@ export default function TaxReport() {
                       return (
                         <Card key={spouseIndex}>
                           <CardContent className="p-6">
-                            <div className="space-y-4">
-                              <h3 className="font-medium text-primary">
+                            <div>
+                              <h3 className="font-medium text-gray-900 mb-4">
                                 {spouse.clientName} - Provincial Tax Bracket Analysis
                               </h3>
                               
-                              <div className="bg-gray-50 rounded-lg p-6">
-                                <table className="w-full">
+                              {/* Provincial Tax Bracket Table */}
+                              <div className="overflow-x-auto">
+                                <table className="w-full border-collapse text-sm">
                                   <thead>
-                                    <tr className="border-b border-gray-300">
-                                      <th className="text-left py-3 text-sm font-medium text-gray-700">Rate</th>
-                                      <th className="text-left py-3 text-sm font-medium text-gray-700">Threshold</th>
-                                      <th className="text-right py-3 text-sm font-medium text-gray-700">Income</th>
-                                      <th className="text-right py-3 text-sm font-medium text-gray-700">Tax</th>
+                                    <tr className="border-b">
+                                      <th className="text-left py-2 px-2 font-medium text-gray-900">Rate</th>
+                                      <th className="text-left py-2 px-2 font-medium text-gray-900">Threshold</th>
+                                      <th className="text-right py-2 px-2 font-medium text-gray-900">Income</th>
+                                      <th className="text-right py-2 px-2 font-medium text-gray-900">Tax</th>
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {ontarioTaxBrackets.map((bracket, idx) => {
-                                      const isCurrentBracket = spouse.taxableIncome > bracket.min && 
-                                        (spouse.taxableIncome <= bracket.max || (spouse.taxableIncome > 220000 && bracket.min === 220000));
-                                      
-                                      // Calculate income and tax for this bracket
-                                      const taxableInThisBracket = Math.min(
-                                        Math.max(0, spouse.taxableIncome - bracket.min),
-                                        bracket.max - bracket.min
-                                      );
-                                      const taxInThisBracket = taxableInThisBracket * (bracket.rate / 100);
-                                      
-                                      // Format threshold range
-                                      const thresholdText = idx === 0 
-                                        ? `$0 to $${bracket.max.toLocaleString()}`
-                                        : idx === ontarioTaxBrackets.length - 1
-                                          ? `$${bracket.min.toLocaleString()} to above`
-                                          : `$${bracket.min.toLocaleString()} to $${bracket.max.toLocaleString()}`;
-                                      
+                                    {(() => {
+                                      const calculateProvincialTaxBreakdown = (income: number) => {
+                                        return ontarioTaxBrackets.map(bracket => {
+                                          let incomeInBracket = 0;
+                                          let taxFromBracket = 0;
+                                          
+                                          if (income > bracket.min) {
+                                            const maxForBracket = Math.min(income, bracket.max);
+                                            incomeInBracket = maxForBracket - bracket.min;
+                                            taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                                          }
+
+                                          return {
+                                            rate: bracket.label,
+                                            threshold: `$${bracket.min.toLocaleString()} to ${bracket.max === 300000 ? 'above' : '$' + bracket.max.toLocaleString()}`,
+                                            incomeInBracket: incomeInBracket,
+                                            tax: taxFromBracket,
+                                            ratePercent: bracket.rate
+                                          };
+                                        });
+                                      };
+
+                                      const provincialBracketBreakdown = calculateProvincialTaxBreakdown(spouse.taxableIncome);
+                                      const totalProvincialTax = provincialBracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+
                                       return (
-                                        <tr 
-                                          key={idx}
-                                          className={`border-b border-gray-200 ${
-                                            isCurrentBracket ? 'bg-accent/20' : ''
-                                          }`}
-                                        >
-                                          <td className="py-3 text-sm text-gray-700">{bracket.rate.toFixed(2)}%</td>
-                                          <td className="py-3 text-sm text-gray-700">{thresholdText}</td>
-                                          <td className="py-3 text-sm text-gray-700 text-right">
-                                            {taxableInThisBracket > 0 
-                                              ? `$${taxableInThisBracket.toLocaleString()}`
-                                              : '$0'
-                                            }
-                                          </td>
-                                          <td className="py-3 text-sm text-gray-700 text-right">
-                                            {taxInThisBracket > 0 
-                                              ? `$${Math.round(taxInThisBracket).toLocaleString()}`
-                                              : '$0'
-                                            }
-                                          </td>
-                                        </tr>
+                                        <>
+                                          {provincialBracketBreakdown.map((bracket, index) => (
+                                            <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
+                                              <td className="py-2 px-2 text-gray-700">{bracket.rate}</td>
+                                              <td className="py-2 px-2 text-gray-700">{bracket.threshold}</td>
+                                              <td className="py-2 px-2 text-gray-700 text-right">
+                                                ${bracket.incomeInBracket.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                              </td>
+                                              <td className="py-2 px-2 text-gray-700 text-right">
+                                                ${bracket.tax.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                              </td>
+                                            </tr>
+                                          ))}
+                                          <tr className="border-t-2 border-black font-bold">
+                                            <td className="py-2 px-2 text-gray-900">Total</td>
+                                            <td className="py-2 px-2 text-gray-900"></td>
+                                            <td className="py-2 px-2 text-gray-900 text-right">
+                                              ${spouse.taxableIncome.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                            </td>
+                                            <td className="py-2 px-2 text-gray-900 text-right">
+                                              ${totalProvincialTax.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                            </td>
+                                          </tr>
+                                        </>
                                       );
-                                    })}
-                                    <tr className="border-t-2 border-gray-800 font-semibold">
-                                      <td className="py-3 text-sm text-gray-900">Total</td>
-                                      <td className="py-3 text-sm text-gray-900"></td>
-                                      <td className="py-3 text-sm text-gray-900 text-right">
-                                        ${spouse.taxableIncome.toLocaleString()}
-                                      </td>
-                                      <td className="py-3 text-sm text-gray-900 text-right">
-                                        ${Math.round(ontarioTaxBrackets.reduce((total, bracket) => {
-                                          const taxableInThisBracket = Math.min(
-                                            Math.max(0, spouse.taxableIncome - bracket.min),
-                                            bracket.max - bracket.min
-                                          );
-                                          return total + (taxableInThisBracket * (bracket.rate / 100));
-                                        }, 0)).toLocaleString()}
-                                      </td>
-                                    </tr>
+                                    })()}
                                   </tbody>
                                 </table>
                               </div>
