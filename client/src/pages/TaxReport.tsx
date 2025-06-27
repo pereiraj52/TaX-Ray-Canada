@@ -2008,83 +2008,125 @@ export default function TaxReport() {
                               </h3>
 
                               {/* Federal Tax Bracket Chart */}
-                              <div className="flex justify-center items-end space-x-4 h-80 p-4">
-                                {(() => {
-                                  const incomeTypes = [
-                                    { name: 'Ordinary Income', brackets: federalOrdinaryBrackets },
-                                    { name: 'Capital Gains', brackets: federalCapitalGainsBrackets },
-                                    { name: 'Eligible Dividends', brackets: federalEligibleDividendBrackets },
-                                    { name: 'Non-Eligible Dividends', brackets: federalNonEligibleDividendBrackets }
-                                  ];
+                              <div className="relative">
+                                <div className="flex items-start justify-center">
+                                  {/* Income scale labels on left (vertical axis) - federal brackets */}
+                                  <div className="w-16 h-80 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                                    {/* $300k at top */}
+                                    <div className="absolute top-0 right-0 text-right">$300k</div>
+                                    
+                                    {/* Federal tax bracket thresholds */}
+                                    {(() => {
+                                      const federalThresholds = [
+                                        { income: 55867, label: "$56k" },
+                                        { income: 111733, label: "$112k" },
+                                        { income: 173205, label: "$173k" },
+                                        { income: 246752, label: "$247k" }
+                                      ];
 
-                                  return incomeTypes.map((incomeType, typeIdx) => {
-                                    const maxScale = 300000; // Scale chart to $300k max
-                                    const currentIncome = spouse.taxableIncome;
+                                      const thresholds = federalThresholds.map(threshold => ({
+                                        position: (threshold.income / 300000) * 100,
+                                        label: threshold.label
+                                      }));
 
-                                    return (
-                                      <div key={typeIdx} className="flex flex-col items-center">
-                                        {/* Vertical bar */}
-                                        <div className="relative w-20 h-72 bg-gray-100 border">
-                                          {incomeType.brackets.map((bracket, idx) => {
-                                            // Skip brackets that start above $300k
-                                            if (bracket.min >= maxScale) return null;
-                                            
-                                            // For high earners (>$247k), highlight the top bracket
-                                            const isCurrentBracket = currentIncome > bracket.min && 
-                                              (currentIncome <= bracket.max || (currentIncome > 247000 && bracket.min === 246752));
-                                            
-                                            const bracketTop = Math.min(bracket.max, maxScale);
-                                            const bracketHeight = bracketTop - bracket.min;
-                                            const heightPercent = (bracketHeight / maxScale) * 100;
-                                            const bottomPercent = (bracket.min / maxScale) * 100;
-                                            
-                                            // Color coding using brand colors
-                                            let bgColor = 'bg-primary'; // Default primary green
-                                            
-                                            return (
+                                      return thresholds.map((threshold, idx) => (
+                                        <div 
+                                          key={idx}
+                                          className="absolute right-0 text-right"
+                                          style={{
+                                            bottom: `${Math.min(threshold.position, 90)}%`,
+                                            transform: 'translateY(50%)'
+                                          }}
+                                        >
+                                          {threshold.label}
+                                        </div>
+                                      ));
+                                    })()}
+                                    
+                                    {/* $0 at bottom */}
+                                    <div className="absolute bottom-0 right-0 text-right">$0</div>
+                                  </div>
+                                  
+                                  {/* Four Income Type Bars */}
+                                  <div className="flex space-x-3">
+                                    {(() => {
+                                      const incomeTypes = [
+                                        { name: 'Ordinary Income', brackets: federalOrdinaryBrackets },
+                                        { name: 'Capital Gains', brackets: federalCapitalGainsBrackets },
+                                        { name: 'Eligible Dividends', brackets: federalEligibleDividendBrackets },
+                                        { name: 'Non-Eligible Dividends', brackets: federalNonEligibleDividendBrackets }
+                                      ];
+
+                                      return incomeTypes.map((incomeType, typeIdx) => {
+                                        const maxScale = 300000; // Scale chart to $300k max
+                                        const currentIncome = spouse.taxableIncome;
+
+                                        return (
+                                          <div key={typeIdx} className="flex flex-col items-center">
+                                            {/* Vertical bar */}
+                                            <div className="relative w-20 h-72 bg-gray-100 border">
+                                              {incomeType.brackets.map((bracket, idx) => {
+                                                // Skip brackets that start above $300k
+                                                if (bracket.min >= maxScale) return null;
+                                                
+                                                // For high earners (>$247k), highlight the top bracket
+                                                const isCurrentBracket = currentIncome > bracket.min && 
+                                                  (currentIncome <= bracket.max || (currentIncome > 247000 && bracket.min === 246752));
+                                                
+                                                const bracketTop = Math.min(bracket.max, maxScale);
+                                                const bracketHeight = bracketTop - bracket.min;
+                                                const heightPercent = (bracketHeight / maxScale) * 100;
+                                                const bottomPercent = (bracket.min / maxScale) * 100;
+                                                
+                                                // Color coding using brand colors
+                                                let bgColor = 'bg-primary'; // Default primary green
+                                                
+                                                return (
+                                                  <div 
+                                                    key={idx}
+                                                    className={`absolute w-full ${bgColor} flex items-center justify-center border-t border-white`}
+                                                    style={{
+                                                      bottom: `${bottomPercent}%`,
+                                                      height: `${heightPercent}%`
+                                                    }}
+                                                  >
+                                                    <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
+                                                      {bracket.label}
+                                                    </span>
+                                                  </div>
+                                                );
+                                              })}
+                                              
+                                              {/* Current income indicator line - show across all 4 bars */}
                                               <div 
-                                                key={idx}
-                                                className={`absolute w-full ${bgColor} flex items-center justify-center border-t border-white`}
+                                                className="absolute left-0 w-full h-1 z-10"
                                                 style={{
-                                                  bottom: `${bottomPercent}%`,
-                                                  height: `${heightPercent}%`
+                                                  bottom: `${currentIncome > 247000 ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`,
+                                                  backgroundColor: '#D4B26A'
                                                 }}
                                               >
-                                                <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
-                                                  {bracket.label}
-                                                </span>
+                                                {/* Income label to the left of the bars - only show on first bar */}
+                                                {typeIdx === 0 && (
+                                                  <div 
+                                                    className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
+                                                    style={{ color: '#D4B26A' }}
+                                                  >
+                                                    Taxable Income: ${Math.round(currentIncome / 1000)}k
+                                                  </div>
+                                                )}
                                               </div>
-                                            );
-                                          })}
-                                          
-                                          {/* Current income indicator line - show across all 4 bars */}
-                                          <div 
-                                            className="absolute left-0 w-full h-1 z-10"
-                                            style={{
-                                              bottom: `${currentIncome > 247000 ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`,
-                                              backgroundColor: '#D4B26A'
-                                            }}
-                                          >
-                                            {/* Income label to the left of the bars - only show on first bar */}
-                                            {typeIdx === 0 && (
-                                              <div 
-                                                className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
-                                                style={{ color: '#D4B26A' }}
-                                              >
-                                                Taxable Income: ${Math.round(currentIncome / 1000)}k
-                                              </div>
-                                            )}
+                                            </div>
+                                            
+                                            {/* Label below the bar */}
+                                            <div className="mt-2 text-xs text-center text-gray-700 font-medium w-20">
+                                              {incomeType.name}
+                                            </div>
                                           </div>
-                                        </div>
-                                        
-                                        {/* Label below the bar */}
-                                        <div className="mt-2 text-xs text-center text-gray-700 font-medium w-20">
-                                          {incomeType.name}
-                                        </div>
-                                      </div>
-                                    );
-                                  });
-                                })()}
+                                        );
+                                      });
+                                    })()}
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
