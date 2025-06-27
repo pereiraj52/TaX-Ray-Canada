@@ -383,7 +383,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     
                     const calculatePercentage = (amount: number) => {
                       if (totalIncome === 0) return '0.0%';
-                      return `${((amount / totalIncome) * 100).toFixed(1)}%`;
+                      return `${((amount / totalIncome) * 100).toFixed(2)}%`;
                     };
                     
                     return (
