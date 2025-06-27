@@ -2241,7 +2241,7 @@ export default function TaxReport() {
                                         
                                         // Special positioning for $300k label - place it just below the top
                                         const adjustedPosition = threshold.income === 300000 ? 
-                                          position - 8 : // Move down 8% from the top
+                                          position - 4 : // Move down 4% from the top (half of previous 8%)
                                           position;
                                         
                                         return (
