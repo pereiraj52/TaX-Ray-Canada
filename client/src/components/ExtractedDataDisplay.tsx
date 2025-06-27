@@ -376,7 +376,13 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     const taxableIncome = parseFloat(getFieldValue('26000') || '0');
                     const totalDeductions = totalIncome - taxableIncome;
                     const totalTax = parseFloat(getFieldValue('43700') || '0');
-                    const netIncome = totalIncome - parseFloat(getFieldValue('43500') || '0');
+                    
+                    // Calculate net income using fallback logic for missing Total Tax field
+                    const totalTaxField = parseFloat(getFieldValue('43500') || '0');
+                    const federalTax = parseFloat(getFieldValue('42000') || '0');
+                    const provincialTax = parseFloat(getFieldValue('42800') || '0');
+                    const calculatedTotalTax = totalTaxField > 0 ? totalTaxField : (federalTax + provincialTax);
+                    const netIncome = totalIncome - calculatedTotalTax;
                     
                     const calculatePercentage = (amount: number) => {
                       if (totalIncome === 0) return '0.0%';
