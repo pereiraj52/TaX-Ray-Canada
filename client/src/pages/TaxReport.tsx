@@ -1873,6 +1873,191 @@ export default function TaxReport() {
                     );
                   })}
                 </div>
+
+                {/* Federal Tax Bracket Tables */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                  {spouseData.map((spouse, spouseIndex) => {
+                    // Federal tax brackets for 2024
+                    const federalBrackets = [
+                      { rate: 15.0, min: 0, max: 55867, label: "15.00%" },
+                      { rate: 20.5, min: 55867, max: 111733, label: "20.50%" },
+                      { rate: 26.0, min: 111733, max: 173205, label: "26.00%" },
+                      { rate: 29.0, min: 173205, max: 246752, label: "29.00%" },
+                      { rate: 33.0, min: 246752, max: Infinity, label: "33.00%" }
+                    ];
+
+                    const calculateFederalTaxBreakdown = (income: number) => {
+                      return federalBrackets.map(bracket => {
+                        let incomeInBracket = 0;
+                        let taxFromBracket = 0;
+                        
+                        if (income > bracket.min) {
+                          const maxForBracket = Math.min(income, bracket.max);
+                          incomeInBracket = maxForBracket - bracket.min;
+                          taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                        }
+
+                        return {
+                          rate: bracket.label,
+                          threshold: `$${bracket.min.toLocaleString()} to ${bracket.max === Infinity ? 'above' : '$' + bracket.max.toLocaleString()}`,
+                          incomeInBracket: incomeInBracket,
+                          tax: taxFromBracket,
+                          ratePercent: bracket.rate
+                        };
+                      });
+                    };
+
+                    const federalBracketBreakdown = calculateFederalTaxBreakdown(spouse.taxableIncome);
+                    const totalFederalTax = federalBracketBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0);
+
+                    return (
+                      <Card key={spouseIndex}>
+                        <CardContent className="p-6">
+                          <div>
+                            <h3 className="font-medium text-gray-900 mb-4">
+                              {spouse.clientName} - Federal Tax Bracket Analysis
+                            </h3>
+                            
+                            {/* Federal Tax Bracket Table */}
+                            <div className="overflow-x-auto">
+                              <table className="w-full border-collapse text-sm">
+                                <thead>
+                                  <tr className="border-b">
+                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Rate</th>
+                                    <th className="text-left py-2 px-2 font-medium text-gray-900">Threshold</th>
+                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Income</th>
+                                    <th className="text-right py-2 px-2 font-medium text-gray-900">Tax</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {federalBracketBreakdown.map((bracket, index) => (
+                                    <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
+                                      <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                      <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                        ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                      </td>
+                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                        ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
+                                    <td className="py-2 px-2">Total</td>
+                                    <td className="py-2 px-2"></td>
+                                    <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                      ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                    </td>
+                                    <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                      ${totalFederalTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+
+                {/* Federal Tax Bracket Visualizations */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {spouseData.map((spouse, spouseIndex) => {
+                    // Federal tax brackets for visualization
+                    const federalBrackets = [
+                      { rate: 15.0, min: 0, max: 55867, label: "15.00%" },
+                      { rate: 20.5, min: 55867, max: 111733, label: "20.50%" },
+                      { rate: 26.0, min: 111733, max: 173205, label: "26.00%" },
+                      { rate: 29.0, min: 173205, max: 246752, label: "29.00%" },
+                      { rate: 33.0, min: 246752, max: 300000, label: "33.00%" }
+                    ];
+
+                    return (
+                      <Card key={spouseIndex}>
+                        <CardContent className="p-6">
+                          <div className="space-y-4">
+                            <div>
+                              <h3 className="font-medium text-gray-900 mb-4">
+                                {spouse.clientName} - Federal Tax Bracket Visualization
+                              </h3>
+
+                              {/* Federal Tax Bracket Chart */}
+                              <div className="flex justify-center items-end space-x-4 h-80 p-4">
+                                {(() => {
+                                  const incomeTypes = [
+                                    { name: 'Federal Tax', brackets: federalBrackets }
+                                  ];
+
+                                  return incomeTypes.map((incomeType, typeIdx) => {
+                                    const maxScale = 300000; // Scale chart to $300k max
+
+                                    return (
+                                      <div key={typeIdx} className="flex flex-col items-center">
+                                        {/* Single bar for federal brackets */}
+                                        <div className="relative w-20 h-72 bg-gray-200 border border-gray-300">
+                                          {incomeType.brackets.map((bracket, idx) => {
+                                            const bracketTop = Math.min(bracket.max, maxScale);
+                                            const bracketHeight = bracketTop - bracket.min;
+                                            const heightPercent = (bracketHeight / maxScale) * 100;
+                                            const bottomPercent = (bracket.min / maxScale) * 100;
+                                            
+                                            // All bars use primary green
+                                            const bgColor = 'bg-primary';
+                                            
+                                            return (
+                                              <div 
+                                                key={idx}
+                                                className={`absolute w-full ${bgColor} flex items-center justify-center border-t border-white`}
+                                                style={{
+                                                  bottom: `${bottomPercent}%`,
+                                                  height: `${heightPercent}%`
+                                                }}
+                                              >
+                                                <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
+                                                  {bracket.label}
+                                                </span>
+                                              </div>
+                                            );
+                                          })}
+                                          
+                                          {/* Current income indicator line - show on federal bar */}
+                                          <div 
+                                            className="absolute left-0 w-full h-1 z-10"
+                                            style={{
+                                              bottom: `${spouse.taxableIncome > 247000 ? '100%' : Math.min(spouse.taxableIncome / 300000, 1) * 100 + '%'}`,
+                                              backgroundColor: '#D4B26A'
+                                            }}
+                                          >
+                                            {/* Income label to the left of the bars - only show on first bar */}
+                                            {typeIdx === 0 && (
+                                              <div 
+                                                className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
+                                                style={{ color: '#D4B26A' }}
+                                              >
+                                                Taxable Income: ${Math.round(spouse.taxableIncome / 1000)}k
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Label below the bar */}
+                                        <div className="mt-2 text-xs text-center text-gray-700 font-medium w-20">
+                                          {incomeType.name}
+                                        </div>
+                                      </div>
+                                    );
+                                  });
+                                })()}
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
               </div>
             );
           })()}

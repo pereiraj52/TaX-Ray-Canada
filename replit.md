@@ -269,6 +269,7 @@ Changelog:
 - June 27, 2025. Extended taxable income indicator line to appear across all 4 bars in tax bracket visualization while keeping label only on first bar
 - June 27, 2025. Increased z-index of tax bracket text labels to z-20 to bring them to front for better visibility over indicator lines
 - June 27, 2025. Standardized font styling in Combined Tax Bracket Analysis table by changing income and tax columns from font-mono to text-gray-700 text-xs to match threshold column styling
+- June 27, 2025. Added Federal Tax Bracket Analysis and Federal Tax Bracket Visualization sections with authentic 2024 federal tax brackets (15%, 20.5%, 26%, 29%, 33%) for comprehensive tax planning analysis
 ```
 
 ## User Preferences
