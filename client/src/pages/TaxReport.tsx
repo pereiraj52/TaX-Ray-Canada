@@ -1049,9 +1049,6 @@ export default function TaxReport() {
                             <h3 className="font-medium text-gray-900 mb-4">
                               {spouse.clientName} - Combined Tax Bracket Analysis
                             </h3>
-                            <p className="text-sm text-gray-600 mb-4">
-                              Taxable Income: ${spouse.taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                            </p>
                             
                             {/* Individual Tax Bracket Table */}
                             <div className="overflow-x-auto">

@@ -260,6 +260,7 @@ Changelog:
 - June 27, 2025. Updated household pie chart tooltips to match individual chart format: combined dollar amount and percentage in single line for consistency across all pie chart visualizations
 - June 27, 2025. Removed "of total income" text from individual pie chart tooltips for cleaner display showing only dollar amount and percentage
 - June 27, 2025. Separated tax bracket table and visualization chart into two distinct blocks: created separate cards for tax bracket analysis tables and tax bracket visualizations for cleaner organization
+- June 27, 2025. Removed taxable income display line from Combined Tax Bracket Analysis section headers for cleaner table presentation
 ```
 
 ## User Preferences
