@@ -3257,11 +3257,8 @@ export default function TaxReport() {
                       <div className="space-y-4">
                         {updatedBenefitInfo.map((item, index) => (
                           <div key={index} className="flex items-center justify-between text-sm">
-                            <div className="flex items-center space-x-2">
-                              <span style={{ color: '#88AA73' }}>ℹ</span>
-                              <div>
-                                <span className="font-medium">{item.name}</span>
-                              </div>
+                            <div>
+                              <span className="font-medium">{item.name}</span>
                             </div>
                             <span className="font-medium text-primary">
                               {formatValue(item.value, item.format)}
