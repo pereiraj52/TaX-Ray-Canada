@@ -1631,6 +1631,58 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
+              {/* Refundable Credits Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('refundable-credits')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['refundable-credits'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-medium text-primary">Refundable Credits</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['45200', '45300', '45350', '45400', '44900', '47555', '47556']))}
+                  </span>
+                </button>
+                {!collapsedSections['refundable-credits'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Refundable Medical Expense (Line 45200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Working Income Tax Benefit (Line 45300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">GST/HST Credit (Line 45350):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Canada Child Benefit (Line 45400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Climate Action Incentive (Line 44900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('44900'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Journalism Labour Tax Credit (Line 47555):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('47555'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Fuel Charge Farmers Credit (Line 47556):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Ontario Credits Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
@@ -1722,58 +1774,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Ontario Donations & Gifts (Line 58729):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('58729'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Refundable Credits Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('refundable-credits')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['refundable-credits'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Refundable Credits</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['45200', '45300', '45350', '45400', '44900', '47555', '47556']))}
-                  </span>
-                </button>
-                {!collapsedSections['refundable-credits'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Refundable Medical Expense (Line 45200):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Working Income Tax Benefit (Line 45300):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">GST/HST Credit (Line 45350):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Canada Child Benefit (Line 45400):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Climate Action Incentive (Line 44900):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('44900'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Journalism Labour Tax Credit (Line 47555):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('47555'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Fuel Charge Farmers Credit (Line 47556):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
                     </div>
                   </div>
                 )}
