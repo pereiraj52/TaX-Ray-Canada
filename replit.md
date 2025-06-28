@@ -325,6 +325,7 @@ Changelog:
 - June 28, 2025. Fixed spacing for Tax Deductions Analysis and Tax Credits Analysis titles: added mt-8 top margin and mb-4 bottom margin to section titles to match consistent spacing with other report sections like Individual Tax Analysis
 - June 28, 2025. Moved CPP or QPP Contributions (Line 30800) from Basic Credits to Employment Credits section in Tax Credits Analysis: repositioned CPP/QPP contributions to Employment Credits category where it belongs alongside Enhanced CPP/QPP Credit for better logical organization
 - June 28, 2025. Corrected Enhanced CPP/QPP (Line 22215) classification: renamed from "Enhanced CPP/QPP Credit" to "Enhanced CPP/QPP Deduction" and moved from Employment Credits section in Tax Credits Analysis to Employment Deductions section in Tax Deductions Analysis, updated T1 extraction display accordingly, and fixed all section totals and calculations
+- June 28, 2025. Created comprehensive Government Clawback Analysis section: added new analysis section displaying OAS Recovery Tax (42200), UCCB Repayment (21300), EI Benefit Repayment (42210), and Social Benefits Repayment (23500) with warning icons for active clawbacks, checkmarks for no repayments, individual category totals, and overall clawback summary with brand-consistent color coding
 ```
 
 ## User Preferences

@@ -3121,6 +3121,164 @@ export default function TaxReport() {
           </div>
         </div>
 
+        {/* Government Clawback Analysis */}
+        <div className="space-y-6 mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Government Clawback Analysis</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {(() => {
+              // Get T1 returns for the specified year for both spouses
+              const spouseData = [];
+              
+              // Primary client
+              if (household?.clients?.[0]) {
+                const client = household.clients[0];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+              
+              // Secondary client
+              if (household?.clients?.[1]) {
+                const client = household.clients[1];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+
+              return spouseData.map((spouse, spouseIndex) => {
+                if (!spouse.t1Return) return null;
+
+                // Helper function to get field value
+                const getFieldValue = (lineNumber: string) => {
+                  const field = spouse.formFields.find(f => f.fieldCode === lineNumber);
+                  return field?.fieldValue ? parseFloat(field.fieldValue) : 0;
+                };
+
+                // Helper function to format currency
+                const formatCurrency = (amount: number) => {
+                  return new Intl.NumberFormat('en-CA', {
+                    style: 'currency',
+                    currency: 'CAD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  }).format(amount);
+                };
+
+                // Define government clawbacks and repayments
+                const clawbacks = [
+                  // OAS Recovery Tax
+                  { category: "OAS Recovery", items: [
+                    { name: "OAS Recovery Tax", line: "42200", description: "Old Age Security clawback based on income" },
+                  ]},
+                  
+                  // Universal Child Care Benefit Repayment
+                  { category: "UCCB Repayment", items: [
+                    { name: "UCCB Repayment", line: "21300", description: "Universal Child Care Benefit repayment" },
+                  ]},
+                  
+                  // Employment Insurance Benefit Repayment
+                  { category: "EI Benefit Repayment", items: [
+                    { name: "EI Benefit Repayment", line: "42210", description: "Employment Insurance benefit repayment" },
+                  ]},
+                  
+                  // Social Benefits Repayment
+                  { category: "Social Benefits Repayment", items: [
+                    { name: "Social Benefits Repayment", line: "23500", description: "Repayment of various social benefits" },
+                  ]},
+                ];
+
+                // Calculate total clawbacks
+                const totalClawbacks = clawbacks.reduce((total, category) => {
+                  return total + category.items.reduce((sum, item) => {
+                    return sum + getFieldValue(item.line);
+                  }, 0);
+                }, 0);
+
+                return (
+                  <Card key={spouseIndex}>
+                    <CardContent className="p-6">
+                      <h3 className="font-medium text-gray-900 mb-6">
+                        {spouse.clientName} - Government Clawbacks
+                      </h3>
+                      
+                      <div className="space-y-6">
+                        {clawbacks.map((category, categoryIndex) => {
+                          const categoryTotal = category.items.reduce((sum, item) => {
+                            return sum + getFieldValue(item.line);
+                          }, 0);
+
+                          return (
+                            <div key={categoryIndex} className="border-b border-gray-100 pb-4 last:border-b-0">
+                              <div className="flex justify-between items-center mb-3">
+                                <h4 className="font-medium text-primary">{category.category}</h4>
+                                <span className="font-medium text-primary">
+                                  {formatCurrency(categoryTotal)}
+                                </span>
+                              </div>
+                              
+                              <div className="space-y-2">
+                                {category.items.map((item, itemIndex) => {
+                                  const amount = getFieldValue(item.line);
+                                  const hasAmount = amount > 0;
+                                  
+                                  return (
+                                    <div key={itemIndex} className="flex items-center justify-between text-sm">
+                                      <div className="flex items-center space-x-2">
+                                        {hasAmount ? (
+                                          <span style={{ color: '#D4B26A' }}>⚠</span>
+                                        ) : (
+                                          <span style={{ color: '#88AA73' }}>✓</span>
+                                        )}
+                                        <div>
+                                          <span className="font-medium">{item.name} (Line {item.line})</span>
+                                          <div className="text-gray-600 text-xs">{item.description}</div>
+                                        </div>
+                                      </div>
+                                      <span className={`font-medium ${hasAmount ? 'text-yellow-600' : 'text-gray-400'}`}>
+                                        {hasAmount ? formatCurrency(amount) : '$0'}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                        
+                        {/* Total Clawbacks Summary */}
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-yellow-800">
+                              Total Government Clawbacks
+                            </span>
+                            <span className="font-bold text-yellow-600 text-lg">
+                              {formatCurrency(totalClawbacks)}
+                            </span>
+                          </div>
+                          <p className="text-yellow-700 text-sm mt-1">
+                            {totalClawbacks > 0 
+                              ? "Government benefit repayments and recovery taxes" 
+                              : "No government clawbacks or repayments required"}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              });
+            })()}
+          </div>
+        </div>
+
       </div>
     </Layout>
   );
