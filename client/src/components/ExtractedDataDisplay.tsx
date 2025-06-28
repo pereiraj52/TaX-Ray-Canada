@@ -236,10 +236,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   };
 
   const getRefundOrBalance = (): number => {
-    // Calculate refund/balance: Taxes Paid (43700) - Total Tax (43500)
+    // Calculate refund/balance: Taxes Paid (43700) - Total Tax (42000 + 42800)
     // Positive = Refund, Negative = Balance Due
     const taxesPaid = parseFloat(getFieldValue('43700')) || 0;
-    const totalTax = parseFloat(getFieldValue('43500')) || 0;
+    const federalTax = parseFloat(getFieldValue('42000')) || 0;
+    const provincialTax = parseFloat(getFieldValue('42800')) || 0;
+    const totalTax = federalTax + provincialTax;
     return taxesPaid - totalTax;
   };
 
@@ -316,7 +318,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="font-medium text-primary mb-2">Total Tax</h3>
           <p className="text-lg font-semibold text-primary">
-            {formatCurrency(getFieldValue('43700'))}
+            {formatCurrency(
+              (parseFloat(getFieldValue('42000')) || 0) + (parseFloat(getFieldValue('42800')) || 0)
+            )}
           </p>
         </div>
         <div className="bg-gray-50 p-4 rounded-lg">
@@ -376,8 +380,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     const totalDeductions = totalIncome - taxableIncome;
                     const totalTax = parseFloat(getFieldValue('43700') || '0');
                     
-                    // Calculate net income using the same field displayed in "Total Tax" line (43700)
-                    const displayedTotalTax = parseFloat(getFieldValue('43700') || '0');
+                    // Calculate net income using total tax (federal + provincial)
+                    const federalTax = parseFloat(getFieldValue('42000') || '0');
+                    const provincialTax = parseFloat(getFieldValue('42800') || '0');
+                    const displayedTotalTax = federalTax + provincialTax;
                     const netIncome = totalIncome - displayedTotalTax;
                     
                     const calculatePercentage = (amount: number) => {
@@ -1821,8 +1827,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </div>
               
               <div className="flex justify-between items-center border-t pt-4">
-                <span className="font-medium text-primary">Total Tax (Line 43500):</span>
-                <span className="font-medium text-primary">{formatCurrency(getFieldValue('43500'))}</span>
+                <span className="font-medium text-primary">Total Tax:</span>
+                <span className="font-medium text-primary">{formatCurrency(
+                  (parseFloat(getFieldValue('42000')) || 0) + (parseFloat(getFieldValue('42800')) || 0)
+                )}</span>
               </div>
               
               <div className="flex justify-between items-center">

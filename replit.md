@@ -317,6 +317,7 @@ Changelog:
 - June 27, 2025. Created comprehensive Tax Credits Analysis section mirroring deductions structure: organized into 6 categories (Basic, Employment, Personal Situation, Education & Medical, Provincial, Refundable), shows checkmarks for claimed credits and X marks for unused ones, includes amounts for all claimed credits with category totals, separate totals for non-refundable and refundable credits, and estimated tax reduction calculation using federal and provincial basic rates
 - June 28, 2025. Removed Ontario provincial deductions section from T1 extraction summary: deleted Provincial Deductions (Ontario) section containing lines 61000-61500 from deductions tab and updated total deductions calculation to exclude these non-applicable provincial fields
 - June 28, 2025. Reordered credits section layout in T1 extraction summary: moved Refundable Credits section to appear before Ontario Provincial Credits section for improved logical flow in credits tab display
+- June 28, 2025. Fixed Total Tax calculation in T1 extraction summary: corrected field 43500 reference to use calculated total (federal tax 42000 + provincial tax 42800) since field 43500 is not extracted from PDFs, updated Summary tab dashboard, Tax Summary section, refund/balance calculation, and Key Tax Information section
 ```
 
 ## User Preferences
