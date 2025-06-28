@@ -3527,14 +3527,14 @@ export default function TaxReport() {
                                 <h4 className="font-medium text-primary">{category.category}</h4>
                               </div>
                               
-                              <div className="space-y-4">
+                              <div className="space-y-2">
                                 {category.items.map((item, itemIndex) => {
                                   const amount = getFieldValue(item.line);
                                   const hasAmount = amount > 0;
                                   
                                   return (
-                                    <div key={itemIndex} className="space-y-2">
-                                      <div className="flex items-center space-x-2">
+                                    <div key={itemIndex} className="flex items-start justify-between">
+                                      <div className="flex items-center space-x-2 flex-shrink-0">
                                         {hasAmount ? (
                                           <span style={{ color: '#D4B26A' }}>⚠</span>
                                         ) : (
@@ -3546,34 +3546,32 @@ export default function TaxReport() {
                                       </div>
                                       
                                       {/* Bar chart for each benefit */}
-                                      <div className="flex justify-center">
-                                        <div className="w-2/3">
-                                          <div className="relative">
-                                            <div className="w-full" style={{ height: '32px' }}>
-                                              <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
-                                                {/* Progress fill */}
-                                                <div 
-                                                  className="h-full transition-all duration-300"
-                                                  style={{ 
-                                                    width: hasAmount ? '100%' : '0%',
-                                                    background: hasAmount ? 'linear-gradient(to right, #D4B26A, #F4E4B8)' : '#88AA73'
-                                                  }}
-                                                />
-                                                {/* Status overlay */}
-                                                <div 
-                                                  className="absolute inset-0 flex items-center justify-center font-medium text-sm"
-                                                  style={{ color: '#111111' }}
-                                                >
-                                                  {hasAmount ? `Received: ${formatCurrency(amount)}` : 'Not Received'}
-                                                </div>
+                                      <div className="w-2/3 ml-4">
+                                        <div className="relative">
+                                          <div className="w-full" style={{ height: '32px' }}>
+                                            <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
+                                              {/* Progress fill */}
+                                              <div 
+                                                className="h-full transition-all duration-300"
+                                                style={{ 
+                                                  width: hasAmount ? '100%' : '0%',
+                                                  background: hasAmount ? 'linear-gradient(to right, #D4B26A, #F4E4B8)' : '#88AA73'
+                                                }}
+                                              />
+                                              {/* Status overlay */}
+                                              <div 
+                                                className="absolute inset-0 flex items-center justify-center font-medium text-sm"
+                                                style={{ color: '#111111' }}
+                                              >
+                                                {hasAmount ? `Received: ${formatCurrency(amount)}` : 'Not Received'}
                                               </div>
                                             </div>
-                                            
-                                            {/* Scale labels */}
-                                            <div className="flex justify-between font-medium text-primary mt-1 text-xs">
-                                              <span>$0</span>
-                                              <span>{hasAmount ? formatCurrency(amount) : 'N/A'}</span>
-                                            </div>
+                                          </div>
+                                          
+                                          {/* Scale labels */}
+                                          <div className="flex justify-between font-medium text-primary mt-1 text-xs">
+                                            <span>$0</span>
+                                            <span>{hasAmount ? formatCurrency(amount) : 'N/A'}</span>
                                           </div>
                                         </div>
                                       </div>

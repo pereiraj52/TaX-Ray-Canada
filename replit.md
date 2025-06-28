@@ -358,6 +358,8 @@ Changelog:
 - June 28, 2025. Reduced Canada Child Benefit bar chart height by 1/3rd from 72px to 48px for more compact visualization while maintaining readability
 - June 28, 2025. Added "Clawback:" label prefix to percentage value in Canada Child Benefit bar chart overlay for clearer identification of displayed metric
 - June 28, 2025. Transformed Clawback Analysis section with individual bar charts: removed dollar values from right side, added bar chart for each benefit item spanning 2/3rds page width, displays "Received: $X" or "Not Received" status with gradient colors (#D4B26A to #F4E4B8 for received, gray for not received)
+- June 28, 2025. Right-aligned all bar charts in Clawback Analysis section: changed from centered to right-justified layout for improved visual alignment
+- June 28, 2025. Aligned bar charts inline with benefit names: moved bar charts from separate rows to same line as benefit text using flexbox layout for improved visual alignment and compact presentation
 ```
 
 ## User Preferences
