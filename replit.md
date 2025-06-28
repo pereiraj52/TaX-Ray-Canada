@@ -337,6 +337,7 @@ Changelog:
 - June 28, 2025. Simplified benefit label from "Maximum UCCB" to "CCB" for cleaner display using standard Canada Child Benefit abbreviation
 - June 28, 2025. Implemented comprehensive CCB clawback percentage calculation using authentic reduction rates and thresholds: added age-based child counting (under 6 vs 6-17), Adjusted Family Net Income calculation (Line 23600 - Line 11700 + Line 21300 + Line 12800), and variable reduction rates based on number of children (1 child: 7%/3.2%, 2 children: 13.5%/5.7%, 3 children: 19%/8%, 4+ children: 23%/9.5%) with base threshold $37,487 and additional threshold $81,222
 - June 28, 2025. Changed "CCB" label back to "Maximum CCB" for clearer identification of maximum benefit calculation
+- June 28, 2025. Replaced Family Benefit Summary with CCB Clawback Progression horizontal bar chart: shows visual progression from base threshold ($37,487) where clawbacks start to income level where 100% benefit is clawed back, includes gradient color from green to red, current family position indicator, and percentage clawback display with authentic calculation based on number of children and family income
 ```
 
 ## User Preferences

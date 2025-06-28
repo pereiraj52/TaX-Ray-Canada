@@ -3347,26 +3347,101 @@ export default function TaxReport() {
                         ))}
                       </div>
                       
-                      {/* Summary Box */}
+                      {/* CCB Clawback Chart */}
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div className="flex flex-col space-y-3">
                           <div className="flex justify-between items-center">
                             <span className="font-semibold text-blue-800">
-                              Family Benefit Summary
+                              CCB Clawback Progression
                             </span>
                           </div>
-                          <div className="text-blue-700 text-sm space-y-2">
-                            <div className="flex justify-between">
-                              <span>Children in household:</span>
-                              <span className="font-medium">{household?.children?.length || 0}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Family net income:</span>
-                              <span className="font-medium">{formatCurrency(adjustedFamilyNetIncome)}</span>
-                            </div>
-                            <p className="text-xs text-blue-600 mt-2">
-                              Universal Child Benefit calculations based on number of children and adjusted family net income
-                            </p>
+                          <div className="space-y-4">
+                            {(() => {
+                              const baseThreshold = 37487;
+                              const additionalThreshold = 81222;
+                              const totalChildren = numUnder6 + num6to17;
+                              
+                              // Calculate income where 100% clawback occurs
+                              let baseRate: number, additionalRate: number;
+                              if (totalChildren === 1) {
+                                baseRate = 0.07;
+                                additionalRate = 0.032;
+                              } else if (totalChildren === 2) {
+                                baseRate = 0.135;
+                                additionalRate = 0.057;
+                              } else if (totalChildren === 3) {
+                                baseRate = 0.19;
+                                additionalRate = 0.08;
+                              } else {
+                                baseRate = 0.23;
+                                additionalRate = 0.095;
+                              }
+                              
+                              // Calculate maximum benefit
+                              const maxCcbUnder6 = 7787;
+                              const maxCcb6to17 = 6570;
+                              const totalMaxBenefit = (numUnder6 * maxCcbUnder6) + (num6to17 * maxCcb6to17);
+                              
+                              // Find income where 100% clawback occurs
+                              // First, calculate reduction at additional threshold
+                              const reductionAtAdditionalThreshold = (additionalThreshold - baseThreshold) * baseRate;
+                              
+                              let fullClawbackIncome: number;
+                              if (reductionAtAdditionalThreshold >= totalMaxBenefit) {
+                                // 100% clawback occurs before additional threshold
+                                fullClawbackIncome = baseThreshold + (totalMaxBenefit / baseRate);
+                              } else {
+                                // 100% clawback occurs after additional threshold
+                                const remainingReduction = totalMaxBenefit - reductionAtAdditionalThreshold;
+                                fullClawbackIncome = additionalThreshold + (remainingReduction / additionalRate);
+                              }
+                              
+                              // Calculate current position as percentage
+                              const chartMin = baseThreshold;
+                              const chartMax = fullClawbackIncome;
+                              const currentPosition = Math.min(Math.max(adjustedFamilyNetIncome, chartMin), chartMax);
+                              const progressPercentage = ((currentPosition - chartMin) / (chartMax - chartMin)) * 100;
+                              
+                              return (
+                                <>
+                                  <div className="relative">
+                                    {/* Bar background */}
+                                    <div className="w-full h-6 bg-gray-200 rounded-lg overflow-hidden">
+                                      {/* Progress fill */}
+                                      <div 
+                                        className="h-full bg-gradient-to-r from-green-400 to-red-500 transition-all duration-300"
+                                        style={{ width: `${progressPercentage}%` }}
+                                      />
+                                      {/* Current position indicator */}
+                                      {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
+                                        <div 
+                                          className="absolute top-0 w-1 h-6 bg-black"
+                                          style={{ left: `${progressPercentage}%` }}
+                                        />
+                                      )}
+                                    </div>
+                                    
+                                    {/* Scale labels */}
+                                    <div className="flex justify-between text-xs text-blue-700 mt-2">
+                                      <span>{formatCurrency(chartMin)}</span>
+                                      <span className="text-center">Current: {formatCurrency(adjustedFamilyNetIncome)}</span>
+                                      <span>{formatCurrency(chartMax)}</span>
+                                    </div>
+                                    
+                                    {/* Scale descriptions */}
+                                    <div className="flex justify-between text-xs text-blue-600 mt-1">
+                                      <span>0% Clawback</span>
+                                      <span className="text-center">{clawbackPercentage.toFixed(1)}% Clawback</span>
+                                      <span>100% Clawback</span>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="text-xs text-blue-600">
+                                    <p>Chart shows CCB clawback progression from {formatCurrency(baseThreshold)} (0% clawback) to {formatCurrency(fullClawbackIncome)} (100% clawback)</p>
+                                  </div>
+                                </>
+                              );
+                            })()}
                           </div>
                         </div>
                       </div>
