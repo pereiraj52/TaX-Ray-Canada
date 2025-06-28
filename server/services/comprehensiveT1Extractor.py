@@ -1471,35 +1471,51 @@ class ComprehensiveT1Extractor:
                 # Look for various dividend patterns
                 if re.search(r'taxable.*dividend.*canadian.*corporation', line, re.IGNORECASE):
                     # Look for amount in current line or next few lines
-                    for j in range(idx, min(idx + 3, len(lines))):
+                    for j in range(idx, min(idx + 5, len(lines))):
                         check_line = lines[j]
-                        # Look for patterns like "12000 5,538 46" or "5,538 46 12000"
+                        # Enhanced patterns for various formats
                         patterns = [
                             r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
                             r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s+12000',
-                            r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s*$'  # amount at end of line
+                            r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s*$',  # amount at end of line
+                            r'(\d{1,3}(?:,\d{3})*)\.\d{2}',  # decimal format like 9200.00
+                            r'(\d{1,3}(?:,\d{3})*)\s+00(?:\s|$)',  # format like "9,200 00"
                         ]
                         for pattern in patterns:
                             m = re.search(pattern, check_line)
                             if m:
                                 try:
-                                    dollars = m.group(1).replace(',', '')
-                                    cents = m.group(2)
-                                    value = f"{dollars}.{cents}"
-                                    return Decimal(value)
+                                    if '.' in m.group(0):
+                                        # Handle decimal format
+                                        amount_str = m.group(1) + '.00'
+                                    else:
+                                        # Handle dollars cents format
+                                        dollars = m.group(1).replace(',', '')
+                                        cents = m.group(2) if len(m.groups()) > 1 else '00'
+                                        amount_str = f"{dollars}.{cents}"
+                                    return Decimal(amount_str.replace(',', ''))
                                 except Exception:
                                     continue
-                # Also look for lines that contain "12000" directly
+                # Also look for lines that contain "12000" directly with enhanced patterns
                 if '12000' in line:
-                    m = re.search(r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
-                    if m:
-                        try:
-                            dollars = m.group(1).replace(',', '')
-                            cents = m.group(2)
-                            value = f"{dollars}.{cents}"
-                            return Decimal(value)
-                        except Exception:
-                            continue
+                    patterns = [
+                        r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
+                        r'12000\s+(\d{1,3}(?:,\d{3})*)\s+00',
+                        r'12000.*?(\d{1,3}(?:,\d{3})*)\.\d{2}',
+                    ]
+                    for pattern in patterns:
+                        m = re.search(pattern, line)
+                        if m:
+                            try:
+                                if '.' in m.group(0):
+                                    amount_str = m.group(1) + '.00'
+                                else:
+                                    dollars = m.group(1).replace(',', '')
+                                    cents = m.group(2) if len(m.groups()) > 1 else '00'
+                                    amount_str = f"{dollars}.{cents}"
+                                return Decimal(amount_str.replace(',', ''))
+                            except Exception:
+                                continue
             return None
         
         # Special handling for line 20600 (Pension Adjustment)
