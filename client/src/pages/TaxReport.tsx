@@ -2514,7 +2514,21 @@ export default function TaxReport() {
                       { rate: 6.58, min: 220000, max: 300000, label: "6.58%" }
                     ];
                     
-
+                    const provincialEligibleDividendBrackets = [
+                      { rate: -1.91, min: 0, max: 51446, label: "-1.91%" },
+                      { rate: 0.45, min: 51446, max: 102894, label: "0.45%" },
+                      { rate: 3.28, min: 102894, max: 150000, label: "3.28%" },
+                      { rate: 4.69, min: 150000, max: 220000, label: "4.69%" },
+                      { rate: 6.11, min: 220000, max: 300000, label: "6.11%" }
+                    ];
+                    
+                    const provincialNonEligibleDividendBrackets = [
+                      { rate: 3.16, min: 0, max: 51446, label: "3.16%" },
+                      { rate: 8.55, min: 51446, max: 102894, label: "8.55%" },
+                      { rate: 11.73, min: 102894, max: 150000, label: "11.73%" },
+                      { rate: 13.73, min: 150000, max: 220000, label: "13.73%" },
+                      { rate: 15.76, min: 220000, max: 300000, label: "15.76%" }
+                    ];
 
                     return (
                       <Card key={spouseIndex}>
@@ -2584,7 +2598,9 @@ export default function TaxReport() {
                                     {(() => {
                                       const incomeTypes = [
                                         { name: 'Ordinary Income', brackets: provincialOrdinaryBrackets },
-                                        { name: 'Capital Gains', brackets: provincialCapitalGainsBrackets }
+                                        { name: 'Capital Gains', brackets: provincialCapitalGainsBrackets },
+                                        { name: 'Eligible Dividends', brackets: provincialEligibleDividendBrackets },
+                                        { name: 'Non-Eligible Dividends', brackets: provincialNonEligibleDividendBrackets }
                                       ];
 
                                       return incomeTypes.map((incomeType, typeIdx) => {
