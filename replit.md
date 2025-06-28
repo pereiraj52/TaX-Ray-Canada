@@ -313,6 +313,7 @@ Changelog:
 - June 27, 2025. Changed Tax Deductions Analysis X mark color to warning gold (#D4B26A) to match brand palette and maintain visual distinction from green checkmarks
 - June 27, 2025. Fixed Tax Deductions Analysis colors using inline styles to ensure exact color rendering: checkmarks use #88AA73 and X marks use #D4B26A
 - June 27, 2025. Standardized Tax Deductions Analysis font styling by changing individual deduction amounts from font-mono to font-medium to match category totals for consistent typography across all numerical values
+- June 27, 2025. Added Estimated Tax Savings calculation to Tax Deductions Analysis section: computes tax savings by calculating difference between total income (line 15000) and taxable income (line 26000), then applies estimated marginal tax rate to show potential tax savings from deductions
 ```
 
 ## User Preferences

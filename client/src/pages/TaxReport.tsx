@@ -2842,7 +2842,7 @@ export default function TaxReport() {
                         })}
                         
                         {/* Total Deductions Summary */}
-                        <div className="pt-4 border-t-2 border-primary">
+                        <div className="pt-4 border-t-2 border-primary space-y-3">
                           <div className="flex justify-between items-center">
                             <span className="font-semibold text-primary">
                               Total Deductions
@@ -2853,6 +2853,27 @@ export default function TaxReport() {
                                   return sum + getFieldValue(item.line);
                                 }, 0);
                               }, 0))}
+                            </span>
+                          </div>
+                          
+                          {/* Estimated Tax Savings */}
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Estimated Tax Savings
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {(() => {
+                                const totalIncome = getFieldValue("15000"); // Total income
+                                const taxableIncome = getFieldValue("26000"); // Taxable income
+                                const deductionAmount = totalIncome - taxableIncome;
+                                
+                                // Estimate tax savings using combined marginal rate (approximate)
+                                // Using Ontario combined rate for estimation
+                                const estimatedMarginalRate = 0.4341; // 43.41% approximate combined rate
+                                const estimatedSavings = deductionAmount * estimatedMarginalRate;
+                                
+                                return formatCurrency(estimatedSavings);
+                              })()}
                             </span>
                           </div>
                         </div>
