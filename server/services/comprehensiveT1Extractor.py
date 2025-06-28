@@ -1466,56 +1466,90 @@ class ComprehensiveT1Extractor:
         
         # Special handling for line 12000 (Taxable dividends from taxable Canadian corporations)
         if line_num == '12000':
+            debug_f = None
+            try:
+                debug_f = open('attached_assets/line_12000_debug.log', 'w')
+                debug_f.write(f'DEBUG: Extracting line 12000 (Taxable dividends)\n')
+            except Exception:
+                debug_f = None
+                
             lines = text.splitlines()
+            
+            # First, search for dividend-related content and capture surrounding context
+            dividend_section_lines = []
             for idx, line in enumerate(lines):
-                # Look for various dividend patterns
-                if re.search(r'taxable.*dividend.*canadian.*corporation', line, re.IGNORECASE):
-                    # Look for amount in current line or next few lines
-                    for j in range(idx, min(idx + 5, len(lines))):
-                        check_line = lines[j]
-                        # Enhanced patterns for various formats
-                        patterns = [
-                            r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
-                            r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s+12000',
-                            r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s*$',  # amount at end of line
-                            r'(\d{1,3}(?:,\d{3})*)\.\d{2}',  # decimal format like 9200.00
-                            r'(\d{1,3}(?:,\d{3})*)\s+00(?:\s|$)',  # format like "9,200 00"
-                        ]
-                        for pattern in patterns:
-                            m = re.search(pattern, check_line)
-                            if m:
-                                try:
-                                    if '.' in m.group(0):
-                                        # Handle decimal format
-                                        amount_str = m.group(1) + '.00'
-                                    else:
-                                        # Handle dollars cents format
-                                        dollars = m.group(1).replace(',', '')
-                                        cents = m.group(2) if len(m.groups()) > 1 else '00'
-                                        amount_str = f"{dollars}.{cents}"
-                                    return Decimal(amount_str.replace(',', ''))
-                                except Exception:
-                                    continue
-                # Also look for lines that contain "12000" directly with enhanced patterns
-                if '12000' in line:
-                    patterns = [
-                        r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
-                        r'12000\s+(\d{1,3}(?:,\d{3})*)\s+00',
-                        r'12000.*?(\d{1,3}(?:,\d{3})*)\.\d{2}',
-                    ]
-                    for pattern in patterns:
-                        m = re.search(pattern, line)
-                        if m:
-                            try:
-                                if '.' in m.group(0):
-                                    amount_str = m.group(1) + '.00'
+                if re.search(r'dividend|12000', line, re.IGNORECASE):
+                    start = max(0, idx - 5)
+                    end = min(len(lines), idx + 6)
+                    dividend_section_lines.extend(lines[start:end])
+                    if debug_f:
+                        debug_f.write(f'FOUND DIVIDEND CONTEXT at line {idx}: {line}\n')
+                        debug_f.write(f'SURROUNDING LINES:\n')
+                        for i in range(start, end):
+                            debug_f.write(f'  {i}: {lines[i]}\n')
+            
+            # Remove duplicates while preserving order
+            seen = set()
+            unique_lines = []
+            for line in dividend_section_lines:
+                if line not in seen:
+                    seen.add(line)
+                    unique_lines.append(line)
+            
+            # Try to extract from the dividend context
+            for line in unique_lines:
+                if debug_f:
+                    debug_f.write(f'CHECKING LINE: {line}\n')
+                
+                # Enhanced patterns based on actual PDF content analysis
+                patterns = [
+                    # Exact pattern from PDF: "12000 9,200 00"
+                    r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
+                    # Pattern from worksheet: "return. 12000 9,200 00"
+                    r'return\.\s+12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
+                    # Pattern from form line: "12000 9,200 00 9"
+                    r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s+\d+',
+                ]
+                
+                for pattern in patterns:
+                    matches = re.findall(pattern, line)
+                    if debug_f and matches:
+                        debug_f.write(f'PATTERN: {pattern} MATCHES: {matches}\n')
+                    
+                    for match in matches:
+                        try:
+                            if isinstance(match, tuple):
+                                if len(match) == 2:
+                                    dollars, cents = match
+                                    dollars_clean = dollars.replace(',', '').replace(' ', '')
+                                    if dollars_clean.isdigit() and int(dollars_clean) >= 1000:  # Reasonable dividend amount
+                                        if cents and cents.isdigit():
+                                            amount_str = f"{dollars_clean}.{cents}"
+                                        else:
+                                            amount_str = f"{dollars_clean}.00"
+                                        if debug_f:
+                                            debug_f.write(f'FOUND AMOUNT: {amount_str}\n')
+                                        if debug_f:
+                                            debug_f.close()
+                                        return Decimal(amount_str)
                                 else:
-                                    dollars = m.group(1).replace(',', '')
-                                    cents = m.group(2) if len(m.groups()) > 1 else '00'
-                                    amount_str = f"{dollars}.{cents}"
-                                return Decimal(amount_str.replace(',', ''))
-                            except Exception:
-                                continue
+                                    # Single capture group
+                                    dollars = match[0].replace(',', '').replace(' ', '')
+                                    if dollars.isdigit() and int(dollars) >= 1000:
+                                        amount_str = f"{dollars}.00"
+                                        if debug_f:
+                                            debug_f.write(f'FOUND AMOUNT: {amount_str}\n')
+                                        if debug_f:
+                                            debug_f.close()
+                                        return Decimal(amount_str)
+                        except Exception as e:
+                            if debug_f:
+                                debug_f.write(f'ERROR processing match {match}: {e}\n')
+                            continue
+            
+            if debug_f:
+                debug_f.write('NO AMOUNT FOUND\n')
+                debug_f.close()
             return None
         
         # Special handling for line 20600 (Pension Adjustment)
