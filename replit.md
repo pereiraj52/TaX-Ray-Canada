@@ -329,6 +329,7 @@ Changelog:
 - June 28, 2025. Added Family-wide Government Clawback summary: created full-width section before individual client clawback analysis showing combined family totals for all clawback types, individual breakdown when clawbacks exist, and comprehensive summary spanning both columns for household-level overview
 - June 28, 2025. Simplified Government Clawback Analysis labels: removed subtitle descriptions from all clawback items in both family-wide and individual client sections for cleaner interface showing only item names and line numbers
 - June 28, 2025. Transformed Family Government Clawbacks section into Family Government Benefits: replaced clawback tracking with Universal Child Benefit analysis showing Number of children, Maximum Universal Child Benefit, Adjusted Family Net Income, and Clawback % with blue color scheme and benefit-focused summary
+- June 28, 2025. Renamed section from "Family - Government Benefits" to "Universal Child Care Benefit Clawback" for more specific and accurate terminology
 ```
 
 ## User Preferences

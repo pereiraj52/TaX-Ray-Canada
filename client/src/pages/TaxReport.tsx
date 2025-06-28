@@ -3217,7 +3217,7 @@ export default function TaxReport() {
                 <Card>
                   <CardContent className="p-6">
                     <h3 className="font-medium text-gray-900 mb-6">
-                      Family - Government Benefits
+                      Universal Child Care Benefit Clawback
                     </h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
