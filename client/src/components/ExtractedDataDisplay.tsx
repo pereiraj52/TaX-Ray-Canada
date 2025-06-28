@@ -221,9 +221,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     const supportInvestmentTotal = getSectionTotal(['21999', '22000', '22100', '22200', '22215']);
     const employmentTotal = getSectionTotal(['22900', '23100']);
     const specializedTotal = getSectionTotal(['22400', '23200', '23500']);
-    const provincialTotal = getSectionTotal(['61000', '61100', '61200', '61300', '61400', '61500']);
     
-    return retirementPlanTotal + personalTotal + supportInvestmentTotal + employmentTotal + specializedTotal + provincialTotal;
+    return retirementPlanTotal + personalTotal + supportInvestmentTotal + employmentTotal + specializedTotal;
   };
 
   const getTotalCredits = (): number => {
@@ -1432,53 +1431,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
-              {/* Provincial Deductions Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('provincial-deductions')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['provincial-deductions'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Provincial Deductions (Ontario)</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['61000', '61100', '61200', '61300', '61400', '61500']))}
-                  </span>
-                </button>
-                {!collapsedSections['provincial-deductions'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Ontario Health Premium (Line 61000):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('61000'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Ontario Volunteer Firefighter (Line 61100):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('61100'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Ontario Employee Home Relocation (Line 61200):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('61200'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Ontario Mining Exploration (Line 61300):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('61300'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Ontario Political Contribution (Line 61400):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('61400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Ontario Flow-Through Share (Line 61500):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('61500'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+
 
               {/* Summary Section */}
               <div className="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">

@@ -315,6 +315,7 @@ Changelog:
 - June 27, 2025. Standardized Tax Deductions Analysis font styling by changing individual deduction amounts from font-mono to font-medium to match category totals for consistent typography across all numerical values
 - June 27, 2025. Added Estimated Tax Savings calculation to Tax Deductions Analysis section: computes tax savings by calculating difference between total income (line 15000) and taxable income (line 26000), then applies estimated marginal tax rate to show potential tax savings from deductions
 - June 27, 2025. Created comprehensive Tax Credits Analysis section mirroring deductions structure: organized into 6 categories (Basic, Employment, Personal Situation, Education & Medical, Provincial, Refundable), shows checkmarks for claimed credits and X marks for unused ones, includes amounts for all claimed credits with category totals, separate totals for non-refundable and refundable credits, and estimated tax reduction calculation using federal and provincial basic rates
+- June 28, 2025. Removed Ontario provincial deductions section from T1 extraction summary: deleted Provincial Deductions (Ontario) section containing lines 61000-61500 from deductions tab and updated total deductions calculation to exclude these non-applicable provincial fields
 ```
 
 ## User Preferences
