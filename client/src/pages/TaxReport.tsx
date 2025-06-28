@@ -3403,8 +3403,11 @@ export default function TaxReport() {
                                       <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden">
                                         {/* Progress fill */}
                                         <div 
-                                          className="h-full bg-gradient-to-r from-green-400 to-red-500 transition-all duration-300"
-                                          style={{ width: `${progressPercentage}%` }}
+                                          className="h-full transition-all duration-300"
+                                          style={{ 
+                                            width: `${progressPercentage}%`,
+                                            background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                          }}
                                         />
                                         {/* Current position indicator */}
                                         {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (

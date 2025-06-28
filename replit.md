@@ -340,6 +340,8 @@ Changelog:
 - June 28, 2025. Replaced Family Benefit Summary with CCB Clawback Progression horizontal bar chart: shows visual progression from base threshold ($37,487) where clawbacks start to income level where 100% benefit is clawed back, includes gradient color from green to red, current family position indicator, and percentage clawback display with authentic calculation based on number of children and family income
 - June 28, 2025. Simplified CCB clawback chart: removed percentage labels, descriptive text, and blue background box for minimal clean display
 - June 28, 2025. Enhanced CCB clawback chart styling: tripled bar height from h-6 to h-18 and updated font styling to match other summary values using font-medium text-primary for consistent visual appearance
+- June 28, 2025. Fixed CCB clawback bar visibility by replacing invalid h-18 class with inline style height: 72px and restructuring HTML elements for proper rendering
+- June 28, 2025. Updated CCB clawback chart gradient colors to match brand palette: changed from green-red gradient to brand colors starting with #88AA73 (primary green) transitioning to #C7E6C2 (accent green)
 ```
 
 ## User Preferences
