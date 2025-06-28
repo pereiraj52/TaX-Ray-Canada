@@ -3175,10 +3175,40 @@ export default function TaxReport() {
                 }).format(amount);
               };
 
+              // Calculate Maximum UCCB based on children's ages
+              const calculateMaxUCCB = () => {
+                if (!household?.children) return 0;
+                
+                const currentDate = new Date();
+                let totalUCCB = 0;
+                
+                household.children.forEach(child => {
+                  if (child.dateOfBirth) {
+                    const birthDate = new Date(child.dateOfBirth);
+                    const ageInYears = currentDate.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = currentDate.getMonth() - birthDate.getMonth();
+                    const dayDiff = currentDate.getDate() - birthDate.getDate();
+                    
+                    // Adjust age if birthday hasn't occurred this year
+                    const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) 
+                      ? ageInYears - 1 
+                      : ageInYears;
+                    
+                    if (actualAge < 6) {
+                      totalUCCB += 648.91 * 12; // Annual amount for under 6
+                    } else if (actualAge >= 6 && actualAge <= 17) {
+                      totalUCCB += 547.50 * 12; // Annual amount for 6-17
+                    }
+                  }
+                });
+                
+                return totalUCCB;
+              };
+
               // Calculate family benefit information
               const benefitInfo = [
                 { name: "Number of children", value: household?.children?.length || 0, format: 'number' },
-                { name: "Maximum Universal Child Benefit", value: 0, format: 'currency' }, // To be calculated
+                { name: "Maximum UCCB", value: calculateMaxUCCB(), format: 'currency' },
                 { name: "Adjusted Family Net Income", value: 0, format: 'currency' }, // To be calculated
                 { name: "Clawback %", value: 0, format: 'percentage' }, // To be calculated
               ];
