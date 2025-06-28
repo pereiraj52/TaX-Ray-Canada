@@ -364,6 +364,7 @@ Changelog:
 - June 28, 2025. Updated Canada Workers Benefit chart middle label from "Income: $333,642" to "Max: $1,590" to display maximum benefit amount instead of taxable income
 - June 28, 2025. Changed benefit name from "Canada Workers Benefit" to "Canada Workers Benefit (Single)" for clearer identification of single person benefit calculation
 - June 28, 2025. Added Basic Personal Amount (Line 30000) to Clawback Analysis section for comprehensive tax credit tracking
+- June 28, 2025. Fixed SIN number extraction issue for Daniel Givon: enhanced extraction patterns to handle both masked (XXX XX1 481) and unmasked (291 758 993) SIN formats, added multiple fallback patterns including name-line extraction and general SIN label matching
 ```
 
 ## User Preferences
