@@ -1552,6 +1552,37 @@ class ComprehensiveT1Extractor:
                 debug_f.close()
             return None
         
+        # Special handling for line 12100 (Interest and Investment Income)
+        if line_num == '12100':
+            lines = text.splitlines()
+            for idx, line in enumerate(lines):
+                # Look for the main form line (not the comparative summary)
+                if re.search(r'Interest and other investment income.*12100', line, re.IGNORECASE):
+                    # Check if this line has amount after 12100
+                    m = re.search(r'12100\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
+                        try:
+                            dollars = m.group(1).replace(',', '')
+                            cents = m.group(2)
+                            value = f"{dollars}.{cents}"
+                            return Decimal(value)
+                        except Exception:
+                            continue
+                    # If no amount found on this line, check next line
+                    if idx + 1 < len(lines):
+                        next_line = lines[idx + 1]
+                        m = re.search(r'12100\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', next_line)
+                        if m:
+                            try:
+                                dollars = m.group(1).replace(',', '')
+                                cents = m.group(2)
+                                value = f"{dollars}.{cents}"
+                                return Decimal(value)
+                            except Exception:
+                                continue
+            # If no amount found, return None (empty field)
+            return None
+        
         # Special handling for line 20600 (Pension Adjustment)
         if line_num == '20600':
             lines = text.splitlines()
