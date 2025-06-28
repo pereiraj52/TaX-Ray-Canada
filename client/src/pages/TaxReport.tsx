@@ -3123,7 +3123,7 @@ export default function TaxReport() {
 
         {/* Government Clawback Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Government Clawback Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Government Benefits Analysis</h2>
           
           {/* Family-wide Government Clawbacks Summary */}
           <div className="w-full mb-6">
@@ -3492,31 +3492,36 @@ export default function TaxReport() {
                   }).format(amount);
                 };
 
-                // Define government clawbacks and repayments
-                const clawbacks = [
-                  // OAS Recovery Tax
-                  { category: "OAS Recovery", items: [
-                    { name: "OAS Recovery Tax", line: "42200" },
+                // Define government benefits
+                const benefits = [
+                  // Canada Workers Benefit
+                  { category: "Canada Workers Benefit", items: [
+                    { name: "Canada Workers Benefit", line: "45300" },
                   ]},
                   
-                  // Universal Child Care Benefit Repayment
-                  { category: "UCCB Repayment", items: [
-                    { name: "UCCB Repayment", line: "21300" },
+                  // Old Age Security
+                  { category: "Old Age Security", items: [
+                    { name: "Old Age Security", line: "11300" },
                   ]},
                   
-                  // Employment Insurance Benefit Repayment
-                  { category: "EI Benefit Repayment", items: [
-                    { name: "EI Benefit Repayment", line: "42210" },
+                  // Guaranteed Income Supplement
+                  { category: "Guaranteed Income Supplement", items: [
+                    { name: "Guaranteed Income Supplement", line: "11400" },
                   ]},
                   
-                  // Social Benefits Repayment
-                  { category: "Social Benefits Repayment", items: [
-                    { name: "Social Benefits Repayment", line: "23500" },
+                  // Child Disability Benefit
+                  { category: "Child Disability Benefit", items: [
+                    { name: "Child Disability Benefit", line: "11700" },
+                  ]},
+                  
+                  // GST/HST Credit
+                  { category: "GST/HST Credit", items: [
+                    { name: "GST/HST Credit", line: "45350" },
                   ]},
                 ];
 
-                // Calculate total clawbacks
-                const totalClawbacks = clawbacks.reduce((total, category) => {
+                // Calculate total benefits
+                const totalBenefits = benefits.reduce((total, category) => {
                   return total + category.items.reduce((sum, item) => {
                     return sum + getFieldValue(item.line);
                   }, 0);
@@ -3526,11 +3531,11 @@ export default function TaxReport() {
                   <Card key={spouseIndex}>
                     <CardContent className="p-6">
                       <h3 className="font-medium text-gray-900 mb-6">
-                        {spouse.clientName} - Government Clawbacks
+                        {spouse.clientName} - Government Benefits
                       </h3>
                       
                       <div className="space-y-6">
-                        {clawbacks.map((category, categoryIndex) => {
+                        {benefits.map((category, categoryIndex) => {
                           const categoryTotal = category.items.reduce((sum, item) => {
                             return sum + getFieldValue(item.line);
                           }, 0);
@@ -3572,20 +3577,20 @@ export default function TaxReport() {
                           );
                         })}
                         
-                        {/* Total Clawbacks Summary */}
-                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        {/* Total Benefits Summary */}
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                           <div className="flex justify-between items-center">
-                            <span className="font-semibold text-yellow-800">
-                              Total Government Clawbacks
+                            <span className="font-semibold text-green-800">
+                              Total Government Benefits
                             </span>
-                            <span className="font-bold text-yellow-600 text-lg">
-                              {formatCurrency(totalClawbacks)}
+                            <span className="font-bold text-green-600 text-lg">
+                              {formatCurrency(totalBenefits)}
                             </span>
                           </div>
-                          <p className="text-yellow-700 text-sm mt-1">
-                            {totalClawbacks > 0 
-                              ? "Government benefit repayments and recovery taxes" 
-                              : "No government clawbacks or repayments required"}
+                          <p className="text-green-700 text-sm mt-1">
+                            {totalBenefits > 0 
+                              ? "Government benefits and credits received" 
+                              : "No government benefits or credits received"}
                           </p>
                         </div>
                       </div>
