@@ -3477,7 +3477,7 @@ export default function TaxReport() {
                 const benefits = [
                   // Canada Workers Benefit
                   { category: "Canada Workers Benefit", items: [
-                    { name: "Canada Workers Benefit (Single)", line: "45300" },
+                    { name: "Refundable Tax Credit of $1,590", line: "45300" },
                   ]},
                   
                   // Old Age Security
@@ -3533,7 +3533,7 @@ export default function TaxReport() {
                                   const hasAmount = amount > 0;
                                   
                                   // Special handling for Canada Workers Benefit clawback calculation
-                                  if (item.name === "Canada Workers Benefit (Single)") {
+                                  if (item.name === "Refundable Tax Credit of $1,590") {
                                     // Determine if client is single or married
                                     const isMarried = household?.clients && household.clients.length === 2;
                                     
@@ -3553,6 +3553,11 @@ export default function TaxReport() {
                                     }
                                     
                                     const progressPercentage = Math.min(clawbackPercentage, 100);
+                                    
+                                    // Calculate maximum benefit value using lowest combined tax rate
+                                    // Lowest combined tax rate in Canada is typically around 20.05% (Ontario first bracket)
+                                    const lowestCombinedTaxRate = 0.2005;
+                                    const maxBenefitValue = 1590 * lowestCombinedTaxRate;
                                     
                                     return (
                                       <div key={itemIndex} className="flex items-start justify-between">
@@ -3593,7 +3598,7 @@ export default function TaxReport() {
                                             {/* Scale labels */}
                                             <div className="flex justify-between font-medium text-primary mt-1 text-xs">
                                               <span>Start: {formatCurrency(phaseOutStart)}</span>
-                                              <span>Max: $1,590</span>
+                                              <span>Max: {formatCurrency(maxBenefitValue)}</span>
                                               <span>End: {formatCurrency(phaseOutEnd)}</span>
                                             </div>
                                           </div>
