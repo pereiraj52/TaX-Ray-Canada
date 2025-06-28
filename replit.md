@@ -333,6 +333,7 @@ Changelog:
 - June 28, 2025. Implemented Maximum UCCB calculation: renamed "Maximum Universal Child Benefit" to "Maximum UCCB" and added age-based calculation logic using $648.91/month for children under 6 and $547.50/month for children aged 6-17, with accurate age calculation considering birth dates
 - June 28, 2025. Updated Adjusted Family Net Income calculation: implemented specific formula using Line 23600 (Net income) - Line 11700 (Taxable capital gains) + Line 21300 (UCCB repayment) + Line 12800 (Investment income) for accurate UCCB clawback analysis
 - June 28, 2025. Removed information icons from Universal Child Care Benefit Clawback section: simplified interface by removing ℹ icons from all benefit information items for cleaner display
+- June 28, 2025. Renamed section from "Universal Child Care Benefit Clawback" to "Canada Child Benefit" for accurate Canadian government benefit terminology
 ```
 
 ## User Preferences
