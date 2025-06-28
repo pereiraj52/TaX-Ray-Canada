@@ -3382,7 +3382,7 @@ export default function TaxReport() {
                               return (
                                 <div className="relative">
                                     {/* Bar background */}
-                                    <div className="w-full" style={{ height: '72px' }}>
+                                    <div className="w-full" style={{ height: '48px' }}>
                                       <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
                                         {/* Progress fill */}
                                         <div 
@@ -3396,7 +3396,7 @@ export default function TaxReport() {
                                         {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
                                           <div 
                                             className="absolute top-0 w-1 bg-black"
-                                            style={{ left: `${progressPercentage}%`, height: '72px' }}
+                                            style={{ left: `${progressPercentage}%`, height: '48px' }}
                                           />
                                         )}
                                         {/* Clawback percentage overlay */}
@@ -3404,7 +3404,7 @@ export default function TaxReport() {
                                           className="absolute inset-0 flex items-center justify-center font-semibold text-lg"
                                           style={{ color: '#111111' }}
                                         >
-                                          {clawbackPercentage.toFixed(1)}%
+                                          Clawback: {clawbackPercentage.toFixed(1)}%
                                         </div>
                                       </div>
                                     </div>
@@ -3412,12 +3412,8 @@ export default function TaxReport() {
                                     {/* Scale labels */}
                                     <div className="flex justify-between font-medium text-primary mt-2">
                                       <span>Start: {formatCurrency(chartMin)}</span>
+                                      <span>Max CCB: {formatCurrency(totalMaxBenefit)}</span>
                                       <span>End: {formatCurrency(chartMax)}</span>
-                                    </div>
-                                    
-                                    {/* Max CCB label */}
-                                    <div className="flex justify-center mt-2">
-                                      <span className="font-medium text-primary">Max CCB: {formatCurrency(totalMaxBenefit)}</span>
                                     </div>
                                     
                                 </div>

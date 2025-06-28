@@ -353,6 +353,10 @@ Changelog:
 - June 28, 2025. Removed green summary box displaying "Total Government Benefits $0" and "No government benefits or credits received" message from individual client Clawback Analysis sections for cleaner interface
 - June 28, 2025. Added "Max CCB" label centered below the Canada Child Benefit clawback progression bar chart for clearer chart identification
 - June 28, 2025. Enhanced Max CCB label to display actual maximum benefit amount: "Max CCB: $X,XXX" showing calculated total maximum Canada Child Benefit based on number and ages of children
+- June 28, 2025. Removed benefit information column from Canada Child Benefit section and stretched clawback progression bar chart to span full width for improved visual impact and simplified interface
+- June 28, 2025. Moved Max CCB information to same line as Start and End values: restructured scale labels to display "Start | Max CCB | End" in single horizontal row for compact layout
+- June 28, 2025. Reduced Canada Child Benefit bar chart height by 1/3rd from 72px to 48px for more compact visualization while maintaining readability
+- June 28, 2025. Added "Clawback:" label prefix to percentage value in Canada Child Benefit bar chart overlay for clearer identification of displayed metric
 ```
 
 ## User Preferences
