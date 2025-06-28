@@ -1464,6 +1464,44 @@ class ComprehensiveT1Extractor:
                             continue
             return None
         
+        # Special handling for line 12000 (Taxable dividends from taxable Canadian corporations)
+        if line_num == '12000':
+            lines = text.splitlines()
+            for idx, line in enumerate(lines):
+                # Look for various dividend patterns
+                if re.search(r'taxable.*dividend.*canadian.*corporation', line, re.IGNORECASE):
+                    # Look for amount in current line or next few lines
+                    for j in range(idx, min(idx + 3, len(lines))):
+                        check_line = lines[j]
+                        # Look for patterns like "12000 5,538 46" or "5,538 46 12000"
+                        patterns = [
+                            r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
+                            r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s+12000',
+                            r'(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s*$'  # amount at end of line
+                        ]
+                        for pattern in patterns:
+                            m = re.search(pattern, check_line)
+                            if m:
+                                try:
+                                    dollars = m.group(1).replace(',', '')
+                                    cents = m.group(2)
+                                    value = f"{dollars}.{cents}"
+                                    return Decimal(value)
+                                except Exception:
+                                    continue
+                # Also look for lines that contain "12000" directly
+                if '12000' in line:
+                    m = re.search(r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
+                        try:
+                            dollars = m.group(1).replace(',', '')
+                            cents = m.group(2)
+                            value = f"{dollars}.{cents}"
+                            return Decimal(value)
+                        except Exception:
+                            continue
+            return None
+        
         # Special handling for line 20600 (Pension Adjustment)
         if line_num == '20600':
             lines = text.splitlines()
