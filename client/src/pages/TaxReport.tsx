@@ -3332,24 +3332,8 @@ export default function TaxReport() {
                       Canada Child Benefit
                     </h3>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Benefit Information */}
-                      <div className="space-y-4">
-                        {benefitInfo.map((item, index) => (
-                          <div key={index} className="flex items-center justify-between text-sm">
-                            <div>
-                              <span className="font-medium">{item.name}</span>
-                            </div>
-                            <span className="font-medium text-primary">
-                              {formatValue(item.value, item.format)}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      {/* CCB Clawback Chart */}
-                      <div className="space-y-4">
-                        {(() => {
+                    {/* CCB Clawback Chart - Full Width */}
+                    {(() => {
                               const baseThreshold = 37487;
                               const additionalThreshold = 81222;
                               const totalChildren = numUnder6 + num6to17;
@@ -3396,8 +3380,7 @@ export default function TaxReport() {
                               const progressPercentage = ((currentPosition - chartMin) / (chartMax - chartMin)) * 100;
                               
                               return (
-                                <>
-                                  <div className="relative">
+                                <div className="relative">
                                     {/* Bar background */}
                                     <div className="w-full" style={{ height: '72px' }}>
                                       <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
@@ -3434,15 +3417,12 @@ export default function TaxReport() {
                                     
                                     {/* Max CCB label */}
                                     <div className="flex justify-center mt-2">
-                                      <span className="font-medium text-primary">Max CCB</span>
+                                      <span className="font-medium text-primary">Max CCB: {formatCurrency(totalMaxBenefit)}</span>
                                     </div>
                                     
-                                  </div>
-                                </>
+                                </div>
                               );
                             })()}
-                      </div>
-                    </div>
                   </CardContent>
                 </Card>
               );
