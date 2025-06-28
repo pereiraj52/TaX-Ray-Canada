@@ -3499,6 +3499,11 @@ export default function TaxReport() {
                   { category: "GST/HST Credit", items: [
                     { name: "GST/HST Credit", line: "45350" },
                   ]},
+                  
+                  // Basic Personal Amount
+                  { category: "Basic Personal Amount", items: [
+                    { name: "Basic Personal Amount", line: "30000" },
+                  ]},
                 ];
 
                 // Calculate total benefits

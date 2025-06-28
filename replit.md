@@ -363,6 +363,7 @@ Changelog:
 - June 28, 2025. Implemented Canada Workers Benefit clawback calculation: added special handling with authentic phase-out ranges (single: $26,149-$36,749, married: $29,833-$48,093), displays clawback percentage based on taxable income with $1-per-$1 reduction rate, includes Start/Income/End scale labels and brand gradient colors
 - June 28, 2025. Updated Canada Workers Benefit chart middle label from "Income: $333,642" to "Max: $1,590" to display maximum benefit amount instead of taxable income
 - June 28, 2025. Changed benefit name from "Canada Workers Benefit" to "Canada Workers Benefit (Single)" for clearer identification of single person benefit calculation
+- June 28, 2025. Added Basic Personal Amount (Line 30000) to Clawback Analysis section for comprehensive tax credit tracking
 ```
 
 ## User Preferences
