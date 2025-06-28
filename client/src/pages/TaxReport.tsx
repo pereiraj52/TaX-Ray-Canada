@@ -3399,19 +3399,21 @@ export default function TaxReport() {
                                 <>
                                   <div className="relative">
                                     {/* Bar background */}
-                                    <div className="w-full h-18 bg-gray-200 rounded-lg overflow-hidden">
-                                      {/* Progress fill */}
-                                      <div 
-                                        className="h-full bg-gradient-to-r from-green-400 to-red-500 transition-all duration-300"
-                                        style={{ width: `${progressPercentage}%` }}
-                                      />
-                                      {/* Current position indicator */}
-                                      {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
+                                    <div className="w-full" style={{ height: '72px' }}>
+                                      <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden">
+                                        {/* Progress fill */}
                                         <div 
-                                          className="absolute top-0 w-1 h-18 bg-black"
-                                          style={{ left: `${progressPercentage}%` }}
+                                          className="h-full bg-gradient-to-r from-green-400 to-red-500 transition-all duration-300"
+                                          style={{ width: `${progressPercentage}%` }}
                                         />
-                                      )}
+                                        {/* Current position indicator */}
+                                        {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
+                                          <div 
+                                            className="absolute top-0 w-1 bg-black"
+                                            style={{ left: `${progressPercentage}%`, height: '72px' }}
+                                          />
+                                        )}
+                                      </div>
                                     </div>
                                     
                                     {/* Scale labels */}
