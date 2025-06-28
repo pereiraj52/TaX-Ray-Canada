@@ -3399,7 +3399,7 @@ export default function TaxReport() {
                                 <>
                                   <div className="relative">
                                     {/* Bar background */}
-                                    <div className="w-full h-6 bg-gray-200 rounded-lg overflow-hidden">
+                                    <div className="w-full h-18 bg-gray-200 rounded-lg overflow-hidden">
                                       {/* Progress fill */}
                                       <div 
                                         className="h-full bg-gradient-to-r from-green-400 to-red-500 transition-all duration-300"
@@ -3408,14 +3408,14 @@ export default function TaxReport() {
                                       {/* Current position indicator */}
                                       {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
                                         <div 
-                                          className="absolute top-0 w-1 h-6 bg-black"
+                                          className="absolute top-0 w-1 h-18 bg-black"
                                           style={{ left: `${progressPercentage}%` }}
                                         />
                                       )}
                                     </div>
                                     
                                     {/* Scale labels */}
-                                    <div className="flex justify-between text-xs text-blue-700 mt-2">
+                                    <div className="flex justify-between font-medium text-primary mt-2">
                                       <span>{formatCurrency(chartMin)}</span>
                                       <span className="text-center">Current: {formatCurrency(adjustedFamilyNetIncome)}</span>
                                       <span>{formatCurrency(chartMax)}</span>
