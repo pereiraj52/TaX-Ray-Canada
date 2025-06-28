@@ -2817,7 +2817,10 @@ export default function TaxReport() {
                                   return (
                                     <div key={itemIndex} className="flex justify-between items-center text-sm">
                                       <div className="flex items-center space-x-2">
-                                        <span className={`font-medium ${hasClaim ? 'text-primary' : 'text-warning'}`}>
+                                        <span 
+                                          className="font-medium"
+                                          style={{ color: hasClaim ? '#88AA73' : '#D4B26A' }}
+                                        >
                                           {hasClaim ? '✓' : '✗'}
                                         </span>
                                         <span className="text-gray-700">
