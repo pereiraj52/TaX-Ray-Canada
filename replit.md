@@ -335,6 +335,8 @@ Changelog:
 - June 28, 2025. Removed information icons from Universal Child Care Benefit Clawback section: simplified interface by removing ℹ icons from all benefit information items for cleaner display
 - June 28, 2025. Renamed section from "Universal Child Care Benefit Clawback" to "Canada Child Benefit" for accurate Canadian government benefit terminology
 - June 28, 2025. Simplified benefit label from "Maximum UCCB" to "CCB" for cleaner display using standard Canada Child Benefit abbreviation
+- June 28, 2025. Implemented comprehensive CCB clawback percentage calculation using authentic reduction rates and thresholds: added age-based child counting (under 6 vs 6-17), Adjusted Family Net Income calculation (Line 23600 - Line 11700 + Line 21300 + Line 12800), and variable reduction rates based on number of children (1 child: 7%/3.2%, 2 children: 13.5%/5.7%, 3 children: 19%/8%, 4+ children: 23%/9.5%) with base threshold $37,487 and additional threshold $81,222
+- June 28, 2025. Changed "CCB" label back to "Maximum CCB" for clearer identification of maximum benefit calculation
 ```
 
 ## User Preferences
