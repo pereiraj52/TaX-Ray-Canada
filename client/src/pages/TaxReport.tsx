@@ -3213,13 +3213,15 @@ export default function TaxReport() {
                 { name: "Clawback %", value: 0, format: 'percentage' }, // To be calculated
               ];
 
-              // Calculate Adjusted Family Net Income (sum of both spouses' net income)
+              // Calculate Adjusted Family Net Income using formula: Line 23600 - Line 11700 + Line 21300 + Line 12800
               const adjustedFamilyNetIncome = familyData.reduce((sum: number, spouse) => {
                 if (!spouse.t1Return) return sum;
-                const totalIncome = getFieldValue(spouse.formFields, '15000');
-                const totalTax = getFieldValue(spouse.formFields, '43700') || 
-                               (getFieldValue(spouse.formFields, '42000') + getFieldValue(spouse.formFields, '42800'));
-                return sum + (totalIncome - totalTax);
+                const line23600 = getFieldValue(spouse.formFields, '23600'); // Net income
+                const line11700 = getFieldValue(spouse.formFields, '11700'); // Taxable capital gains
+                const line21300 = getFieldValue(spouse.formFields, '21300'); // UCCB repayment
+                const line12800 = getFieldValue(spouse.formFields, '12800'); // Investment income
+                
+                return sum + (line23600 - line11700 + line21300 + line12800);
               }, 0);
 
               // Update benefit info with calculated values

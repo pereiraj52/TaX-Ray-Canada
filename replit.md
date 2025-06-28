@@ -331,6 +331,7 @@ Changelog:
 - June 28, 2025. Transformed Family Government Clawbacks section into Family Government Benefits: replaced clawback tracking with Universal Child Benefit analysis showing Number of children, Maximum Universal Child Benefit, Adjusted Family Net Income, and Clawback % with blue color scheme and benefit-focused summary
 - June 28, 2025. Renamed section from "Family - Government Benefits" to "Universal Child Care Benefit Clawback" for more specific and accurate terminology
 - June 28, 2025. Implemented Maximum UCCB calculation: renamed "Maximum Universal Child Benefit" to "Maximum UCCB" and added age-based calculation logic using $648.91/month for children under 6 and $547.50/month for children aged 6-17, with accurate age calculation considering birth dates
+- June 28, 2025. Updated Adjusted Family Net Income calculation: implemented specific formula using Line 23600 (Net income) - Line 11700 (Taxable capital gains) + Line 21300 (UCCB repayment) + Line 12800 (Investment income) for accurate UCCB clawback analysis
 ```
 
 ## User Preferences
