@@ -343,6 +343,7 @@ Changelog:
 - June 28, 2025. Fixed CCB clawback bar visibility by replacing invalid h-18 class with inline style height: 72px and restructuring HTML elements for proper rendering
 - June 28, 2025. Updated CCB clawback chart gradient colors to match brand palette: changed from green-red gradient to brand colors starting with #88AA73 (primary green) transitioning to #C7E6C2 (accent green)
 - June 28, 2025. Simplified CCB clawback chart labels: removed current income position display and added "Start:" prefix to threshold value and "End:" prefix to maximum clawback value for cleaner scale identification
+- June 28, 2025. Added clawback percentage overlay to CCB chart: displays current clawback percentage centered on the bar using warning color #D4B26A with font-semibold text-lg styling for clear visibility
 ```
 
 ## User Preferences

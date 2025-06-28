@@ -3400,7 +3400,7 @@ export default function TaxReport() {
                                   <div className="relative">
                                     {/* Bar background */}
                                     <div className="w-full" style={{ height: '72px' }}>
-                                      <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden">
+                                      <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
                                         {/* Progress fill */}
                                         <div 
                                           className="h-full transition-all duration-300"
@@ -3416,6 +3416,13 @@ export default function TaxReport() {
                                             style={{ left: `${progressPercentage}%`, height: '72px' }}
                                           />
                                         )}
+                                        {/* Clawback percentage overlay */}
+                                        <div 
+                                          className="absolute inset-0 flex items-center justify-center font-semibold text-lg"
+                                          style={{ color: '#D4B26A' }}
+                                        >
+                                          {clawbackPercentage.toFixed(1)}%
+                                        </div>
                                       </div>
                                     </div>
                                     
