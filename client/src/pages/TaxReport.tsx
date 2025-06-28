@@ -3177,10 +3177,10 @@ export default function TaxReport() {
 
               // Calculate family totals for each clawback type
               const clawbackTypes = [
-                { name: "OAS Recovery Tax", line: "42200", description: "Old Age Security clawback based on income" },
-                { name: "UCCB Repayment", line: "21300", description: "Universal Child Care Benefit repayment" },
-                { name: "EI Benefit Repayment", line: "42210", description: "Employment Insurance benefit repayment" },
-                { name: "Social Benefits Repayment", line: "23500", description: "Repayment of various social benefits" },
+                { name: "OAS Recovery Tax", line: "42200" },
+                { name: "UCCB Repayment", line: "21300" },
+                { name: "EI Benefit Repayment", line: "42210" },
+                { name: "Social Benefits Repayment", line: "23500" },
               ];
 
               const familyTotals = clawbackTypes.map(clawback => {
@@ -3218,7 +3218,6 @@ export default function TaxReport() {
                               )}
                               <div>
                                 <span className="font-medium">{item.name} (Line {item.line})</span>
-                                <div className="text-gray-600 text-xs">{item.description}</div>
                               </div>
                             </div>
                             <span className={`font-medium ${item.hasAmount ? 'text-yellow-600' : 'text-gray-400'}`}>
@@ -3326,22 +3325,22 @@ export default function TaxReport() {
                 const clawbacks = [
                   // OAS Recovery Tax
                   { category: "OAS Recovery", items: [
-                    { name: "OAS Recovery Tax", line: "42200", description: "Old Age Security clawback based on income" },
+                    { name: "OAS Recovery Tax", line: "42200" },
                   ]},
                   
                   // Universal Child Care Benefit Repayment
                   { category: "UCCB Repayment", items: [
-                    { name: "UCCB Repayment", line: "21300", description: "Universal Child Care Benefit repayment" },
+                    { name: "UCCB Repayment", line: "21300" },
                   ]},
                   
                   // Employment Insurance Benefit Repayment
                   { category: "EI Benefit Repayment", items: [
-                    { name: "EI Benefit Repayment", line: "42210", description: "Employment Insurance benefit repayment" },
+                    { name: "EI Benefit Repayment", line: "42210" },
                   ]},
                   
                   // Social Benefits Repayment
                   { category: "Social Benefits Repayment", items: [
-                    { name: "Social Benefits Repayment", line: "23500", description: "Repayment of various social benefits" },
+                    { name: "Social Benefits Repayment", line: "23500" },
                   ]},
                 ];
 
@@ -3389,7 +3388,6 @@ export default function TaxReport() {
                                         )}
                                         <div>
                                           <span className="font-medium">{item.name} (Line {item.line})</span>
-                                          <div className="text-gray-600 text-xs">{item.description}</div>
                                         </div>
                                       </div>
                                       <span className={`font-medium ${hasAmount ? 'text-yellow-600' : 'text-gray-400'}`}>

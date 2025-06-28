@@ -327,6 +327,7 @@ Changelog:
 - June 28, 2025. Corrected Enhanced CPP/QPP (Line 22215) classification: renamed from "Enhanced CPP/QPP Credit" to "Enhanced CPP/QPP Deduction" and moved from Employment Credits section in Tax Credits Analysis to Employment Deductions section in Tax Deductions Analysis, updated T1 extraction display accordingly, and fixed all section totals and calculations
 - June 28, 2025. Created comprehensive Government Clawback Analysis section: added new analysis section displaying OAS Recovery Tax (42200), UCCB Repayment (21300), EI Benefit Repayment (42210), and Social Benefits Repayment (23500) with warning icons for active clawbacks, checkmarks for no repayments, individual category totals, and overall clawback summary with brand-consistent color coding
 - June 28, 2025. Added Family-wide Government Clawback summary: created full-width section before individual client clawback analysis showing combined family totals for all clawback types, individual breakdown when clawbacks exist, and comprehensive summary spanning both columns for household-level overview
+- June 28, 2025. Simplified Government Clawback Analysis labels: removed subtitle descriptions from all clawback items in both family-wide and individual client sections for cleaner interface showing only item names and line numbers
 ```
 
 ## User Preferences
