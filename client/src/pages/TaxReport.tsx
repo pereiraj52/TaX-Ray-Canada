@@ -3175,96 +3175,91 @@ export default function TaxReport() {
                 }).format(amount);
               };
 
-              // Calculate family totals for each clawback type
-              const clawbackTypes = [
-                { name: "OAS Recovery Tax", line: "42200" },
-                { name: "UCCB Repayment", line: "21300" },
-                { name: "EI Benefit Repayment", line: "42210" },
-                { name: "Social Benefits Repayment", line: "23500" },
+              // Calculate family benefit information
+              const benefitInfo = [
+                { name: "Number of children", value: household?.children?.length || 0, format: 'number' },
+                { name: "Maximum Universal Child Benefit", value: 0, format: 'currency' }, // To be calculated
+                { name: "Adjusted Family Net Income", value: 0, format: 'currency' }, // To be calculated
+                { name: "Clawback %", value: 0, format: 'percentage' }, // To be calculated
               ];
 
-              const familyTotals = clawbackTypes.map(clawback => {
-                const total = familyData.reduce((sum: number, spouse) => {
-                  if (!spouse.t1Return) return sum;
-                  return sum + getFieldValue(spouse.formFields, clawback.line);
-                }, 0);
-                
-                return {
-                  ...clawback,
-                  total,
-                  hasAmount: total > 0
-                };
+              // Calculate Adjusted Family Net Income (sum of both spouses' net income)
+              const adjustedFamilyNetIncome = familyData.reduce((sum: number, spouse) => {
+                if (!spouse.t1Return) return sum;
+                const totalIncome = getFieldValue(spouse.formFields, '15000');
+                const totalTax = getFieldValue(spouse.formFields, '43700') || 
+                               (getFieldValue(spouse.formFields, '42000') + getFieldValue(spouse.formFields, '42800'));
+                return sum + (totalIncome - totalTax);
+              }, 0);
+
+              // Update benefit info with calculated values
+              const updatedBenefitInfo = benefitInfo.map(item => {
+                if (item.name === "Adjusted Family Net Income") {
+                  return { ...item, value: adjustedFamilyNetIncome };
+                }
+                return item;
               });
 
-              const totalFamilyClawbacks = familyTotals.reduce((sum, item) => sum + item.total, 0);
+              // Helper function to format values based on type
+              const formatValue = (value: number, format: string) => {
+                switch (format) {
+                  case 'currency':
+                    return formatCurrency(value);
+                  case 'percentage':
+                    return `${value.toFixed(2)}%`;
+                  case 'number':
+                  default:
+                    return value.toString();
+                }
+              };
 
               return (
                 <Card>
                   <CardContent className="p-6">
                     <h3 className="font-medium text-gray-900 mb-6">
-                      Family - Government Clawbacks
+                      Family - Government Benefits
                     </h3>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Clawback Items */}
+                      {/* Benefit Information */}
                       <div className="space-y-4">
-                        {familyTotals.map((item, index) => (
+                        {updatedBenefitInfo.map((item, index) => (
                           <div key={index} className="flex items-center justify-between text-sm">
                             <div className="flex items-center space-x-2">
-                              {item.hasAmount ? (
-                                <span style={{ color: '#D4B26A' }}>⚠</span>
-                              ) : (
-                                <span style={{ color: '#88AA73' }}>✓</span>
-                              )}
+                              <span style={{ color: '#88AA73' }}>ℹ</span>
                               <div>
-                                <span className="font-medium">{item.name} (Line {item.line})</span>
+                                <span className="font-medium">{item.name}</span>
                               </div>
                             </div>
-                            <span className={`font-medium ${item.hasAmount ? 'text-yellow-600' : 'text-gray-400'}`}>
-                              {item.hasAmount ? formatCurrency(item.total) : '$0'}
+                            <span className="font-medium text-primary">
+                              {formatValue(item.value, item.format)}
                             </span>
                           </div>
                         ))}
                       </div>
                       
                       {/* Summary Box */}
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-semibold text-yellow-800">
-                            Total Family Clawbacks
-                          </span>
-                          <span className="font-bold text-yellow-600 text-xl">
-                            {formatCurrency(totalFamilyClawbacks)}
-                          </span>
-                        </div>
-                        <p className="text-yellow-700 text-sm">
-                          {totalFamilyClawbacks > 0 
-                            ? "Combined government benefit repayments and recovery taxes for all household members" 
-                            : "No government clawbacks or repayments required for any family member"}
-                        </p>
-                        
-                        {/* Individual breakdown if there are clawbacks */}
-                        {totalFamilyClawbacks > 0 && (
-                          <div className="mt-3 pt-3 border-t border-yellow-300">
-                            <div className="text-xs text-yellow-700 space-y-1">
-                              {familyData.map((spouse, spouseIndex) => {
-                                if (!spouse.t1Return) return null;
-                                const spouseTotal = clawbackTypes.reduce((sum, clawback) => {
-                                  return sum + getFieldValue(spouse.formFields, clawback.line);
-                                }, 0);
-                                
-                                if (spouseTotal === 0) return null;
-                                
-                                return (
-                                  <div key={spouseIndex} className="flex justify-between">
-                                    <span>{spouse.clientName}:</span>
-                                    <span className="font-medium">{formatCurrency(spouseTotal)}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div className="flex flex-col space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-blue-800">
+                              Family Benefit Summary
+                            </span>
                           </div>
-                        )}
+                          <div className="text-blue-700 text-sm space-y-2">
+                            <div className="flex justify-between">
+                              <span>Children in household:</span>
+                              <span className="font-medium">{household?.children?.length || 0}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Family net income:</span>
+                              <span className="font-medium">{formatCurrency(adjustedFamilyNetIncome)}</span>
+                            </div>
+                            <p className="text-xs text-blue-600 mt-2">
+                              Universal Child Benefit calculations based on number of children and adjusted family net income
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
