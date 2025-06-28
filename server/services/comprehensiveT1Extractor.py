@@ -1466,90 +1466,47 @@ class ComprehensiveT1Extractor:
         
         # Special handling for line 12000 (Taxable dividends from taxable Canadian corporations)
         if line_num == '12000':
-            debug_f = None
-            try:
-                debug_f = open('attached_assets/line_12000_debug.log', 'w')
-                debug_f.write(f'DEBUG: Extracting line 12000 (Taxable dividends)\n')
-            except Exception:
-                debug_f = None
-                
             lines = text.splitlines()
             
-            # First, search for dividend-related content and capture surrounding context
-            dividend_section_lines = []
+            # Look specifically for the main T1 form line (not worksheets or summary sections)
+            # Priority: Look for the actual form line with format "Amount of dividends (eligible and other than eligible) 12000 [amount]"
             for idx, line in enumerate(lines):
-                if re.search(r'dividend|12000', line, re.IGNORECASE):
-                    start = max(0, idx - 5)
-                    end = min(len(lines), idx + 6)
-                    dividend_section_lines.extend(lines[start:end])
-                    if debug_f:
-                        debug_f.write(f'FOUND DIVIDEND CONTEXT at line {idx}: {line}\n')
-                        debug_f.write(f'SURROUNDING LINES:\n')
-                        for i in range(start, end):
-                            debug_f.write(f'  {i}: {lines[i]}\n')
-            
-            # Remove duplicates while preserving order
-            seen = set()
-            unique_lines = []
-            for line in dividend_section_lines:
-                if line not in seen:
-                    seen.add(line)
-                    unique_lines.append(line)
-            
-            # Try to extract from the dividend context
-            for line in unique_lines:
-                if debug_f:
-                    debug_f.write(f'CHECKING LINE: {line}\n')
-                
-                # Enhanced patterns based on actual PDF content analysis
-                patterns = [
-                    # Exact pattern from PDF: "12000 9,200 00"
-                    r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
-                    # Pattern from worksheet: "return. 12000 9,200 00"
-                    r'return\.\s+12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})',
-                    # Pattern from form line: "12000 9,200 00 9"
-                    r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})\s+\d+',
-                ]
-                
-                for pattern in patterns:
-                    matches = re.findall(pattern, line)
-                    if debug_f and matches:
-                        debug_f.write(f'PATTERN: {pattern} MATCHES: {matches}\n')
-                    
-                    for match in matches:
+                # Main form line pattern - be very specific to avoid cross-contamination
+                if re.search(r'Amount of dividends \(eligible and other than eligible\)\s+12000', line, re.IGNORECASE):
+                    # Extract amount from this exact line
+                    m = re.search(r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
                         try:
-                            if isinstance(match, tuple):
-                                if len(match) == 2:
-                                    dollars, cents = match
-                                    dollars_clean = dollars.replace(',', '').replace(' ', '')
-                                    if dollars_clean.isdigit() and int(dollars_clean) >= 1000:  # Reasonable dividend amount
-                                        if cents and cents.isdigit():
-                                            amount_str = f"{dollars_clean}.{cents}"
-                                        else:
-                                            amount_str = f"{dollars_clean}.00"
-                                        if debug_f:
-                                            debug_f.write(f'FOUND AMOUNT: {amount_str}\n')
-                                        if debug_f:
-                                            debug_f.close()
-                                        return Decimal(amount_str)
-                                else:
-                                    # Single capture group
-                                    dollars = match[0].replace(',', '').replace(' ', '')
-                                    if dollars.isdigit() and int(dollars) >= 1000:
-                                        amount_str = f"{dollars}.00"
-                                        if debug_f:
-                                            debug_f.write(f'FOUND AMOUNT: {amount_str}\n')
-                                        if debug_f:
-                                            debug_f.close()
-                                        return Decimal(amount_str)
-                        except Exception as e:
-                            if debug_f:
-                                debug_f.write(f'ERROR processing match {match}: {e}\n')
+                            dollars = m.group(1).replace(',', '')
+                            cents = m.group(2)
+                            # Only accept reasonable dividend amounts (> $100 to avoid false positives)
+                            if int(dollars) >= 100:
+                                value = f"{dollars}.{cents}"
+                                return Decimal(value)
+                        except Exception:
                             continue
             
-            if debug_f:
-                debug_f.write('NO AMOUNT FOUND\n')
-                debug_f.close()
+            # Fallback: Look for direct line reference in the main form (not worksheets)
+            # Avoid worksheet sections, comparative summaries, and credit calculations
+            for line in lines:
+                # Skip worksheet lines, summary sections, and credit calculations
+                if any(skip_term in line.lower() for skip_term in ['worksheet', 'summary', 'credit', 'comparative', 'five-year']):
+                    continue
+                
+                # Look for direct form line with just "12000 [amount]" pattern
+                if re.match(r'.*(?:^|\s)12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})(?:\s+\d+)?(?:\s|$)', line):
+                    m = re.search(r'12000\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
+                        try:
+                            dollars = m.group(1).replace(',', '')
+                            cents = m.group(2)
+                            # Only accept reasonable dividend amounts
+                            if int(dollars) >= 100:
+                                value = f"{dollars}.{cents}"
+                                return Decimal(value)
+                        except Exception:
+                            continue
+            
             return None
         
         # Special handling for line 12100 (Interest and Investment Income)
