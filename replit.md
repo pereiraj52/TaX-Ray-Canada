@@ -346,6 +346,7 @@ Changelog:
 - June 28, 2025. Added clawback percentage overlay to CCB chart: displays current clawback percentage centered on the bar using warning color #D4B26A with font-semibold text-lg styling for clear visibility
 - June 28, 2025. Changed CCB clawback percentage text color from #D4B26A to #A3A3A3 (neutral gray) for better visual balance
 - June 28, 2025. Updated CCB clawback percentage text color to #F9FAF8 (clean background) for optimal contrast against the green gradient background
+- June 28, 2025. Changed CCB clawback percentage text color to #111111 (dark gray) for strong contrast and readability against the green gradient
 ```
 
 ## User Preferences

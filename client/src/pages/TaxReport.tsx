@@ -3419,7 +3419,7 @@ export default function TaxReport() {
                                         {/* Clawback percentage overlay */}
                                         <div 
                                           className="absolute inset-0 flex items-center justify-center font-semibold text-lg"
-                                          style={{ color: '#F9FAF8' }}
+                                          style={{ color: '#111111' }}
                                         >
                                           {clawbackPercentage.toFixed(1)}%
                                         </div>
