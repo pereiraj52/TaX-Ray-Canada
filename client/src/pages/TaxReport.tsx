@@ -3208,7 +3208,7 @@ export default function TaxReport() {
               // Calculate family benefit information
               const benefitInfo = [
                 { name: "Number of children", value: household?.children?.length || 0, format: 'number' },
-                { name: "Maximum UCCB", value: calculateMaxUCCB(), format: 'currency' },
+                { name: "CCB", value: calculateMaxUCCB(), format: 'currency' },
                 { name: "Adjusted Family Net Income", value: 0, format: 'currency' }, // To be calculated
                 { name: "Clawback %", value: 0, format: 'percentage' }, // To be calculated
               ];
