@@ -3348,15 +3348,8 @@ export default function TaxReport() {
                       </div>
                       
                       {/* CCB Clawback Chart */}
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <div className="flex flex-col space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="font-semibold text-blue-800">
-                              CCB Clawback Progression
-                            </span>
-                          </div>
-                          <div className="space-y-4">
-                            {(() => {
+                      <div className="space-y-4">
+                        {(() => {
                               const baseThreshold = 37487;
                               const additionalThreshold = 81222;
                               const totalChildren = numUnder6 + num6to17;
@@ -3428,22 +3421,10 @@ export default function TaxReport() {
                                       <span>{formatCurrency(chartMax)}</span>
                                     </div>
                                     
-                                    {/* Scale descriptions */}
-                                    <div className="flex justify-between text-xs text-blue-600 mt-1">
-                                      <span>0% Clawback</span>
-                                      <span className="text-center">{clawbackPercentage.toFixed(1)}% Clawback</span>
-                                      <span>100% Clawback</span>
-                                    </div>
-                                  </div>
-                                  
-                                  <div className="text-xs text-blue-600">
-                                    <p>Chart shows CCB clawback progression from {formatCurrency(baseThreshold)} (0% clawback) to {formatCurrency(fullClawbackIncome)} (100% clawback)</p>
                                   </div>
                                 </>
                               );
                             })()}
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </CardContent>
