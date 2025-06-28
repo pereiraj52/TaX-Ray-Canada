@@ -308,6 +308,7 @@ Changelog:
 - June 27, 2025. Corrected Provincial Tax Bracket Visualization height mismatch: changed scale container from h-80 to h-72 to match bar height, ensuring perfect alignment between threshold labels and actual bracket boundaries
 - June 27, 2025. Updated Provincial Tax Bracket Visualization color scheme: changed from dual-color system (accent for negative rates, primary for positive) to consistent primary green for all brackets for uniform appearance
 - June 27, 2025. Enhanced Provincial Tax Bracket Visualization to highlight client's current marginal tax rate bracket with accent green color (#C7E6C2) while keeping all other brackets in primary green for clear visual identification of client's tax position
+- June 27, 2025. Added comprehensive Tax Deductions Analysis section displaying detailed deduction breakdowns for each client: organized into 5 categories (Retirement Plan, Personal, Support & Investment, Employment, Specialized), shows checkmarks for claimed deductions and X marks for unused ones, includes amounts for all claimed deductions with category totals and overall total deductions summary
 ```
 
 ## User Preferences

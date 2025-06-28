@@ -2688,7 +2688,179 @@ export default function TaxReport() {
           })()}
         </div>
 
+        {/* Deductions Analysis */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-900">Tax Deductions Analysis</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {(() => {
+              // Get T1 returns for the specified year for both spouses
+              const spouseData = [];
+              
+              // Primary client
+              if (household?.clients?.[0]) {
+                const client = household.clients[0];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+              
+              // Secondary client
+              if (household?.clients?.[1]) {
+                const client = household.clients[1];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
 
+              return spouseData.map((spouse, spouseIndex) => {
+                if (!spouse.t1Return) return null;
+
+                // Helper function to get field value
+                const getFieldValue = (lineNumber: string) => {
+                  const field = spouse.formFields.find(f => f.fieldCode === lineNumber);
+                  return field?.fieldValue ? parseFloat(field.fieldValue) : 0;
+                };
+
+                // Helper function to format currency
+                const formatCurrency = (amount: number) => {
+                  return new Intl.NumberFormat('en-CA', {
+                    style: 'currency',
+                    currency: 'CAD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  }).format(amount);
+                };
+
+                // Define all possible deductions with their line numbers
+                const deductions = [
+                  // Retirement Plan Deductions
+                  { category: "Retirement Plan Deductions", items: [
+                    { name: "RRSP Deduction", line: "20800" },
+                    { name: "RPP Deduction", line: "20700" },
+                    { name: "FHSA Deduction", line: "20805" },
+                    { name: "PRPP Deduction", line: "20810" },
+                    { name: "SPP Deduction", line: "20820" },
+                    { name: "Pooled Fund Deduction", line: "20900" },
+                  ]},
+                  
+                  // Personal Deductions
+                  { category: "Personal Deductions", items: [
+                    { name: "Child Care Expenses", line: "21400" },
+                    { name: "Disability Supports", line: "21500" },
+                    { name: "Business Investment Loss", line: "21700" },
+                    { name: "Moving Expenses", line: "21900" },
+                    { name: "Split Pension Deduction", line: "21000" },
+                  ]},
+                  
+                  // Support & Investment Deductions
+                  { category: "Support & Investment", items: [
+                    { name: "Support Payments", line: "22000" },
+                    { name: "Carrying Charges", line: "22100" },
+                    { name: "Interest and Investment Counsel Fees", line: "22101" },
+                  ]},
+                  
+                  // Employment Deductions
+                  { category: "Employment Deductions", items: [
+                    { name: "Union/Professional Dues", line: "21200" },
+                    { name: "Employment Expenses", line: "22900" },
+                  ]},
+                  
+                  // Specialized Deductions
+                  { category: "Specialized Deductions", items: [
+                    { name: "Clergy Residence", line: "23100" },
+                    { name: "Other Employment Expenses", line: "22900" },
+                    { name: "Other Deductions", line: "23200" },
+                    { name: "UCCB Repayment", line: "21300" },
+                    { name: "Enhanced CPP/QPP", line: "30800" },
+                    { name: "Social Benefits Repayment", line: "42200" },
+                  ]},
+                ];
+
+                return (
+                  <Card key={spouseIndex}>
+                    <CardContent className="p-6">
+                      <h3 className="font-medium text-gray-900 mb-6">
+                        {spouse.clientName} - Tax Deductions
+                      </h3>
+                      
+                      <div className="space-y-6">
+                        {deductions.map((category, categoryIndex) => {
+                          const categoryTotal = category.items.reduce((sum, item) => {
+                            return sum + getFieldValue(item.line);
+                          }, 0);
+
+                          return (
+                            <div key={categoryIndex} className="space-y-3">
+                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                                <h4 className="font-medium text-primary text-sm">
+                                  {category.category}
+                                </h4>
+                                <span className="font-medium text-primary text-sm">
+                                  {formatCurrency(categoryTotal)}
+                                </span>
+                              </div>
+                              
+                              <div className="space-y-2">
+                                {category.items.map((item, itemIndex) => {
+                                  const amount = getFieldValue(item.line);
+                                  const hasClaim = amount > 0;
+                                  
+                                  return (
+                                    <div key={itemIndex} className="flex justify-between items-center text-sm">
+                                      <div className="flex items-center space-x-2">
+                                        <span className={`font-medium ${hasClaim ? 'text-green-600' : 'text-red-500'}`}>
+                                          {hasClaim ? '✓' : '✗'}
+                                        </span>
+                                        <span className="text-gray-700">
+                                          {item.name}
+                                        </span>
+                                        <span className="text-gray-400 text-xs">
+                                          (Line {item.line})
+                                        </span>
+                                      </div>
+                                      <span className="font-mono text-right text-gray-700">
+                                        {hasClaim ? formatCurrency(amount) : '$0'}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                        
+                        {/* Total Deductions Summary */}
+                        <div className="pt-4 border-t-2 border-primary">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Total Deductions
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {formatCurrency(deductions.reduce((total, category) => {
+                                return total + category.items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                              }, 0))}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              });
+            })()}
+          </div>
+        </div>
 
       </div>
     </Layout>
