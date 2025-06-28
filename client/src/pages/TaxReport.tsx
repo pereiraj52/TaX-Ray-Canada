@@ -2830,7 +2830,7 @@ export default function TaxReport() {
                                           (Line {item.line})
                                         </span>
                                       </div>
-                                      <span className="font-mono text-right text-gray-700">
+                                      <span className="font-medium text-right text-gray-700">
                                         {hasClaim ? formatCurrency(amount) : '$0'}
                                       </span>
                                     </div>
