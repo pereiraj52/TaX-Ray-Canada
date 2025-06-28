@@ -3123,7 +3123,7 @@ export default function TaxReport() {
 
         {/* Government Clawback Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Government Benefits Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Clawback Analysis</h2>
           
           {/* Family-wide Government Clawbacks Summary */}
           <div className="w-full mb-6">
