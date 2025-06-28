@@ -318,6 +318,7 @@ Changelog:
 - June 28, 2025. Removed Ontario provincial deductions section from T1 extraction summary: deleted Provincial Deductions (Ontario) section containing lines 61000-61500 from deductions tab and updated total deductions calculation to exclude these non-applicable provincial fields
 - June 28, 2025. Reordered credits section layout in T1 extraction summary: moved Refundable Credits section to appear before Ontario Provincial Credits section for improved logical flow in credits tab display
 - June 28, 2025. Fixed Total Tax calculation in T1 extraction summary: corrected field 43500 reference to use calculated total (federal tax 42000 + provincial tax 42800) since field 43500 is not extracted from PDFs, updated Summary tab dashboard, Tax Summary section, refund/balance calculation, and Key Tax Information section
+- June 28, 2025. Changed balance owing color to brand warning color #D4B26A: updated refund/balance display in T1 extraction summary Tax Summary section to use brand-consistent gold color for balance owing amounts instead of red
 ```
 
 ## User Preferences

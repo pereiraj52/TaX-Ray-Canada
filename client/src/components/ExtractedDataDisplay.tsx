@@ -1842,7 +1842,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 <span className="font-medium text-primary">
                   {getRefundOrBalance() >= 0 ? 'Refund Due:' : 'Balance Owing:'}
                 </span>
-                <span className={`font-medium ${getRefundOrBalance() >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <span 
+                  className="font-medium"
+                  style={{ color: getRefundOrBalance() >= 0 ? '#16a34a' : '#D4B26A' }}
+                >
                   {formatCurrency(Math.abs(getRefundOrBalance()))}
                 </span>
               </div>
