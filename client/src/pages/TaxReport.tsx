@@ -2953,7 +2953,7 @@ export default function TaxReport() {
                   
                   // Employment Credits
                   { category: "Employment Credits", items: [
-                    { name: "Canada Employment Amount", line: "31300" },
+                    { name: "Canada Employment Amount", line: "31220" },
                     { name: "Public Transit Passes", line: "36400" },
                     { name: "Children's Fitness Amount", line: "36500" },
                     { name: "Children's Arts Amount", line: "36600" },
