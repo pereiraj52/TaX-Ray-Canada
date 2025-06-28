@@ -322,6 +322,7 @@ Changelog:
 - June 28, 2025. Fixed line 12000 (Taxable Dividends) extraction error for Emilie: corrected PDF parser to avoid cross-spouse data contamination by implementing stricter pattern matching that excludes worksheet sections, comparative summaries, and credit calculations, preventing extraction of Jason's dividend data when processing Emilie's PDF, and updated database to null value for accurate reporting
 - June 28, 2025. Moved Enhanced CPP/QPP (Line 22215) from deductions to credits section: corrected classification by removing it from Support & Investment Deductions and adding it to Employment Credits section where it belongs as a tax credit, updated section totals and credit calculations for accurate tax reporting
 - June 28, 2025. Fixed Enhanced CPP/QPP in Tax Deductions Analysis and Tax Credits Analysis: removed Enhanced CPP/QPP (line 30800) from Specialized Deductions section in Tax Deductions Analysis and added Enhanced CPP/QPP Credit (line 22215) to Employment Credits section in Tax Credits Analysis for correct classification in household tax reports
+- June 28, 2025. Fixed spacing for Tax Deductions Analysis and Tax Credits Analysis titles: added mt-8 top margin and mb-4 bottom margin to section titles to match consistent spacing with other report sections like Individual Tax Analysis
 ```
 
 ## User Preferences

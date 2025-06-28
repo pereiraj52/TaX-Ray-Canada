@@ -2689,8 +2689,8 @@ export default function TaxReport() {
         </div>
 
         {/* Deductions Analysis */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Tax Deductions Analysis</h2>
+        <div className="space-y-6 mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Deductions Analysis</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {
@@ -2886,8 +2886,8 @@ export default function TaxReport() {
         </div>
 
         {/* Tax Credits Analysis */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Tax Credits Analysis</h2>
+        <div className="space-y-6 mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Credits Analysis</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {
