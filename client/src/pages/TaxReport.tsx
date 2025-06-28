@@ -3421,9 +3421,8 @@ export default function TaxReport() {
                                     
                                     {/* Scale labels */}
                                     <div className="flex justify-between font-medium text-primary mt-2">
-                                      <span>{formatCurrency(chartMin)}</span>
-                                      <span className="text-center">Current: {formatCurrency(adjustedFamilyNetIncome)}</span>
-                                      <span>{formatCurrency(chartMax)}</span>
+                                      <span>Start: {formatCurrency(chartMin)}</span>
+                                      <span>End: {formatCurrency(chartMax)}</span>
                                     </div>
                                     
                                   </div>
