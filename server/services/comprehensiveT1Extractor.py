@@ -839,7 +839,7 @@ class ComprehensiveT1Extractor:
                         addr = re.split(r'\s+\d{4}-\d{2}-\d{2}|\s+\d+\s+(Married|Widowed|Divorced|Separated|Single)|\s+\d{1,2}\s*$', addr)[0]
                         info.address_line1 = addr.strip()
                         break
-            # City: after 'City', take the next non-empty line, strip anything after '(' or a comma
+            # City: multiple patterns to handle different formats
             if re.search(r'^City', line, re.IGNORECASE):
                 for j in range(i+1, min(i+7, len(lines))):
                     next_line = lines[j].strip()
@@ -847,6 +847,15 @@ class ComprehensiveT1Extractor:
                         city_clean = re.split(r'[\(,]', next_line)[0].strip()
                         info.city = city_clean
                         break
+            # Alternative city pattern: look for city name before province pattern
+            # Pattern: "Toronto (Year Month Day) 6 Single" - but only in personal info section
+            city_match = re.search(r'^([A-Za-z\s]+?)\s+\(', line)
+            if city_match and not info.city and i < 50:  # Only check first 50 lines for personal info
+                potential_city = city_match.group(1).strip()
+                # Verify it's likely a city name and not other text like "Mailing address", "Employment income"
+                common_cities = ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa', 'Edmonton', 'Quebec', 'Winnipeg', 'Hamilton', 'London', 'Halifax', 'Victoria', 'Regina', 'Saskatoon', 'Kitchener', 'Windsor', 'Oshawa', 'St. John\'s', 'Richmond', 'Burnaby', 'Markham', 'Vaughan', 'Gatineau', 'Laval', 'Surrey', 'Brampton', 'Mississauga', 'Scarborough', 'North York', 'Etobicoke', 'Cambridge', 'Waterloo', 'Guelph', 'Kingston', 'Thunder Bay', 'Sudbury', 'Sault Ste. Marie', 'Barrie', 'Peterborough', 'Fredericton', 'Moncton', 'Saint John', 'Sydney', 'Charlottetown', 'Yellowknife', 'Whitehorse', 'Iqaluit']
+                if potential_city in common_cities or (len(potential_city) <= 25 and potential_city[0].isupper() and ' ' not in potential_city[:5] and not any(word in potential_city.lower() for word in ['address', 'income', 'employment', 'mailing', 'pension', 'revenue', 'canada', 'amount', 'deduction', 'fiscal'])):
+                    info.city = potential_city
             # Province and Postal Code: look for a line matching the pattern after the label
             if re.search(r'Prov\./Terr\. Postal code', line, re.IGNORECASE):
                 for j in range(i+1, min(i+7, len(lines))):
