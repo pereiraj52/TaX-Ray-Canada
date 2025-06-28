@@ -365,6 +365,7 @@ Changelog:
 - June 28, 2025. Changed benefit name from "Canada Workers Benefit" to "Canada Workers Benefit (Single)" for clearer identification of single person benefit calculation
 - June 28, 2025. Added Basic Personal Amount (Line 30000) to Clawback Analysis section for comprehensive tax credit tracking
 - June 28, 2025. Fixed SIN number extraction issue for Daniel Givon: enhanced extraction patterns to handle both masked (XXX XX1 481) and unmasked (291 758 993) SIN formats, added multiple fallback patterns including name-line extraction and general SIN label matching
+- June 28, 2025. Fixed city information extraction for Daniel Givon: corrected extraction to prioritize personal information section city (Toronto) over rental property co-owner city (Brampton), added smart filtering to avoid extracting business-related addresses and limited city extraction to first 50 lines of PDF for personal information accuracy
 ```
 
 ## User Preferences
