@@ -357,6 +357,7 @@ Changelog:
 - June 28, 2025. Moved Max CCB information to same line as Start and End values: restructured scale labels to display "Start | Max CCB | End" in single horizontal row for compact layout
 - June 28, 2025. Reduced Canada Child Benefit bar chart height by 1/3rd from 72px to 48px for more compact visualization while maintaining readability
 - June 28, 2025. Added "Clawback:" label prefix to percentage value in Canada Child Benefit bar chart overlay for clearer identification of displayed metric
+- June 28, 2025. Transformed Clawback Analysis section with individual bar charts: removed dollar values from right side, added bar chart for each benefit item spanning 2/3rds page width, displays "Received: $X" or "Not Received" status with gradient colors (#D4B26A to #F4E4B8 for received, gray for not received)
 ```
 
 ## User Preferences
