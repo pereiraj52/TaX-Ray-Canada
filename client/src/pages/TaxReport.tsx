@@ -3432,6 +3432,11 @@ export default function TaxReport() {
                                       <span>End: {formatCurrency(chartMax)}</span>
                                     </div>
                                     
+                                    {/* Max CCB label */}
+                                    <div className="flex justify-center mt-2">
+                                      <span className="font-medium text-primary">Max CCB</span>
+                                    </div>
+                                    
                                   </div>
                                 </>
                               );
@@ -3531,7 +3536,7 @@ export default function TaxReport() {
                   <Card key={spouseIndex}>
                     <CardContent className="p-6">
                       <h3 className="font-medium text-gray-900 mb-6">
-                        {spouse.clientName} - Government Benefits
+                        {spouse.clientName} - Clawback Analysis
                       </h3>
                       
                       <div className="space-y-6">
@@ -3576,23 +3581,7 @@ export default function TaxReport() {
                             </div>
                           );
                         })}
-                        
-                        {/* Total Benefits Summary */}
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                          <div className="flex justify-between items-center">
-                            <span className="font-semibold text-green-800">
-                              Total Government Benefits
-                            </span>
-                            <span className="font-bold text-green-600 text-lg">
-                              {formatCurrency(totalBenefits)}
-                            </span>
-                          </div>
-                          <p className="text-green-700 text-sm mt-1">
-                            {totalBenefits > 0 
-                              ? "Government benefits and credits received" 
-                              : "No government benefits or credits received"}
-                          </p>
-                        </div>
+
                       </div>
                     </CardContent>
                   </Card>

@@ -349,6 +349,9 @@ Changelog:
 - June 28, 2025. Changed CCB clawback percentage text color to #111111 (dark gray) for strong contrast and readability against the green gradient
 - June 28, 2025. Transformed Government Clawback Analysis into Government Benefits Analysis: replaced clawback tracking (OAS Recovery, UCCB Repayment, EI Benefit Repayment, Social Benefits Repayment) with benefit tracking for Canada Workers Benefit (45300), Old Age Security (11300), Guaranteed Income Supplement (11400), Child Disability Benefit (11700), and GST/HST Credit (45350), updated icons to show checkmarks for received benefits and X marks for unreceived benefits with green summary styling
 - June 28, 2025. Changed section title from "Government Benefits Analysis" to "Clawback Analysis" for simplified terminology
+- June 28, 2025. Updated individual client section titles from "Client Name - Government Benefits" to "Client Name - Clawback Analysis" for consistent terminology
+- June 28, 2025. Removed green summary box displaying "Total Government Benefits $0" and "No government benefits or credits received" message from individual client Clawback Analysis sections for cleaner interface
+- June 28, 2025. Added "Max CCB" label centered below the Canada Child Benefit clawback progression bar chart for clearer chart identification
 ```
 
 ## User Preferences
