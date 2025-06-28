@@ -3205,15 +3205,92 @@ export default function TaxReport() {
                 return totalUCCB;
               };
 
-              // Calculate family benefit information
-              const benefitInfo = [
-                { name: "Number of children", value: household?.children?.length || 0, format: 'number' },
-                { name: "CCB", value: calculateMaxUCCB(), format: 'currency' },
-                { name: "Adjusted Family Net Income", value: 0, format: 'currency' }, // To be calculated
-                { name: "Clawback %", value: 0, format: 'percentage' }, // To be calculated
-              ];
+              // Calculate CCB clawback percentage
+              const calculateCCBClawbackPercentage = (afni: number, numUnder6: number, num6to17: number) => {
+                const baseThreshold = 37487;
+                const additionalThreshold = 81222;
+                const maxCcbUnder6 = 7787;
+                const maxCcb6to17 = 6570;
+                
+                // Set reduction rates based on total number of children
+                const totalChildren = numUnder6 + num6to17;
+                let baseRate: number, additionalRate: number;
+                
+                if (totalChildren === 1) {
+                  baseRate = 0.07;
+                  additionalRate = 0.032;
+                } else if (totalChildren === 2) {
+                  baseRate = 0.135;
+                  additionalRate = 0.057;
+                } else if (totalChildren === 3) {
+                  baseRate = 0.19;
+                  additionalRate = 0.08;
+                } else {
+                  baseRate = 0.23;
+                  additionalRate = 0.095;
+                }
+                
+                // Calculate maximum possible benefit
+                const totalMaxBenefit = (numUnder6 * maxCcbUnder6) + (num6to17 * maxCcb6to17);
+                
+                // Calculate reduction amount
+                let reduction: number;
+                if (afni <= baseThreshold) {
+                  reduction = 0;
+                } else if (afni <= additionalThreshold) {
+                  reduction = (afni - baseThreshold) * baseRate;
+                } else {
+                  reduction = ((additionalThreshold - baseThreshold) * baseRate +
+                               (afni - additionalThreshold) * additionalRate);
+                }
+                
+                // Ensure reduction doesn't exceed maximum benefit
+                reduction = Math.min(reduction, totalMaxBenefit);
+                
+                // Calculate clawback percentage
+                if (totalMaxBenefit === 0) {
+                  return 0.0;
+                }
+                
+                const clawbackPercentage = (reduction / totalMaxBenefit) * 100;
+                return Math.round(clawbackPercentage * 100) / 100; // Round to 2 decimal places
+              };
 
-              // Calculate Adjusted Family Net Income using formula: Line 23600 - Line 11700 + Line 21300 + Line 12800
+              // Count children by age groups
+              const getChildrenCounts = () => {
+                if (!household?.children || household.children.length === 0) {
+                  return { numUnder6: 0, num6to17: 0 };
+                }
+                
+                let numUnder6 = 0;
+                let num6to17 = 0;
+                const currentDate = new Date();
+                
+                household.children.forEach(child => {
+                  if (child.dateOfBirth) {
+                    const birthDate = new Date(child.dateOfBirth);
+                    const ageInYears = currentDate.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = currentDate.getMonth() - birthDate.getMonth();
+                    const dayDiff = currentDate.getDate() - birthDate.getDate();
+                    
+                    // Adjust age if birthday hasn't occurred this year
+                    const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) 
+                      ? ageInYears - 1 
+                      : ageInYears;
+                    
+                    if (actualAge < 6) {
+                      numUnder6++;
+                    } else if (actualAge >= 6 && actualAge <= 17) {
+                      num6to17++;
+                    }
+                  }
+                });
+                
+                return { numUnder6, num6to17 };
+              };
+
+              // Calculate actual values
+              const { numUnder6, num6to17 } = getChildrenCounts();
               const adjustedFamilyNetIncome = familyData.reduce((sum: number, spouse) => {
                 if (!spouse.t1Return) return sum;
                 const line23600 = getFieldValue(spouse.formFields, '23600'); // Net income
@@ -3221,16 +3298,19 @@ export default function TaxReport() {
                 const line21300 = getFieldValue(spouse.formFields, '21300'); // UCCB repayment
                 const line12800 = getFieldValue(spouse.formFields, '12800'); // Investment income
                 
-                return sum + (line23600 - line11700 + line21300 + line12800);
+                // AFNI = Net income - Taxable capital gains + UCCB repayment + Investment income
+                const spouseAFNI = line23600 - line11700 + line21300 + line12800;
+                return sum + spouseAFNI;
               }, 0);
+              const clawbackPercentage = calculateCCBClawbackPercentage(adjustedFamilyNetIncome, numUnder6, num6to17);
 
-              // Update benefit info with calculated values
-              const updatedBenefitInfo = benefitInfo.map(item => {
-                if (item.name === "Adjusted Family Net Income") {
-                  return { ...item, value: adjustedFamilyNetIncome };
-                }
-                return item;
-              });
+              // Calculate family benefit information
+              const benefitInfo = [
+                { name: "Number of children", value: household?.children?.length || 0, format: 'number' },
+                { name: "CCB", value: calculateMaxUCCB(), format: 'currency' },
+                { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
+                { name: "Clawback %", value: clawbackPercentage, format: 'percentage' },
+              ];
 
               // Helper function to format values based on type
               const formatValue = (value: number, format: string) => {
@@ -3255,7 +3335,7 @@ export default function TaxReport() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Benefit Information */}
                       <div className="space-y-4">
-                        {updatedBenefitInfo.map((item, index) => (
+                        {benefitInfo.map((item, index) => (
                           <div key={index} className="flex items-center justify-between text-sm">
                             <div>
                               <span className="font-medium">{item.name}</span>
