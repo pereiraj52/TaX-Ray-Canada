@@ -2771,6 +2771,7 @@ export default function TaxReport() {
                   // Employment Deductions
                   { category: "Employment Deductions", items: [
                     { name: "Union/Professional Dues", line: "21200" },
+                    { name: "Enhanced CPP/QPP Deduction", line: "22215" },
                     { name: "Employment Expenses", line: "22900" },
                   ]},
                   
@@ -2952,7 +2953,6 @@ export default function TaxReport() {
                   // Employment Credits
                   { category: "Employment Credits", items: [
                     { name: "CPP or QPP Contributions", line: "30800" },
-                    { name: "Enhanced CPP/QPP Credit", line: "22215" },
                     { name: "Canada Employment Amount", line: "31220" },
                     { name: "Public Transit Passes", line: "36400" },
                     { name: "Children's Fitness Amount", line: "36500" },

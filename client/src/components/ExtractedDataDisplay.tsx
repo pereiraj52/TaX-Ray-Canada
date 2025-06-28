@@ -228,7 +228,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   const getTotalCredits = (): number => {
     // Calculate total federal credits by summing all federal credit categories
     const basicCreditsTotal = getSectionTotal(['30000', '30100', '30300', '30400', '30450']);
-    const employmentCreditsTotal = getSectionTotal(['30800', '31200', '31220', '31400', '22215']);
+    const employmentCreditsTotal = getSectionTotal(['30800', '31200', '31220', '31400']);
     const personalSituationTotal = getSectionTotal(['31500', '31600', '31800', '31850']);
     const educationMedicalTotal = getSectionTotal(['31900', '32300', '32400', '33000', '33099', '33199', '34900']);
     
@@ -1381,11 +1381,15 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Employment Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['22900', '23100']))}
+                    {formatCurrency(getSectionTotal(['22215', '22900', '23100']))}
                   </span>
                 </button>
                 {!collapsedSections['employment-deductions'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Enhanced CPP/QPP Deduction (Line 22215):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
+                    </div>
                     <div className="field-row">
                       <span className="field-label">Other Employment Expenses (Line 22900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
@@ -1517,7 +1521,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Employment Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31400', '22215']))}
+                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31400']))}
                   </span>
                 </button>
                 {!collapsedSections['employment-credits'] && (
@@ -1538,10 +1542,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Pension Income Amount (Line 31400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
                     </div>
-                    <div className="field-row">
-                      <span className="field-label">Enhanced CPP/QPP Credit (Line 22215):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
-                    </div>
+
                   </div>
                 )}
               </div>
