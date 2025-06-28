@@ -323,6 +323,7 @@ Changelog:
 - June 28, 2025. Moved Enhanced CPP/QPP (Line 22215) from deductions to credits section: corrected classification by removing it from Support & Investment Deductions and adding it to Employment Credits section where it belongs as a tax credit, updated section totals and credit calculations for accurate tax reporting
 - June 28, 2025. Fixed Enhanced CPP/QPP in Tax Deductions Analysis and Tax Credits Analysis: removed Enhanced CPP/QPP (line 30800) from Specialized Deductions section in Tax Deductions Analysis and added Enhanced CPP/QPP Credit (line 22215) to Employment Credits section in Tax Credits Analysis for correct classification in household tax reports
 - June 28, 2025. Fixed spacing for Tax Deductions Analysis and Tax Credits Analysis titles: added mt-8 top margin and mb-4 bottom margin to section titles to match consistent spacing with other report sections like Individual Tax Analysis
+- June 28, 2025. Moved CPP or QPP Contributions (Line 30800) from Basic Credits to Employment Credits section in Tax Credits Analysis: repositioned CPP/QPP contributions to Employment Credits category where it belongs alongside Enhanced CPP/QPP Credit for better logical organization
 ```
 
 ## User Preferences
