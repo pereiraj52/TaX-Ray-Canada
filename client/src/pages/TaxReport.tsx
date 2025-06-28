@@ -3477,7 +3477,7 @@ export default function TaxReport() {
                 const benefits = [
                   // Canada Workers Benefit
                   { category: "Canada Workers Benefit", items: [
-                    { name: "Canada Workers Benefit", line: "45300" },
+                    { name: "Canada Workers Benefit (Single)", line: "45300" },
                   ]},
                   
                   // Old Age Security
@@ -3532,6 +3532,77 @@ export default function TaxReport() {
                                   const amount = getFieldValue(item.line);
                                   const hasAmount = amount > 0;
                                   
+                                  // Special handling for Canada Workers Benefit clawback calculation
+                                  if (item.name === "Canada Workers Benefit (Single)") {
+                                    // Determine if client is single or married
+                                    const isMarried = household?.clients && household.clients.length === 2;
+                                    
+                                    // Set phase-out ranges based on marital status
+                                    const phaseOutStart = isMarried ? 29833 : 26149;
+                                    const phaseOutEnd = isMarried ? 48093 : 36749;
+                                    
+                                    // Get taxable income (Line 26000)
+                                    const taxableIncome = getFieldValue("26000");
+                                    
+                                    // Calculate clawback percentage
+                                    let clawbackPercentage = 0;
+                                    if (taxableIncome > phaseOutStart) {
+                                      const excessIncome = Math.min(taxableIncome - phaseOutStart, phaseOutEnd - phaseOutStart);
+                                      const totalPhaseOutRange = phaseOutEnd - phaseOutStart;
+                                      clawbackPercentage = (excessIncome / totalPhaseOutRange) * 100;
+                                    }
+                                    
+                                    const progressPercentage = Math.min(clawbackPercentage, 100);
+                                    
+                                    return (
+                                      <div key={itemIndex} className="flex items-start justify-between">
+                                        <div className="flex items-center space-x-2 flex-shrink-0">
+                                          {hasAmount ? (
+                                            <span style={{ color: '#D4B26A' }}>⚠</span>
+                                          ) : (
+                                            <span style={{ color: '#88AA73' }}>✓</span>
+                                          )}
+                                          <div>
+                                            <span className="font-medium">{item.name} (Line {item.line})</span>
+                                          </div>
+                                        </div>
+                                        
+                                        {/* CWB Clawback Bar Chart */}
+                                        <div className="w-2/3 ml-4">
+                                          <div className="relative">
+                                            <div className="w-full" style={{ height: '32px' }}>
+                                              <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
+                                                {/* Progress fill */}
+                                                <div 
+                                                  className="h-full transition-all duration-300"
+                                                  style={{ 
+                                                    width: `${progressPercentage}%`,
+                                                    background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                                  }}
+                                                />
+                                                {/* Clawback percentage overlay */}
+                                                <div 
+                                                  className="absolute inset-0 flex items-center justify-center font-medium text-sm"
+                                                  style={{ color: '#111111' }}
+                                                >
+                                                  Clawback: {clawbackPercentage.toFixed(1)}%
+                                                </div>
+                                              </div>
+                                            </div>
+                                            
+                                            {/* Scale labels */}
+                                            <div className="flex justify-between font-medium text-primary mt-1 text-xs">
+                                              <span>Start: {formatCurrency(phaseOutStart)}</span>
+                                              <span>Max: $1,590</span>
+                                              <span>End: {formatCurrency(phaseOutEnd)}</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                  
+                                  // Default bar chart for other benefits
                                   return (
                                     <div key={itemIndex} className="flex items-start justify-between">
                                       <div className="flex items-center space-x-2 flex-shrink-0">

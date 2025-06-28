@@ -360,6 +360,9 @@ Changelog:
 - June 28, 2025. Transformed Clawback Analysis section with individual bar charts: removed dollar values from right side, added bar chart for each benefit item spanning 2/3rds page width, displays "Received: $X" or "Not Received" status with gradient colors (#D4B26A to #F4E4B8 for received, gray for not received)
 - June 28, 2025. Right-aligned all bar charts in Clawback Analysis section: changed from centered to right-justified layout for improved visual alignment
 - June 28, 2025. Aligned bar charts inline with benefit names: moved bar charts from separate rows to same line as benefit text using flexbox layout for improved visual alignment and compact presentation
+- June 28, 2025. Implemented Canada Workers Benefit clawback calculation: added special handling with authentic phase-out ranges (single: $26,149-$36,749, married: $29,833-$48,093), displays clawback percentage based on taxable income with $1-per-$1 reduction rate, includes Start/Income/End scale labels and brand gradient colors
+- June 28, 2025. Updated Canada Workers Benefit chart middle label from "Income: $333,642" to "Max: $1,590" to display maximum benefit amount instead of taxable income
+- June 28, 2025. Changed benefit name from "Canada Workers Benefit" to "Canada Workers Benefit (Single)" for clearer identification of single person benefit calculation
 ```
 
 ## User Preferences
