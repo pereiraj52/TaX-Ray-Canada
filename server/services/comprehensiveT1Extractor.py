@@ -798,10 +798,24 @@ class ComprehensiveT1Extractor:
                     # Only take the first word as the first name
                     info.spouse_first_name = possible_name.split()[0]
                     break
-        # Extract SIN - look for masked SIN "XXX XX1 481" from the PDF
-        sin_match = re.search(r'(XXX\s+XX\d\s+\d{3})', text)
-        if sin_match:
-            info.sin = sin_match.group(1)
+        # Extract SIN - look for both masked and unmasked SIN patterns
+        # Pattern 1: Unmasked SIN like "291 758 993" after name
+        # Pattern 2: Masked SIN like "XXX XX1 481"
+        
+        # First try to extract from the name line format: "Daniel Givon 291 758 993 1 X Married"
+        name_sin_match = re.search(r'([A-Za-z]+)\s+([A-Za-z]+)\s+(\d{3}\s+\d{3}\s+\d{3})', text)
+        if name_sin_match:
+            info.sin = name_sin_match.group(3)
+        else:
+            # Fallback to masked SIN pattern
+            sin_match = re.search(r'(XXX\s+XX\d\s+\d{3})', text)
+            if sin_match:
+                info.sin = sin_match.group(1)
+            else:
+                # Try general SIN pattern near "SIN" label
+                sin_general_match = re.search(r'(?:SIN|Social Insurance Number).*?(\d{3}\s+\d{3}\s+\d{3})', text, re.IGNORECASE | re.DOTALL)
+                if sin_general_match:
+                    info.sin = sin_general_match.group(1)
         # Extract Date of Birth - line 24: "1979-06-18" (appears near "Date of birth")
         dob_match = re.search(r'Date of birth.*?\n.*?(\d{4}-\d{2}-\d{2})', text, re.IGNORECASE | re.DOTALL)
         if dob_match:
