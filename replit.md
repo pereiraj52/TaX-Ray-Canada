@@ -314,6 +314,7 @@ Changelog:
 - June 27, 2025. Fixed Tax Deductions Analysis colors using inline styles to ensure exact color rendering: checkmarks use #88AA73 and X marks use #D4B26A
 - June 27, 2025. Standardized Tax Deductions Analysis font styling by changing individual deduction amounts from font-mono to font-medium to match category totals for consistent typography across all numerical values
 - June 27, 2025. Added Estimated Tax Savings calculation to Tax Deductions Analysis section: computes tax savings by calculating difference between total income (line 15000) and taxable income (line 26000), then applies estimated marginal tax rate to show potential tax savings from deductions
+- June 27, 2025. Created comprehensive Tax Credits Analysis section mirroring deductions structure: organized into 6 categories (Basic, Employment, Personal Situation, Education & Medical, Provincial, Refundable), shows checkmarks for claimed credits and X marks for unused ones, includes amounts for all claimed credits with category totals, separate totals for non-refundable and refundable credits, and estimated tax reduction calculation using federal and provincial basic rates
 ```
 
 ## User Preferences

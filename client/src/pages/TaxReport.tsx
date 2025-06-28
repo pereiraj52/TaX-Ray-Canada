@@ -2886,6 +2886,241 @@ export default function TaxReport() {
           </div>
         </div>
 
+        {/* Tax Credits Analysis */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-900">Tax Credits Analysis</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {(() => {
+              // Get T1 returns for the specified year for both spouses
+              const spouseData = [];
+              
+              // Primary client
+              if (household?.clients?.[0]) {
+                const client = household.clients[0];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+              
+              // Secondary client
+              if (household?.clients?.[1]) {
+                const client = household.clients[1];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+
+              return spouseData.map((spouse, spouseIndex) => {
+                if (!spouse.t1Return) return null;
+
+                // Helper function to get field value
+                const getFieldValue = (lineNumber: string) => {
+                  const field = spouse.formFields.find(f => f.fieldCode === lineNumber);
+                  return field?.fieldValue ? parseFloat(field.fieldValue) : 0;
+                };
+
+                // Helper function to format currency
+                const formatCurrency = (amount: number) => {
+                  return new Intl.NumberFormat('en-CA', {
+                    style: 'currency',
+                    currency: 'CAD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  }).format(amount);
+                };
+
+                // Define all possible tax credits with their line numbers
+                const credits = [
+                  // Basic Credits
+                  { category: "Basic Credits", items: [
+                    { name: "Basic Personal Amount", line: "30000" },
+                    { name: "Spouse or Common-law Partner Amount", line: "30300" },
+                    { name: "Amount for Eligible Dependant", line: "30400" },
+                    { name: "Amount for Children Born in 2006 or Later", line: "30500" },
+                    { name: "Amount for Infirm Dependants Age 18 or Older", line: "30600" },
+                    { name: "CPP or QPP Contributions", line: "30800" },
+                    { name: "Employment Insurance Premiums", line: "31200" },
+                  ]},
+                  
+                  // Employment Credits
+                  { category: "Employment Credits", items: [
+                    { name: "Canada Employment Amount", line: "31300" },
+                    { name: "Public Transit Passes", line: "36400" },
+                    { name: "Children's Fitness Amount", line: "36500" },
+                    { name: "Children's Arts Amount", line: "36600" },
+                  ]},
+                  
+                  // Personal Situation Credits
+                  { category: "Personal Situation", items: [
+                    { name: "Pension Income Amount", line: "31400" },
+                    { name: "Caregiver Amount", line: "31500" },
+                    { name: "Disability Amount (Self)", line: "31600" },
+                    { name: "Disability Amount (Dependant)", line: "31800" },
+                    { name: "Interest on Student Loans", line: "31900" },
+                    { name: "Tuition, Education, and Textbook Amounts", line: "32300" },
+                    { name: "Tuition Amount Transferred from Child", line: "32400" },
+                    { name: "Amounts Transferred from Spouse", line: "32600" },
+                  ]},
+                  
+                  // Education & Medical Credits
+                  { category: "Education & Medical", items: [
+                    { name: "Medical Expenses for Self/Spouse", line: "33200" },
+                    { name: "Allowable Amount of Medical Expenses", line: "33500" },
+                    { name: "Donations and Gifts", line: "34900" },
+                  ]},
+                  
+                  // Provincial Credits (Ontario)
+                  { category: "Provincial Credits", items: [
+                    { name: "Ontario Basic Personal Amount", line: "58000" },
+                    { name: "Ontario Spouse Amount", line: "58120" },
+                    { name: "Ontario Eligible Dependant Amount", line: "58140" },
+                    { name: "Ontario Caregiver Amount", line: "58160" },
+                    { name: "Ontario Disability Amount", line: "58200" },
+                    { name: "Ontario Senior Homeowners' Property Tax Credit", line: "61700" },
+                    { name: "Ontario Energy and Property Tax Credit", line: "61800" },
+                    { name: "Ontario Northern Ontario Energy Credit", line: "61900" },
+                  ]},
+                  
+                  // Refundable Credits
+                  { category: "Refundable Credits", items: [
+                    { name: "Refundable Medical Expense Supplement", line: "45200" },
+                    { name: "Working Income Tax Benefit", line: "45300" },
+                    { name: "Canada Child Tax Benefit", line: "45400" },
+                    { name: "GST/HST Credit", line: "45350" },
+                    { name: "Ontario Trillium Benefit", line: "45351" },
+                    { name: "Climate Action Incentive", line: "45355" },
+                  ]},
+                ];
+
+                return (
+                  <Card key={spouseIndex}>
+                    <CardContent className="p-6">
+                      <h3 className="font-medium text-gray-900 mb-6">
+                        {spouse.clientName} - Tax Credits
+                      </h3>
+                      
+                      <div className="space-y-6">
+                        {credits.map((category, categoryIndex) => {
+                          const categoryTotal = category.items.reduce((sum, item) => {
+                            return sum + getFieldValue(item.line);
+                          }, 0);
+
+                          return (
+                            <div key={categoryIndex} className="space-y-3">
+                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                                <h4 className="font-medium text-primary text-sm">
+                                  {category.category}
+                                </h4>
+                                <span className="font-medium text-primary text-sm">
+                                  {formatCurrency(categoryTotal)}
+                                </span>
+                              </div>
+                              
+                              <div className="space-y-2">
+                                {category.items.map((item, itemIndex) => {
+                                  const amount = getFieldValue(item.line);
+                                  const hasClaim = amount > 0;
+                                  
+                                  return (
+                                    <div key={itemIndex} className="flex justify-between items-center text-sm">
+                                      <div className="flex items-center space-x-2">
+                                        <span 
+                                          className="font-medium"
+                                          style={{ color: hasClaim ? '#88AA73' : '#D4B26A' }}
+                                        >
+                                          {hasClaim ? '✓' : '✗'}
+                                        </span>
+                                        <span className="text-gray-700">
+                                          {item.name}
+                                        </span>
+                                        <span className="text-gray-400 text-xs">
+                                          (Line {item.line})
+                                        </span>
+                                      </div>
+                                      <span className="font-medium text-right text-gray-700">
+                                        {hasClaim ? formatCurrency(amount) : '$0'}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                        
+                        {/* Total Credits Summary */}
+                        <div className="pt-4 border-t-2 border-primary space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Total Non-Refundable Credits
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {formatCurrency(credits.slice(0, 4).reduce((total, category) => {
+                                return total + category.items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                              }, 0))}
+                            </span>
+                          </div>
+                          
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Total Refundable Credits
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {formatCurrency(credits.slice(5, 6).reduce((total, category) => {
+                                return total + category.items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                              }, 0))}
+                            </span>
+                          </div>
+                          
+                          {/* Estimated Tax Reduction */}
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Estimated Tax Reduction
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {(() => {
+                                // Calculate estimated tax reduction from non-refundable credits
+                                const nonRefundableCredits = credits.slice(0, 4).reduce((total, category) => {
+                                  return total + category.items.reduce((sum, item) => {
+                                    return sum + getFieldValue(item.line);
+                                  }, 0);
+                                }, 0);
+                                
+                                // Apply federal basic rate (15%) to non-refundable credits
+                                const federalReduction = nonRefundableCredits * 0.15;
+                                // Apply provincial basic rate (5.05% for Ontario) to provincial credits
+                                const provincialCredits = credits[4].items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                                const provincialReduction = provincialCredits * 0.0505;
+                                
+                                return formatCurrency(federalReduction + provincialReduction);
+                              })()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              });
+            })()}
+          </div>
+        </div>
+
       </div>
     </Layout>
   );
