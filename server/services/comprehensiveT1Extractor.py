@@ -75,8 +75,8 @@ class IncomeFields:
     ei_maternity_parental: Optional[Decimal] = None  # Line 11905
     # Investment Income
     taxable_dividends_eligible: Optional[Decimal] = None  # Line 12000
-    taxable_dividends_other: Optional[Decimal] = None  # Line 12010
-    interest_investment_income: Optional[Decimal] = None  # Line 12100
+    interest_investment_income: Optional[Decimal] = None  # Line 12010
+    partnership_income_12100: Optional[Decimal] = None  # Line 12100
     partnership_income: Optional[Decimal] = None  # Line 12200
     foreign_dividends: Optional[Decimal] = None  # Line 12400
     # Other Income
@@ -921,8 +921,8 @@ class ComprehensiveT1Extractor:
             '11905': 'ei_maternity_parental',
             # Investment Income
             '12000': 'taxable_dividends_eligible',
-            '12010': 'taxable_dividends_other',
-            '12100': 'interest_investment_income',
+            '12010': 'interest_investment_income',
+            '12100': 'partnership_income_12100',
             '12200': 'partnership_income',
             '12400': 'foreign_dividends',
             # Other Income

@@ -1044,11 +1044,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('12000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Taxable Dividends - Other (Line 12010):</span>
+                      <span className="field-label">Interest and Other Investment Income (Line 12010):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('12010'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Interest and Investment Income (Line 12100):</span>
+                      <span className="field-label">Partnership Income (Line 12100):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('12100'))}</span>
                     </div>
                     <div className="field-row">
