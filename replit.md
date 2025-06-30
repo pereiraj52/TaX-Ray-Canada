@@ -369,6 +369,7 @@ Changelog:
 - June 28, 2025. Reorganized T1 extract income summary: renamed "Pension & Retirement Income" to "Pension Income", removed Split Income (Line 11800) and UCCB for Dependant (Line 11701) fields, moved Universal Child Care Benefit (Line 11700) from Pension section to Government Benefits section for improved categorization
 - June 28, 2025. Fixed Total Tax calculation in Key Tax Information section: since field 43500 isn't extracted from PDFs, now uses calculated total (federal tax 42000 + provincial tax 42800) for accurate tax amount display matching other sections
 - June 28, 2025. Fixed Average Rate calculation in summary dashboard: changed from using field 43700 to calculated total tax (federal + provincial) divided by total income (line 15000) for accurate average tax rate display
+- June 28, 2025. Updated Ontario marginal tax rates to include surtax calculations: added 20% surtax on provincial tax ($5,315-$6,802) and 36% surtax on provincial tax over $6,802, plus health premium effects, achieving accurate combined top marginal rate of 53.53% (33% federal + 20.53% Ontario with surtax)
 ```
 
 ## User Preferences
