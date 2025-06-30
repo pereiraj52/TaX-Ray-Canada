@@ -1063,6 +1063,42 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
+              {/* Registered Account Income Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('registered-account')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['registered-account'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-medium text-primary">Registered Account Income</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['12500', '12900', '12906']))}
+                  </span>
+                </button>
+                {!collapsedSections['registered-account'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">RDSP Income (Line 12500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">RRSP Income (Line 12900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">FHSA Income - Other (Line 12906):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Other Income Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
