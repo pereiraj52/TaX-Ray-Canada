@@ -951,7 +951,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Pension</h4>
+                    <h4 className="font-medium text-primary">Pension Income</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['11300', '11400', '11500', '11600']))}
