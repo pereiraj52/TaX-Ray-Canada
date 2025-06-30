@@ -19,20 +19,7 @@ export default function MarginalRateBreakdown({ income, province, t1ReturnId }: 
     enabled: !!income && !!province,
   });
 
-  // Fetch Marginal Effective Rate using comprehensive tax calculator
-  const { data: marginalEffectiveRateData } = useQuery({
-    queryKey: ['/api/comprehensive-tax/marginal-effective-rate', t1ReturnId],
-    queryFn: async () => {
-      if (!t1ReturnId) return null;
-      const response = await fetch(`/api/comprehensive-tax/marginal-effective-rate/${t1ReturnId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (!response.ok) throw new Error('Failed to fetch marginal effective rate');
-      return response.json();
-    },
-    enabled: !!t1ReturnId,
-  });
+
 
   if (!marginalRates) {
     return (
@@ -61,34 +48,14 @@ export default function MarginalRateBreakdown({ income, province, t1ReturnId }: 
           <span className="text-gray-600">Marginal Non-Eligible Dividend Rate:</span>
           <span className="font-medium text-primary">Loading...</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">Marginal Effective Rate:</span>
-          <span className="font-medium text-primary">Loading...</span>
-        </div>
+
       </div>
     );
   }
 
   const combinedRate = marginalRates.federalRate + marginalRates.provincialRate;
   
-  // Calculate marginal effective rate (includes benefit clawbacks)
-  // For higher incomes, this typically includes OAS clawback and other benefit reductions
-  const calculateMarginalEffectiveRate = (income: number, combinedRate: number) => {
-    // OAS clawback starts at ~$86,912 (2024) at 15% rate
-    const oasClawbackThreshold = 86912;
-    const oasClawbackRate = 15.0;
-    
-    // Child benefit clawback varies by province and income
-    let effectiveRate = combinedRate;
-    
-    if (income > oasClawbackThreshold && income < 142000) {
-      effectiveRate += oasClawbackRate;
-    }
-    
-    return effectiveRate;
-  };
-  
-  const marginalEffectiveRate = calculateMarginalEffectiveRate(income, combinedRate);
+
   
   // Calculate special marginal rates for different income types
   const marginalCapitalGainsRate = combinedRate * 0.5; // Only 50% of capital gains are taxable
@@ -146,15 +113,7 @@ export default function MarginalRateBreakdown({ income, province, t1ReturnId }: 
         <span className="text-gray-600">Marginal Non-Eligible Dividend Rate:</span>
         <span className="font-medium text-primary">{marginalNonEligibleDividendRate.toFixed(2)}%</span>
       </div>
-      <div className="flex justify-between">
-        <span className="text-gray-600">Marginal Effective Rate:</span>
-        <span className="font-medium text-primary">
-          {marginalEffectiveRateData?.marginalEffectiveRate 
-            ? `${marginalEffectiveRateData.marginalEffectiveRate.toFixed(2)}%`
-            : `${marginalEffectiveRate.toFixed(2)}%`
-          }
-        </span>
-      </div>
+
     </div>
   );
 }
