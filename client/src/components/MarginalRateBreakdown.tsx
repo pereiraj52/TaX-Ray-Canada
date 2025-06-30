@@ -93,35 +93,32 @@ export default function MarginalRateBreakdown({ income, province, t1ReturnId }: 
   // Calculate special marginal rates for different income types
   const marginalCapitalGainsRate = combinedRate * 0.5; // Only 50% of capital gains are taxable
   
-  // Eligible dividends get gross-up and dividend tax credit
-  const marginalEligibleDividendRate = (() => {
-    // Eligible dividends: 38% gross-up, then federal DTC of 25% and provincial varies
-    const grossUpRate = 1.38;
-    const federalDTC = 0.25;
-    const provincialDTC = province === 'ON' ? 0.10 : 0.08; // Simplified provincial rates
-    
-    const grossedUpIncome = grossUpRate;
-    const taxOnGrossedUp = grossedUpIncome * (combinedRate / 100);
-    const totalDTC = federalDTC + provincialDTC;
-    const netTax = taxOnGrossedUp - totalDTC;
-    
-    return Math.max(0, netTax * 100); // Convert to percentage
-  })();
-  
-  // Non-eligible dividends: smaller gross-up and credit
-  const marginalNonEligibleDividendRate = (() => {
-    // Non-eligible dividends: 15% gross-up, smaller dividend tax credits
-    const grossUpRate = 1.15;
-    const federalDTC = 0.0833; // Federal DTC rate for non-eligible
-    const provincialDTC = province === 'ON' ? 0.0298 : 0.025; // Simplified provincial rates
-    
-    const grossedUpIncome = grossUpRate;
-    const taxOnGrossedUp = grossedUpIncome * (combinedRate / 100);
-    const totalDTC = federalDTC + provincialDTC;
-    const netTax = taxOnGrossedUp - totalDTC;
-    
-    return Math.max(0, netTax * 100); // Convert to percentage
-  })();
+  // Ontario 2024 authentic dividend rates based on income brackets
+  const getOntarioDividendRates = (income: number) => {
+    if (province !== 'ON') {
+      // Fallback for other provinces - use simplified calculation
+      const eligibleRate = combinedRate * 0.65; // Approximate
+      const nonEligibleRate = combinedRate * 0.85; // Approximate
+      return { eligible: eligibleRate, nonEligible: nonEligibleRate };
+    }
+
+    // Authentic Ontario 2024 rates from tax table
+    if (income <= 51446) return { eligible: -1.20, nonEligible: 13.95 };
+    if (income <= 55867) return { eligible: 6.39, nonEligible: 20.28 };
+    if (income <= 90599) return { eligible: 8.92, nonEligible: 22.38 };
+    if (income <= 102894) return { eligible: 12.24, nonEligible: 25.16 };
+    if (income <= 106732) return { eligible: 17.79, nonEligible: 29.78 };
+    if (income <= 111733) return { eligible: 25.38, nonEligible: 36.10 };
+    if (income <= 150000) return { eligible: 27.53, nonEligible: 37.90 };
+    if (income <= 173205) return { eligible: 32.11, nonEligible: 41.72 };
+    if (income <= 220000) return { eligible: 34.26, nonEligible: 43.31 };
+    if (income <= 246752) return { eligible: 39.34, nonEligible: 47.74 };
+    return { eligible: 39.34, nonEligible: 47.74 }; // Top bracket
+  };
+
+  const dividendRates = getOntarioDividendRates(income);
+  const marginalEligibleDividendRate = dividendRates.eligible;
+  const marginalNonEligibleDividendRate = dividendRates.nonEligible;
 
   return (
     <div className="space-y-3">
