@@ -378,6 +378,7 @@ Changelog:
 - June 30, 2025. Removed Business Income (Line 13499) from Self-Employment Income section: eliminated this field from both display and section total calculations for cleaner income categorization
 - June 30, 2025. Corrected Partnership Income (Line 13500) label to Business Income (Line 13500): fixed mislabeled field to show correct business income designation
 - June 30, 2025. Moved Other Income (Line 13000) and Scholarships (Line 13010) to Other Sources section: relocated these fields from Other Income to Other Sources section with Workers' Compensation, Social Assistance, and Net Federal Supplements, removed empty Other Income section entirely
+- June 30, 2025. Corrected Line 12010 extraction and labeling: fixed field mapping to properly identify Line 12010 as "Non-Eligible Dividends" (amount of dividends other than eligible dividends) in PDF extractor, frontend display, and parser service, restored correct Canadian tax form structure with Line 12010 for non-eligible dividends and Line 12100 for interest and investment income
 ```
 
 ## User Preferences
