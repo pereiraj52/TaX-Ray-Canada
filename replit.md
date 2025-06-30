@@ -377,7 +377,6 @@ Changelog:
 - June 30, 2025. Moved Rental Income (Line 12600) and Capital Gains (Line 12700) from Other Income to Investment Income section: reorganized income categories to group investment-related income together, updated section totals accordingly for better logical organization
 - June 30, 2025. Removed Business Income (Line 13499) from Self-Employment Income section: eliminated field from both section content and total calculation for streamlined self-employment income display
 - June 30, 2025. Corrected field label from "Partnership Income (Line 13500)" to "Business Income (Line 13500)" for accurate T1 form field identification
-- June 30, 2025. Moved registered account income fields to Other Sources section: consolidated RDSP Income (Line 12500), RRSP Income (Line 12900), FHSA Income (Line 12905), and FHSA Income - Other (Line 12906) from standalone Registered Account Income section into Other Sources section, removed separate section and updated state management accordingly
 ```
 
 ## User Preferences
