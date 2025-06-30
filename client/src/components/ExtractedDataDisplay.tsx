@@ -951,10 +951,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Pension & Retirement Income</h4>
+                    <h4 className="font-medium text-primary">Pension</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['11300', '11400', '11500', '11600', '11700', '11701', '11800']))}
+                    {formatCurrency(getSectionTotal(['11300', '11400', '11500', '11600']))}
                   </span>
                 </button>
                 {!collapsedSections.pension && (
@@ -975,18 +975,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Split Pension Amount (Line 11600):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
                     </div>
-                    <div className="field-row">
-                      <span className="field-label">Universal Child Care Benefit (Line 11700):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">UCCB for Dependant (Line 11701):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11701'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Split Income (Line 11800):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11800'))}</span>
-                    </div>
                   </div>
                 )}
               </div>
@@ -1006,11 +994,15 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Government Benefits</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['11900', '11905']))}
+                    {formatCurrency(getSectionTotal(['11700', '11900', '11905']))}
                   </span>
                 </button>
                 {!collapsedSections.government && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Universal Child Care Benefit (Line 11700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
+                    </div>
                     <div className="field-row">
                       <span className="field-label">Employment Insurance (Line 11900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('11900'))}</span>
