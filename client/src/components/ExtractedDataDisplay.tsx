@@ -378,7 +378,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     const totalIncome = parseFloat(getFieldValue('15000') || '0');
                     const taxableIncome = parseFloat(getFieldValue('26000') || '0');
                     const totalDeductions = totalIncome - taxableIncome;
-                    const totalTax = parseFloat(getFieldValue('43700') || '0');
+                    const totalTax = parseFloat(getFieldValue('43500') || '0');
                     
                     // Calculate net income using total tax (federal + provincial)
                     const federalTax = parseFloat(getFieldValue('42000') || '0');
@@ -421,7 +421,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                           <span className="text-gray-600">Total Tax:</span>
                           <div className="text-right">
                             <span className="font-medium text-primary">
-                              {formatCurrency(getFieldValue('43700'))} <span className="text-sm text-gray-500">({calculatePercentage(totalTax)})</span>
+                              {formatCurrency(getFieldValue('43500'))} <span className="text-sm text-gray-500">({calculatePercentage(totalTax)})</span>
                             </span>
                           </div>
                         </div>
