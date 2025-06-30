@@ -2947,16 +2947,15 @@ export default function TaxReport() {
                     { name: "Amount for Eligible Dependant", line: "30400" },
                     { name: "Amount for Children Born in 2006 or Later", line: "30500" },
                     { name: "Amount for Infirm Dependants Age 18 or Older", line: "30600" },
-                    { name: "Employment Insurance Premiums", line: "31200" },
                   ]},
                   
                   // Employment Credits
                   { category: "Employment Credits", items: [
                     { name: "CPP or QPP Contributions", line: "30800" },
+                    { name: "CPP/QPP (Self Employed) Contributions", line: "31000" },
+                    { name: "Employment Insurance Premiums", line: "31200" },
+                    { name: "Employment Insurance (Self Employed) Premiums", line: "31217" },
                     { name: "Canada Employment Amount", line: "31220" },
-                    { name: "Public Transit Passes", line: "36400" },
-                    { name: "Children's Fitness Amount", line: "36500" },
-                    { name: "Children's Arts Amount", line: "36600" },
                   ]},
                   
                   // Personal Situation Credits

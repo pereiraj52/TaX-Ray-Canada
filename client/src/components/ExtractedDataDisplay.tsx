@@ -1439,7 +1439,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Basic Credits</h4>
+                    <h4 className="font-medium text-primary">Basic Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['30000', '30100', '30300', '30400', '30450']))}
@@ -1486,7 +1486,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Employment Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31400']))}
+                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31400', '31000', '31217']))}
                   </span>
                 </button>
                 {!collapsedSections['employment-credits'] && (
@@ -1506,6 +1506,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Pension Income Amount (Line 31400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">CPP/QPP (Self Employed) Contributions (Line 31000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31000'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Employment Insurance (Self Employed) Premiums (Line 31217):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31217'))}</span>
                     </div>
 
                   </div>
