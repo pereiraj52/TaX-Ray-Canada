@@ -2976,10 +2976,6 @@ export default function TaxReport() {
                     { name: "Caregiver Amount", line: "31500" },
                     { name: "Disability Amount (Self)", line: "31600" },
                     { name: "Disability Amount (Dependant)", line: "31800" },
-                    { name: "Interest on Student Loans", line: "31900" },
-                    { name: "Tuition, Education, and Textbook Amounts", line: "32300" },
-                    { name: "Tuition Amount Transferred from Child", line: "32400" },
-                    { name: "Amounts Transferred from Spouse", line: "32600" },
                   ]},
                   
                   // Education Credits  

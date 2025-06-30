@@ -391,6 +391,7 @@ Changelog:
 - June 30, 2025. Added Canada Caregiver Amount lines to Disability & Caregiver Credits section: included Canada Caregiver Amount Spouse/Partner/Adult Children (Line 30450) and Canada Caregiver Amount for Children (Line 30500), updated section totals and Tax Credits Analysis in household tax reports to provide comprehensive caregiver benefit tracking
 - June 30, 2025. Added Home Accessibility Expenses (Line 31285) to Disability & Caregiver Credits section: enhanced accessibility support tracking by including home modification expenses for disability-related improvements, updated section totals and Tax Credits Analysis in household tax reports
 - June 30, 2025. Moved Pension Income Amount (Line 31400) to Personal Situation Credits: relocated from Employment Credits section to Personal Situation Credits for better logical organization, updated section totals in both T1 extraction display and Tax Credits Analysis in household tax reports
+- June 30, 2025. Created new Education Credits (Non-Refundable) section: separated education-related credits from Education & Medical Credits section, includes Interest on Student Loans (Line 31900), Tuition & Education Amounts (Line 32300), Tuition Transferred (Line 32400), and Amounts Transferred From your Spouse/Partner (Line 32600), renamed remaining section to Medical & Other Credits (Non-Refundable), updated section totals and Tax Credits Analysis in household tax reports
 ```
 
 ## User Preferences
