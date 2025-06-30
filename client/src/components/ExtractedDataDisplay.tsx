@@ -1158,17 +1158,13 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Self-Employment Income</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['13499', '13500', '13700', '13900', '14100', '14300']))}
+                    {formatCurrency(getSectionTotal(['13500', '13700', '13900', '14100', '14300']))}
                   </span>
                 </button>
                 {!collapsedSections.selfemployment && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Business Income (Line 13499):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13499'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Partnership Income (Line 13500):</span>
+                      <span className="field-label">Business Income (Line 13500):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
                     </div>
                     <div className="field-row">
