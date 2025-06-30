@@ -1486,7 +1486,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Employment Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31230', '31240', '31400', '31000', '31217']))}
+                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31230', '31240', '31000', '31217']))}
                   </span>
                 </button>
                 {!collapsedSections['employment-credits'] && (
@@ -1510,10 +1510,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Search and rescue volunteers' amount (SRVA) (Line 31240):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31240'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Pension Income Amount (Line 31400):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">CPP/QPP (Self Employed) Contributions (Line 31000):</span>
@@ -1620,25 +1616,25 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
-              {/* Education & Medical Credits Section */}
+              {/* Education Credits Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
-                  onClick={() => toggleSection('education-medical-credits')}
+                  onClick={() => toggleSection('education-credits')}
                   className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
                 >
                   <div className="flex items-center">
-                    {collapsedSections['education-medical-credits'] ? (
+                    {collapsedSections['education-credits'] ? (
                       <ChevronRight className="h-4 w-4 mr-2" />
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Education & Medical Credits (Non-Refundable)</h4>
+                    <h4 className="font-medium text-primary">Education Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['31900', '32300', '32400', '33000', '33099', '33199', '34900']))}
+                    {formatCurrency(getSectionTotal(['31900', '32300', '32400']))}
                   </span>
                 </button>
-                {!collapsedSections['education-medical-credits'] && (
+                {!collapsedSections['education-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
                       <span className="field-label">Interest on Student Loans (Line 31900):</span>
@@ -1652,6 +1648,30 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Tuition Transferred (Line 32400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('32400'))}</span>
                     </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Medical & Other Credits Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('education-medical-credits')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['education-medical-credits'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-medium text-primary">Medical & Other Credits (Non-Refundable)</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['33000', '33099', '33199', '34900']))}
+                  </span>
+                </button>
+                {!collapsedSections['education-medical-credits'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
                       <span className="field-label">Medical Expenses (Line 33000):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('33000'))}</span>

@@ -390,6 +390,7 @@ Changelog:
 - June 30, 2025. Created new "Personal Situation Credits (Non-Refundable)" section after Employment Credits: added Home buyers' Amount (Line 31270), Adoption Expenses (Line 31300), and Digital News Subscription (Line 31350), positioned between Employment Credits and Disability & Caregiver Credits sections in both T1 extraction display and Tax Credits Analysis for improved credit organization
 - June 30, 2025. Added Canada Caregiver Amount lines to Disability & Caregiver Credits section: included Canada Caregiver Amount Spouse/Partner/Adult Children (Line 30450) and Canada Caregiver Amount for Children (Line 30500), updated section totals and Tax Credits Analysis in household tax reports to provide comprehensive caregiver benefit tracking
 - June 30, 2025. Added Home Accessibility Expenses (Line 31285) to Disability & Caregiver Credits section: enhanced accessibility support tracking by including home modification expenses for disability-related improvements, updated section totals and Tax Credits Analysis in household tax reports
+- June 30, 2025. Moved Pension Income Amount (Line 31400) to Personal Situation Credits: relocated from Employment Credits section to Personal Situation Credits for better logical organization, updated section totals in both T1 extraction display and Tax Credits Analysis in household tax reports
 ```
 
 ## User Preferences

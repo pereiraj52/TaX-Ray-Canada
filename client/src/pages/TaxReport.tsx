@@ -2965,6 +2965,7 @@ export default function TaxReport() {
                     { name: "Home buyers' Amount", line: "31270" },
                     { name: "Adoption Expenses", line: "31300" },
                     { name: "Digital News Subscription", line: "31350" },
+                    { name: "Pension Income Amount", line: "31400" },
                   ]},
                   
                   // Disability & Caregiver Credits
@@ -2972,7 +2973,6 @@ export default function TaxReport() {
                     { name: "Canada Caregiver Amount Spouse/Partner/Adult Children", line: "30450" },
                     { name: "Canada Caregiver Amount for Children", line: "30500" },
                     { name: "Home Accessibility Expenses", line: "31285" },
-                    { name: "Pension Income Amount", line: "31400" },
                     { name: "Caregiver Amount", line: "31500" },
                     { name: "Disability Amount (Self)", line: "31600" },
                     { name: "Disability Amount (Dependant)", line: "31800" },
