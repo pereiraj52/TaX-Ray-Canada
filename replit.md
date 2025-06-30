@@ -371,6 +371,7 @@ Changelog:
 - June 28, 2025. Fixed Average Rate calculation in summary dashboard: changed from using field 43700 to calculated total tax (federal + provincial) divided by total income (line 15000) for accurate average tax rate display
 - June 28, 2025. Updated Ontario marginal tax rates to include surtax calculations: added 20% surtax on provincial tax ($5,315-$6,802) and 36% surtax on provincial tax over $6,802, plus health premium effects, achieving accurate combined top marginal rate of 53.53% (33% federal + 20.53% Ontario with surtax)
 - June 30, 2025. Updated Ontario marginal dividend rates with authentic 2024 rates: replaced calculated dividend rates with exact eligible dividend rates (-1.20% to 39.34%) and non-eligible dividend rates (13.95% to 47.74%) from official tax tables, applied to both marginal rate breakdown display and tax bracket visualization charts
+- June 30, 2025. Fixed marginal effective tax rate calculation: implemented comprehensive tax calculator with all extracted T1 data, comparing two scenarios (current vs. $1 added to line 10100 employment income), now uses totalPayable instead of only federal+provincial tax to include CPP/EI contributions, clawbacks, and all tax factors for accurate marginal effective rate
 ```
 
 ## User Preferences

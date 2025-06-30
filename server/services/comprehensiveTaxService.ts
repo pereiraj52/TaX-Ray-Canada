@@ -205,8 +205,7 @@ export class ComprehensiveTaxService {
         // Other Income
         eiBenefits: getFieldValue('11900'), // EI Benefits
         alimonyReceived: getFieldValue('12800'), // Support Payments Received
-        otherIncome: getFieldValue('13000'), // Other Income
-        uuccbIncome: getFieldValue('11700'), // Universal Child Care Benefit
+        otherIncome: getFieldValue('13000') + getFieldValue('11700'), // Other Income + UCCB
       },
       deductions: {
         // Registered Plans (Lines 20800-20900)
