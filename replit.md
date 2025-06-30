@@ -380,6 +380,7 @@ Changelog:
 - June 30, 2025. Moved Other Income (Line 13000) and Scholarships (Line 13010) to Other Sources section: relocated these fields from Other Income to Other Sources section with Workers' Compensation, Social Assistance, and Net Federal Supplements, removed empty Other Income section entirely
 - June 30, 2025. Corrected Line 12010 extraction and labeling: fixed field mapping to properly identify Line 12010 as "Non-Eligible Dividends" (amount of dividends other than eligible dividends) in PDF extractor, frontend display, and parser service, restored correct Canadian tax form structure with Line 12010 for non-eligible dividends and Line 12100 for interest and investment income
 - June 30, 2025. Fixed Line 12010 (Non-Eligible Dividends) extraction logic: added specialized extraction patterns to distinguish between eligible dividends (Line 12000) and non-eligible dividends (Line 12010), implemented pattern matching for "Amount of dividends (other than eligible) 12010" format, resolved duplicate value issue where both dividend types showed same amount, now correctly extracts distinct values for each dividend category
+- June 30, 2025. Moved Split Pension Deduction (Line 21000) from Personal Deductions to Retirement Plan Deductions section: reorganized T1 extraction display and Tax Deductions Analysis section to properly categorize split pension deduction with other retirement-related deductions, updated section totals and analysis calculations for accurate deduction grouping
 ```
 
 ## User Preferences

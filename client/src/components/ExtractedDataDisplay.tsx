@@ -1237,7 +1237,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Retirement Plan Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810']))}
+                    {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810', '21000']))}
                   </span>
                 </button>
                 {!collapsedSections['retirement-plan-deductions'] && (
@@ -1262,6 +1262,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">PRPP Employer Contributions (Line 20810):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('20810'))}</span>
                     </div>
+                    <div className="field-row">
+                      <span className="field-label">Split Pension Deduction (Line 21000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('21000'))}</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -1281,15 +1285,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Personal Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['21000', '21200', '21300', '21400', '21500', '21700', '21900']))}
+                    {formatCurrency(getSectionTotal(['21200', '21300', '21400', '21500', '21700', '21900']))}
                   </span>
                 </button>
                 {!collapsedSections['personal-deductions'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Split Pension Deduction (Line 21000):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21000'))}</span>
-                    </div>
                     <div className="field-row">
                       <span className="field-label">Annual Union Dues (Line 21200):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>

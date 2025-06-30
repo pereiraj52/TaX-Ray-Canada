@@ -2752,6 +2752,7 @@ export default function TaxReport() {
                     { name: "RPP Deduction", line: "20700" },
                     { name: "FHSA Deduction", line: "20805" },
                     { name: "PRPP Deduction", line: "20810" },
+                    { name: "Split Pension Deduction", line: "21000" },
                     { name: "SPP Deduction", line: "20820" },
                     { name: "Pooled Fund Deduction", line: "20900" },
                   ]},
@@ -2762,7 +2763,6 @@ export default function TaxReport() {
                     { name: "Disability Supports", line: "21500" },
                     { name: "Business Investment Loss", line: "21700" },
                     { name: "Moving Expenses", line: "21900" },
-                    { name: "Split Pension Deduction", line: "21000" },
                   ]},
                   
                   // Support & Investment Deductions
