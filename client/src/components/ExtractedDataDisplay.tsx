@@ -23,6 +23,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     'pension': true,
     'benefits': true,
     'investment': true,
+    'registered-account': true,
     'other': true,
     'self-employment': true,
     'other-sources': true,
@@ -199,6 +200,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         'pension': true,
         'government': true,
         'investment': true,
+        'registered-account': true,
         'other': true,
         'selfemployment': true,
         'othersources': true,
@@ -1076,15 +1078,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Other Income</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12500', '12600', '12700', '12900', '12905', '12906', '13000', '13010']))}
+                    {formatCurrency(getSectionTotal(['12600', '12700', '12905', '13000', '13010']))}
                   </span>
                 </button>
                 {!collapsedSections.other && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">RDSP Income (Line 12500):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
-                    </div>
                     <div className="field-row">
                       <span className="field-label">Rental Income (Line 12600):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
@@ -1094,16 +1092,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">RRSP Income (Line 12900):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
-                    </div>
-                    <div className="field-row">
                       <span className="field-label">FHSA Income (Line 12905):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">FHSA Income - Other (Line 12906):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Other Income (Line 13000):</span>

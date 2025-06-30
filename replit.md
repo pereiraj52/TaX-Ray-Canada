@@ -373,6 +373,7 @@ Changelog:
 - June 30, 2025. Updated Ontario marginal dividend rates with authentic 2024 rates: replaced calculated dividend rates with exact eligible dividend rates (-1.20% to 39.34%) and non-eligible dividend rates (13.95% to 47.74%) from official tax tables, applied to both marginal rate breakdown display and tax bracket visualization charts
 - June 30, 2025. Fixed marginal effective tax rate calculation: implemented comprehensive tax calculator with all extracted T1 data, comparing two scenarios (current vs. $1 added to line 10100 employment income), now uses totalPayable instead of only federal+provincial tax to include CPP/EI contributions, clawbacks, and all tax factors for accurate marginal effective rate
 - June 30, 2025. Removed Marginal Effective Rate from summary page: eliminated display from MarginalRateBreakdown component and removed associated API calls and calculation functions for cleaner interface
+- June 30, 2025. Added Registered Account Income subsection to income summary: grouped RDSP Income (Line 12500), RRSP Income (Line 12900), and FHSA Income - Other (Line 12906) under new "Registered Account Income" category within Other Income section for better organization of registered savings account withdrawals
 ```
 
 ## User Preferences
