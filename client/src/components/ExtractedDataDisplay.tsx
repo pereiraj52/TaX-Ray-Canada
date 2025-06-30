@@ -1543,7 +1543,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Personal Situation Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['31270', '31300', '31350']))}
+                    {formatCurrency(getSectionTotal(['31270', '31300', '31350', '31400']))}
                   </span>
                 </button>
                 {!collapsedSections['personal-situation-credits-new'] && (
@@ -1559,6 +1559,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Digital News Subscription (Line 31350):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31350'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Pension Income Amount (Line 31400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
                     </div>
                   </div>
                 )}
@@ -1579,7 +1583,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Disability & Caregiver Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['30450', '30500', '31500', '31600', '31800', '31850']))}
+                    {formatCurrency(getSectionTotal(['30450', '30500', '31285', '31500', '31600', '31800', '31850']))}
                   </span>
                 </button>
                 {!collapsedSections['disability-caregiver-credits'] && (

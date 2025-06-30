@@ -2971,6 +2971,7 @@ export default function TaxReport() {
                   { category: "Disability & Caregiver Credits (Non-Refundable)", items: [
                     { name: "Canada Caregiver Amount Spouse/Partner/Adult Children", line: "30450" },
                     { name: "Canada Caregiver Amount for Children", line: "30500" },
+                    { name: "Home Accessibility Expenses", line: "31285" },
                     { name: "Pension Income Amount", line: "31400" },
                     { name: "Caregiver Amount", line: "31500" },
                     { name: "Disability Amount (Self)", line: "31600" },
