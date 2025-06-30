@@ -1111,37 +1111,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
-              {/* Other Income Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('other')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections.other ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Other Income</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['13000', '13010']))}
-                  </span>
-                </button>
-                {!collapsedSections.other && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Other Income (Line 13000):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Scholarships (Line 13010):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
 
               {/* Self-Employment Income Section */}
               <div className="border border-gray-200 rounded-lg">
@@ -1202,11 +1171,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Other Sources</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['14400', '14500', '14600']))}
+                    {formatCurrency(getSectionTotal(['13000', '13010', '14400', '14500', '14600']))}
                   </span>
                 </button>
                 {!collapsedSections.othersources && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Other Income (Line 13000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Scholarships (Line 13010):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
+                    </div>
                     <div className="field-row">
                       <span className="field-label">Workers' Compensation (Line 14400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>

@@ -377,6 +377,7 @@ Changelog:
 - June 30, 2025. Moved Rental Income (Line 12600) and Capital Gains (Line 12700) from Other Income to Investment Income section: reorganized income categories to group investment-related income together, updated section totals accordingly for better logical organization
 - June 30, 2025. Removed Business Income (Line 13499) from Self-Employment Income section: eliminated this field from both display and section total calculations for cleaner income categorization
 - June 30, 2025. Corrected Partnership Income (Line 13500) label to Business Income (Line 13500): fixed mislabeled field to show correct business income designation
+- June 30, 2025. Moved Other Income (Line 13000) and Scholarships (Line 13010) to Other Sources section: relocated these fields from Other Income to Other Sources section with Workers' Compensation, Social Assistance, and Net Federal Supplements, removed empty Other Income section entirely
 ```
 
 ## User Preferences
