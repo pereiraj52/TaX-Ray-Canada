@@ -232,9 +232,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     const basicCreditsTotal = getSectionTotal(['30000', '30100', '30300', '30400', '30450']);
     const employmentCreditsTotal = getSectionTotal(['30800', '31200', '31220', '31400']);
     const personalSituationTotal = getSectionTotal(['31500', '31600', '31800', '31850']);
-    const educationMedicalTotal = getSectionTotal(['31900', '32300', '32400', '33000', '33099', '33199', '34900']);
+    const educationCreditsTotal = getSectionTotal(['31900', '32300', '32400', '32600']);
+    const medicalOtherTotal = getSectionTotal(['33000', '33099', '33199', '34900']);
     
-    return basicCreditsTotal + employmentCreditsTotal + personalSituationTotal + educationMedicalTotal;
+    return basicCreditsTotal + employmentCreditsTotal + personalSituationTotal + educationCreditsTotal + medicalOtherTotal;
   };
 
   const getRefundOrBalance = (): number => {
@@ -1631,7 +1632,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Education Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['31900', '32300', '32400']))}
+                    {formatCurrency(getSectionTotal(['31900', '32300', '32400', '32600']))}
                   </span>
                 </button>
                 {!collapsedSections['education-credits'] && (
@@ -1647,6 +1648,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Tuition Transferred (Line 32400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('32400'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Amounts Transferred From your Spouse/Partner (Line 32600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('32600'))}</span>
                     </div>
                   </div>
                 )}

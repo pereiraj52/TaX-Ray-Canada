@@ -2982,8 +2982,19 @@ export default function TaxReport() {
                     { name: "Amounts Transferred from Spouse", line: "32600" },
                   ]},
                   
-                  // Education & Medical Credits
-                  { category: "Education & Medical Credits (Non-Refundable)", items: [
+                  // Education Credits  
+                  { category: "Education Credits (Non-Refundable)", items: [
+                    { name: "Interest on Student Loans", line: "31900" },
+                    { name: "Tuition & Education Amounts", line: "32300" },
+                    { name: "Tuition Transferred", line: "32400" },
+                    { name: "Amounts Transferred from Spouse/Partner", line: "32600" },
+                  ]},
+                  
+                  // Medical & Other Credits
+                  { category: "Medical & Other Credits (Non-Refundable)", items: [
+                    { name: "Medical Expenses", line: "33000" },
+                    { name: "Allowable Medical Expenses", line: "33099" },
+                    { name: "Medical Expenses for Others", line: "33199" },
                     { name: "Medical Expenses for Self/Spouse", line: "33200" },
                     { name: "Allowable Amount of Medical Expenses", line: "33500" },
                     { name: "Donations and Gifts", line: "34900" },
