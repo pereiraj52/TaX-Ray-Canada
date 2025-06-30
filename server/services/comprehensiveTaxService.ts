@@ -168,37 +168,45 @@ export class ComprehensiveTaxService {
         isSearchRescueVolunteer: false,
       },
       income: {
-        // Employment Income (Lines 10100-10400)
+        // Employment Income (Line 10100 + 10400)
         employmentIncome: getFieldValue('10100') + getFieldValue('10400'),
-        employmentBenefits: getFieldValue('10130'),
+        
+        // Commission Income (Line 10200)
         commissionIncome: getFieldValue('10200'),
         
-        // Business Income (Lines 11500-13500)
-        businessIncome: getFieldValue('11500') + getFieldValue('11700'),
-        professionalIncome: getFieldValue('12000'),
+        // Business Income (Line 11700)
+        businessIncome: getFieldValue('11700'),
+        
+        // Professional Income (Line 12900)
+        professionalIncome: getFieldValue('12900'),
+        
+        // Farming Income (Line 14100)
         farmingIncome: getFieldValue('14100'),
+        
+        // Fishing Income (Line 14300)
         fishingIncome: getFieldValue('14300'),
         
-        // Investment Income (Lines 12000-13000)
-        interestIncome: getFieldValue('12100') + getFieldValue('12200'),
-        canadianDividendIncome: getFieldValue('12000'),
-        foreignDividendIncome: getFieldValue('12200'),
-        rentalIncome: getFieldValue('12600'),
+        // Investment Income
+        interestIncome: getFieldValue('12100'), // Interest Income
+        canadianDividendIncome: getFieldValue('12000'), // Taxable Canadian Dividends
+        foreignDividendIncome: getFieldValue('12110'), // Foreign Dividend Income
+        rentalIncome: getFieldValue('12600'), // Rental Income
         
-        // Capital Gains (Lines 12700-12800)
+        // Capital Gains (Line 12700)
         capitalGains: getFieldValue('12700'),
         capitalLosses: getFieldValue('25200'), // Applied capital losses
         
-        // Pension and Benefits (Lines 11400-11600)
-        cppQppBenefits: getFieldValue('11400'),
-        oasBenefits: getFieldValue('11300'),
-        privatePension: getFieldValue('11500'),
-        rrifWithdrawals: getFieldValue('11600'),
+        // Pension and Benefits
+        cppQppBenefits: getFieldValue('11400'), // CPP/QPP Benefits
+        oasBenefits: getFieldValue('11300'), // OAS Benefits
+        privatePension: getFieldValue('11500'), // Private Pension
+        rrifWithdrawals: getFieldValue('11600'), // RRIF Withdrawals
         
-        // Other Income (Lines 10400-13000)
-        eiBenefits: getFieldValue('11900'),
-        alimonyReceived: getFieldValue('12800'),
-        otherIncome: getFieldValue('13000'),
+        // Other Income
+        eiBenefits: getFieldValue('11900'), // EI Benefits
+        alimonyReceived: getFieldValue('12800'), // Support Payments Received
+        otherIncome: getFieldValue('13000'), // Other Income
+        uuccbIncome: getFieldValue('11700'), // Universal Child Care Benefit
       },
       deductions: {
         // Registered Plans (Lines 20800-20900)
@@ -387,11 +395,11 @@ export class ComprehensiveTaxService {
       // Convert T1 fields to tax input
       const baseInput = this.convertT1FieldsToTaxInput(formFields, province, personalInfo);
       
-      // Calculate initial tax with original income
+      // Calculate initial comprehensive tax with original income
       const initialResult = await this.calculateComprehensiveTax(baseInput);
-      const initialTaxOwing = (initialResult.federalTax || 0) + (initialResult.provincialTax || 0);
+      const initialTotalPayable = initialResult.totalPayable || 0;
 
-      // Create modified input with $1 added to employment income
+      // Create modified input with $1 added to employment income (line 10100)
       const modifiedInput = {
         ...baseInput,
         income: {
@@ -400,12 +408,20 @@ export class ComprehensiveTaxService {
         }
       };
 
-      // Calculate tax with modified income
+      // Calculate comprehensive tax with modified income
       const modifiedResult = await this.calculateComprehensiveTax(modifiedInput);
-      const modifiedTaxOwing = (modifiedResult.federalTax || 0) + (modifiedResult.provincialTax || 0);
+      const modifiedTotalPayable = modifiedResult.totalPayable || 0;
 
       // Calculate marginal effective rate as percentage
-      const marginalEffectiveRate = ((modifiedTaxOwing - initialTaxOwing) / 1) * 100;
+      // This includes all factors: federal tax, provincial tax, CPP/EI, clawbacks, credits, etc.
+      const marginalEffectiveRate = ((modifiedTotalPayable - initialTotalPayable) / 1) * 100;
+
+      console.log('Marginal Effective Rate Calculation:', {
+        initialTotalPayable,
+        modifiedTotalPayable,
+        difference: modifiedTotalPayable - initialTotalPayable,
+        marginalEffectiveRate
+      });
 
       return Math.round(marginalEffectiveRate * 100) / 100; // Round to 2 decimal places
     } catch (error) {
