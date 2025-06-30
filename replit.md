@@ -368,6 +368,7 @@ Changelog:
 - June 28, 2025. Fixed city information extraction for Daniel Givon: corrected extraction to prioritize personal information section city (Toronto) over rental property co-owner city (Brampton), added smart filtering to avoid extracting business-related addresses and limited city extraction to first 50 lines of PDF for personal information accuracy
 - June 28, 2025. Reorganized T1 extract income summary: renamed "Pension & Retirement Income" to "Pension Income", removed Split Income (Line 11800) and UCCB for Dependant (Line 11701) fields, moved Universal Child Care Benefit (Line 11700) from Pension section to Government Benefits section for improved categorization
 - June 28, 2025. Fixed Total Tax calculation in Key Tax Information section: since field 43500 isn't extracted from PDFs, now uses calculated total (federal tax 42000 + provincial tax 42800) for accurate tax amount display matching other sections
+- June 28, 2025. Fixed Average Rate calculation in summary dashboard: changed from using field 43700 to calculated total tax (federal + provincial) divided by total income (line 15000) for accurate average tax rate display
 ```
 
 ## User Preferences

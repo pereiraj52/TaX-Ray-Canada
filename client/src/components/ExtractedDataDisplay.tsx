@@ -328,7 +328,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           <p className="text-lg font-semibold text-primary">
             {(() => {
               const totalIncome = parseFloat(getFieldValue('15000') || '0');
-              const totalTax = parseFloat(getFieldValue('43700') || '0');
+              // Use calculated total tax (federal + provincial) since 43500 isn't extracted
+              const federalTax = parseFloat(getFieldValue('42000') || '0');
+              const provincialTax = parseFloat(getFieldValue('42800') || '0');
+              const totalTax = federalTax + provincialTax;
               if (totalIncome === 0) return '0.00%';
               const rate = (totalTax / totalIncome) * 100;
               return `${rate.toFixed(2)}%`;
