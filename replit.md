@@ -367,7 +367,7 @@ Changelog:
 - June 28, 2025. Fixed SIN number extraction issue for Daniel Givon: enhanced extraction patterns to handle both masked (XXX XX1 481) and unmasked (291 758 993) SIN formats, added multiple fallback patterns including name-line extraction and general SIN label matching
 - June 28, 2025. Fixed city information extraction for Daniel Givon: corrected extraction to prioritize personal information section city (Toronto) over rental property co-owner city (Brampton), added smart filtering to avoid extracting business-related addresses and limited city extraction to first 50 lines of PDF for personal information accuracy
 - June 28, 2025. Reorganized T1 extract income summary: renamed "Pension & Retirement Income" to "Pension Income", removed Split Income (Line 11800) and UCCB for Dependant (Line 11701) fields, moved Universal Child Care Benefit (Line 11700) from Pension section to Government Benefits section for improved categorization
-- June 28, 2025. Fixed Total Tax reference in Key Tax Information section: changed from field 43700 to field 43500 for correct tax amount display in summary dashboard
+- June 28, 2025. Fixed Total Tax calculation in Key Tax Information section: since field 43500 isn't extracted from PDFs, now uses calculated total (federal tax 42000 + provincial tax 42800) for accurate tax amount display matching other sections
 ```
 
 ## User Preferences
