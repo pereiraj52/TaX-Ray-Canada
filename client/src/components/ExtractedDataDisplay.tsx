@@ -1034,7 +1034,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Investment Income</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12000', '12010', '12100', '12200', '12400']))}
+                    {formatCurrency(getSectionTotal(['12000', '12010', '12100', '12200', '12400', '12600', '12700']))}
                   </span>
                 </button>
                 {!collapsedSections.investment && (
@@ -1059,6 +1059,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Foreign Dividends (Line 12400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('12400'))}</span>
                     </div>
+                    <div className="field-row">
+                      <span className="field-label">Rental Income (Line 12600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Capital Gains (Line 12700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -1078,7 +1086,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Registered Account Income</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12500', '12900', '12906']))}
+                    {formatCurrency(getSectionTotal(['12500', '12900', '12905', '12906']))}
                   </span>
                 </button>
                 {!collapsedSections['registered-account'] && (
@@ -1090,6 +1098,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">RRSP Income (Line 12900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">FHSA Income (Line 12905):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">FHSA Income - Other (Line 12906):</span>
@@ -1114,7 +1126,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Other Income</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12600', '12700', '12905', '13000', '13010']))}
+                    {formatCurrency(getSectionTotal(['12600', '12700', '13000', '13010']))}
                   </span>
                 </button>
                 {!collapsedSections.other && (
@@ -1126,10 +1138,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Capital Gains (Line 12700):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">FHSA Income (Line 12905):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Other Income (Line 13000):</span>
