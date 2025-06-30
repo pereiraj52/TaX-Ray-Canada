@@ -1285,7 +1285,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Personal Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['21200', '21300', '21400', '21500', '21700', '21900']))}
+                    {formatCurrency(getSectionTotal(['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']))}
                   </span>
                 </button>
                 {!collapsedSections['personal-deductions'] && (
@@ -1314,30 +1314,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Moving Expenses (Line 21900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
                     </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Support and Investment Deductions Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('support-investment-deductions')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['support-investment-deductions'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Support & Investment Deductions</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['22000', '22100']))}
-                  </span>
-                </button>
-                {!collapsedSections['support-investment-deductions'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
                       <span className="field-label">Support Payments Allowable (Line 22000):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
@@ -1346,10 +1322,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Carrying Charges (Line 22100):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
                     </div>
-
                   </div>
                 )}
               </div>
+
 
               {/* Employment Deductions Section */}
               <div className="border border-gray-200 rounded-lg">
@@ -1366,7 +1342,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Employment Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['22215', '22900', '23100']))}
+                    {formatCurrency(getSectionTotal(['22200', '22215', '22900', '23100']))}
                   </span>
                 </button>
                 {!collapsedSections['employment-deductions'] && (

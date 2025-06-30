@@ -2759,30 +2759,26 @@ export default function TaxReport() {
                   
                   // Personal Deductions
                   { category: "Personal Deductions", items: [
+                    { name: "Annual Union Dues", line: "21200" },
+                    { name: "UCCB Repayment", line: "21300" },
                     { name: "Child Care Expenses", line: "21400" },
                     { name: "Disability Supports", line: "21500" },
                     { name: "Business Investment Loss", line: "21700" },
                     { name: "Moving Expenses", line: "21900" },
-                  ]},
-                  
-                  // Support & Investment Deductions
-                  { category: "Support & Investment", items: [
-                    { name: "Support Payments", line: "22000" },
+                    { name: "Support Payments Allowable", line: "22000" },
                     { name: "Carrying Charges", line: "22100" },
-                    { name: "Interest and Investment Counsel Fees", line: "22101" },
                   ]},
                   
                   // Employment Deductions
                   { category: "Employment Deductions", items: [
-                    { name: "Union/Professional Dues", line: "21200" },
+                    { name: "CPP/QPP Self-Employed", line: "22200" },
                     { name: "Enhanced CPP/QPP Deduction", line: "22215" },
-                    { name: "Employment Expenses", line: "22900" },
+                    { name: "Other Employment Expenses", line: "22900" },
+                    { name: "Clergy Residence", line: "23100" },
                   ]},
                   
                   // Specialized Deductions
                   { category: "Specialized Deductions", items: [
-                    { name: "Clergy Residence", line: "23100" },
-                    { name: "Other Employment Expenses", line: "22900" },
                     { name: "Other Deductions", line: "23200" },
                     { name: "UCCB Repayment", line: "21300" },
                     { name: "Social Benefits Repayment", line: "42200" },
