@@ -1333,15 +1333,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Support & Investment Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['21999', '22000', '22100', '22200']))}
+                    {formatCurrency(getSectionTotal(['22000', '22100']))}
                   </span>
                 </button>
                 {!collapsedSections['support-investment-deductions'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Support Payments Total (Line 21999):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21999'))}</span>
-                    </div>
                     <div className="field-row">
                       <span className="field-label">Support Payments Allowable (Line 22000):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
@@ -1349,10 +1345,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Carrying Charges (Line 22100):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">CPP/QPP Self-Employed (Line 22200):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
                     </div>
 
                   </div>
@@ -1379,6 +1371,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </button>
                 {!collapsedSections['employment-deductions'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">CPP/QPP Self-Employed (Line 22200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
+                    </div>
                     <div className="field-row">
                       <span className="field-label">Enhanced CPP/QPP Deduction (Line 22215):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
