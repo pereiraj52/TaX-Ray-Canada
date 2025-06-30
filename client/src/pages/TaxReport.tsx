@@ -2961,7 +2961,16 @@ export default function TaxReport() {
                   ]},
                   
                   // Personal Situation Credits
+                  { category: "Personal Situation Credits (Non-Refundable)", items: [
+                    { name: "Home buyers' Amount", line: "31270" },
+                    { name: "Adoption Expenses", line: "31300" },
+                    { name: "Digital News Subscription", line: "31350" },
+                  ]},
+                  
+                  // Disability & Caregiver Credits
                   { category: "Disability & Caregiver Credits (Non-Refundable)", items: [
+                    { name: "Canada Caregiver Amount Spouse/Partner/Adult Children", line: "30450" },
+                    { name: "Canada Caregiver Amount for Children", line: "30500" },
                     { name: "Pension Income Amount", line: "31400" },
                     { name: "Caregiver Amount", line: "31500" },
                     { name: "Disability Amount (Self)", line: "31600" },

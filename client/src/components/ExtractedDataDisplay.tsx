@@ -1579,11 +1579,23 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Disability & Caregiver Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['31500', '31600', '31800', '31850']))}
+                    {formatCurrency(getSectionTotal(['30450', '30500', '31500', '31600', '31800', '31850']))}
                   </span>
                 </button>
-                {!collapsedSections['personal-situation-credits'] && (
+                {!collapsedSections['disability-caregiver-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Canada Caregiver Amount Spouse/Partner/Adult Children (Line 30450):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Canada Caregiver Amount for Children (Line 30500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30500'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Home Accessibility Expenses (Line 31285):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31285'))}</span>
+                    </div>
                     <div className="field-row">
                       <span className="field-label">Caregiver Amount (Line 31500):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31500'))}</span>

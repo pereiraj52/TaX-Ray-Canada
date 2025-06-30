@@ -387,6 +387,8 @@ Changelog:
 - June 30, 2025. Updated credit section titles to clarify non-refundable status: added "(Non-Refundable)" suffix to Basic Credits, Employment Credits, Personal Situation Credits, and Education & Medical Credits sections in both T1 extraction display and Tax Credits Analysis for clear distinction from refundable credits
 - June 30, 2025. Added volunteer service credits to Employment Credits (Non-Refundable) section: included Volunteer firefighters' amount (VFA) (Line 31230) and Search and rescue volunteers' amount (SRVA) (Line 31240), updated section totals and Tax Credits Analysis in household tax reports to support volunteer service tax benefits
 - June 30, 2025. Renamed Personal Situation Credits section to "Disability & Caregiver Credits (Non-Refundable)": updated section title in both T1 extraction display and Tax Credits Analysis to better reflect the specific nature of these credits focused on disability and caregiver support
+- June 30, 2025. Created new "Personal Situation Credits (Non-Refundable)" section after Employment Credits: added Home buyers' Amount (Line 31270), Adoption Expenses (Line 31300), and Digital News Subscription (Line 31350), positioned between Employment Credits and Disability & Caregiver Credits sections in both T1 extraction display and Tax Credits Analysis for improved credit organization
+- June 30, 2025. Added Canada Caregiver Amount lines to Disability & Caregiver Credits section: included Canada Caregiver Amount Spouse/Partner/Adult Children (Line 30450) and Canada Caregiver Amount for Children (Line 30500), updated section totals and Tax Credits Analysis in household tax reports to provide comprehensive caregiver benefit tracking
 ```
 
 ## User Preferences
