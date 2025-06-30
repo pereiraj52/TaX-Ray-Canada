@@ -384,6 +384,7 @@ Changelog:
 - June 30, 2025. Removed Support Payments Total (Line 21999) from Support & Investment Deductions section: eliminated the total support payments field from T1 extraction display, keeping only Support Payments Allowable (Line 22000) which represents the deductible portion, updated section total calculation to exclude line 21999
 - June 30, 2025. Reorganized deduction sections with major category restructuring: moved CPP/QPP Self-Employed (Line 22200) to Employment Deductions, moved Support Payments Allowable (Line 22000) and Carrying Charges (Line 22100) to Personal Deductions, eliminated empty Support & Investment Deductions section entirely, updated all section totals and Tax Deductions Analysis section in household tax reports to reflect new organization
 - June 30, 2025. Added self-employed credit lines to Employment Credits section: included CPP/QPP (Self Employed) Contributions (Line 31000) and Employment Insurance (Self Employed) Premiums (Line 31217), updated section totals and Tax Credits Analysis in household tax reports, removed duplicate Employment Insurance Premiums entry and reorganized Pension Income Amount to Personal Situation Credits for better logical organization
+- June 30, 2025. Updated credit section titles to clarify non-refundable status: added "(Non-Refundable)" suffix to Basic Credits, Employment Credits, Personal Situation Credits, and Education & Medical Credits sections in both T1 extraction display and Tax Credits Analysis for clear distinction from refundable credits
 ```
 
 ## User Preferences

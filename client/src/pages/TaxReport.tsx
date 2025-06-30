@@ -2941,7 +2941,7 @@ export default function TaxReport() {
                 // Define all possible tax credits with their line numbers
                 const credits = [
                   // Basic Credits
-                  { category: "Basic Credits", items: [
+                  { category: "Basic Credits (Non-Refundable)", items: [
                     { name: "Basic Personal Amount", line: "30000" },
                     { name: "Spouse or Common-law Partner Amount", line: "30300" },
                     { name: "Amount for Eligible Dependant", line: "30400" },
@@ -2950,7 +2950,7 @@ export default function TaxReport() {
                   ]},
                   
                   // Employment Credits
-                  { category: "Employment Credits", items: [
+                  { category: "Employment Credits (Non-Refundable)", items: [
                     { name: "CPP or QPP Contributions", line: "30800" },
                     { name: "CPP/QPP (Self Employed) Contributions", line: "31000" },
                     { name: "Employment Insurance Premiums", line: "31200" },
@@ -2959,7 +2959,7 @@ export default function TaxReport() {
                   ]},
                   
                   // Personal Situation Credits
-                  { category: "Personal Situation", items: [
+                  { category: "Personal Situation Credits (Non-Refundable)", items: [
                     { name: "Pension Income Amount", line: "31400" },
                     { name: "Caregiver Amount", line: "31500" },
                     { name: "Disability Amount (Self)", line: "31600" },
@@ -2971,7 +2971,7 @@ export default function TaxReport() {
                   ]},
                   
                   // Education & Medical Credits
-                  { category: "Education & Medical", items: [
+                  { category: "Education & Medical Credits (Non-Refundable)", items: [
                     { name: "Medical Expenses for Self/Spouse", line: "33200" },
                     { name: "Allowable Amount of Medical Expenses", line: "33500" },
                     { name: "Donations and Gifts", line: "34900" },

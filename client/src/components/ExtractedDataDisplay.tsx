@@ -1483,7 +1483,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Employment Credits</h4>
+                    <h4 className="font-medium text-primary">Employment Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31400', '31000', '31217']))}
@@ -1502,6 +1502,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">Canada Employment Amount (Line 31220):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Volunteer firefighters' amount (VFA) (Line 31230):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31230'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Search and rescue volunteers' amount (SRVA) (Line 31240):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31240'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Pension Income Amount (Line 31400):</span>
@@ -1532,7 +1540,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Personal Situation Credits</h4>
+                    <h4 className="font-medium text-primary">Personal Situation Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['31500', '31600', '31800', '31850']))}
@@ -1572,7 +1580,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Education & Medical Credits</h4>
+                    <h4 className="font-medium text-primary">Education & Medical Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['31900', '32300', '32400', '33000', '33099', '33199', '34900']))}
