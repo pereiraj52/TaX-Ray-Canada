@@ -1486,7 +1486,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Employment Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31400', '31000', '31217']))}
+                    {formatCurrency(getSectionTotal(['30800', '31200', '31220', '31230', '31240', '31400', '31000', '31217']))}
                   </span>
                 </button>
                 {!collapsedSections['employment-credits'] && (
@@ -1531,16 +1531,52 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               {/* Personal Situation Credits Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
-                  onClick={() => toggleSection('personal-situation-credits')}
+                  onClick={() => toggleSection('personal-situation-credits-new')}
                   className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
                 >
                   <div className="flex items-center">
-                    {collapsedSections['personal-situation-credits'] ? (
+                    {collapsedSections['personal-situation-credits-new'] ? (
                       <ChevronRight className="h-4 w-4 mr-2" />
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
                     <h4 className="font-medium text-primary">Personal Situation Credits (Non-Refundable)</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getSectionTotal(['31270', '31300', '31350']))}
+                  </span>
+                </button>
+                {!collapsedSections['personal-situation-credits-new'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Home buyers' Amount (Line 31270):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31270'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Adoption Expenses (Line 31300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31300'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Digital News Subscription (Line 31350):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31350'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Disability & Caregiver Credits Section */}
+              <div className="border border-gray-200 rounded-lg">
+                <button
+                  onClick={() => toggleSection('disability-caregiver-credits')}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['disability-caregiver-credits'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-medium text-primary">Disability & Caregiver Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['31500', '31600', '31800', '31850']))}

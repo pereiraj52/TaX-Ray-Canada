@@ -2956,10 +2956,12 @@ export default function TaxReport() {
                     { name: "Employment Insurance Premiums", line: "31200" },
                     { name: "Employment Insurance (Self Employed) Premiums", line: "31217" },
                     { name: "Canada Employment Amount", line: "31220" },
+                    { name: "Volunteer firefighters' amount (VFA)", line: "31230" },
+                    { name: "Search and rescue volunteers' amount (SRVA)", line: "31240" },
                   ]},
                   
                   // Personal Situation Credits
-                  { category: "Personal Situation Credits (Non-Refundable)", items: [
+                  { category: "Disability & Caregiver Credits (Non-Refundable)", items: [
                     { name: "Pension Income Amount", line: "31400" },
                     { name: "Caregiver Amount", line: "31500" },
                     { name: "Disability Amount (Self)", line: "31600" },
