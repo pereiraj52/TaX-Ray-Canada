@@ -1534,24 +1534,12 @@ class ComprehensiveT1Extractor:
         
         # Special handling for line 12010 (Non-eligible dividends)
         if line_num == '12010':
-            debug_f = None
-            try:
-                debug_f = open('attached_assets/line_12010_debug.log', 'w')
-                debug_f.write(f'DEBUG: Extracting non-eligible dividends for line {line_num}\n')
-            except Exception:
-                debug_f = None
-                
             lines = text.splitlines()
             
             # Look specifically for non-eligible dividend entries on the T1 form
             # Pattern 1: Look for explicit "non-eligible" or "other than eligible" dividend lines
             for idx, line in enumerate(lines):
-                if debug_f:
-                    debug_f.write(f'Checking line {idx}: {line}\n')
-                    
                 if re.search(r'dividends.*(?:non-eligible|other than eligible).*12010', line, re.IGNORECASE):
-                    if debug_f:
-                        debug_f.write(f'Found explicit non-eligible dividend line: {line}\n')
                     m = re.search(r'12010\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
                     if m:
                         try:
@@ -1559,28 +1547,18 @@ class ComprehensiveT1Extractor:
                             cents = m.group(2)
                             if int(dollars) >= 1:  # Accept any reasonable amount
                                 value = f"{dollars}.{cents}"
-                                if debug_f:
-                                    debug_f.write(f'Extracted value: {value}\n')
-                                    debug_f.close()
                                 return Decimal(value)
                         except Exception:
                             continue
             
             # Pattern 2: Look for direct line reference but avoid eligible dividend sections
             for line in lines:
-                if debug_f:
-                    debug_f.write(f'Pattern 2 checking: {line}\n')
-                    
                 # Skip lines that contain eligible dividend references
                 if any(skip_term in line.lower() for skip_term in ['eligible dividend', 'worksheet', 'summary', 'credit', 'comparative']):
-                    if debug_f:
-                        debug_f.write(f'Skipping line (contains skip terms): {line}\n')
                     continue
                 
                 # Look for line 12010 with amount
                 if re.search(r'(?:^|\s)12010\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})(?:\s|$)', line):
-                    if debug_f:
-                        debug_f.write(f'Found 12010 pattern: {line}\n')
                     m = re.search(r'12010\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
                     if m:
                         try:
@@ -1588,17 +1566,11 @@ class ComprehensiveT1Extractor:
                             cents = m.group(2)
                             if int(dollars) >= 1:
                                 value = f"{dollars}.{cents}"
-                                if debug_f:
-                                    debug_f.write(f'Extracted value from direct pattern: {value}\n')
-                                    debug_f.close()
                                 return Decimal(value)
                         except Exception:
                             continue
             
             # If no specific non-eligible dividend amount found, return None
-            if debug_f:
-                debug_f.write('No non-eligible dividend amount found for line 12010\n')
-                debug_f.close()
             return None
         
         # Special handling for line 12100 (Interest and Investment Income)
