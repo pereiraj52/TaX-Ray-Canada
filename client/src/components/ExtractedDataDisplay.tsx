@@ -1126,19 +1126,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Other Income</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12600', '12700', '13000', '13010']))}
+                    {formatCurrency(getSectionTotal(['13000', '13010']))}
                   </span>
                 </button>
                 {!collapsedSections.other && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Rental Income (Line 12600):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Capital Gains (Line 12700):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
-                    </div>
                     <div className="field-row">
                       <span className="field-label">Other Income (Line 13000):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>

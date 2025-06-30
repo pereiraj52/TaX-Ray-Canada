@@ -374,6 +374,7 @@ Changelog:
 - June 30, 2025. Fixed marginal effective tax rate calculation: implemented comprehensive tax calculator with all extracted T1 data, comparing two scenarios (current vs. $1 added to line 10100 employment income), now uses totalPayable instead of only federal+provincial tax to include CPP/EI contributions, clawbacks, and all tax factors for accurate marginal effective rate
 - June 30, 2025. Removed Marginal Effective Rate from summary page: eliminated display from MarginalRateBreakdown component and removed associated API calls and calculation functions for cleaner interface
 - June 30, 2025. Created separate Registered Account Income section in income summary: moved RDSP Income (Line 12500), RRSP Income (Line 12900), FHSA Income (Line 12905), and FHSA Income - Other (Line 12906) from Other Income into new standalone "Registered Account Income" section with collapsible functionality, positioned between Investment Income and Other Income sections for better organization of registered savings account withdrawals
+- June 30, 2025. Moved Rental Income (Line 12600) and Capital Gains (Line 12700) from Other Income to Investment Income section: reorganized income categories to group investment-related income together, updated section totals accordingly for better logical organization
 ```
 
 ## User Preferences
