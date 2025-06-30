@@ -1071,45 +1071,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
-              {/* Registered Account Income Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('registered-account')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['registered-account'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Registered Account Income</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12500', '12900', '12905', '12906']))}
-                  </span>
-                </button>
-                {!collapsedSections['registered-account'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">RDSP Income (Line 12500):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">RRSP Income (Line 12900):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">FHSA Income (Line 12905):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">FHSA Income - Other (Line 12906):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
 
               {/* Other Income Section */}
               <div className="border border-gray-200 rounded-lg">
@@ -1158,17 +1119,13 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Self-Employment Income</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['13499', '13500', '13700', '13900', '14100', '14300']))}
+                    {formatCurrency(getSectionTotal(['13500', '13700', '13900', '14100', '14300']))}
                   </span>
                 </button>
                 {!collapsedSections.selfemployment && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Business Income (Line 13499):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13499'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Partnership Income (Line 13500):</span>
+                      <span className="field-label">Business Income (Line 13500):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
                     </div>
                     <div className="field-row">
@@ -1206,11 +1163,27 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Other Sources</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['14400', '14500', '14600']))}
+                    {formatCurrency(getSectionTotal(['12500', '12900', '12905', '12906', '14400', '14500', '14600']))}
                   </span>
                 </button>
                 {!collapsedSections.othersources && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">RDSP Income (Line 12500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">RRSP Income (Line 12900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">FHSA Income (Line 12905):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">FHSA Income - Other (Line 12906):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
+                    </div>
                     <div className="field-row">
                       <span className="field-label">Workers' Compensation (Line 14400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>
