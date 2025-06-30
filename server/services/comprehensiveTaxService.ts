@@ -411,15 +411,23 @@ export class ComprehensiveTaxService {
       const modifiedResult = await this.calculateComprehensiveTax(modifiedInput);
       const modifiedTotalPayable = modifiedResult.totalPayable || 0;
 
-      // Calculate marginal effective rate as percentage
-      // This includes all factors: federal tax, provincial tax, CPP/EI, clawbacks, credits, etc.
-      const marginalEffectiveRate = ((modifiedTotalPayable - initialTotalPayable) / 1) * 100;
+      // Extract line 43500 (Total Tax) from both scenarios for comparison
+      const initialLine43500 = (initialResult.federalTax || 0) + (initialResult.provincialTax || 0);
+      const modifiedLine43500 = (modifiedResult.federalTax || 0) + (modifiedResult.provincialTax || 0);
+      
+      // Calculate marginal effective rate based on line 43500 difference
+      const line43500Difference = modifiedLine43500 - initialLine43500;
+      const marginalEffectiveRate = (line43500Difference / 1) * 100;
 
-      console.log('Marginal Effective Rate Calculation:', {
+      console.log('Marginal Effective Rate Calculation (Line 43500):', {
+        initialLine43500,
+        modifiedLine43500,
+        line43500Difference,
+        marginalEffectiveRate,
+        // Also log total payable for comparison
         initialTotalPayable,
         modifiedTotalPayable,
-        difference: modifiedTotalPayable - initialTotalPayable,
-        marginalEffectiveRate
+        totalPayableDifference: modifiedTotalPayable - initialTotalPayable
       });
 
       return Math.round(marginalEffectiveRate * 100) / 100; // Round to 2 decimal places
