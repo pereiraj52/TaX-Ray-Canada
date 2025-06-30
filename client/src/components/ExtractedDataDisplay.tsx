@@ -1366,7 +1366,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Employment Deductions</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['22215', '22900', '23100']))}
+                    {formatCurrency(getSectionTotal(['22200', '22215', '22900', '23100']))}
                   </span>
                 </button>
                 {!collapsedSections['employment-deductions'] && (
