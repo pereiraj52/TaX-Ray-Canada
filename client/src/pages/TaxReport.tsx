@@ -2775,7 +2775,6 @@ export default function TaxReport() {
                   // Employment Deductions
                   { category: "Employment Deductions", items: [
                     { name: "Union/Professional Dues", line: "21200" },
-                    { name: "CPP/QPP Self-Employed", line: "22200" },
                     { name: "Enhanced CPP/QPP Deduction", line: "22215" },
                     { name: "Employment Expenses", line: "22900" },
                   ]},

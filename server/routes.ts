@@ -36,11 +36,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     process.exit(1);
   }
   
-  // Health check endpoint
-  app.get("/health", (req, res) => {
-    res.json({ status: "ok", timestamp: new Date().toISOString() });
-  });
-  
   // Get all households
   app.get("/api/households", async (req, res) => {
     try {

@@ -382,7 +382,6 @@ Changelog:
 - June 30, 2025. Fixed Line 12010 (Non-Eligible Dividends) extraction logic: added specialized extraction patterns to distinguish between eligible dividends (Line 12000) and non-eligible dividends (Line 12010), implemented pattern matching for "Amount of dividends (other than eligible) 12010" format, resolved duplicate value issue where both dividend types showed same amount, now correctly extracts distinct values for each dividend category
 - June 30, 2025. Moved Split Pension Deduction (Line 21000) from Personal Deductions to Retirement Plan Deductions section: reorganized T1 extraction display and Tax Deductions Analysis section to properly categorize split pension deduction with other retirement-related deductions, updated section totals and analysis calculations for accurate deduction grouping
 - June 30, 2025. Removed Support Payments Total (Line 21999) from Support & Investment Deductions section: eliminated the total support payments field from T1 extraction display, keeping only Support Payments Allowable (Line 22000) which represents the deductible portion, updated section total calculation to exclude line 21999
-- June 30, 2025. Moved CPP/QPP Self-Employed (Line 22200) from Support & Investment Deductions to Employment Deductions section: reorganized T1 extraction display and Tax Deductions Analysis section to properly categorize self-employed CPP/QPP contributions with other employment-related deductions, updated section totals and calculations for accurate deduction grouping
 ```
 
 ## User Preferences
