@@ -2924,6 +2924,15 @@ export default function TaxReport() {
 
                 // Helper function to get field value
                 const getFieldValue = (lineNumber: string) => {
+                  // Handle calculated fields
+                  if (lineNumber === 'CALC-34000+34200') {
+                    const field34000 = spouse.formFields.find(f => f.fieldCode === '34000');
+                    const field34200 = spouse.formFields.find(f => f.fieldCode === '34200');
+                    const value34000 = field34000?.fieldValue ? parseFloat(field34000.fieldValue) : 0;
+                    const value34200 = field34200?.fieldValue ? parseFloat(field34200.fieldValue) : 0;
+                    return value34000 + value34200;
+                  }
+                  
                   const field = spouse.formFields.find(f => f.fieldCode === lineNumber);
                   return field?.fieldValue ? parseFloat(field.fieldValue) : 0;
                 };
@@ -2999,6 +3008,7 @@ export default function TaxReport() {
                     { name: "Total eligible amount of charitable donations", line: "S9-TOTAL" },
                     { name: "Allowable Charitable Donations", line: "34000" },
                     { name: "Total Ecological Gifts", line: "34200" },
+                    { name: "Total Eligible Gifts & Donations", line: "CALC-34000+34200" },
                     { name: "Donations and Gifts", line: "34900" },
                   ]},
                   

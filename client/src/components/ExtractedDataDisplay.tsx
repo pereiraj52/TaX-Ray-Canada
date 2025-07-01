@@ -1726,6 +1726,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('34200'))}</span>
                     </div>
                     <div className="field-row">
+                      <span className="field-label">Total Eligible Gifts & Donations:</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('34000') + getFieldValue('34200'))}</span>
+                    </div>
+                    <div className="field-row">
                       <span className="field-label">Donations & Gifts (Line 34900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
                     </div>
