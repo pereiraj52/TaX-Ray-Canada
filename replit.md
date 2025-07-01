@@ -396,6 +396,7 @@ Changelog:
 - July 1, 2025. Fixed Medical Expenses (Line 33099) extraction issue: corrected field mapping in pdfParser.ts from incorrect field code 33000 to proper field code 33099, ensuring medical expenses value ($10,641.43) is now correctly stored and displayed with proper line number labeling throughout the application
 - July 1, 2025. Added Net Eligible Medical Expenses (Line 33200) field to Medical Credits section: updated Python extractor, PDF parser, frontend display, and household tax reports to include new medical credit field, ensuring comprehensive medical expense tracking across all components
 - July 1, 2025. Fixed Net Eligible Medical Expenses (Line 33200) extraction: added specialized extraction logic to comprehensiveT1Extractor.py for capturing line 33200 values, successfully extracting $7,882.43 amount and displaying correctly throughout the application
+- July 1, 2025. Updated Medical Credits summary to show only Line 33200 value: changed Medical Credits (Non-Refundable) section header summary from total of all medical credits to display only Net Eligible Medical Expenses (Line 33200) amount for focused medical credit tracking
 ```
 
 ## User Preferences

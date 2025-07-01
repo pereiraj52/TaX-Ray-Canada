@@ -1672,7 +1672,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Medical Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['33099', '33199', '33200', '34900']))}
+                    {formatCurrency(getFieldValue('33200'))}
                   </span>
                 </button>
                 {!collapsedSections['education-medical-credits'] && (
