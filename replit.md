@@ -395,6 +395,7 @@ Changelog:
 - July 1, 2025. Sorted all tax line numbers in numerical order within their groupings: fixed Employment Credits section (moved lines 31000 and 31217 to correct positions), corrected Refundable Credits section (moved line 44900 before 45200), updated TaxReport.tsx deductions and credits arrays to match proper numerical order, ensuring consistent line ordering across both T1 extraction display and household tax reports for better organization and readabilityts
 - July 1, 2025. Fixed Medical Expenses (Line 33099) extraction issue: corrected field mapping in pdfParser.ts from incorrect field code 33000 to proper field code 33099, ensuring medical expenses value ($10,641.43) is now correctly stored and displayed with proper line number labeling throughout the application
 - July 1, 2025. Added Net Eligible Medical Expenses (Line 33200) field to Medical Credits section: updated Python extractor, PDF parser, frontend display, and household tax reports to include new medical credit field, ensuring comprehensive medical expense tracking across all components
+- July 1, 2025. Fixed Net Eligible Medical Expenses (Line 33200) extraction: added specialized extraction logic to comprehensiveT1Extractor.py for capturing line 33200 values, successfully extracting $7,882.43 amount and displaying correctly throughout the application
 ```
 
 ## User Preferences

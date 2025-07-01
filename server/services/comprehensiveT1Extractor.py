@@ -1624,6 +1624,37 @@ class ComprehensiveT1Extractor:
                             continue
             return None
         
+        # Special handling for line 33200 (Net Eligible Medical Expenses)
+        if line_num == '33200':
+            lines = text.splitlines()
+            for idx, line in enumerate(lines):
+                # Look for lines containing "33200" with medical expense context
+                if '33200' in line and ('medical' in line.lower() or 'eligible' in line.lower()):
+                    # Extract amount from patterns like "33200 7,882 43" or "33200 7882 43"
+                    m = re.search(r'33200\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
+                        try:
+                            dollars = m.group(1).replace(',', '')
+                            cents = m.group(2)
+                            value = f"{dollars}.{cents}"
+                            return Decimal(value)
+                        except Exception:
+                            continue
+                # Also look for direct line number patterns
+                elif '33200' in line:
+                    m = re.search(r'33200\s+(\d{1,3}(?:,\d{3})*)\s+(\d{2})', line)
+                    if m:
+                        try:
+                            dollars = m.group(1).replace(',', '')
+                            cents = m.group(2)
+                            # Accept medical expense amounts >= $1
+                            if int(dollars) >= 1:
+                                value = f"{dollars}.{cents}"
+                                return Decimal(value)
+                        except Exception:
+                            continue
+            return None
+        
         # Standard patterns for all line numbers
         patterns = [
             rf'{line_num}\s+(\d{{1,3}}(?:,\d{{3}})*)\s+(\d{{2}})\s+\d+',
