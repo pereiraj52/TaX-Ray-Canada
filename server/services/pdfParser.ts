@@ -213,6 +213,8 @@ export class T1PDFParser {
         medical_expenses: { code: '33099', name: 'Medical Expenses' },
         medical_expenses_other: { code: '33199', name: 'Allowable Medical Expenses' },
         medical_expenses_net_eligible: { code: '33200', name: 'Net Eligible Medical Expenses' },
+        allowable_charitable_donations: { code: '34000', name: 'Allowable Charitable Donations' },
+        total_ecological_gifts: { code: '34200', name: 'Total Ecological Gifts' },
         donations_gifts: { code: '34900', name: 'Donations and Gifts' },
         total_tax_credits: { code: '35000', name: 'Total Tax Credits' },
         federal_tax: { code: '40400', name: 'Federal Tax' },

@@ -167,6 +167,8 @@ class FederalTaxFields:
     medical_expenses: Optional[Decimal] = None  # Line 33099
     medical_expenses_other: Optional[Decimal] = None  # Line 33199
     medical_expenses_net_eligible: Optional[Decimal] = None  # Line 33200
+    allowable_charitable_donations: Optional[Decimal] = None  # Line 34000
+    total_ecological_gifts: Optional[Decimal] = None  # Line 34200
     donations_gifts: Optional[Decimal] = None  # Line 34900
     total_tax_credits: Optional[Decimal] = None  # Line 35000
     # Tax Calculation Section
@@ -1027,6 +1029,8 @@ class ComprehensiveT1Extractor:
             '33099': 'medical_expenses',
             '33199': 'medical_expenses_other',
             '33200': 'medical_expenses_net_eligible',
+            '34000': 'allowable_charitable_donations',
+            '34200': 'total_ecological_gifts',
             '34900': 'donations_gifts',
             '35000': 'total_tax_credits',
             # Tax Calculation Section

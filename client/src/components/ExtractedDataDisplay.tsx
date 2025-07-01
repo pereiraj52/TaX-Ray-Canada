@@ -1718,6 +1718,14 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('S9-TOTAL'))}</span>
                     </div>
                     <div className="field-row">
+                      <span className="field-label">Allowable Charitable Donations (Line 34000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('34000'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Total Ecological Gifts (Line 34200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('34200'))}</span>
+                    </div>
+                    <div className="field-row">
                       <span className="field-label">Donations & Gifts (Line 34900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
                     </div>
