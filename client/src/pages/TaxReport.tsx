@@ -2748,13 +2748,13 @@ export default function TaxReport() {
                 const deductions = [
                   // Retirement Plan Deductions
                   { category: "Retirement Plan Deductions", items: [
-                    { name: "RRSP Deduction", line: "20800" },
                     { name: "RPP Deduction", line: "20700" },
+                    { name: "RRSP Deduction", line: "20800" },
                     { name: "FHSA Deduction", line: "20805" },
                     { name: "PRPP Deduction", line: "20810" },
-                    { name: "Split Pension Deduction", line: "21000" },
                     { name: "SPP Deduction", line: "20820" },
                     { name: "Pooled Fund Deduction", line: "20900" },
+                    { name: "Split Pension Deduction", line: "21000" },
                   ]},
                   
                   // Personal Deductions
@@ -2779,9 +2779,9 @@ export default function TaxReport() {
                   
                   // Specialized Deductions
                   { category: "Specialized Deductions", items: [
+                    { name: "Exploration Development", line: "22400" },
                     { name: "Other Deductions", line: "23200" },
-                    { name: "UCCB Repayment", line: "21300" },
-                    { name: "Social Benefits Repayment", line: "42200" },
+                    { name: "Social Benefits Repayment", line: "23500" },
                   ]},
                 ];
 
@@ -2943,10 +2943,10 @@ export default function TaxReport() {
                   // Basic Credits
                   { category: "Basic Credits (Non-Refundable)", items: [
                     { name: "Basic Personal Amount", line: "30000" },
+                    { name: "Age Amount", line: "30100" },
                     { name: "Spouse or Common-law Partner Amount", line: "30300" },
                     { name: "Amount for Eligible Dependant", line: "30400" },
-                    { name: "Amount for Children Born in 2006 or Later", line: "30500" },
-                    { name: "Amount for Infirm Dependants Age 18 or Older", line: "30600" },
+                    { name: "Canada Caregiver Amount", line: "30450" },
                   ]},
                   
                   // Employment Credits
@@ -3010,12 +3010,15 @@ export default function TaxReport() {
                   
                   // Refundable Credits
                   { category: "Refundable Credits", items: [
+                    { name: "Climate Action Incentive", line: "44900" },
                     { name: "Refundable Medical Expense Supplement", line: "45200" },
                     { name: "Working Income Tax Benefit", line: "45300" },
-                    { name: "Canada Child Tax Benefit", line: "45400" },
                     { name: "GST/HST Credit", line: "45350" },
                     { name: "Ontario Trillium Benefit", line: "45351" },
                     { name: "Climate Action Incentive", line: "45355" },
+                    { name: "Canada Child Tax Benefit", line: "45400" },
+                    { name: "Journalism Labour Tax Credit", line: "47555" },
+                    { name: "Fuel Charge Farmers Credit", line: "47556" },
                   ]},
                 ];
 

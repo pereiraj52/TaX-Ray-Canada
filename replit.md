@@ -392,6 +392,7 @@ Changelog:
 - June 30, 2025. Added Home Accessibility Expenses (Line 31285) to Disability & Caregiver Credits section: enhanced accessibility support tracking by including home modification expenses for disability-related improvements, updated section totals and Tax Credits Analysis in household tax reports
 - June 30, 2025. Moved Pension Income Amount (Line 31400) to Personal Situation Credits: relocated from Employment Credits section to Personal Situation Credits for better logical organization, updated section totals in both T1 extraction display and Tax Credits Analysis in household tax reports
 - June 30, 2025. Created new Education Credits (Non-Refundable) section: separated education-related credits from Education & Medical Credits section, includes Interest on Student Loans (Line 31900), Tuition & Education Amounts (Line 32300), Tuition Transferred (Line 32400), and Amounts Transferred From your Spouse/Partner (Line 32600), renamed remaining section to Medical Credits (Non-Refundable), updated section totals and Tax Credits Analysis in household tax reports
+- July 1, 2025. Sorted all tax line numbers in numerical order within their groupings: fixed Employment Credits section (moved lines 31000 and 31217 to correct positions), corrected Refundable Credits section (moved line 44900 before 45200), updated TaxReport.tsx deductions and credits arrays to match proper numerical order, ensuring consistent line ordering across both T1 extraction display and household tax reports for better organization and readabilityts
 ```
 
 ## User Preferences
