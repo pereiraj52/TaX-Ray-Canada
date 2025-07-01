@@ -211,6 +211,8 @@ export class T1PDFParser {
         interest_student_loans: { code: '31900', name: 'Interest on Student Loans' },
         tuition_education_amounts: { code: '32300', name: 'Tuition and Education Amounts' },
         medical_expenses: { code: '33099', name: 'Medical Expenses' },
+        medical_expenses_other: { code: '33199', name: 'Allowable Medical Expenses' },
+        medical_expenses_net_eligible: { code: '33200', name: 'Net Eligible Medical Expenses' },
         donations_gifts: { code: '34900', name: 'Donations and Gifts' },
         total_tax_credits: { code: '35000', name: 'Total Tax Credits' },
         federal_tax: { code: '40400', name: 'Federal Tax' },
