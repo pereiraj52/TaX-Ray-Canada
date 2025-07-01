@@ -403,6 +403,7 @@ Changelog:
 - July 1, 2025. Added additional charitable donation fields: included Allowable Charitable Donations (Line 34000) and Total Ecological Gifts (Line 34200) in FederalTaxFields dataclass, added field mappings to Python extractor and PDF parser, updated frontend ExtractedDataDisplay to show both new fields in Charitable Gifts & Donations section, and integrated both fields into Tax Credits Analysis for complete charitable giving coverage
 - July 1, 2025. Added calculated Total Eligible Gifts & Donations field: created computed field that sums Lines 34000 and 34200, positioned after Total Ecological Gifts in both T1 extraction display and Tax Credits Analysis, implemented calculation logic in getFieldValue functions to handle CALC-34000+34200 field code for comprehensive charitable donation totals
 - July 1, 2025. Updated Charitable Gifts & Donations section summary: changed collapsed section total from Line 34900 (Donations & Gifts) to calculated Total Eligible Gifts & Donations (sum of Lines 34000 and 34200) for accurate section summary display matching the calculated field within the section
+- July 1, 2025. Updated Line 34900 field label: changed from "Donations & Gifts" to "Donation & Gift Credits" for accurate terminology across T1 extraction display, Tax Credits Analysis, and PDF parser mapping, corrected field naming to reflect proper Canadian tax form terminology
 ```
 
 ## User Preferences
