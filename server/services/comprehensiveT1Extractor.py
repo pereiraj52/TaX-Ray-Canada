@@ -1689,7 +1689,10 @@ class ComprehensiveT1Extractor:
                         if isinstance(match, tuple) and len(match) == 2:
                             dollars, cents = match
                             dollars_cleaned = dollars.replace(',', '').strip()
-                            if dollars_cleaned and cents and int(dollars_cleaned) >= 1:
+                            # For charitable donation credits (line 34900), allow amounts < $1
+                            # For most other lines, require >= $1 to avoid false positives
+                            min_amount = 0 if line_num == '34900' else 1
+                            if dollars_cleaned and cents and int(dollars_cleaned) >= min_amount:
                                 amount_str = f"{dollars_cleaned}.{cents}"
                                 if debug_f:
                                     debug_f.write(f'FOUND AMOUNT: {amount_str}\n')
