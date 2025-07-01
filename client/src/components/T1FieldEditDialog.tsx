@@ -163,7 +163,7 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       { fieldCode: '31600', fieldName: 'Disability Amount', fieldType: 'currency' },
       { fieldCode: '31900', fieldName: 'Interest on Student Loans', fieldType: 'currency' },
       { fieldCode: '32300', fieldName: 'Tuition and Education Amounts', fieldType: 'currency' },
-      { fieldCode: '33000', fieldName: 'Medical Expenses', fieldType: 'currency' },
+      { fieldCode: '33099', fieldName: 'Medical Expenses', fieldType: 'currency' },
       { fieldCode: '34900', fieldName: 'Donations and Gifts', fieldType: 'currency' },
       { fieldCode: '35000', fieldName: 'Total Tax Credits', fieldType: 'currency' },
       

@@ -2988,9 +2988,8 @@ export default function TaxReport() {
                   
                   // Medical Credits
                   { category: "Medical Credits (Non-Refundable)", items: [
-                    { name: "Medical Expenses", line: "33000" },
-                    { name: "Allowable Medical Expenses", line: "33099" },
-                    { name: "Medical Expenses for Others", line: "33199" },
+                    { name: "Medical Expenses", line: "33099" },
+                    { name: "Allowable Medical Expenses", line: "33199" },
                     { name: "Medical Expenses for Self/Spouse", line: "33200" },
                     { name: "Allowable Amount of Medical Expenses", line: "33500" },
                     { name: "Donations and Gifts", line: "34900" },

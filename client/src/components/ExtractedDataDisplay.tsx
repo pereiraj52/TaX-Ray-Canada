@@ -1672,18 +1672,18 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Medical Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['33000', '33099', '33199', '34900']))}
+                    {formatCurrency(getSectionTotal(['33099', '33199', '34900']))}
                   </span>
                 </button>
                 {!collapsedSections['education-medical-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Medical Expenses (Line 33000):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('33000'))}</span>
+                      <span className="field-label">Medical Expenses (Line 33099):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('33099'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Allowable Medical Expenses (Line 33099):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('33099'))}</span>
+                      <span className="field-label">Allowable Medical Expenses (Line 33199):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('33199'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Medical Expenses for Others (Line 33199):</span>
