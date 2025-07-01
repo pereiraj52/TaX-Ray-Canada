@@ -1694,10 +1694,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </div>
 
               {/* Charitable Gifts & Donations Section */}
-              <div className="credit-section">
+              <div className="border border-gray-200 rounded-lg">
                 <button
                   onClick={() => toggleSection('charitable-gifts-donations-credits')}
-                  className="w-full flex items-center justify-between py-2 px-0 text-left hover:bg-gray-50 rounded"
+                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
                 >
                   <div className="flex items-center">
                     {collapsedSections['charitable-gifts-donations-credits'] ? (
@@ -1712,7 +1712,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </span>
                 </button>
                 {!collapsedSections['charitable-gifts-donations-credits'] && (
-                  <div className="space-y-2 mt-2 pl-6">
+                  <div className="space-y-2 p-4 border-t border-gray-200">
                     <div className="field-row">
                       <span className="field-label">Donations & Gifts (Line 34900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>

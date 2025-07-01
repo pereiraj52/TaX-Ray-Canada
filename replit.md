@@ -398,6 +398,7 @@ Changelog:
 - July 1, 2025. Fixed Net Eligible Medical Expenses (Line 33200) extraction: added specialized extraction logic to comprehensiveT1Extractor.py for capturing line 33200 values, successfully extracting $7,882.43 amount and displaying correctly throughout the application
 - July 1, 2025. Updated Medical Credits summary to show only Line 33200 value: changed Medical Credits (Non-Refundable) section header summary from total of all medical credits to display only Net Eligible Medical Expenses (Line 33200) amount for focused medical credit tracking
 - July 1, 2025. Created new Charitable Gifts & Donations section: moved Donations & Gifts (Line 34900) from Medical Credits into separate "Charitable Gifts & Donations (Non-Refundable)" section for better credit categorization across T1 extraction display and household tax reports
+- July 1, 2025. Fixed Charitable Gifts & Donations section formatting: updated section styling to match other credit sections with proper border, padding, and indentation for consistent visual presentation
 ```
 
 ## User Preferences
