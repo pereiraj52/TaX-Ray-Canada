@@ -399,6 +399,7 @@ Changelog:
 - July 1, 2025. Updated Medical Credits summary to show only Line 33200 value: changed Medical Credits (Non-Refundable) section header summary from total of all medical credits to display only Net Eligible Medical Expenses (Line 33200) amount for focused medical credit tracking
 - July 1, 2025. Created new Charitable Gifts & Donations section: moved Donations & Gifts (Line 34900) from Medical Credits into separate "Charitable Gifts & Donations (Non-Refundable)" section for better credit categorization across T1 extraction display and household tax reports
 - July 1, 2025. Fixed Charitable Gifts & Donations section formatting: updated section styling to match other credit sections with proper border, padding, and indentation for consistent visual presentation
+- July 1, 2025. Added Schedule 9 charitable donations extraction: created Schedule9Fields dataclass with total_eligible_amount field, implemented Schedule 9 extraction method in Python extractor, added Schedule 9 field mapping to PDF parser with code 'S9-TOTAL', updated frontend to display "Total eligible amount of charitable donations" as first item in Charitable Gifts & Donations section, and integrated field into Tax Credits Analysis for comprehensive charitable donation tracking
 ```
 
 ## User Preferences

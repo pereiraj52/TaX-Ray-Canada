@@ -2996,6 +2996,7 @@ export default function TaxReport() {
                   
                   // Charitable Gifts & Donations
                   { category: "Charitable Gifts & Donations (Non-Refundable)", items: [
+                    { name: "Total eligible amount of charitable donations", line: "S9-TOTAL" },
                     { name: "Donations and Gifts", line: "34900" },
                   ]},
                   
