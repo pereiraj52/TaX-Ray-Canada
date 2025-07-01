@@ -1708,7 +1708,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Charitable Gifts & Donations (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getFieldValue('34900'))}
+                    {formatCurrency(getFieldValue('34000') + getFieldValue('34200'))}
                   </span>
                 </button>
                 {!collapsedSections['charitable-gifts-donations-credits'] && (
@@ -1730,7 +1730,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('34000') + getFieldValue('34200'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Donations & Gifts (Line 34900):</span>
+                      <span className="field-label">Donation & Gift Credits (Line 34900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
                     </div>
                   </div>

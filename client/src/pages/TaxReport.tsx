@@ -3009,7 +3009,7 @@ export default function TaxReport() {
                     { name: "Allowable Charitable Donations", line: "34000" },
                     { name: "Total Ecological Gifts", line: "34200" },
                     { name: "Total Eligible Gifts & Donations", line: "CALC-34000+34200" },
-                    { name: "Donations and Gifts", line: "34900" },
+                    { name: "Donation & Gift Credits", line: "34900" },
                   ]},
                   
                   // Provincial Credits (Ontario)
