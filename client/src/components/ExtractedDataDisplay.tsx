@@ -1657,7 +1657,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
-              {/* Medical & Other Credits Section */}
+              {/* Medical Credits Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
                   onClick={() => toggleSection('education-medical-credits')}
@@ -1669,7 +1669,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />
                     )}
-                    <h4 className="font-medium text-primary">Medical & Other Credits (Non-Refundable)</h4>
+                    <h4 className="font-medium text-primary">Medical Credits (Non-Refundable)</h4>
                   </div>
                   <span className="font-medium text-primary">
                     {formatCurrency(getSectionTotal(['33000', '33099', '33199', '34900']))}

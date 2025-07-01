@@ -2986,8 +2986,8 @@ export default function TaxReport() {
                     { name: "Amounts Transferred from Spouse/Partner", line: "32600" },
                   ]},
                   
-                  // Medical & Other Credits
-                  { category: "Medical & Other Credits (Non-Refundable)", items: [
+                  // Medical Credits
+                  { category: "Medical Credits (Non-Refundable)", items: [
                     { name: "Medical Expenses", line: "33000" },
                     { name: "Allowable Medical Expenses", line: "33099" },
                     { name: "Medical Expenses for Others", line: "33199" },
