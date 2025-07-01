@@ -1468,6 +1468,15 @@ class ComprehensiveT1Extractor:
                 debug_f.write(f'DEBUG: Extracting pension adjustment for line {line_num}\n')
             except Exception:
                 debug_f = None
+                
+        # Debug for medical expenses
+        if line_num == '33099':
+            try:
+                debug_f = open('attached_assets/medical_expenses_debug.log', 'w')
+                debug_f.write(f'DEBUG: Extracting medical expenses for line {line_num}\n')
+                debug_f.write(f'TEXT SAMPLE: {text[:2000]}\n\n')
+            except Exception:
+                debug_f = None
         
         # Special handling for line 10400 (Other Employment Income)
         if line_num == '10400':
