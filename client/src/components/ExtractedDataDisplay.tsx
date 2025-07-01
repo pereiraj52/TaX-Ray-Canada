@@ -1714,6 +1714,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['charitable-gifts-donations-credits'] && (
                   <div className="space-y-2 p-4 border-t border-gray-200">
                     <div className="field-row">
+                      <span className="field-label">Total eligible amount of charitable donations:</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('S9-TOTAL'))}</span>
+                    </div>
+                    <div className="field-row">
                       <span className="field-label">Donations & Gifts (Line 34900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
                     </div>

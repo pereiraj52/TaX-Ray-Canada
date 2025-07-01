@@ -354,6 +354,25 @@ export class T1PDFParser {
       }
     }
 
+    // Extract Schedule 9 fields
+    if (comprehensiveData.schedule9) {
+      const schedule9Mapping = {
+        total_eligible_amount: { code: 'S9-TOTAL', name: 'Total eligible amount of charitable donations' },
+      };
+
+      for (const [fieldKey, mapping] of Object.entries(schedule9Mapping)) {
+        const value = comprehensiveData.schedule9[fieldKey];
+        if (value !== null && value !== undefined) {
+          formFields.push({
+            fieldName: mapping.name,
+            fieldCode: mapping.code,
+            fieldValue: value.toString(),
+            fieldType: 'currency',
+          });
+        }
+      }
+    }
+
     extractedData.formFields = formFields;
     return extractedData;
   }

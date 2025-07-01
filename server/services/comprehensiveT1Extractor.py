@@ -577,6 +577,11 @@ class SpouseInfo:
     uccb_repayment: Optional[Decimal] = None
 
 @dataclass
+class Schedule9Fields:
+    """Schedule 9 - Charitable Donations"""
+    total_eligible_amount: Optional[Decimal] = None  # Total eligible amount of charitable donations
+
+@dataclass
 class Schedule7Fields:
     """Schedule 7 - RRSP, PRPP, SPP Contributions, Transfers, HBP/LLP Activities"""
     # rrsp_contributions: Optional[Decimal] = None  # Line 24500 (remove old field)
@@ -620,6 +625,7 @@ class ComprehensiveT1Return:
     yukon_tax: YukonTaxFields = field(default_factory=YukonTaxFields)
     spouse_info: SpouseInfo = field(default_factory=SpouseInfo)
     schedule7: Schedule7Fields = field(default_factory=Schedule7Fields)
+    schedule9: Schedule9Fields = field(default_factory=Schedule9Fields)
     
     def __post_init__(self):
         if self.personal_info is None:
@@ -746,6 +752,9 @@ class ComprehensiveT1Extractor:
         
         # Extract Schedule 7 fields
         t1_return.schedule7 = self._extract_schedule7_fields(text)
+        
+        # Extract Schedule 9 fields
+        t1_return.schedule9 = self._extract_schedule9_fields(text)
         
         return t1_return
     
@@ -1911,6 +1920,52 @@ class ComprehensiveT1Extractor:
         #         print('DEBUG-S7-LINE11-CONTEXT:')
         #         for l in lines[start:end]:
         #             print(f'DEBUG-S7-LINE: {l}')
+        return fields
+    
+    def _extract_schedule9_fields(self, text: str) -> Schedule9Fields:
+        """Extract Schedule 9 charitable donations fields from text"""
+        fields = Schedule9Fields()
+        
+        # Look for "Total eligible amount" in Schedule 9 context
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            # Look for Schedule 9 context and total eligible amount
+            if ('schedule 9' in line.lower() or 'charitable' in line.lower()) and 'total eligible' in line.lower():
+                # Look for amount pattern on this line or nearby lines
+                for j in range(max(0, i-2), min(len(lines), i+3)):
+                    check_line = lines[j]
+                    # Look for decimal amount pattern like "5.24" or "5 24"
+                    amount_match = re.search(r'(\d{1,3}(?:,\d{3})*)[.\s](\d{2})', check_line)
+                    if amount_match:
+                        try:
+                            dollars = amount_match.group(1).replace(',', '')
+                            cents = amount_match.group(2)
+                            value = f"{dollars}.{cents}"
+                            fields.total_eligible_amount = Decimal(value)
+                            break
+                        except Exception:
+                            continue
+                if fields.total_eligible_amount:
+                    break
+            
+            # Alternative pattern: look for "Total eligible amount" specifically
+            elif 'total eligible amount' in line.lower():
+                # Look for amount on this line or next few lines
+                for j in range(i, min(len(lines), i+3)):
+                    check_line = lines[j]
+                    amount_match = re.search(r'(\d{1,3}(?:,\d{3})*)[.\s](\d{2})', check_line)
+                    if amount_match:
+                        try:
+                            dollars = amount_match.group(1).replace(',', '')
+                            cents = amount_match.group(2)
+                            value = f"{dollars}.{cents}"
+                            fields.total_eligible_amount = Decimal(value)
+                            break
+                        except Exception:
+                            continue
+                if fields.total_eligible_amount:
+                    break
+        
         return fields
 
 def decimal_serializer(obj):
