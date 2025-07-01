@@ -2992,6 +2992,10 @@ export default function TaxReport() {
                     { name: "Allowable Medical Expenses", line: "33199" },
                     { name: "Net Eligible Medical Expenses", line: "33200" },
                     { name: "Allowable Amount of Medical Expenses", line: "33500" },
+                  ]},
+                  
+                  // Charitable Gifts & Donations
+                  { category: "Charitable Gifts & Donations (Non-Refundable)", items: [
                     { name: "Donations and Gifts", line: "34900" },
                   ]},
                   

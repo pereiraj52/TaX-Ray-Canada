@@ -1689,6 +1689,30 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Net Eligible Medical Expenses (Line 33200):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('33200'))}</span>
                     </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Charitable Gifts & Donations Section */}
+              <div className="credit-section">
+                <button
+                  onClick={() => toggleSection('charitable-gifts-donations-credits')}
+                  className="w-full flex items-center justify-between py-2 px-0 text-left hover:bg-gray-50 rounded"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['charitable-gifts-donations-credits'] ? (
+                      <ChevronRight className="h-4 w-4 mr-2" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                    )}
+                    <h4 className="font-medium text-primary">Charitable Gifts & Donations (Non-Refundable)</h4>
+                  </div>
+                  <span className="font-medium text-primary">
+                    {formatCurrency(getFieldValue('34900'))}
+                  </span>
+                </button>
+                {!collapsedSections['charitable-gifts-donations-credits'] && (
+                  <div className="space-y-2 mt-2 pl-6">
                     <div className="field-row">
                       <span className="field-label">Donations & Gifts (Line 34900):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
