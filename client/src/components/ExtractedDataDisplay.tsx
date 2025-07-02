@@ -1972,10 +1972,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 <span className="font-medium text-primary">{formatCurrency(getFieldValue('42000'))}</span>
               </div>
               
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Provincial Tax (Ontario):</span>
-                <span className="font-medium text-primary">{formatCurrency(getFieldValue('42800'))}</span>
-              </div>
+              {getClientProvince() === 'ON' && (
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-primary">Provincial Tax (Ontario):</span>
+                  <span className="font-medium text-primary">{formatCurrency(getFieldValue('42800'))}</span>
+                </div>
+              )}
               
               <div className="flex justify-between items-center border-t pt-4">
                 <span className="font-medium text-primary">Total Tax:</span>

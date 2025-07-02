@@ -65,6 +65,22 @@ export default function TaxReport() {
     client.t1Returns.filter(t1Return => t1Return.taxYear === taxYear)
   );
 
+  // Helper function to get client's province from T1 data
+  const getClientProvince = () => {
+    for (const t1Return of taxYearReturns) {
+      const t1WithFields = t1Return as any;
+      if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+        const provinceField = t1WithFields.formFields.find((field: any) => 
+          field.fieldCode === 'province' || field.fieldCode === 'prov'
+        );
+        if (provinceField?.fieldValue) {
+          return provinceField.fieldValue.toString().toUpperCase();
+        }
+      }
+    }
+    return 'ON'; // Default to Ontario
+  };
+
   return (
     <Layout title="" subtitle="">
       <div className="p-6">
@@ -213,47 +229,49 @@ export default function TaxReport() {
                             </span>
                           </div>
                         </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Provincial Tax:</span>
-                          <div className="text-right">
-                            <span className="font-medium text-primary">
-                              ${(() => {
-                                let total = 0;
-                                taxYearReturns.forEach(t1Return => {
-                                  const t1WithFields = t1Return as any;
-                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                                    const provincialTaxField = t1WithFields.formFields.find((field: any) => 
-                                      field.fieldCode === '42800'
-                                    );
-                                    if (provincialTaxField?.fieldValue) {
-                                      const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
-                                      if (!isNaN(value)) total += value;
+                        {getClientProvince() === 'ON' && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600">Provincial Tax:</span>
+                            <div className="text-right">
+                              <span className="font-medium text-primary">
+                                ${(() => {
+                                  let total = 0;
+                                  taxYearReturns.forEach(t1Return => {
+                                    const t1WithFields = t1Return as any;
+                                    if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                      const provincialTaxField = t1WithFields.formFields.find((field: any) => 
+                                        field.fieldCode === '42800'
+                                      );
+                                      if (provincialTaxField?.fieldValue) {
+                                        const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                                        if (!isNaN(value)) total += value;
+                                      }
                                     }
-                                  }
-                                });
-                                return total.toLocaleString('en-US', {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2
-                                });
-                              })()} <span className="text-sm text-gray-500">({(() => {
-                                let total = 0;
-                                taxYearReturns.forEach(t1Return => {
-                                  const t1WithFields = t1Return as any;
-                                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
-                                    const provincialTaxField = t1WithFields.formFields.find((field: any) => 
-                                      field.fieldCode === '42800'
-                                    );
-                                    if (provincialTaxField?.fieldValue) {
-                                      const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
-                                      if (!isNaN(value)) total += value;
+                                  });
+                                  return total.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                  });
+                                })()} <span className="text-sm text-gray-500">({(() => {
+                                  let total = 0;
+                                  taxYearReturns.forEach(t1Return => {
+                                    const t1WithFields = t1Return as any;
+                                    if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                                      const provincialTaxField = t1WithFields.formFields.find((field: any) => 
+                                        field.fieldCode === '42800'
+                                      );
+                                      if (provincialTaxField?.fieldValue) {
+                                        const value = parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, ''));
+                                        if (!isNaN(value)) total += value;
+                                      }
                                     }
-                                  }
-                                });
-                                return calculatePercentage(total);
-                              })()})</span>
-                            </span>
+                                  });
+                                  return calculatePercentage(total);
+                                })()})</span>
+                              </span>
+                            </div>
                           </div>
-                        </div>
+                        )}
                         <div className="flex justify-between items-center">
                           <span className="text-gray-600">CPP Contributions:</span>
                           <div className="text-right">
@@ -2351,7 +2369,8 @@ export default function TaxReport() {
                 </div>
                 </div>
 
-                {/* Provincial Tax Bracket Analysis */}
+                {/* Provincial Tax Bracket Analysis - Only show for provinces with provincial tax */}
+                {getClientProvince() === 'ON' && (
                 <div className="space-y-6">
                   <h2 className="text-xl font-semibold text-gray-900">Provincial Tax Bracket Analysis</h2>
                   
@@ -2497,8 +2516,10 @@ export default function TaxReport() {
                     })}
                   </div>
                 </div>
+                )}
 
-                {/* Provincial Tax Bracket Visualizations */}
+                {/* Provincial Tax Bracket Visualizations - Only show for provinces with provincial tax */}
+                {getClientProvince() === 'ON' && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {spouseData.map((spouse, spouseIndex) => {
                     // Ontario provincial tax brackets for visualization - different rates for different income types
