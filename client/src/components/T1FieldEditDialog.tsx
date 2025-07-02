@@ -178,12 +178,16 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       
       // Refund/Credits (Lines 43000-48000)
       { fieldCode: '43700', fieldName: 'Total Income Tax Deducted', fieldType: 'currency' },
+      { fieldCode: '44000', fieldName: 'Investment Tax Credit', fieldType: 'currency' },
       { fieldCode: '44800', fieldName: 'CPP Overpayment', fieldType: 'currency' },
       { fieldCode: '44900', fieldName: 'Climate Action Incentive', fieldType: 'currency' },
       { fieldCode: '45000', fieldName: 'EI Overpayment', fieldType: 'currency' },
       { fieldCode: '45300', fieldName: 'Working Income Tax Benefit', fieldType: 'currency' },
       { fieldCode: '45350', fieldName: 'Canada Training Credit', fieldType: 'currency' },
+      { fieldCode: '45355', fieldName: 'Climate Action Incentive', fieldType: 'currency' },
       { fieldCode: '45400', fieldName: 'Canada Child Benefit', fieldType: 'currency' },
+      { fieldCode: '45600', fieldName: 'Canada Workers Benefit', fieldType: 'currency' },
+      { fieldCode: '45700', fieldName: 'Teacher and Early Childhood Educator School Supply Tax Credit', fieldType: 'currency' },
       { fieldCode: '47900', fieldName: 'Provincial Credits', fieldType: 'currency' },
       { fieldCode: '48200', fieldName: 'Total Credits', fieldType: 'currency' },
       { fieldCode: '48400', fieldName: 'Refund or Balance Owing', fieldType: 'currency' },

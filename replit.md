@@ -406,6 +406,8 @@ Changelog:
 - July 1, 2025. Updated Line 34900 field label: changed from "Donations & Gifts" to "Donation & Gift Credits" for accurate terminology across T1 extraction display, Tax Credits Analysis, and PDF parser mapping, corrected field naming to reflect proper Canadian tax form terminology
 - July 1, 2025. Fixed Line 34900 (Donation & Gift Credits) extraction issue: modified _extract_line_amount method in Python extractor to allow charitable donation credits with values less than $1.00, enabling extraction of amounts like $0.79 by setting minimum amount threshold to $0 for line 34900 while maintaining $1 minimum for other lines to avoid false positives
 - July 2, 2025. Updated Federal Tax Credits summary label: changed from "Federal Tax Credits" to "Total Non-Refundable" in T1 extraction display credits summary section for more accurate terminology reflecting non-refundable tax credit totals
+- July 2, 2025. Fixed GST/HST Credit field label: corrected Line 45350 from "GST/HST Credit" to "Canada Training Credit" across ExtractedDataDisplay, T1FieldEditDialog, and PDF parser mapping for accurate Canadian tax form terminology
+- July 2, 2025. Revised refundable tax credit section: updated to include Lines 44000 (Investment Tax Credit), 44800 (CPP Overpayment), 45000 (EI Overpayment), 45355 (Climate Action Incentive), 45400 (Canada Child Benefit), 45600 (Canada Workers Benefit), and 45700 (Teacher and Early Childhood Educator School Supply Tax Credit) in both T1 extraction display and Tax Credits Analysis, removed outdated credit fields for accurate refundable credit tracking
 ```
 
 ## User Preferences

@@ -3026,15 +3026,13 @@ export default function TaxReport() {
                   
                   // Refundable Credits
                   { category: "Refundable Credits", items: [
-                    { name: "Climate Action Incentive", line: "44900" },
-                    { name: "Refundable Medical Expense Supplement", line: "45200" },
-                    { name: "Working Income Tax Benefit", line: "45300" },
-                    { name: "GST/HST Credit", line: "45350" },
-                    { name: "Ontario Trillium Benefit", line: "45351" },
+                    { name: "Investment Tax Credit", line: "44000" },
+                    { name: "CPP Overpayment", line: "44800" },
+                    { name: "EI Overpayment", line: "45000" },
                     { name: "Climate Action Incentive", line: "45355" },
-                    { name: "Canada Child Tax Benefit", line: "45400" },
-                    { name: "Journalism Labour Tax Credit", line: "47555" },
-                    { name: "Fuel Charge Farmers Credit", line: "47556" },
+                    { name: "Canada Child Benefit", line: "45400" },
+                    { name: "Canada Workers Benefit", line: "45600" },
+                    { name: "Teacher and Early Childhood Educator School Supply Tax Credit", line: "45700" },
                   ]},
                 ];
 

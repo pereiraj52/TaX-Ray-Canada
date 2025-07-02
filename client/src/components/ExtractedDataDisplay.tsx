@@ -1752,38 +1752,38 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Refundable Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['44900', '45200', '45300', '45350', '45400', '47555', '47556']))}
+                    {formatCurrency(getSectionTotal(['44000', '44800', '45000', '45355', '45400', '45600', '45700']))}
                   </span>
                 </button>
                 {!collapsedSections['refundable-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Climate Action Incentive (Line 44900):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('44900'))}</span>
+                      <span className="field-label">Investment Tax Credit (Line 44000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('44000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Refundable Medical Expense (Line 45200):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
+                      <span className="field-label">CPP Overpayment (Line 44800):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('44800'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Working Income Tax Benefit (Line 45300):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
+                      <span className="field-label">EI Overpayment (Line 45000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canada Training Credit (Line 45350):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
+                      <span className="field-label">Climate Action Incentive (Line 45355):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Canada Child Benefit (Line 45400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Journalism Labour Tax Credit (Line 47555):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('47555'))}</span>
+                      <span className="field-label">Canada Workers Benefit (Line 45600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45600'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Fuel Charge Farmers Credit (Line 47556):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
+                      <span className="field-label">Teacher and Early Childhood Educator School Supply Tax Credit (Line 45700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45700'))}</span>
                     </div>
                   </div>
                 )}
