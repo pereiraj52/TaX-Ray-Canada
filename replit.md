@@ -436,6 +436,7 @@ Changelog:
 - July 2, 2025. Enhanced audit report to focus on single person with comprehensive field coverage: modified T1AuditReportGenerator to show details for only the selected person and include all possible T1 form fields (personal information, all income categories, deductions, credits, tax calculations) with values displayed even when null, organized into logical sections with province-conditional Ontario credits for complete tax return documentation
 - July 2, 2025. Added automatic page refresh when T1 extraction processing completes: modified ProcessingStatus component to automatically reload the page 1 second after T1 data extraction finishes successfully, ensuring users see the latest extracted data without manual refresh
 - July 2, 2025. Fixed credits section initialization to ensure all subcategories start collapsed: added 'ontario-refundable-credits' to the collapsedSections state initialization, ensuring all credit subsections including Ontario Refundable Credits start collapsed when opening the Credits tab
+- July 2, 2025. Fixed Tax Credits calculation in household financial summary: corrected calculation to sum both line 35000 (federal non-refundable tax credits) and line 61500 (Ontario non-refundable tax credits) for accurate total tax credits display in household tax reports
 ```
 
 ## User Preferences

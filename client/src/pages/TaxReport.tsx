@@ -144,6 +144,13 @@ export default function TaxReport() {
                           const value = parseFloat(String(creditsField.fieldValue).replace(/[,$\s]/g, ''));
                           if (!isNaN(value)) totalCreditsSum += value;
                         }
+                        
+                        // Also add Ontario non-refundable tax credits (Line 61500) if available
+                        const ontarioCreditsField = t1WithFields.formFields.find((field: any) => field.fieldCode === '61500');
+                        if (ontarioCreditsField?.fieldValue) {
+                          const value = parseFloat(String(ontarioCreditsField.fieldValue).replace(/[,$\s]/g, ''));
+                          if (!isNaN(value)) totalCreditsSum += value;
+                        }
                       }
                     });
                     
