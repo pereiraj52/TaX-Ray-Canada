@@ -352,7 +352,7 @@ export default function IndividualTaxReport() {
         {/* Combined Tax Bracket Analysis */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
-          <Card>
+          <Card className="max-w-2xl">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-gray-900">
                 {targetClient.firstName} {targetClient.lastName} - Combined Tax Bracket Analysis
@@ -451,7 +451,7 @@ export default function IndividualTaxReport() {
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap max-w-lg">
                 {['Ordinary Income', 'Capital Gains', 'Eligible Dividends', 'Non-Eligible Dividends'].map((incomeType, typeIndex) => {
                   const getRatesForType = (type: string) => {
                     switch (type) {
@@ -558,7 +558,7 @@ export default function IndividualTaxReport() {
         {/* Federal Tax Bracket Analysis */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Bracket Analysis</h2>
-          <Card>
+          <Card className="max-w-2xl">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-gray-900">
                 {targetClient.firstName} {targetClient.lastName} - Federal Tax Bracket Analysis
@@ -630,7 +630,7 @@ export default function IndividualTaxReport() {
           </Card>
 
           {/* Federal Tax Bracket Visualization */}
-          <Card className="mt-4">
+          <Card className="mt-4 max-w-2xl">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-gray-900">
                 {targetClient.firstName} {targetClient.lastName} - Federal Tax Bracket Visualization
@@ -741,7 +741,7 @@ export default function IndividualTaxReport() {
         {/* Provincial Tax Bracket Analysis */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Provincial Tax Bracket Analysis</h2>
-          <Card>
+          <Card className="max-w-2xl">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-gray-900">
                 {targetClient.firstName} {targetClient.lastName} - Provincial Tax Bracket Analysis
@@ -813,7 +813,7 @@ export default function IndividualTaxReport() {
           </Card>
 
           {/* Provincial Tax Bracket Visualization */}
-          <Card className="mt-4">
+          <Card className="mt-4 max-w-2xl">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-gray-900">
                 {targetClient.firstName} {targetClient.lastName} - Provincial Tax Bracket Visualization
