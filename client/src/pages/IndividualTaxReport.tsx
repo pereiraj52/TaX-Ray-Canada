@@ -451,7 +451,7 @@ export default function IndividualTaxReport() {
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="space-y-4">
+              <div className="flex flex-wrap">
                 {['Ordinary Income', 'Capital Gains', 'Eligible Dividends', 'Non-Eligible Dividends'].map((incomeType, typeIndex) => {
                   const getRatesForType = (type: string) => {
                     switch (type) {
@@ -471,66 +471,78 @@ export default function IndividualTaxReport() {
                   const maxScale = 300000;
 
                   return (
-                    <div key={typeIndex} className="space-y-2">
-                      <h4 className="font-medium text-sm text-gray-700">{incomeType}</h4>
-                      <div className="flex items-end relative">
+                    <div key={typeIndex} className="mr-4 inline-block">
+                      <div className="relative">
                         {/* Income Scale Labels */}
-                        <div className="flex flex-col justify-between h-72 text-xs text-gray-600 mr-2 w-12">
-                          <div>$300k</div>
-                          <div>$247k</div>
-                          <div>$220k</div>
-                          <div>$173k</div>
-                          <div>$150k</div>
-                          <div>$112k</div>
-                          <div>$103k</div>
-                          <div>$56k</div>
-                          <div>$51k</div>
-                          <div>$0</div>
+                        <div className="absolute left-0 flex flex-col justify-between h-72 text-xs text-gray-600 w-12">
+                          <div className="text-right pr-2">$300k</div>
+                          <div className="text-right pr-2">$247k</div>
+                          <div className="text-right pr-2">$220k</div>
+                          <div className="text-right pr-2">$173k</div>
+                          <div className="text-right pr-2">$150k</div>
+                          <div className="text-right pr-2">$112k</div>
+                          <div className="text-right pr-2">$103k</div>
+                          <div className="text-right pr-2">$56k</div>
+                          <div className="text-right pr-2">$51k</div>
+                          <div className="text-right pr-2">$0</div>
                         </div>
                         
-                        {/* Tax Bracket Bars */}
-                        <div className="flex h-72 bg-gray-100 rounded flex-1">
-                          {rates.map((rate, index) => {
-                            const isCurrentBracket = index < thresholds.length - 1 ? 
-                              (taxableIncome >= thresholds[index] && taxableIncome < thresholds[index + 1]) :
-                              (taxableIncome >= thresholds[index]);
-                            
-                            return (
-                              <div
-                                key={index}
-                                className={`flex-1 flex items-center justify-center text-black text-xs relative ${
-                                  isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
-                                }`}
-                                style={{ 
-                                  height: '100%',
-                                  zIndex: 10
-                                }}
-                              >
-                                <span className="z-20">{rate.toFixed(1)}%</span>
-                              </div>
-                            );
-                          })}
+                        {/* Tax Bracket Column */}
+                        <div className="ml-12 w-20">
+                          <div className="h-72 bg-gray-100 rounded relative flex flex-col">
+                            {rates.slice().reverse().map((rate, reverseIndex) => {
+                              const index = rates.length - 1 - reverseIndex;
+                              const isCurrentBracket = index < thresholds.length - 1 ? 
+                                (taxableIncome >= thresholds[index] && taxableIncome < thresholds[index + 1]) :
+                                (taxableIncome >= thresholds[index]);
+                              
+                              const bracketHeight = 100 / rates.length;
+                              
+                              return (
+                                <div
+                                  key={index}
+                                  className={`flex items-center justify-center text-black text-xs relative ${
+                                    isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
+                                  }`}
+                                  style={{ 
+                                    height: `${bracketHeight}%`,
+                                    zIndex: 10
+                                  }}
+                                >
+                                  <span className="z-20 font-medium">{rate.toFixed(1)}%</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          
+                          {/* Income Type Label */}
+                          <div className="text-center mt-2 text-xs text-gray-700 font-medium">
+                            {incomeType.split(' ').map((word, i) => (
+                              <div key={i}>{word}</div>
+                            ))}
+                          </div>
                         </div>
                         
                         {/* Taxable Income Indicator */}
-                        {taxableIncome > 0 && (
+                        {taxableIncome > 0 && typeIndex === 0 && (
                           <div
-                            className="absolute h-0.5 z-30 left-14"
+                            className="absolute h-0.5 z-30"
                             style={{
                               backgroundColor: '#D4B26A',
-                              width: 'calc(100% - 56px)',
-                              top: `${100 - Math.min(95, (taxableIncome / maxScale) * 100)}%`
+                              width: '320px',
+                              left: '48px',
+                              top: `${(1 - Math.min(0.95, taxableIncome / maxScale)) * 288}px`
                             }}
                           >
                             <div 
                               className="absolute text-xs font-medium whitespace-nowrap"
                               style={{
                                 color: '#D4B26A',
-                                right: '-60px',
+                                left: '-50px',
                                 top: '-8px'
                               }}
                             >
-                              {typeIndex === 0 ? `$${(taxableIncome/1000).toFixed(0)}k` : ''}
+                              Taxable Income: ${(taxableIncome/1000).toFixed(0)}k
                             </div>
                           </div>
                         )}
