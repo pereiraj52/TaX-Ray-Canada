@@ -44,6 +44,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     'charitable-gifts-donations-credits': true,
     'ontario-credits': true,
     'refundable-credits': true,
+    'ontario-refundable-credits': true,
     // Account sections
     'rrsp-section': true,
     'tfsa-section': true,
