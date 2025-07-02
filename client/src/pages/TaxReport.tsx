@@ -3367,17 +3367,15 @@ export default function TaxReport() {
                           }, 0);
 
                           return (
-                            <div key={categoryIndex} className="border rounded-lg p-4">
-                              <div className="flex justify-between items-center cursor-pointer">
+                            <div key={categoryIndex}>
+                              <div className="flex justify-between items-center mb-3">
                                 <h4 className="font-medium text-gray-900">{category.category}</h4>
-                                <div className="flex items-center space-x-2">
-                                  <span className="font-medium text-primary">
-                                    {formatCurrency(categoryTotal)}
-                                  </span>
-                                </div>
+                                <span className="font-medium text-primary">
+                                  {formatCurrency(categoryTotal)}
+                                </span>
                               </div>
                               
-                              <div className="mt-3 space-y-2">
+                              <div className="space-y-2 ml-4">
                                 {category.items.map((item, itemIndex) => {
                                   const amount = getFieldValue(item.line);
                                   const hasClaim = amount > 0;
