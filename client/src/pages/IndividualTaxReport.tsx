@@ -883,7 +883,7 @@ export default function IndividualTaxReport() {
                 const taxBreakdown = calculateTaxBreakdown(taxableIncome);
 
                 return (
-                  <Card className="max-w-2xl">
+                  <Card>
                     <CardHeader>
                       <CardTitle className="text-lg font-medium text-gray-900">
                         {clientName} - Combined Tax Bracket Analysis
@@ -963,7 +963,7 @@ export default function IndividualTaxReport() {
                 }
 
                 return (
-                  <Card className="max-w-2xl">
+                  <Card>
                     <CardHeader>
                       <CardTitle className="text-lg font-medium text-gray-900">
                         {targetClient.firstName} {targetClient.lastName} - Combined Tax Bracket Visualization
