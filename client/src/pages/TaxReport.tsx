@@ -4137,133 +4137,74 @@ export default function TaxReport() {
                           }, 0);
 
                           return (
-                            <div key={categoryIndex} className="border-b border-gray-100 pb-4 last:border-b-0">
-                              <div className="mb-3">
-                                <h4 className="font-medium text-primary">{category.category}</h4>
+                            <div key={categoryIndex} className="space-y-4">
+                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                                <h4 className="text-base text-gray-600">
+                                  {category.category}
+                                </h4>
+                                <span className="text-base text-gray-600">
+                                  {(() => {
+                                    const categoryTotal = category.items.reduce((sum, item) => {
+                                      return sum + getFieldValue(item.line);
+                                    }, 0);
+                                    return categoryTotal > 0 ? '100.00% clawback' : '0.00% clawback';
+                                  })()}
+                                </span>
                               </div>
                               
-                              <div className="space-y-2">
-                                {category.items.map((item, itemIndex) => {
-                                  const amount = getFieldValue(item.line);
-                                  const hasAmount = amount > 0;
-                                  
-                                  // Special handling for Canada Workers Benefit clawback calculation
-                                  if (item.name === "Canada Workers Benefit (Single)") {
-                                    // Determine if client is single or married
-                                    const isMarried = household?.clients && household.clients.length === 2;
-                                    
-                                    // Set phase-out ranges based on marital status
-                                    const phaseOutStart = isMarried ? 29833 : 26149;
-                                    const phaseOutEnd = isMarried ? 48093 : 36749;
-                                    
-                                    // Get taxable income (Line 26000)
-                                    const taxableIncome = getFieldValue("26000");
-                                    
-                                    // Calculate clawback percentage
-                                    let clawbackPercentage = 0;
-                                    if (taxableIncome > phaseOutStart) {
-                                      const excessIncome = Math.min(taxableIncome - phaseOutStart, phaseOutEnd - phaseOutStart);
-                                      const totalPhaseOutRange = phaseOutEnd - phaseOutStart;
-                                      clawbackPercentage = (excessIncome / totalPhaseOutRange) * 100;
-                                    }
-                                    
-                                    const progressPercentage = Math.min(clawbackPercentage, 100);
-                                    
+                              <div className="grid grid-cols-3 gap-6">
+                                <div className="space-y-3">
+                                  {category.items.map((item, itemIndex) => {
+                                    const amount = getFieldValue(item.line);
                                     return (
-                                      <div key={itemIndex} className="flex items-start justify-between">
-                                        <div className="flex items-center space-x-2 flex-shrink-0">
-                                          {hasAmount ? (
-                                            <span style={{ color: '#D4B26A' }}>⚠</span>
-                                          ) : (
-                                            <span style={{ color: '#88AA73' }}>✓</span>
-                                          )}
-                                          <div>
-                                            <span className="font-medium">{item.name} (Line {item.line})</span>
-                                          </div>
-                                        </div>
-                                        
-                                        {/* CWB Clawback Bar Chart */}
-                                        <div className="w-2/3 ml-4">
-                                          <div className="relative">
-                                            <div className="w-full" style={{ height: '36px' }}>
-                                              <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
-                                                {/* Progress fill */}
-                                                <div 
-                                                  className="h-full transition-all duration-300"
-                                                  style={{ 
-                                                    width: `${progressPercentage}%`,
-                                                    background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
-                                                  }}
-                                                />
-                                                {/* Clawback percentage overlay */}
-                                                <div 
-                                                  className="absolute inset-0 flex items-center justify-center text-lg"
-                                                  style={{ color: '#111111' }}
-                                                >
-                                                  Clawback: {clawbackPercentage.toFixed(1)}%
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            {/* Scale labels */}
-                                            <div className="flex justify-between font-medium text-primary mt-1 text-xs">
-                                              <span>Start: {formatCurrency(phaseOutStart)}</span>
-                                              <span>Max: $1,590</span>
-                                              <span>End: {formatCurrency(phaseOutEnd)}</span>
-                                            </div>
-                                          </div>
+                                      <div key={itemIndex} className="flex justify-between">
+                                        <div className="text-gray-700">{item.name}</div>
+                                        <div className="text-gray-700">
+                                          {amount > 0 ? formatCurrency(amount) : formatCurrency(0)}
                                         </div>
                                       </div>
                                     );
-                                  }
-                                  
-                                  // Default bar chart for other benefits
-                                  return (
-                                    <div key={itemIndex} className="flex items-start justify-between">
-                                      <div className="flex items-center space-x-2 flex-shrink-0">
-                                        {hasAmount ? (
-                                          <span style={{ color: '#D4B26A' }}>⚠</span>
-                                        ) : (
-                                          <span style={{ color: '#88AA73' }}>✓</span>
-                                        )}
-                                        <div>
-                                          <span className="font-medium">{item.name} (Line {item.line})</span>
-                                        </div>
-                                      </div>
-                                      
-                                      {/* Bar chart for each benefit */}
-                                      <div className="w-2/3 ml-4">
-                                        <div className="relative">
-                                          <div className="w-full" style={{ height: '36px' }}>
-                                            <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
-                                              {/* Progress fill */}
-                                              <div 
-                                                className="h-full transition-all duration-300"
-                                                style={{ 
-                                                  width: hasAmount ? '100%' : '0%',
-                                                  background: hasAmount ? 'linear-gradient(to right, #D4B26A, #F4E4B8)' : '#88AA73'
-                                                }}
-                                              />
-                                              {/* Status overlay */}
-                                              <div 
-                                                className="absolute inset-0 flex items-center justify-center text-lg"
-                                                style={{ color: '#111111' }}
-                                              >
-                                                {hasAmount ? `Received: ${formatCurrency(amount)}` : 'Not Received'}
-                                              </div>
+                                  })}
+                                </div>
+                                
+                                <div className="col-span-2">
+                                  {(() => {
+                                    const categoryTotal = category.items.reduce((sum, item) => {
+                                      return sum + getFieldValue(item.line);
+                                    }, 0);
+                                    const hasAmount = categoryTotal > 0;
+                                    return (
+                                      <div className="relative mt-10">
+                                        <div className="w-full" style={{ height: '36px' }}>
+                                          <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
+                                            {/* Progress fill */}
+                                            <div 
+                                              className="h-full transition-all duration-300"
+                                              style={{ 
+                                                width: hasAmount ? '100%' : '0%',
+                                                background: hasAmount ? 'linear-gradient(to right, #D4B26A, #F4E4B8)' : 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                              }}
+                                            />
+                                            {/* Status overlay */}
+                                            <div 
+                                              className="absolute inset-0 flex items-center justify-center text-lg"
+                                              style={{ color: '#111111' }}
+                                            >
+                                              {hasAmount ? 'Clawback: 100.0%' : 'Clawback: 0.0%'}
                                             </div>
                                           </div>
-                                          
-                                          {/* Scale labels */}
-                                          <div className="flex justify-between font-medium text-primary mt-1 text-xs">
-                                            <span>$0</span>
-                                            <span>{hasAmount ? formatCurrency(amount) : 'N/A'}</span>
-                                          </div>
+                                        </div>
+                                        
+                                        {/* Scale labels */}
+                                        <div className="flex justify-between text-gray-500 mt-2 text-sm">
+                                          <span>Start: $0</span>
+                                          <span>Amount: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
+                                          <span>End: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
                                         </div>
                                       </div>
-                                    </div>
-                                  );
-                                })}
+                                    );
+                                  })()}
+                                </div>
                               </div>
                             </div>
                           );
