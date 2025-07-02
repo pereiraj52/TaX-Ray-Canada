@@ -1160,24 +1160,14 @@ export default function TaxReport() {
                         marginalRate = currentBracket.rate;
                       }
                       
-                      // For effective marginal rate, we'll use a simplified calculation
-                      // In practice, this would require the comprehensive tax calculator API
-                      let effectiveMarginalRate = marginalRate;
-                      
-                      // Add estimated clawback effects for higher incomes
-                      if (taxableIncome > 79054) { // OAS recovery threshold
-                        effectiveMarginalRate += 7.5; // OAS clawback effect
-                      }
-                      
-                      // Cap at reasonable maximum
-                      effectiveMarginalRate = Math.min(effectiveMarginalRate, 65);
+
                       
                       return (
                         <Card key={`tax-rates-${spouseIndex}`}>
                           <CardContent className="p-6">
                             <h3 className="font-medium text-gray-900 mb-6">{spouse.clientName} - Tax Rates</h3>
                             
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                               {/* Average Rate KPI */}
                               <div className="text-center">
                                 <div className="text-sm font-medium text-gray-700 mb-2">Average</div>
@@ -1197,17 +1187,6 @@ export default function TaxReport() {
                                 </div>
                                 <div className="text-xs text-gray-500 mt-1">
                                   Next Dollar Tax Rate
-                                </div>
-                              </div>
-                              
-                              {/* Effective Marginal Rate KPI */}
-                              <div className="text-center">
-                                <div className="text-sm font-medium text-gray-700 mb-2">Effective Marginal</div>
-                                <div className="text-3xl font-bold text-primary">
-                                  {effectiveMarginalRate.toFixed(2)}%
-                                </div>
-                                <div className="text-xs text-gray-500 mt-1">
-                                  Including Clawbacks
                                 </div>
                               </div>
                             </div>
