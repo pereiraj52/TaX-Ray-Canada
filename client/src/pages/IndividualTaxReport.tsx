@@ -890,16 +890,6 @@ export default function IndividualTaxReport() {
                       ]
                     },
                     {
-                      name: 'Eligible Dividends',
-                      brackets: [
-                        { rate: -1.17, min: 0, max: 51446, label: "-1.17%" },
-                        { rate: -5.52, min: 51446, max: 102894, label: "-5.52%" },
-                        { rate: -7.59, min: 102894, max: 150000, label: "-7.59%" },
-                        { rate: -8.62, min: 150000, max: 220000, label: "-8.62%" },
-                        { rate: 14.53, min: 220000, max: 300000, label: "14.53%" }
-                      ]
-                    },
-                    {
                       name: 'Non-Eligible Dividends',
                       brackets: [
                         { rate: 7.08, min: 0, max: 51446, label: "7.08%" },
