@@ -1133,8 +1133,26 @@ export default function TaxReport() {
                         }
                       }
                       
-                      // Calculate rates
-                      const averageRate = totalIncome > 0 ? (totalTax / totalIncome * 100) : 0;
+                      // Calculate rates - use the same calculation as "You Paid" percentage in Financial Summary
+                      let averageRate = 0;
+                      if (spouseT1 && spouseT1.formFields) {
+                        const incomeField = spouseT1.formFields.find((field: any) => field.fieldCode === '15000');
+                        const federalTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42000');
+                        const provincialTaxField = spouseT1.formFields.find((field: any) => field.fieldCode === '42800');
+                        const cppField = spouseT1.formFields.find((field: any) => field.fieldCode === '30800');
+                        const eiField = spouseT1.formFields.find((field: any) => field.fieldCode === '31200');
+                        
+                        const kpiTotalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const kpiFederalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const kpiProvincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const kpiCppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const kpiEiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        
+                        // Calculate net income: Income - Federal Tax - Provincial Tax - CPP - EI
+                        const kpiNetIncome = kpiTotalIncome - kpiFederalTax - kpiProvincialTax - kpiCppContributions - kpiEiPremiums;
+                        const netIncomePercentage = kpiTotalIncome > 0 ? (kpiNetIncome / kpiTotalIncome) * 100 : 0;
+                        averageRate = 100 - netIncomePercentage; // "You Paid" percentage
+                      }
                       
                       // Calculate marginal rate based on taxable income and Ontario tax brackets
                       // Use the same rates as Combined Tax Bracket Analysis for consistency
@@ -1176,7 +1194,7 @@ export default function TaxReport() {
                                   {averageRate.toFixed(2)}%
                                 </div>
                                 <div className="text-xs text-gray-500 mt-1">
-                                  Total Tax / Total Income
+                                  You Paid %
                                 </div>
                               </div>
                               
