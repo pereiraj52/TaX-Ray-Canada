@@ -3695,10 +3695,11 @@ export default function TaxReport() {
                         </div>
                         
                         {/* CCB Clawback Chart */}
-                        {(() => {
-                              const baseThreshold = 37487;
-                              const additionalThreshold = 81222;
-                              const totalChildren = numUnder6 + num6to17;
+                        <div>
+                          {(() => {
+                            const baseThreshold = 37487;
+                            const additionalThreshold = 81222;
+                            const totalChildren = numUnder6 + num6to17;
                               
                               // Calculate income where 100% clawback occurs
                               let baseRate: number, additionalRate: number;
@@ -3781,9 +3782,9 @@ export default function TaxReport() {
                                 </div>
                               );
                             })()}
+                          </div>
                         </div>
                       </div>
-                    </div>
                   </CardContent>
                 </Card>
               );
