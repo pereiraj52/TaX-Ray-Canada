@@ -682,6 +682,392 @@ export default function IndividualTaxReport() {
                 </Card>
               </div>
             </div>
+
+            {/* Tax Rates */}
+            <div className="mb-6">
+              <div className="grid grid-cols-1 gap-6">
+                {(() => {
+                  // Calculate tax rates for the individual client
+                  let totalIncome = 0;
+                  let taxableIncome = 0;
+                  let totalTax = 0;
+                  let federalTax = 0;
+                  let provincialTax = 0;
+                  
+                  if (taxYearReturns.length > 0) {
+                    const t1Return = taxYearReturns[0];
+                    const t1WithFields = t1Return as any;
+                    
+                    if (t1WithFields && t1WithFields.formFields) {
+                      const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                      const taxableIncomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                      const totalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43700');
+                      const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                      const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                      
+                      totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      taxableIncome = taxableIncomeField?.fieldValue ? parseFloat(String(taxableIncomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      totalTax = totalTaxField?.fieldValue ? parseFloat(String(totalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      
+                      // Fallback: if total tax is 0, use federal + provincial
+                      if (totalTax === 0 && (federalTax > 0 || provincialTax > 0)) {
+                        totalTax = federalTax + provincialTax;
+                      }
+                    }
+                  }
+                  
+                  // Calculate rates - use the same calculation as "You Paid" percentage in Financial Summary
+                  let averageRate = 0;
+                  if (taxYearReturns.length > 0) {
+                    const t1Return = taxYearReturns[0];
+                    const t1WithFields = t1Return as any;
+                    
+                    if (t1WithFields && t1WithFields.formFields) {
+                      const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
+                      const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                      const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                      const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                      const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
+                      
+                      const kpiTotalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      const kpiFederalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      const kpiProvincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      const kpiCppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      const kpiEiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                      
+                      // Calculate net income: Income - Federal Tax - Provincial Tax - CPP - EI
+                      const kpiNetIncome = kpiTotalIncome - kpiFederalTax - kpiProvincialTax - kpiCppContributions - kpiEiPremiums;
+                      const netIncomePercentage = kpiTotalIncome > 0 ? (kpiNetIncome / kpiTotalIncome) * 100 : 0;
+                      averageRate = 100 - netIncomePercentage; // "You Paid" percentage
+                    }
+                  }
+                  
+                  // Calculate marginal rate based on taxable income and Ontario tax brackets
+                  let marginalRate = 0;
+                  if (taxableIncome > 0) {
+                    // Combined federal + Ontario marginal rates for 2024 (with surtax)
+                    const combinedBrackets = [
+                      { min: 0, max: 51446, rate: 20.05 },      // 15% + 5.05%
+                      { min: 51446, max: 55867, rate: 24.15 },  // 15% + 9.15%
+                      { min: 55867, max: 102894, rate: 29.65 }, // 20.5% + 9.15%
+                      { min: 102894, max: 111733, rate: 31.48 }, // 20.5% + 10.98% (with surtax)
+                      { min: 111733, max: 150000, rate: 37.91 }, // 26% + 11.91% (with surtax)
+                      { min: 150000, max: 173205, rate: 43.41 }, // 26% + 17.41% (with surtax)
+                      { min: 173205, max: 220000, rate: 46.16 }, // 29% + 17.16% (with surtax)
+                      { min: 220000, max: 246752, rate: 47.74 }, // 29% + 18.74% (with surtax)
+                      { min: 246752, max: Infinity, rate: 53.53 } // 33% + 20.53% (with surtax)
+                    ];
+                    
+                    // Find the appropriate bracket
+                    const currentBracket = combinedBrackets.find(bracket => 
+                      taxableIncome > bracket.min && taxableIncome <= bracket.max
+                    ) || combinedBrackets[combinedBrackets.length - 1];
+                    
+                    marginalRate = currentBracket.rate;
+                  }
+                  
+                  return (
+                    <Card>
+                      <CardContent className="p-6">
+                        <h3 className="font-medium text-gray-900 mb-6">{targetClient.firstName} {targetClient.lastName} - Tax Rates</h3>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                          {/* Average Rate KPI */}
+                          <div className="text-center">
+                            <div className="text-sm font-medium text-gray-700 mb-2">Average</div>
+                            <div className="text-3xl font-bold text-primary">
+                              {averageRate.toFixed(2)}%
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1">
+                              You Paid %
+                            </div>
+                          </div>
+
+                          {/* Marginal Rate KPI */}
+                          <div className="text-center">
+                            <div className="text-sm font-medium text-gray-700 mb-2">Marginal</div>
+                            <div className="text-3xl font-bold text-primary">
+                              {marginalRate.toFixed(2)}%
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1">
+                              Combined Rate
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })()}
+              </div>
+            </div>
+
+            {/* Combined Tax Bracket Analysis */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
+              {(() => {
+                // Get taxable income for the individual client
+                let taxableIncome = 0;
+                let clientName = `${targetClient.firstName} ${targetClient.lastName}`;
+                
+                if (taxYearReturns.length > 0) {
+                  const t1Return = taxYearReturns[0];
+                  const t1WithFields = t1Return as any;
+                  
+                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                    const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                    if (taxableField?.fieldValue) {
+                      const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) taxableIncome = value;
+                    }
+                  }
+                }
+
+                // 2024 Combined Federal + Provincial Tax Brackets (Ontario)
+                const combinedBrackets = [
+                  { rate: 20.05, min: 0, max: 51446, label: "20.05%" },
+                  { rate: 24.15, min: 51446, max: 55867, label: "24.15%" },
+                  { rate: 29.65, min: 55867, max: 102894, label: "29.65%" },
+                  { rate: 31.48, min: 102894, max: 111733, label: "31.48%" },
+                  { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+                  { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+                  { rate: 46.16, min: 173205, max: 220000, label: "46.16%" },
+                  { rate: 47.74, min: 220000, max: 246752, label: "47.74%" },
+                  { rate: 53.53, min: 246752, max: Infinity, label: "53.53%" }
+                ];
+
+                // Function to calculate individual tax breakdown
+                const calculateTaxBreakdown = (income: number) => {
+                  // 2024 Basic Personal Amounts
+                  const federalBPA = 15705;
+                  const ontarioBPA = 12399;
+                  
+                  // Calculate gross combined tax first
+                  let grossCombinedTax = 0;
+                  const breakdown = combinedBrackets.map(bracket => {
+                    let incomeInBracket = 0;
+                    let taxFromBracket = 0;
+
+                    if (income > bracket.min) {
+                      const maxForBracket = Math.min(income, bracket.max);
+                      incomeInBracket = maxForBracket - bracket.min;
+                      taxFromBracket = incomeInBracket * (bracket.rate / 100);
+                      grossCombinedTax += taxFromBracket;
+                    }
+
+                    return {
+                      rate: bracket.label,
+                      threshold: `$${bracket.min.toLocaleString()} to ${bracket.max === Infinity ? 'above' : '$' + bracket.max.toLocaleString()}`,
+                      incomeInBracket: incomeInBracket,
+                      tax: taxFromBracket,
+                      ratePercent: bracket.rate
+                    };
+                  });
+                  
+                  // Calculate basic personal amount credits
+                  const federalBPACredit = federalBPA * 0.15;
+                  const ontarioBPACredit = ontarioBPA * 0.0505;
+                  const totalBPACredits = federalBPACredit + ontarioBPACredit;
+                  
+                  // Adjust the tax in each bracket proportionally to account for BPA credits
+                  const netCombinedTax = Math.max(0, grossCombinedTax - totalBPACredits);
+                  const adjustmentRatio = grossCombinedTax > 0 ? netCombinedTax / grossCombinedTax : 0;
+                  
+                  return breakdown.map(bracket => ({
+                    ...bracket,
+                    tax: bracket.tax * adjustmentRatio
+                  }));
+                };
+
+                const taxBreakdown = calculateTaxBreakdown(taxableIncome);
+
+                return (
+                  <Card className="max-w-2xl">
+                    <CardHeader>
+                      <CardTitle className="text-lg font-medium text-gray-900">
+                        {clientName} - Combined Tax Bracket Analysis
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse text-sm">
+                          <thead>
+                            <tr className="border-b border-gray-200">
+                              <th className="text-left py-2 px-2 text-gray-900 font-medium">Rate</th>
+                              <th className="text-left py-2 px-2 text-gray-900 font-medium">Threshold</th>
+                              <th className="text-left py-2 px-2 text-gray-900 font-medium">Income</th>
+                              <th className="text-left py-2 px-2 text-gray-900 font-medium">Tax</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {taxBreakdown.map((bracket, index) => {
+                              const isCurrentBracket = taxableIncome > combinedBrackets[index].min && 
+                                                      taxableIncome <= combinedBrackets[index].max;
+                              return (
+                                <tr 
+                                  key={index} 
+                                  className={`border-b border-gray-100 ${
+                                    isCurrentBracket ? 'border-2' : ''
+                                  }`}
+                                  style={isCurrentBracket ? { borderColor: '#D4B26A' } : {}}
+                                >
+                                  <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                  <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                  <td className="py-2 px-2 text-gray-700 text-xs">
+                                    ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                  </td>
+                                  <td className="py-2 px-2 text-gray-700 text-xs">
+                                    ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                            <tr className="border-t-2 border-gray-300 font-semibold">
+                              <td className="py-2 px-2 text-gray-900">Total</td>
+                              <td className="py-2 px-2"></td>
+                              <td className="py-2 px-2 text-gray-900">
+                                ${taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                              </td>
+                              <td className="py-2 px-2 text-gray-900">
+                                ${taxBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })()}
+            </div>
+
+            {/* Combined Tax Bracket Visualization */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Visualization</h2>
+              {(() => {
+                // Get taxable income for visualization
+                let taxableIncome = 0;
+                
+                if (taxYearReturns.length > 0) {
+                  const t1Return = taxYearReturns[0];
+                  const t1WithFields = t1Return as any;
+                  
+                  if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
+                    const taxableField = t1WithFields.formFields.find((field: any) => field.fieldCode === '26000');
+                    if (taxableField?.fieldValue) {
+                      const value = parseFloat(String(taxableField.fieldValue).replace(/[,$\s]/g, ''));
+                      if (!isNaN(value)) taxableIncome = value;
+                    }
+                  }
+                }
+
+                return (
+                  <Card className="max-w-2xl">
+                    <CardHeader>
+                      <CardTitle className="text-lg font-medium text-gray-900">
+                        {targetClient.firstName} {targetClient.lastName} - Combined Tax Bracket Visualization
+                      </CardTitle>
+                      <div className="text-sm text-gray-600">
+                        Taxable Income: ${taxableIncome.toLocaleString()}
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                      <div className="flex flex-wrap max-w-lg">
+                        {['Ordinary Income', 'Capital Gains', 'Eligible Dividends', 'Non-Eligible Dividends'].map((incomeType, typeIndex) => {
+                          const getRatesForType = (type: string) => {
+                            switch (type) {
+                              case 'Ordinary Income':
+                                return [20.05, 24.15, 29.65, 31.48, 37.91, 43.41, 46.16, 47.74, 53.53];
+                              case 'Capital Gains':
+                                return [10.03, 12.08, 14.83, 15.74, 18.96, 21.71, 23.08, 23.87, 26.77];
+                              case 'Eligible Dividends':
+                                return [-1.20, 1.64, 5.07, 6.31, 11.99, 17.02, 19.29, 20.73, 39.34];
+                              case 'Non-Eligible Dividends':
+                                return [13.95, 16.84, 21.43, 22.86, 27.54, 31.43, 33.39, 34.49, 47.74];
+                              default:
+                                return [];
+                            }
+                          };
+
+                          const rates = getRatesForType(incomeType);
+                          const combinedThresholds = [0, 51446, 55867, 102894, 111733, 150000, 173205, 220000, 246752];
+                          const maxScale = 300000;
+
+                          return (
+                            <div key={typeIndex} className="w-1/2 pr-2 mb-4">
+                              <h4 className="font-medium text-sm text-gray-700 mb-2">{incomeType}</h4>
+                              <div className="relative">
+                                <div className="flex h-72 bg-gray-100 rounded">
+                                  {rates.map((rate, index) => {
+                                    const isCurrentBracket = index < combinedThresholds.length - 1 ? 
+                                      (taxableIncome >= combinedThresholds[index] && taxableIncome < combinedThresholds[index + 1]) :
+                                      (taxableIncome >= combinedThresholds[index]);
+                                    
+                                    return (
+                                      <div
+                                        key={index}
+                                        className={`flex-1 flex items-end justify-center text-black text-xs relative ${
+                                          isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
+                                        }`}
+                                        style={{
+                                          height: `${Math.max(10, Math.abs(rate) * 2)}%`
+                                        }}
+                                      >
+                                        <span className="pb-1 z-20 relative">
+                                          {rate >= 0 ? `${rate.toFixed(1)}%` : `${rate.toFixed(1)}%`}
+                                        </span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                                
+                                {/* Income Position Indicator */}
+                                {taxableIncome > 0 && (
+                                  <div 
+                                    className="absolute top-0 w-0.5 h-full z-10"
+                                    style={{
+                                      left: `${Math.min(95, (taxableIncome / maxScale) * 100)}%`,
+                                      backgroundColor: '#D4B26A'
+                                    }}
+                                  />
+                                )}
+                                
+                                {/* Scale Labels */}
+                                <div className="relative h-72 pointer-events-none">
+                                  {[0, 51, 56, 103, 112, 150, 173, 220, 247, 300].map((amount, index) => {
+                                    const position = (amount / 300) * 100;
+                                    
+                                    // Skip overlapping labels (7% minimum spacing)
+                                    const prevPosition = index > 0 ? ([0, 51, 56, 103, 112, 150, 173, 220, 247, 300][index - 1] / 300) * 100 : 0;
+                                    const shouldShow = position - prevPosition >= 7;
+                                    
+                                    if (!shouldShow && index > 0 && index < 9) return null;
+                                    
+                                    return (
+                                      <div
+                                        key={amount}
+                                        className="absolute text-xs text-gray-600 z-10"
+                                        style={{
+                                          left: `${Math.min(90, position)}%`,
+                                          bottom: amount === 300 ? '4%' : '0px'
+                                        }}
+                                      >
+                                        ${amount}k
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })()}
+            </div>
           </>
         )}
       </div>
