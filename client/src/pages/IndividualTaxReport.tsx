@@ -898,41 +898,48 @@ export default function IndividualTaxReport() {
                             <tr className="border-b border-gray-200">
                               <th className="text-left py-2 px-2 text-gray-900 font-medium">Rate</th>
                               <th className="text-left py-2 px-2 text-gray-900 font-medium">Threshold</th>
-                              <th className="text-left py-2 px-2 text-gray-900 font-medium">Income</th>
-                              <th className="text-left py-2 px-2 text-gray-900 font-medium">Tax</th>
+                              <th className="text-right py-2 px-2 text-gray-900 font-medium">Income</th>
+                              <th className="text-right py-2 px-2 text-gray-900 font-medium">Tax</th>
                             </tr>
                           </thead>
                           <tbody>
                             {taxBreakdown.map((bracket, index) => {
-                              const isCurrentBracket = taxableIncome > combinedBrackets[index].min && 
-                                                      taxableIncome <= combinedBrackets[index].max;
+                              // Check if this is the current marginal tax bracket
+                              const isCurrentBracket = bracket.incomeInBracket > 0 && 
+                                index === taxBreakdown.findIndex((b, i) => 
+                                  b.incomeInBracket > 0 && 
+                                  (i === taxBreakdown.length - 1 || 
+                                   taxBreakdown[i + 1].incomeInBracket === 0)
+                                );
+                              
                               return (
                                 <tr 
                                   key={index} 
-                                  className={`border-b border-gray-100 ${
-                                    isCurrentBracket ? 'border-2' : ''
-                                  }`}
-                                  style={isCurrentBracket ? { borderColor: '#D4B26A' } : {}}
+                                  className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}
+                                  style={isCurrentBracket ? { 
+                                    border: '2px solid #D4B26A',
+                                    borderRadius: '4px'
+                                  } : {}}
                                 >
                                   <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
                                   <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
-                                  <td className="py-2 px-2 text-gray-700 text-xs">
+                                  <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                     ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                   </td>
-                                  <td className="py-2 px-2 text-gray-700 text-xs">
-                                    ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                  <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                    ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                   </td>
                                 </tr>
                               );
                             })}
-                            <tr className="border-t-2 border-gray-300 font-semibold">
-                              <td className="py-2 px-2 text-gray-900">Total</td>
+                            <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
+                              <td className="py-2 px-2">Total</td>
                               <td className="py-2 px-2"></td>
-                              <td className="py-2 px-2 text-gray-900">
+                              <td className="py-2 px-2 text-right text-gray-700 text-xs">
                                 ${taxableIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                               </td>
-                              <td className="py-2 px-2 text-gray-900">
-                                ${taxBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                              <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                ${taxBreakdown.reduce((sum, bracket) => sum + bracket.tax, 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                               </td>
                             </tr>
                           </tbody>
