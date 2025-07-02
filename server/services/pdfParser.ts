@@ -251,6 +251,8 @@ export class T1PDFParser {
         part_xii2_tax_credit: { code: '45600', name: 'Part XII.2 Tax Credit' },
         gst_hst_rebate: { code: '45700', name: 'Employee & Partner GST/HST Rebate' },
         educator_school_supply: { code: '46900', name: 'Eligible Educator School Supply Tax Credit' },
+        journalism_labour_tax_credit: { code: '47555', name: 'Canadian Journalism Labour Tax Credit' },
+        fuel_charge_farmers_tax_credit: { code: '47556', name: 'Return of Fuel Charge Proceeds to Farmers' },
         provincial_credits: { code: '47900', name: 'Provincial Credits' },
         total_credits: { code: '48200', name: 'Total Credits' },
         refund_or_balance_owing: { code: '48400', name: 'Refund or Balance Owing' },

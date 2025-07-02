@@ -3037,6 +3037,8 @@ export default function TaxReport() {
                     { name: "Part XII.2 Tax Credit", line: "45600" },
                     { name: "Employee & Partner GST/HST Rebate", line: "45700" },
                     { name: "Eligible Educator School Supply Tax Credit", line: "46900" },
+                    { name: "Canadian Journalism Labour Tax Credit", line: "47555" },
+                    { name: "Return of Fuel Charge Proceeds to Farmers", line: "47556" },
                   ]},
                 ];
 
