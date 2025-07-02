@@ -1419,6 +1419,12 @@ export default function TaxReport() {
                                       position: (threshold.income / 300000) * 100
                                     }));
 
+                                    // Special positioning for $51k label - move down 2% to start just below bracket line
+                                    const fiftyOneKThreshold = adjustedThresholds.find(t => t.income === 51446);
+                                    if (fiftyOneKThreshold) {
+                                      fiftyOneKThreshold.position = fiftyOneKThreshold.position - 2; // Move down 2% from bracket start
+                                    }
+
                                     // Adjust positions to prevent overlap (minimum 7% spacing)
                                     for (let i = 1; i < adjustedThresholds.length; i++) {
                                       const current = adjustedThresholds[i];
