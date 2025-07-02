@@ -419,6 +419,8 @@ Changelog:
 - July 2, 2025. Added Eligible Educator School Supply Tax Credit (Line 46900) to Refundable Credits section: included field in T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for educator school supply tax credit tracking
 - July 2, 2025. Added Canadian Journalism Labour Tax Credit (Line 47555) and Return of Fuel Charge Proceeds to Farmers (Line 47556) to Refundable Credits section: included both fields in T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for specialized refundable credit tracking
 - July 2, 2025. Updated credits summary terminology: changed "Total Non-Refundable" to "Federal Non-Refundable" in both T1 extraction display and Tax Credits Analysis sections, removed "Calculated from federal categories" descriptive text for cleaner interface
+- July 2, 2025. Added Tax Savings line under Federal Non-Refundable total: added "Tax Savings" display referencing Line 35000 (Total Tax Credits) with proper field mapping and PDF parser integration
+- July 2, 2025. Added Federal Refundable section to credits summary: created new column in blue summary box displaying total refundable credits calculated from all 13 refundable credit lines (44000-47556), positioned next to Federal Non-Refundable section for comprehensive credit overview
 ```
 
 ## User Preferences

@@ -238,6 +238,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     return basicCreditsTotal + employmentCreditsTotal + personalSituationTotal + educationCreditsTotal + medicalOtherTotal;
   };
 
+  const getTotalRefundableCredits = (): number => {
+    // Calculate total refundable credits by summing all refundable credit lines
+    return getSectionTotal(['44000', '44800', '45000', '45200', '45300', '45350', '45355', '45400', '45600', '45700', '46900', '47555', '47556']);
+  };
+
   const getRefundOrBalance = (): number => {
     // Calculate refund/balance: Taxes Paid (43700) - Total Tax (42000 + 42800)
     // Positive = Refund, Negative = Balance Due
@@ -1919,6 +1924,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     </div>
                     <div className="text-sm text-blue-700 mt-2">
                       Tax Savings: {formatCurrency(getFieldValue('35000'))}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-semibold text-blue-800 mb-2">Federal Refundable</div>
+                    <div className="text-xl font-bold text-blue-600">
+                      {formatCurrency(getTotalRefundableCredits())}
                     </div>
                   </div>
                   <div className="text-center">
