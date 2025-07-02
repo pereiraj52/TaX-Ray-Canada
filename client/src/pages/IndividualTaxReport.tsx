@@ -573,19 +573,30 @@ export default function IndividualTaxReport() {
                       }
                     });
                     
-                    // Calculate net income using same method as Summary tab - simple formula
+                    // Calculate net income using same method as Individual Financial Summary
                     let individualNetIncome = 0;
                     taxYearReturns.forEach(t1Return => {
                       const t1WithFields = t1Return as any;
                       if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                         const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                        const taxPaidField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43700');
+                        const taxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43500');
+                        const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                        const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                        const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                        const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                         
                         const income = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                        const taxPaid = taxPaidField?.fieldValue ? parseFloat(String(taxPaidField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const tax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const cpp = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        const ei = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                        
+                        // Calculate total tax (use field 43500 if available, otherwise add federal + provincial)
+                        const calculatedTotalTax = tax > 0 ? tax : (federalTax + provincialTax);
                         
                         if (!isNaN(income)) {
-                          individualNetIncome += (income - taxPaid);
+                          individualNetIncome += (income - calculatedTotalTax - cpp - ei);
                         }
                       }
                     });
