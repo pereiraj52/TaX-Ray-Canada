@@ -439,6 +439,7 @@ Changelog:
 - July 2, 2025. Fixed Tax Credits calculation in household financial summary: corrected calculation to sum both line 35000 (federal non-refundable tax credits) and line 61500 (Ontario non-refundable tax credits) for accurate total tax credits display in household tax reports
 - July 2, 2025. Fixed Tax Credits calculation in individual financial summaries: corrected individual client Tax Credits calculation to sum both line 35000 (federal non-refundable tax credits) and line 61500 (Ontario non-refundable tax credits) for accurate individual tax credit totals, resolving issue where individual summaries showed only federal credits while household totals were correct
 - July 2, 2025. Updated Net Income calculation in individual financial summaries: changed from simplified formula (Total Income - Total Tax) to detailed breakdown (Total Income - Federal Tax - Provincial Tax - CPP Contributions - EI Premiums) for accurate take-home income calculation using actual financial summary values
+- July 2, 2025. Updated "You Kept" KPI calculation in individual financial summaries: changed from simplified method to use detailed financial summary calculation (Net Income / Total Income) where Net Income = Total Income - Federal Tax - Provincial Tax - CPP Contributions - EI Premiums for consistent percentage calculation across all financial reporting components
 ```
 
 ## User Preferences

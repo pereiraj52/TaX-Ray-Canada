@@ -815,21 +815,30 @@ export default function TaxReport() {
                     {/* Individual KPI Blocks */}
                     <div className="mt-6 grid grid-cols-2 gap-6">
                       {(() => {
-                        // Calculate individual net income percentage for KPI blocks - same as Summary tab
-                        let totalIncome = 0;
-                        let taxPaid = 0;
+                        // Calculate individual net income percentage for KPI blocks using financial summary values
+                        let kpiTotalIncome = 0;
+                        let kpiFederalTax = 0;
+                        let kpiProvincialTax = 0;
+                        let kpiCppContributions = 0;
+                        let kpiEiPremiums = 0;
                         
                         if (t1WithFields.formFields && Array.isArray(t1WithFields.formFields)) {
                           const incomeField = t1WithFields.formFields.find((field: any) => field.fieldCode === '15000');
-                          const taxPaidField = t1WithFields.formFields.find((field: any) => field.fieldCode === '43700');
+                          const federalTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42000');
+                          const provincialTaxField = t1WithFields.formFields.find((field: any) => field.fieldCode === '42800');
+                          const cppField = t1WithFields.formFields.find((field: any) => field.fieldCode === '30800');
+                          const eiField = t1WithFields.formFields.find((field: any) => field.fieldCode === '31200');
                           
-                          totalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
-                          taxPaid = taxPaidField?.fieldValue ? parseFloat(String(taxPaidField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          kpiTotalIncome = incomeField?.fieldValue ? parseFloat(String(incomeField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          kpiFederalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          kpiProvincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          kpiCppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          kpiEiPremiums = eiField?.fieldValue ? parseFloat(String(eiField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                         }
                         
-                        // Use same calculation as Summary tab: Net Income = Total Income - Total Tax (field 43700)
-                        const netIncome = totalIncome - taxPaid;
-                        const netIncomePercentage = totalIncome > 0 ? (netIncome / totalIncome) * 100 : 0;
+                        // Calculate net income using financial summary values: Income - Federal Tax - Provincial Tax - CPP - EI
+                        const kpiNetIncome = kpiTotalIncome - kpiFederalTax - kpiProvincialTax - kpiCppContributions - kpiEiPremiums;
+                        const netIncomePercentage = kpiTotalIncome > 0 ? (kpiNetIncome / kpiTotalIncome) * 100 : 0;
                         const youPaidPercentage = 100 - netIncomePercentage;
                         
                         return (
