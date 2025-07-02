@@ -803,10 +803,12 @@ export default function IndividualTaxReport() {
               </div>
             </div>
 
-            {/* Combined Tax Bracket Analysis */}
+            {/* Combined Tax Bracket Analysis and Visualization */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Analysis</h2>
-              {(() => {
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Tax Bracket Analysis Table */}
+                {(() => {
                 // Get taxable income for the individual client
                 let taxableIncome = 0;
                 let clientName = `${targetClient.firstName} ${targetClient.lastName}`;
@@ -939,13 +941,10 @@ export default function IndividualTaxReport() {
                     </CardContent>
                   </Card>
                 );
-              })()}
-            </div>
-
-            {/* Combined Tax Bracket Visualization */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Combined Tax Bracket Visualization</h2>
-              {(() => {
+                })()}
+                
+                {/* Tax Bracket Visualization */}
+                {(() => {
                 // Get taxable income for visualization
                 let taxableIncome = 0;
                 
@@ -1066,7 +1065,8 @@ export default function IndividualTaxReport() {
                     </CardContent>
                   </Card>
                 );
-              })()}
+                })()}
+              </div>
             </div>
           </>
         )}
