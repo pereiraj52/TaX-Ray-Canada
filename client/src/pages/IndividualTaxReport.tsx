@@ -997,77 +997,71 @@ export default function IndividualTaxReport() {
                         const thresholdLabels = ['$0', '$51k', '$56k', '$103k', '$112k', '$150k', '$173k', '$220k', '$247k', '$300k'];
 
                         return (
-                          <div className="space-y-4">
-                            {/* Y-axis labels */}
-                            <div className="flex justify-between text-sm text-gray-600 mb-2">
-                              <span></span>
-                              <span>$300k</span>
-                            </div>
-
-                            {/* Stacked bars for each income bracket */}
-                            <div className="space-y-1">
-                              {[...Array(9)].map((_, bracketIndex) => {
-                                const reversedIndex = 8 - bracketIndex; // Start from top bracket
+                          <div className="space-y-3">
+                            {/* Four horizontal bar charts stacked vertically */}
+                            {incomeTypes.map((incomeType, typeIndex) => (
+                              <div key={typeIndex} className="mb-6">
+                                <h4 className="font-medium text-sm text-gray-700 mb-3 text-center">
+                                  {incomeType.name}
+                                </h4>
                                 
-                                return (
-                                  <div key={bracketIndex} className="flex items-center">
-                                    {/* Threshold label */}
-                                    <div className="w-12 text-xs text-gray-600 text-right mr-2">
-                                      {thresholdLabels[reversedIndex + 1]}
-                                    </div>
+                                <div className="relative">
+                                  {/* Bar chart container */}
+                                  <div className="bg-gray-100 h-72 rounded relative">
+                                    {/* Individual tax bracket bars */}
+                                    {incomeType.rates.map((rate, bracketIndex) => {
+                                      const isCurrentBracket = taxableIncome >= combinedThresholds[bracketIndex] && 
+                                                              (bracketIndex === 8 || taxableIncome < combinedThresholds[bracketIndex + 1]);
+                                      
+                                      // Calculate bar height based on rate (normalize to 0-100% range)
+                                      const maxRate = Math.max(...incomeType.rates.map(r => Math.abs(r)));
+                                      const normalizedRate = Math.abs(rate) / maxRate;
+                                      const barHeight = Math.max(8, normalizedRate * 90); // Minimum 8% height
+                                      
+                                      return (
+                                        <div
+                                          key={bracketIndex}
+                                          className={`absolute bottom-0 flex items-end justify-center text-black text-xs font-medium ${
+                                            isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
+                                          }`}
+                                          style={{
+                                            left: `${(bracketIndex / 9) * 100}%`,
+                                            width: `${100 / 9}%`,
+                                            height: `${barHeight}%`,
+                                            borderRadius: '2px 2px 0 0'
+                                          }}
+                                        >
+                                          <span className="pb-1 z-20 relative">
+                                            {rate.toFixed(1)}%
+                                          </span>
+                                        </div>
+                                      );
+                                    })}
                                     
-                                    {/* Show taxable income indicator if it falls in this bracket */}
-                                    {taxableIncome >= combinedThresholds[reversedIndex] && 
-                                     (reversedIndex === 8 || taxableIncome < combinedThresholds[reversedIndex + 1]) && (
-                                      <div className="text-xs text-orange-600 mr-2 font-medium">
-                                        Taxable Income: ${taxableIncome.toLocaleString()}
-                                      </div>
+                                    {/* Income position indicator line */}
+                                    {taxableIncome > 0 && (
+                                      <div 
+                                        className="absolute top-0 w-0.5 h-full z-30"
+                                        style={{
+                                          left: `${Math.min(95, (taxableIncome / 300000) * 100)}%`,
+                                          backgroundColor: '#D4B26A'
+                                        }}
+                                      />
                                     )}
-                                    
-                                    {/* Four bars for each income type */}
-                                    <div className="flex gap-2 flex-1">
-                                      {incomeTypes.map((incomeType, typeIndex) => {
-                                        const rate = incomeType.rates[reversedIndex];
-                                        const isCurrentBracket = taxableIncome >= combinedThresholds[reversedIndex] && 
-                                                                (reversedIndex === 8 || taxableIncome < combinedThresholds[reversedIndex + 1]);
-                                        
-                                        return (
-                                          <div
-                                            key={typeIndex}
-                                            className={`flex-1 h-8 flex items-center justify-center text-black text-xs font-medium relative ${
-                                              isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
-                                            }`}
-                                            style={{
-                                              borderRadius: '2px'
-                                            }}
-                                          >
-                                            {rate.toFixed(2)}%
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
                                   </div>
-                                );
-                              })}
-                            </div>
-
-                            {/* Bottom threshold label */}
-                            <div className="flex items-center">
-                              <div className="w-12 text-xs text-gray-600 text-right mr-2">
-                                $0
-                              </div>
-                              <div className="flex gap-2 flex-1">
-                                {incomeTypes.map((incomeType, typeIndex) => (
-                                  <div key={typeIndex} className="flex-1 text-center">
-                                    <div className="text-xs font-medium text-gray-700">
-                                      {incomeType.name.split(' ').map((word, i) => (
-                                        <div key={i}>{word}</div>
-                                      ))}
-                                    </div>
+                                  
+                                  {/* Bottom scale labels */}
+                                  <div className="flex justify-between text-xs text-gray-600 mt-1">
+                                    {thresholdLabels.slice(0, -1).map((label, index) => (
+                                      <span key={index} style={{ marginLeft: index === 0 ? '0' : '-10px' }}>
+                                        {label}
+                                      </span>
+                                    ))}
+                                    <span style={{ marginRight: '0' }}>$300k</span>
                                   </div>
-                                ))}
+                                </div>
                               </div>
-                            </div>
+                            ))}
                           </div>
                         );
                       })()}
