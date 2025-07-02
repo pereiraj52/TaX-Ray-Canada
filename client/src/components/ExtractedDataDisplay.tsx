@@ -1949,11 +1949,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                   {getClientProvince() === 'ON' && (
                     <div className="text-center">
-                      <div className="font-semibold text-blue-800 mb-2">Ontario Non-Refundable Credits</div>
+                      <div className="font-semibold text-blue-800 mb-2">Tax Savings</div>
                       <div className="text-xl font-bold text-blue-600">
-                        {formatCurrency(getFieldValue('58800'))}
+                        {formatCurrency(getFieldValue('61500'))}
                       </div>
-                      <div className="text-sm text-blue-700 mt-1">Line 58800</div>
+                      <div className="text-sm text-blue-700 mt-1">Line 61500</div>
                     </div>
                   )}
                 </div>
