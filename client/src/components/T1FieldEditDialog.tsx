@@ -217,6 +217,13 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       { fieldCode: '58769', fieldName: 'Ontario Medical Expenses', fieldType: 'currency' },
       { fieldCode: '58969', fieldName: 'Ontario Donations and Gifts', fieldType: 'currency' },
       { fieldCode: '58800', fieldName: 'Ontario Tax Credits', fieldType: 'currency' },
+      
+      // Ontario Refundable Credits (Form 479ON)
+      { fieldCode: '63095', fieldName: 'Ontario Seniors Care at Home Credit', fieldType: 'currency' },
+      { fieldCode: '63100', fieldName: 'Ontario Seniors Public Transit Credit', fieldType: 'currency' },
+      { fieldCode: '63110', fieldName: 'Ontario Political Contribution Credit', fieldType: 'currency' },
+      { fieldCode: '63220', fieldName: 'Ontario Flow Through Credit', fieldType: 'currency' },
+      { fieldCode: '63300', fieldName: 'Ontario Co-operative Education Credit', fieldType: 'currency' },
     ];
 
     // Create field objects with current values or empty defaults

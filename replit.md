@@ -431,6 +431,7 @@ Changelog:
 - July 2, 2025. Updated credits summary terminology: changed "Total Non-Refundable" to "Federal Non-Refundable" in both T1 extraction display and Tax Credits Analysis sections, removed "Calculated from federal categories" descriptive text for cleaner interface
 - July 2, 2025. Added Tax Savings line under Federal Non-Refundable total: added "Tax Savings" display referencing Line 35000 (Total Tax Credits) with proper field mapping and PDF parser integration
 - July 2, 2025. Added Federal Refundable section to credits summary: created new column in blue summary box displaying total refundable credits calculated from all 13 refundable credit lines (44000-47556), positioned next to Federal Non-Refundable section for comprehensive credit overview
+- July 2, 2025. Added comprehensive Ontario Refundable Tax Credits extraction from Form 479ON: implemented 5 new fields including Ontario Seniors Care at Home Credit (Line 63095), Ontario Seniors Public Transit Credit (Line 63100), Ontario Political Contribution Credit (Line 63110), Ontario Flow Through Credit (Line 63220), and Ontario Co-operative Education Credit (Line 63300) across Python extractor, PDF parser, ExtractedDataDisplay, T1FieldEditDialog, and TaxReport components with province-conditional display logic for Ontario residents only
 ```
 
 ## User Preferences
