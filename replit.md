@@ -450,6 +450,8 @@ Changelog:
 - July 2, 2025. Separated Tax Credits Analysis summaries into Federal Tax Credits and Provincial Tax Credits sections: created distinct sections for federal non-refundable/refundable credits with 15% tax reduction calculation and Ontario non-refundable/refundable credits with 5.05% tax reduction calculation, with province-conditional display for Ontario residents
 - July 2, 2025. Completely separated Tax Credits Analysis into two independent sections: created separate "Federal Tax Credits Analysis" and "Provincial Tax Credits Analysis" sections, each with their own cards for each client, distinct credit categories, and separate summary calculations for complete federal/provincial credit segregation
 - July 2, 2025. Updated Provincial Tax Credits Analysis format to match Federal Tax Credits style: removed bounding boxes around credit categories, implemented consistent layout structure with category headers and indented items, ensuring visual consistency across Federal Tax Credits, Provincial Tax Credits, and Tax Deductions Analysis sections
+- July 2, 2025. Fixed provincial tax credit data population by updating field codes to match extracted database values: replaced non-existent field codes with actual extracted codes (58040, 58240, 58300, 58769, 58969, 61520, 58800, 58840, 61500) ensuring provincial tax credit values display correctly from T1 form data
+- July 2, 2025. Standardized tax reduction line styling in both Federal and Provincial Tax Credits Analysis: updated Federal Tax Reduction and Provincial Tax Reduction lines to use font-semibold and text-lg styling matching the Non-Refundable and Refundable Credits summary lines for consistent visual hierarchy
 ```
 
 ## User Preferences

@@ -3229,10 +3229,10 @@ export default function TaxReport() {
                           </div>
                           
                           <div className="flex justify-between items-center">
-                            <span className="font-medium text-primary text-sm">
+                            <span className="font-semibold text-primary">
                               Federal Tax Reduction
                             </span>
-                            <span className="font-medium text-primary">
+                            <span className="font-semibold text-primary text-lg">
                               {(() => {
                                 // Calculate federal tax reduction from non-refundable credits
                                 const federalNonRefundableCredits = federalCredits.slice(0, 7).reduce((total, category) => {
@@ -3434,10 +3434,10 @@ export default function TaxReport() {
                           </div>
                           
                           <div className="flex justify-between items-center">
-                            <span className="font-medium text-primary text-sm">
+                            <span className="font-semibold text-primary">
                               Provincial Tax Reduction
                             </span>
-                            <span className="font-medium text-primary">
+                            <span className="font-semibold text-primary text-lg">
                               {(() => {
                                 // Calculate provincial tax reduction from Ontario non-refundable credits
                                 const provincialNonRefundableCredits = provincialCredits.slice(0, 1).reduce((total, category) => {
