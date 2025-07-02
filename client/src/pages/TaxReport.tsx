@@ -30,6 +30,38 @@ export default function TaxReport() {
     }));
   };
 
+  // State for collapsible sections in Federal Tax Credits Analysis
+  const [collapsedFederalCreditSections, setCollapsedFederalCreditSections] = useState<{[key: string]: boolean}>({
+    'basic-credits': true,
+    'employment-credits': true,
+    'personal-situation-credits': true,
+    'disability-caregiver-credits': true,
+    'education-credits': true,
+    'medical-credits': true,
+    'charitable-gifts-donations': true,
+    'refundable-credits': true,
+  });
+
+  const toggleFederalCreditSection = (sectionKey: string) => {
+    setCollapsedFederalCreditSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }));
+  };
+
+  // State for collapsible sections in Provincial Tax Credits Analysis
+  const [collapsedProvincialCreditSections, setCollapsedProvincialCreditSections] = useState<{[key: string]: boolean}>({
+    'ontario-non-refundable-credits': true,
+    'ontario-refundable-credits': true,
+  });
+
+  const toggleProvincialCreditSection = (sectionKey: string) => {
+    setCollapsedProvincialCreditSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }));
+  };
+
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
     queryFn: () => HouseholdAPI.getHousehold(householdId),
@@ -3227,19 +3259,33 @@ export default function TaxReport() {
                             return sum + getFieldValue(item.line);
                           }, 0);
 
+                          const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '');
+                          const isCollapsed = collapsedFederalCreditSections[sectionKey];
+
                           return (
-                            <div key={categoryIndex} className="space-y-3">
-                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                                <h4 className="font-medium text-primary text-sm">
-                                  {category.category}
-                                </h4>
+                            <div key={categoryIndex} className="border border-gray-200 rounded-lg">
+                              <div 
+                                className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
+                                onClick={() => toggleFederalCreditSection(sectionKey)}
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {isCollapsed ? (
+                                    <ChevronRight className="h-4 w-4 text-gray-500" />
+                                  ) : (
+                                    <ChevronDown className="h-4 w-4 text-gray-500" />
+                                  )}
+                                  <h4 className="font-medium text-primary text-sm">
+                                    {category.category}
+                                  </h4>
+                                </div>
                                 <span className="font-medium text-primary text-sm">
                                   {formatCurrency(categoryTotal)}
                                 </span>
                               </div>
                               
-                              <div className="space-y-2">
-                                {category.items.map((item, itemIndex) => {
+                              {!isCollapsed && (
+                                <div className="px-3 pb-3 space-y-2">
+                                  {category.items.map((item, itemIndex) => {
                                   const amount = getFieldValue(item.line);
                                   const hasClaim = amount > 0;
                                   
@@ -3319,9 +3365,10 @@ export default function TaxReport() {
                                         {hasClaim ? formatCurrency(amount) : '$0'}
                                       </span>
                                     </div>
-                                  );
-                                })}
-                              </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
@@ -3490,19 +3537,33 @@ export default function TaxReport() {
                             return sum + getFieldValue(item.line);
                           }, 0);
 
+                          const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '');
+                          const isCollapsed = collapsedProvincialCreditSections[sectionKey];
+
                           return (
-                            <div key={categoryIndex} className="space-y-3">
-                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                                <h4 className="font-medium text-primary text-sm">
-                                  {category.category}
-                                </h4>
+                            <div key={categoryIndex} className="border border-gray-200 rounded-lg">
+                              <div 
+                                className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
+                                onClick={() => toggleProvincialCreditSection(sectionKey)}
+                              >
+                                <div className="flex items-center space-x-2">
+                                  {isCollapsed ? (
+                                    <ChevronRight className="h-4 w-4 text-gray-500" />
+                                  ) : (
+                                    <ChevronDown className="h-4 w-4 text-gray-500" />
+                                  )}
+                                  <h4 className="font-medium text-primary text-sm">
+                                    {category.category}
+                                  </h4>
+                                </div>
                                 <span className="font-medium text-primary text-sm">
                                   {formatCurrency(categoryTotal)}
                                 </span>
                               </div>
                               
-                              <div className="space-y-2">
-                                {category.items.map((item, itemIndex) => {
+                              {!isCollapsed && (
+                                <div className="px-3 pb-3 space-y-2">
+                                  {category.items.map((item, itemIndex) => {
                                   const amount = getFieldValue(item.line);
                                   const hasClaim = amount > 0;
                                   
@@ -3547,9 +3608,10 @@ export default function TaxReport() {
                                         {hasClaim ? formatCurrency(amount) : '$0'}
                                       </span>
                                     </div>
-                                  );
-                                })}
-                              </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
