@@ -3937,7 +3937,7 @@ export default function TaxReport() {
                           </div>
                           
                           {/* Right 2/3 - CCB Clawback Chart */}
-                          <div className="col-span-2">
+                          <div className="col-span-2 flex items-center">
                           {(() => {
                             const baseThreshold = 37487;
                             const additionalThreshold = 81222;
