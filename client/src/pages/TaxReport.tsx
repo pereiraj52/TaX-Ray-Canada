@@ -2713,9 +2713,9 @@ export default function TaxReport() {
                                                 // Skip brackets that start above $300k
                                                 if (bracket.min >= maxScale) return null;
                                                 
-                                                // For high earners (>$220k), highlight the top bracket
+                                                // Check if this is the current bracket for the taxpayer's income
                                                 const isCurrentBracket = currentIncome > bracket.min && 
-                                                  (currentIncome <= bracket.max || (currentIncome > 220000 && bracket.min === 220000));
+                                                  (currentIncome <= bracket.max || bracket.max >= maxScale);
                                                 
                                                 const bracketTop = Math.min(bracket.max, maxScale);
                                                 const bracketHeight = bracketTop - bracket.min;
@@ -2745,7 +2745,7 @@ export default function TaxReport() {
                                               <div 
                                                 className="absolute left-0 w-full h-1 z-10"
                                                 style={{
-                                                  bottom: `${currentIncome > 220000 ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`,
+                                                  bottom: `${currentIncome > maxScale ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`,
                                                   backgroundColor: '#D4B26A'
                                                 }}
                                               >
