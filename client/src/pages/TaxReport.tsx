@@ -35,10 +35,10 @@ export default function TaxReport() {
     'basic-credits-non-refundable': true,
     'employment-credits-non-refundable': true,
     'personal-situation-credits-non-refundable': true,
-    'disability-caregiver-credits-non-refundable': true,
+    'disability-&-caregiver-credits-non-refundable': true,
     'education-credits-non-refundable': true,
     'medical-credits-non-refundable': true,
-    'charitable-gifts-donations-non-refundable': true,
+    'charitable-gifts-&-donations-non-refundable': true,
     'federal-refundable-credits': true,
   });
 
