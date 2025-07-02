@@ -441,6 +441,7 @@ Changelog:
 - July 2, 2025. Updated Net Income calculation in individual financial summaries: changed from simplified formula (Total Income - Total Tax) to detailed breakdown (Total Income - Federal Tax - Provincial Tax - CPP Contributions - EI Premiums) for accurate take-home income calculation using actual financial summary values
 - July 2, 2025. Updated "You Kept" KPI calculation in individual financial summaries: changed from simplified method to use detailed financial summary calculation (Net Income / Total Income) where Net Income = Total Income - Federal Tax - Provincial Tax - CPP Contributions - EI Premiums for consistent percentage calculation across all financial reporting components
 - July 2, 2025. Removed Effective Marginal rate from tax rates section: eliminated third KPI block showing effective marginal rate including clawbacks, updated grid layout from 3 to 2 columns displaying only Average Rate and Marginal Rate for cleaner tax rate analysis
+- July 2, 2025. Fixed Tax Rates summary marginal rate calculation: updated marginal rate brackets to match Combined Tax Bracket Analysis using authentic 2024 Ontario rates with surtax (20.05%-53.53%), ensuring consistency between Tax Rates summary and Combined Tax Bracket Analysis sections
 ```
 
 ## User Preferences

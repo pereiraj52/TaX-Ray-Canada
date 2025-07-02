@@ -1137,19 +1137,20 @@ export default function TaxReport() {
                       const averageRate = totalIncome > 0 ? (totalTax / totalIncome * 100) : 0;
                       
                       // Calculate marginal rate based on taxable income and Ontario tax brackets
+                      // Use the same rates as Combined Tax Bracket Analysis for consistency
                       let marginalRate = 0;
                       if (taxableIncome > 0) {
-                        // Combined federal + Ontario marginal rates for 2024
+                        // Combined federal + Ontario marginal rates for 2024 (with surtax)
                         const combinedBrackets = [
                           { min: 0, max: 51446, rate: 20.05 },      // 15% + 5.05%
                           { min: 51446, max: 55867, rate: 24.15 },  // 15% + 9.15%
                           { min: 55867, max: 102894, rate: 29.65 }, // 20.5% + 9.15%
-                          { min: 102894, max: 111733, rate: 31.66 }, // 20.5% + 11.16%
-                          { min: 111733, max: 150000, rate: 37.16 }, // 26% + 11.16%
-                          { min: 150000, max: 173205, rate: 38.16 }, // 26% + 12.16%
-                          { min: 173205, max: 220000, rate: 41.16 }, // 29% + 12.16%
-                          { min: 220000, max: 246752, rate: 42.16 }, // 29% + 13.16%
-                          { min: 246752, max: Infinity, rate: 46.16 } // 33% + 13.16%
+                          { min: 102894, max: 111733, rate: 31.48 }, // 20.5% + 10.98% (with surtax)
+                          { min: 111733, max: 150000, rate: 37.91 }, // 26% + 11.91% (with surtax)
+                          { min: 150000, max: 173205, rate: 43.41 }, // 26% + 17.41% (with surtax)
+                          { min: 173205, max: 220000, rate: 46.16 }, // 29% + 17.16% (with surtax)
+                          { min: 220000, max: 246752, rate: 47.74 }, // 29% + 18.74% (with surtax)
+                          { min: 246752, max: Infinity, rate: 53.53 } // 33% + 20.53% (with surtax)
                         ];
                         
                         // Find the appropriate bracket
