@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Download, FileText, Calendar, User, Info } from "lucide-react";
+import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +15,21 @@ export default function IndividualTaxReport() {
   const householdId = parseInt(params.householdId || "0");
   const clientId = parseInt(params.clientId || "0");
   const taxYear = parseInt(params.year || "0");
+
+  // State for collapsible sections in Tax Deductions Analysis
+  const [collapsedDeductionSections, setCollapsedDeductionSections] = useState<{[key: string]: boolean}>({
+    'retirement-plan-deductions': true,
+    'personal-deductions': true,
+    'employment-deductions': true,
+    'specialized-deductions': true,
+  });
+
+  const toggleDeductionSection = (sectionKey: string) => {
+    setCollapsedDeductionSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }));
+  };
 
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],

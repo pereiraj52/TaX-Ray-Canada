@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Download, FileText, Calendar, User, Info } from "lucide-react";
+import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +14,21 @@ export default function TaxReport() {
   const params = useParams();
   const householdId = parseInt(params.householdId || "0");
   const taxYear = parseInt(params.year || "0");
+
+  // State for collapsible sections in Tax Deductions Analysis
+  const [collapsedDeductionSections, setCollapsedDeductionSections] = useState<{[key: string]: boolean}>({
+    'retirement-plan-deductions': true,
+    'personal-deductions': true,
+    'employment-deductions': true,
+    'specialized-deductions': true,
+  });
+
+  const toggleDeductionSection = (sectionKey: string) => {
+    setCollapsedDeductionSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }));
+  };
 
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
@@ -2897,27 +2913,37 @@ export default function TaxReport() {
                         {spouse.clientName} - Tax Deductions
                       </h3>
                       
-                      <div className="space-y-6">
+                      <div className="space-y-4">
                         {deductions.map((category, categoryIndex) => {
                           const categoryTotal = category.items.reduce((sum, item) => {
                             return sum + getFieldValue(item.line);
                           }, 0);
 
+                          const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-');
+
                           return (
-                            <div key={categoryIndex} className="space-y-3">
-                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                                <h4 className="font-medium text-primary text-sm">
-                                  {category.category}
-                                </h4>
-                                <span className="font-medium text-primary text-sm">
+                            <div key={categoryIndex} className="border border-gray-200 rounded-lg">
+                              <button
+                                onClick={() => toggleDeductionSection(sectionKey)}
+                                className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                              >
+                                <div className="flex items-center">
+                                  {collapsedDeductionSections[sectionKey] ? (
+                                    <ChevronRight className="h-4 w-4 mr-2" />
+                                  ) : (
+                                    <ChevronDown className="h-4 w-4 mr-2" />
+                                  )}
+                                  <h4 className="font-medium text-primary">{category.category}</h4>
+                                </div>
+                                <span className="font-medium text-primary">
                                   {formatCurrency(categoryTotal)}
                                 </span>
-                              </div>
-                              
-                              <div className="space-y-2">
-                                {category.items.map((item, itemIndex) => {
-                                  const amount = getFieldValue(item.line);
-                                  const hasClaim = amount > 0;
+                              </button>
+                              {!collapsedDeductionSections[sectionKey] && (
+                                <div className="p-4 border-t border-gray-200 space-y-2">
+                                  {category.items.map((item, itemIndex) => {
+                                    const amount = getFieldValue(item.line);
+                                    const hasClaim = amount > 0;
                                   
                                   return (
                                     <div key={itemIndex} className="flex justify-between items-center text-sm">
@@ -2971,9 +2997,10 @@ export default function TaxReport() {
                                         {hasClaim ? formatCurrency(amount) : '$0'}
                                       </span>
                                     </div>
-                                  );
-                                })}
-                              </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
