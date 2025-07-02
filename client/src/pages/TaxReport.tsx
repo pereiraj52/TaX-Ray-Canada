@@ -4027,6 +4027,7 @@ export default function TaxReport() {
                           </div>
                         </div>
                       </div>
+                    </div>
                   </CardContent>
                 </Card>
               );
