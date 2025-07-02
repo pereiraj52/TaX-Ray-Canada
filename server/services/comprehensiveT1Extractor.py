@@ -283,6 +283,12 @@ class OntarioTaxFields:
     ontario_trillium_benefit: Optional[Decimal] = None  # Line 61080
     ontario_child_benefit: Optional[Decimal] = None  # Line 61240
     ontario_working_families_tax_credit: Optional[Decimal] = None  # Line 61300
+    # Additional Ontario Refundable Credits (Form 479ON)
+    ontario_seniors_care_at_home_credit: Optional[Decimal] = None  # Line 63095
+    ontario_seniors_public_transit_credit: Optional[Decimal] = None  # Form 479ON line 13
+    ontario_political_contribution_credit_479: Optional[Decimal] = None  # Form 479ON line 17
+    ontario_flow_through_credit: Optional[Decimal] = None  # Form 479ON line 18
+    ontario_co_operative_education_credit: Optional[Decimal] = None  # Line 63300
 
 @dataclass
 class AlbertaTaxFields:
@@ -1149,6 +1155,12 @@ class ComprehensiveT1Extractor:
             '61080': 'ontario_trillium_benefit',
             '61240': 'ontario_child_benefit',
             '61300': 'ontario_working_families_tax_credit',
+            # Additional Ontario Refundable Credits (Form 479ON)
+            '63095': 'ontario_seniors_care_at_home_credit',
+            '63100': 'ontario_seniors_public_transit_credit',  # Line 63100 from form
+            '63110': 'ontario_political_contribution_credit_479',  # Line 63110 from form
+            '63220': 'ontario_flow_through_credit',  # Line 63220 from form
+            '63300': 'ontario_co_operative_education_credit',
         }
         return self._extract_fields(text, ontario_lines, OntarioTaxFields)
     

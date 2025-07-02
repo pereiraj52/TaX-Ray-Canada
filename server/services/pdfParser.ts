@@ -324,6 +324,12 @@ export class T1PDFParser {
         ontario_dividend_tax_credit: { code: '61520', name: 'Ontario Dividend Tax Credit' },
         ontario_health_premium: { code: '62140', name: 'Ontario Health Premium' },
         ontario_tax: { code: '42800', name: 'Ontario Tax' },
+        // Ontario Refundable Credits from Form 479ON
+        ontario_seniors_care_at_home_credit: { code: '63095', name: 'Ontario Seniors Care at Home Credit' },
+        ontario_seniors_public_transit_credit: { code: '63100', name: 'Ontario Seniors Public Transit Credit' },
+        ontario_political_contribution_credit_479: { code: '63110', name: 'Ontario Political Contribution Credit' },
+        ontario_flow_through_credit: { code: '63220', name: 'Ontario Flow Through Credit' },
+        ontario_co_operative_education_credit: { code: '63300', name: 'Ontario Co-operative Education Credit' },
       };
 
       for (const [fieldKey, mapping] of Object.entries(ontarioTaxMapping)) {
