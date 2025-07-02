@@ -1770,7 +1770,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">GST/HST Credit (Line 45350):</span>
+                      <span className="field-label">Canada Training Credit (Line 45350):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
                     </div>
                     <div className="field-row">

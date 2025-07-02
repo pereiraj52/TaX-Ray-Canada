@@ -244,7 +244,7 @@ export class T1PDFParser {
         ei_overpayment: { code: '45000', name: 'EI Overpayment' },
         working_income_tax_benefit: { code: '45300', name: 'Working Income Tax Benefit' },
         climate_action_incentive: { code: '44900', name: 'Climate Action Incentive' },
-        gst_hst_credit: { code: '45350', name: 'GST/HST Credit' },
+        gst_hst_credit: { code: '45350', name: 'Canada Training Credit' },
         canada_child_benefit: { code: '45400', name: 'Canada Child Benefit' },
         provincial_credits: { code: '47900', name: 'Provincial Credits' },
         total_credits: { code: '48200', name: 'Total Credits' },
