@@ -2965,9 +2965,9 @@ export default function TaxReport() {
                                   ) : (
                                     <ChevronDown className="h-4 w-4 mr-2" />
                                   )}
-                                  <h4 className="font-medium text-primary">{category.category}</h4>
+                                  <h4 className="font-medium text-primary text-sm">{category.category}</h4>
                                 </div>
-                                <span className="font-medium text-primary">
+                                <span className="font-medium text-primary text-sm">
                                   {formatCurrency(categoryTotal)}
                                 </span>
                               </button>
