@@ -1953,11 +1953,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <div className="text-xl font-bold text-blue-600">
                         {formatCurrency(getFieldValue('58800'))}
                       </div>
-                      <div className="mt-4">
-                        <div className="font-semibold text-blue-800 mb-2">Tax Savings</div>
-                        <div className="text-xl font-bold text-blue-600">
-                          {formatCurrency(getFieldValue('61500'))}
-                        </div>
+                      <div className="text-sm text-blue-700 mt-2">
+                        Tax Savings: {formatCurrency(getFieldValue('61500'))}
                       </div>
                     </div>
                   )}
