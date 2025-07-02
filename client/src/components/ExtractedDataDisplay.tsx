@@ -1844,7 +1844,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       ) : (
                         <ChevronDown className="h-4 w-4 mr-2" />
                       )}
-                      <h4 className="font-medium text-primary">Ontario Provincial Credits</h4>
+                      <h4 className="font-medium text-primary">Ontario Non-Refundable Credits</h4>
                     </div>
                     <span className="font-medium text-primary">
                       {formatCurrency(getSectionTotal(['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58689', '58729']))}
@@ -1949,7 +1949,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                   {getClientProvince() === 'ON' && (
                     <div className="text-center">
-                      <div className="font-semibold text-blue-800 mb-2">Ontario Tax Credits</div>
+                      <div className="font-semibold text-blue-800 mb-2">Ontario Non-Refundable Credits</div>
                       <div className="text-xl font-bold text-blue-600">
                         {formatCurrency(getFieldValue('58800'))}
                       </div>
