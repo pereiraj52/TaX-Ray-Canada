@@ -1782,7 +1782,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Climate Action Incentive (Line 45355):</span>
+                      <span className="field-label">Multigenerational Home Renovation Tax Credit (Line 45355):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
                     </div>
                     <div className="field-row">

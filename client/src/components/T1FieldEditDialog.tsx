@@ -185,7 +185,7 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       { fieldCode: '45200', fieldName: 'Refundable Medical Expense Supplement', fieldType: 'currency' },
       { fieldCode: '45300', fieldName: 'Canada Workers Benefit', fieldType: 'currency' },
       { fieldCode: '45350', fieldName: 'Canada Training Credit', fieldType: 'currency' },
-      { fieldCode: '45355', fieldName: 'Climate Action Incentive', fieldType: 'currency' },
+      { fieldCode: '45355', fieldName: 'Multigenerational Home Renovation Tax Credit', fieldType: 'currency' },
       { fieldCode: '45400', fieldName: 'Canada Child Benefit', fieldType: 'currency' },
       { fieldCode: '45700', fieldName: 'Teacher and Early Childhood Educator School Supply Tax Credit', fieldType: 'currency' },
       { fieldCode: '47900', fieldName: 'Provincial Credits', fieldType: 'currency' },

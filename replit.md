@@ -412,6 +412,7 @@ Changelog:
 - July 2, 2025. Added Refundable Medical Expense Supplement (Line 45200): included new field in refundable credits section across T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for refundable medical expense supplement tracking
 - July 2, 2025. Fixed Canada Workers Benefit line number: corrected from Line 45600 to Line 45300 across ExtractedDataDisplay, T1FieldEditDialog, TaxReport, and PDF parser mapping for accurate Canadian tax form line number referencing
 - July 2, 2025. Added Canada Training Credit (Line 45350) to Refundable Credits section: included field in T1 extraction display and Tax Credits Analysis section with proper field mapping and section total calculations for comprehensive refundable credit tracking
+- July 2, 2025. Fixed Line 45355 field label: corrected from "Climate Action Incentive" to "Multigenerational Home Renovation Tax Credit" across ExtractedDataDisplay, T1FieldEditDialog, and TaxReport components for accurate Canadian tax form terminology
 ```
 
 ## User Preferences
