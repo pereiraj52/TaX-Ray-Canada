@@ -997,73 +997,63 @@ export default function IndividualTaxReport() {
                         const thresholdLabels = ['$0', '$51k', '$56k', '$103k', '$112k', '$150k', '$173k', '$220k', '$247k', '$300k'];
 
                         return (
-                          <div className="relative">
-                            {/* Left scale labels */}
-                            <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-600 z-10">
-                              {thresholdLabels.slice().reverse().map((label, index) => (
-                                <div key={index} className="flex items-center h-8">
-                                  {label}
-                                </div>
-                              ))}
-                            </div>
-
-                            {/* Chart area with left margin for scale */}
-                            <div className="ml-12 space-y-2">
-                              {/* Four horizontal bar charts */}
-                              <div className="grid grid-cols-4 gap-4 h-80">
+                          <div className="space-y-0">
+                            {/* Grid layout with 9 rows (income brackets) and 4 columns (income types) */}
+                            <div className="grid grid-rows-10 gap-0">
+                              {/* Top row - income labels and taxable income indicator */}
+                              <div className="grid grid-cols-5 gap-1 mb-2">
+                                <div></div>
                                 {incomeTypes.map((incomeType, typeIndex) => (
-                                  <div key={typeIndex} className="relative">
-                                    {/* Income type header */}
-                                    <div className="text-center mb-2">
-                                      <h4 className="font-medium text-sm text-gray-700">
-                                        {incomeType.name.split(' ').join(' ')}
-                                      </h4>
-                                    </div>
-                                    
-                                    {/* Bar chart container */}
-                                    <div className="bg-gray-100 flex h-full rounded relative">
-                                      {incomeType.rates.map((rate, bracketIndex) => {
-                                        const isCurrentBracket = taxableIncome >= combinedThresholds[bracketIndex] && 
-                                                                (bracketIndex === 8 || taxableIncome < combinedThresholds[bracketIndex + 1]);
-                                        
-                                        return (
-                                          <div
-                                            key={bracketIndex}
-                                            className={`flex-1 flex items-end justify-center text-black text-xs relative ${
-                                              isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
-                                            }`}
-                                            style={{
-                                              height: `${Math.max(10, Math.abs(rate) * 1.5)}%`
-                                            }}
-                                          >
-                                            <span className="pb-1 z-20 relative">
-                                              {rate.toFixed(1)}%
-                                            </span>
-                                          </div>
-                                        );
-                                      })}
-                                      
-                                      {/* Income position indicator */}
-                                      {taxableIncome > 0 && (
-                                        <div 
-                                          className="absolute top-0 w-0.5 h-full z-30"
-                                          style={{
-                                            left: `${Math.min(95, (taxableIncome / 300000) * 100)}%`,
-                                            backgroundColor: '#D4B26A'
-                                          }}
-                                        />
-                                      )}
-                                    </div>
+                                  <div key={typeIndex} className="text-center">
+                                    <h4 className="font-medium text-sm text-gray-700">
+                                      {incomeType.name.replace(' ', '\n').split('\n').map((word, i) => (
+                                        <div key={i}>{word}</div>
+                                      ))}
+                                    </h4>
                                   </div>
                                 ))}
                               </div>
 
-                              {/* Bottom scale labels */}
-                              <div className="flex justify-between text-xs text-gray-600 mt-2">
-                                {thresholdLabels.map((label, index) => (
-                                  <span key={index}>{label}</span>
-                                ))}
-                              </div>
+                              {/* Tax bracket rows (top to bottom: $300k to $0) */}
+                              {[...Array(9)].map((_, rowIndex) => {
+                                const bracketIndex = 8 - rowIndex; // Start from highest bracket
+                                const threshold = thresholdLabels[bracketIndex + 1];
+                                const isCurrentRow = taxableIncome >= combinedThresholds[bracketIndex] && 
+                                                    (bracketIndex === 8 || taxableIncome < combinedThresholds[bracketIndex + 1]);
+                                
+                                return (
+                                  <div key={rowIndex} className="grid grid-cols-5 gap-1 h-12">
+                                    {/* Left threshold label */}
+                                    <div className="flex items-center justify-end pr-2 text-xs text-gray-600">
+                                      <div className="flex items-center">
+                                        {threshold}
+                                        {isCurrentRow && (
+                                          <span className="ml-2 text-orange-600 font-medium text-xs">
+                                            Taxable Income: ${taxableIncome.toLocaleString()}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                    
+                                    {/* Four income type columns */}
+                                    {incomeTypes.map((incomeType, typeIndex) => {
+                                      const rate = incomeType.rates[bracketIndex];
+                                      const isCurrentBracket = isCurrentRow;
+                                      
+                                      return (
+                                        <div
+                                          key={typeIndex}
+                                          className={`h-12 flex items-center justify-center text-black text-xs font-medium rounded ${
+                                            isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
+                                          }`}
+                                        >
+                                          {rate.toFixed(2)}%
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                );
+                              })}
                             </div>
                           </div>
                         );
