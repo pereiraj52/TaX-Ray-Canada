@@ -330,11 +330,12 @@ export default function IndividualTaxReport() {
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">
                     {(() => {
-                      // Simple marginal rate calculation based on taxable income
-                      if (taxableIncome <= 55867) return "20.05%";
-                      if (taxableIncome <= 102894) return "24.15%";
+                      // Calculate marginal rate based on taxable income and Ontario tax brackets
+                      if (taxableIncome <= 51446) return "20.05%";
+                      if (taxableIncome <= 55867) return "24.15%";
+                      if (taxableIncome <= 102894) return "29.65%";
                       if (taxableIncome <= 111733) return "31.48%";
-                      if (taxableIncome <= 150000) return "37.16%";
+                      if (taxableIncome <= 150000) return "37.91%";
                       if (taxableIncome <= 173205) return "43.41%";
                       if (taxableIncome <= 220000) return "46.16%";
                       if (taxableIncome <= 246752) return "47.74%";
@@ -343,6 +344,507 @@ export default function IndividualTaxReport() {
                   </div>
                   <div className="text-sm text-gray-600">Marginal Rate</div>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Combined Tax Bracket Analysis */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">{targetClient.firstName} {targetClient.lastName} - Combined Tax Bracket Analysis</h2>
+          <Card>
+            <CardContent className="p-6">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Rate</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Threshold</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Income</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Tax</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const brackets = [
+                        { rate: 20.05, min: 0, max: 51446 },
+                        { rate: 24.15, min: 51446, max: 55867 },
+                        { rate: 29.65, min: 55867, max: 102894 },
+                        { rate: 31.48, min: 102894, max: 111733 },
+                        { rate: 37.91, min: 111733, max: 150000 },
+                        { rate: 43.41, min: 150000, max: 173205 },
+                        { rate: 46.16, min: 173205, max: 220000 },
+                        { rate: 47.74, min: 220000, max: 246752 },
+                        { rate: 53.53, min: 246752, max: Infinity }
+                      ];
+
+                      let cumulativeTax = 0;
+                      
+                      return brackets.map((bracket, index) => {
+                        const incomeInBracket = Math.min(
+                          Math.max(0, taxableIncome - bracket.min),
+                          bracket.max === Infinity ? Math.max(0, taxableIncome - bracket.min) : bracket.max - bracket.min
+                        );
+                        const taxInBracket = incomeInBracket * (bracket.rate / 100);
+                        cumulativeTax += taxInBracket;
+                        
+                        const isCurrentBracket = taxableIncome > bracket.min && (bracket.max === Infinity || taxableIncome <= bracket.max);
+                        
+                        return (
+                          <tr 
+                            key={index} 
+                            className={`border-b border-gray-100 ${isCurrentBracket ? 'border border-[#D4B26A]' : ''}`}
+                          >
+                            <td className="py-2 px-2 font-medium text-primary">{bracket.rate.toFixed(2)}%</td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${bracket.min.toLocaleString()} - {bracket.max === Infinity ? '∞' : `$${bracket.max.toLocaleString()}`}
+                            </td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${incomeInBracket.toLocaleString('en-CA', { maximumFractionDigits: 0 })}
+                            </td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${taxInBracket.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Combined Tax Bracket Visualization */}
+        <div className="mb-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {['Ordinary Income', 'Capital Gains', 'Eligible Dividends', 'Non-Eligible Dividends'].map((incomeType, typeIndex) => {
+                  const getRatesForType = (type: string) => {
+                    switch (type) {
+                      case 'Capital Gains':
+                        return [10.03, 12.08, 14.83, 15.74, 18.96, 21.71, 23.08, 23.87, 26.77];
+                      case 'Eligible Dividends':
+                        return [-1.20, 2.04, 7.56, 9.25, 15.15, 19.73, 21.86, 23.11, 39.34];
+                      case 'Non-Eligible Dividends':
+                        return [13.95, 17.70, 22.94, 24.81, 30.33, 34.81, 36.89, 38.16, 47.74];
+                      default: // Ordinary Income
+                        return [20.05, 24.15, 29.65, 31.48, 37.91, 43.41, 46.16, 47.74, 53.53];
+                    }
+                  };
+
+                  const rates = getRatesForType(incomeType);
+                  const thresholds = [0, 51446, 55867, 102894, 111733, 150000, 173205, 220000, 246752];
+                  const maxScale = 300000;
+
+                  return (
+                    <div key={typeIndex} className="space-y-2">
+                      <h4 className="font-medium text-sm text-gray-700">{incomeType}</h4>
+                      <div className="relative">
+                        <div className="flex h-72 bg-gray-100 rounded">
+                          {rates.map((rate, index) => {
+                            const isCurrentBracket = index < thresholds.length - 1 ? 
+                              (taxableIncome >= thresholds[index] && taxableIncome < thresholds[index + 1]) :
+                              (taxableIncome >= thresholds[index]);
+                            
+                            return (
+                              <div
+                                key={index}
+                                className={`flex-1 flex items-end justify-center text-black text-xs relative ${
+                                  isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
+                                }`}
+                                style={{ 
+                                  height: `${Math.max(10, (Math.abs(rate) / 60) * 100)}%`,
+                                  zIndex: 10
+                                }}
+                              >
+                                <span className="absolute bottom-1 z-20">{rate.toFixed(1)}%</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Taxable Income Indicator */}
+                        {taxableIncome > 0 && (
+                          <div
+                            className="absolute top-0 w-0.5 h-72 z-30"
+                            style={{
+                              backgroundColor: '#D4B26A',
+                              left: `${Math.min(95, (taxableIncome / maxScale) * 100)}%`
+                            }}
+                          >
+                            <div 
+                              className="absolute text-xs font-medium whitespace-nowrap"
+                              style={{
+                                color: '#D4B26A',
+                                right: '32px',
+                                top: '8px'
+                              }}
+                            >
+                              {typeIndex === 0 ? `$${(taxableIncome/1000).toFixed(0)}k` : ''}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Scale Labels */}
+                        <div className="absolute bottom-0 w-full h-72 pointer-events-none">
+                          {[0, 51, 56, 103, 112, 150, 173, 220, 247, 300].map((amount, index) => {
+                            const position = (amount / 300) * 100;
+                            
+                            // Calculate spacing to prevent overlap
+                            const prevPosition = index > 0 ? ([0, 51, 56, 103, 112, 150, 173, 220, 247, 300][index - 1] / 300) * 100 : 0;
+                            const spacing = position - prevPosition;
+                            const minSpacing = 7; // 7% minimum spacing
+                            
+                            let adjustedPosition = position;
+                            if (spacing < minSpacing && index > 0) {
+                              adjustedPosition = prevPosition + minSpacing;
+                            }
+                            
+                            // Special handling for $300k label
+                            const isTopLabel = amount === 300;
+                            const topOffset = isTopLabel ? '4%' : '0px';
+                            
+                            return (
+                              <div
+                                key={index}
+                                className="absolute text-xs text-gray-600"
+                                style={{
+                                  left: `${Math.min(90, adjustedPosition)}%`,
+                                  bottom: topOffset
+                                }}
+                              >
+                                ${amount}k
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Federal Tax Bracket Analysis */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Bracket Analysis</h2>
+          <Card>
+            <CardContent className="p-6">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Rate</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Threshold</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Income</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Tax</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const federalBrackets = [
+                        { rate: 15.00, min: 0, max: 55867 },
+                        { rate: 20.50, min: 55867, max: 111733 },
+                        { rate: 26.00, min: 111733, max: 173205 },
+                        { rate: 29.00, min: 173205, max: 246752 },
+                        { rate: 33.00, min: 246752, max: Infinity }
+                      ];
+
+                      return federalBrackets.map((bracket, index) => {
+                        const incomeInBracket = Math.min(
+                          Math.max(0, taxableIncome - bracket.min),
+                          bracket.max === Infinity ? Math.max(0, taxableIncome - bracket.min) : bracket.max - bracket.min
+                        );
+                        const taxInBracket = incomeInBracket * (bracket.rate / 100);
+                        
+                        const isCurrentBracket = taxableIncome > bracket.min && (bracket.max === Infinity || taxableIncome <= bracket.max);
+                        
+                        return (
+                          <tr 
+                            key={index} 
+                            className={`border-b border-gray-100 ${isCurrentBracket ? 'border border-[#D4B26A]' : ''}`}
+                          >
+                            <td className="py-2 px-2 font-medium text-primary">{bracket.rate.toFixed(2)}%</td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${bracket.min.toLocaleString()} - {bracket.max === Infinity ? '∞' : `$${bracket.max.toLocaleString()}`}
+                            </td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${incomeInBracket.toLocaleString('en-CA', { maximumFractionDigits: 0 })}
+                            </td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${taxInBracket.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Federal Tax Bracket Visualization */}
+        <div className="mb-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {['Ordinary Income', 'Capital Gains', 'Eligible Dividends', 'Non-Eligible Dividends'].map((incomeType, typeIndex) => {
+                  const getFederalRatesForType = (type: string) => {
+                    switch (type) {
+                      case 'Capital Gains':
+                        return [7.50, 10.25, 13.00, 14.50, 16.50];
+                      case 'Eligible Dividends':
+                        return [-0.03, 7.56, 15.15, 19.73, 24.81];
+                      case 'Non-Eligible Dividends':
+                        return [6.87, 13.19, 18.52, 27.57, 27.57];
+                      default: // Ordinary Income
+                        return [15.00, 20.50, 26.00, 29.00, 33.00];
+                    }
+                  };
+
+                  const rates = getFederalRatesForType(incomeType);
+                  const federalThresholds = [0, 55867, 111733, 173205, 246752];
+                  const maxScale = 300000;
+
+                  return (
+                    <div key={typeIndex} className="space-y-2">
+                      <h4 className="font-medium text-sm text-gray-700">{incomeType}</h4>
+                      <div className="relative">
+                        <div className="flex h-72 bg-gray-100 rounded">
+                          {rates.map((rate, index) => {
+                            const isCurrentBracket = index < federalThresholds.length - 1 ? 
+                              (taxableIncome >= federalThresholds[index] && taxableIncome < federalThresholds[index + 1]) :
+                              (taxableIncome >= federalThresholds[index]);
+                            
+                            return (
+                              <div
+                                key={index}
+                                className={`flex-1 flex items-end justify-center text-black text-xs relative ${
+                                  isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
+                                }`}
+                                style={{ 
+                                  height: `${Math.max(10, (Math.abs(rate) / 40) * 100)}%`,
+                                  zIndex: 10
+                                }}
+                              >
+                                <span className="absolute bottom-1 z-20">{rate.toFixed(1)}%</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Taxable Income Indicator */}
+                        {taxableIncome > 0 && (
+                          <div
+                            className="absolute top-0 w-0.5 h-72 z-30"
+                            style={{
+                              backgroundColor: '#D4B26A',
+                              left: `${Math.min(95, (taxableIncome / maxScale) * 100)}%`
+                            }}
+                          >
+                            <div 
+                              className="absolute text-xs font-medium whitespace-nowrap"
+                              style={{
+                                color: '#D4B26A',
+                                right: '32px',
+                                top: '8px'
+                              }}
+                            >
+                              {typeIndex === 0 ? `$${(taxableIncome/1000).toFixed(0)}k` : ''}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Scale Labels */}
+                        <div className="absolute bottom-0 w-full h-72 pointer-events-none">
+                          {[0, 56, 112, 173, 247, 300].map((amount, index) => {
+                            const position = (amount / 300) * 100;
+                            
+                            return (
+                              <div
+                                key={index}
+                                className="absolute text-xs text-gray-600"
+                                style={{
+                                  left: `${Math.min(90, position)}%`,
+                                  bottom: amount === 300 ? '4%' : '0px'
+                                }}
+                              >
+                                ${amount}k
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Provincial Tax Bracket Analysis */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Provincial Tax Bracket Analysis</h2>
+          <Card>
+            <CardContent className="p-6">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Rate</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Threshold</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Income</th>
+                      <th className="text-left py-2 px-2 text-gray-900 font-medium">Tax</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const provincialBrackets = [
+                        { rate: 5.05, min: 0, max: 51446 },
+                        { rate: 9.15, min: 51446, max: 102894 },
+                        { rate: 11.16, min: 102894, max: 150000 },
+                        { rate: 12.16, min: 150000, max: 220000 },
+                        { rate: 13.16, min: 220000, max: Infinity }
+                      ];
+
+                      return provincialBrackets.map((bracket, index) => {
+                        const incomeInBracket = Math.min(
+                          Math.max(0, taxableIncome - bracket.min),
+                          bracket.max === Infinity ? Math.max(0, taxableIncome - bracket.min) : bracket.max - bracket.min
+                        );
+                        const taxInBracket = incomeInBracket * (bracket.rate / 100);
+                        
+                        const isCurrentBracket = taxableIncome > bracket.min && (bracket.max === Infinity || taxableIncome <= bracket.max);
+                        
+                        return (
+                          <tr 
+                            key={index} 
+                            className={`border-b border-gray-100 ${isCurrentBracket ? 'border border-[#D4B26A]' : ''}`}
+                          >
+                            <td className="py-2 px-2 font-medium text-primary">{bracket.rate.toFixed(2)}%</td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${bracket.min.toLocaleString()} - {bracket.max === Infinity ? '∞' : `$${bracket.max.toLocaleString()}`}
+                            </td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${incomeInBracket.toLocaleString('en-CA', { maximumFractionDigits: 0 })}
+                            </td>
+                            <td className="py-2 px-2 text-gray-700 text-xs">
+                              ${taxInBracket.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Provincial Tax Bracket Visualization */}
+        <div className="mb-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {['Ordinary Income', 'Capital Gains', 'Eligible Dividends', 'Non-Eligible Dividends'].map((incomeType, typeIndex) => {
+                  const getProvincialRatesForType = (type: string) => {
+                    switch (type) {
+                      case 'Capital Gains':
+                        return [2.53, 4.58, 5.58, 6.08, 6.58];
+                      case 'Eligible Dividends':
+                        return [-1.17, -5.52, -7.59, -8.62, 14.53];
+                      case 'Non-Eligible Dividends':
+                        return [7.08, 9.51, 12.40, 10.59, 20.17];
+                      default: // Ordinary Income
+                        return [5.05, 9.15, 11.16, 12.16, 13.16];
+                    }
+                  };
+
+                  const rates = getProvincialRatesForType(incomeType);
+                  const provincialThresholds = [0, 51446, 102894, 150000, 220000];
+                  const maxScale = 300000;
+
+                  return (
+                    <div key={typeIndex} className="space-y-2">
+                      <h4 className="font-medium text-sm text-gray-700">{incomeType}</h4>
+                      <div className="relative">
+                        <div className="flex h-72 bg-gray-100 rounded">
+                          {rates.map((rate, index) => {
+                            const isCurrentBracket = index < provincialThresholds.length - 1 ? 
+                              (taxableIncome >= provincialThresholds[index] && taxableIncome < provincialThresholds[index + 1]) :
+                              (taxableIncome >= provincialThresholds[index]);
+                            
+                            return (
+                              <div
+                                key={index}
+                                className={`flex-1 flex items-end justify-center text-black text-xs relative ${
+                                  isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
+                                }`}
+                                style={{ 
+                                  height: `${Math.max(10, (Math.abs(rate) / 20) * 100)}%`,
+                                  zIndex: 10
+                                }}
+                              >
+                                <span className="absolute bottom-1 z-20">{rate.toFixed(1)}%</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Taxable Income Indicator */}
+                        {taxableIncome > 0 && (
+                          <div
+                            className="absolute top-0 w-0.5 h-72 z-30"
+                            style={{
+                              backgroundColor: '#D4B26A',
+                              left: `${Math.min(95, (taxableIncome / maxScale) * 100)}%`
+                            }}
+                          >
+                            <div 
+                              className="absolute text-xs font-medium whitespace-nowrap"
+                              style={{
+                                color: '#D4B26A',
+                                right: '32px',
+                                top: '8px'
+                              }}
+                            >
+                              {typeIndex === 0 ? `$${(taxableIncome/1000).toFixed(0)}k` : ''}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Scale Labels */}
+                        <div className="absolute bottom-0 w-full h-72 pointer-events-none">
+                          {[0, 51, 103, 150, 220, 300].map((amount, index) => {
+                            const position = (amount / 300) * 100;
+                            
+                            return (
+                              <div
+                                key={index}
+                                className="absolute text-xs text-gray-600"
+                                style={{
+                                  left: `${Math.min(90, position)}%`,
+                                  bottom: amount === 300 ? '4%' : '0px'
+                                }}
+                              >
+                                ${amount}k
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
