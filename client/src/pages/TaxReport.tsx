@@ -2925,6 +2925,38 @@ export default function TaxReport() {
                                         <span className="text-gray-400 text-xs">
                                           (Line {item.line})
                                         </span>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Info className="h-3 w-3 text-gray-400 cursor-help ml-1" />
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p className="text-sm max-w-xs">
+                                              {item.name === "RPP Deduction" && "Registered Pension Plan (RPP) contributions deducted from your employment income."}
+                                              {item.name === "RRSP Deduction" && "Registered Retirement Savings Plan contributions that reduce your taxable income."}
+                                              {item.name === "FHSA Deduction" && "First Home Savings Account contributions, providing tax deduction and tax-free growth."}
+                                              {item.name === "PRPP Deduction" && "Pooled Registered Pension Plan contributions made through your employer."}
+                                              {item.name === "SPP Deduction" && "Saskatchewan Pension Plan contributions for retirement savings."}
+                                              {item.name === "Pooled Fund Deduction" && "Contributions to pooled registered pension plans."}
+                                              {item.name === "Split Pension Deduction" && "Pension income split with your spouse to optimize household taxes."}
+                                              {item.name === "Annual Union Dues" && "Professional or union membership fees paid during the tax year."}
+                                              {item.name === "UCCB Repayment" && "Universal Child Care Benefit overpayments that must be repaid."}
+                                              {item.name === "Child Care Expenses" && "Eligible child care costs for children under 16 or with disabilities."}
+                                              {item.name === "Disability Supports" && "Medical expenses and support costs for persons with disabilities."}
+                                              {item.name === "Business Investment Loss" && "Allowable business investment loss from qualifying small business investments."}
+                                              {item.name === "Moving Expenses" && "Eligible moving costs for employment, education, or business relocation."}
+                                              {item.name === "Support Payments Allowable" && "Court-ordered spousal or child support payments made."}
+                                              {item.name === "Carrying Charges" && "Investment-related expenses like interest on money borrowed to invest."}
+                                              {item.name === "CPP/QPP Self-Employed" && "Canada or Quebec Pension Plan contributions for self-employed individuals."}
+                                              {item.name === "Enhanced CPP/QPP Deduction" && "Additional enhanced CPP contributions for higher retirement benefits."}
+                                              {item.name === "Other Employment Expenses" && "Qualifying employment expenses like office supplies, travel, or vehicle costs."}
+                                              {item.name === "Clergy Residence" && "Residence deduction available to eligible members of the clergy."}
+                                              {item.name === "Exploration Development" && "Canadian exploration and development expenses for resource investments."}
+                                              {item.name === "Other Deductions" && "Miscellaneous deductions not covered in other categories."}
+                                              {item.name === "Social Benefits Repayment" && "Employment insurance or old age security benefits that must be repaid."}
+                                              {!["RPP Deduction", "RRSP Deduction", "FHSA Deduction", "PRPP Deduction", "SPP Deduction", "Pooled Fund Deduction", "Split Pension Deduction", "Annual Union Dues", "UCCB Repayment", "Child Care Expenses", "Disability Supports", "Business Investment Loss", "Moving Expenses", "Support Payments Allowable", "Carrying Charges", "CPP/QPP Self-Employed", "Enhanced CPP/QPP Deduction", "Other Employment Expenses", "Clergy Residence", "Exploration Development", "Other Deductions", "Social Benefits Repayment"].includes(item.name) && "Tax deduction information"}
+                                            </p>
+                                          </TooltipContent>
+                                        </Tooltip>
                                       </div>
                                       <span className="font-medium text-right text-gray-700">
                                         {hasClaim ? formatCurrency(amount) : '$0'}
