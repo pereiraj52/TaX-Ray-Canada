@@ -2658,8 +2658,7 @@ export default function TaxReport() {
                     const provincialOrdinaryBrackets = [
                       { rate: 5.05, min: 0, max: 51446, label: "5.05%" },
                       { rate: 9.15, min: 51446, max: 102894, label: "9.15%" },
-                      { rate: 11.16, min: 102894, max: 106732, label: "11.16%" },
-                      { rate: 11.16, min: 106732, max: 150000, label: "11.16%" },
+                      { rate: 11.16, min: 102894, max: 150000, label: "11.16%" },
                       { rate: 12.16, min: 150000, max: 220000, label: "12.16%" },
                       { rate: 13.16, min: 220000, max: 300000, label: "13.16%" }
                     ];
@@ -2667,8 +2666,7 @@ export default function TaxReport() {
                     const provincialCapitalGainsBrackets = [
                       { rate: 2.53, min: 0, max: 51446, label: "2.53%" },
                       { rate: 4.58, min: 51446, max: 102894, label: "4.58%" },
-                      { rate: 5.58, min: 102894, max: 106732, label: "5.58%" },
-                      { rate: 5.58, min: 106732, max: 150000, label: "5.58%" },
+                      { rate: 5.58, min: 102894, max: 150000, label: "5.58%" },
                       { rate: 6.08, min: 150000, max: 220000, label: "6.08%" },
                       { rate: 6.58, min: 220000, max: 300000, label: "6.58%" }
                     ];
