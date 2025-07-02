@@ -143,13 +143,19 @@ export default function TaxReport() {
                         if (creditsField?.fieldValue) {
                           const value = parseFloat(String(creditsField.fieldValue).replace(/[,$\s]/g, ''));
                           if (!isNaN(value)) totalCreditsSum += value;
+                          console.log(`Added federal credits (35000): ${value}`);
                         }
                         
-                        // Also add Ontario non-refundable tax credits (Line 61500) if available
+                        // Also add Ontario non-refundable tax credits (Line 61500) if available (regardless of province detection)
                         const ontarioCreditsField = t1WithFields.formFields.find((field: any) => field.fieldCode === '61500');
                         if (ontarioCreditsField?.fieldValue) {
                           const value = parseFloat(String(ontarioCreditsField.fieldValue).replace(/[,$\s]/g, ''));
-                          if (!isNaN(value)) totalCreditsSum += value;
+                          if (!isNaN(value)) {
+                            totalCreditsSum += value;
+                            console.log(`Added Ontario credits (61500): ${value} for total: ${totalCreditsSum}`);
+                          }
+                        } else {
+                          console.log('No Ontario credits field (61500) found or no value for this return');
                         }
                       }
                     });
