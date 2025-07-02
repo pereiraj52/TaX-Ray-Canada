@@ -473,8 +473,23 @@ export default function IndividualTaxReport() {
                   return (
                     <div key={typeIndex} className="space-y-2">
                       <h4 className="font-medium text-sm text-gray-700">{incomeType}</h4>
-                      <div className="relative">
-                        <div className="flex h-72 bg-gray-100 rounded">
+                      <div className="flex items-end relative">
+                        {/* Income Scale Labels */}
+                        <div className="flex flex-col justify-between h-72 text-xs text-gray-600 mr-2 w-12">
+                          <div>$300k</div>
+                          <div>$247k</div>
+                          <div>$220k</div>
+                          <div>$173k</div>
+                          <div>$150k</div>
+                          <div>$112k</div>
+                          <div>$103k</div>
+                          <div>$56k</div>
+                          <div>$51k</div>
+                          <div>$0</div>
+                        </div>
+                        
+                        {/* Tax Bracket Bars */}
+                        <div className="flex h-72 bg-gray-100 rounded flex-1">
                           {rates.map((rate, index) => {
                             const isCurrentBracket = index < thresholds.length - 1 ? 
                               (taxableIncome >= thresholds[index] && taxableIncome < thresholds[index + 1]) :
@@ -483,15 +498,15 @@ export default function IndividualTaxReport() {
                             return (
                               <div
                                 key={index}
-                                className={`flex-1 flex items-end justify-center text-black text-xs relative ${
+                                className={`flex-1 flex items-center justify-center text-black text-xs relative ${
                                   isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
                                 }`}
                                 style={{ 
-                                  height: `${Math.max(10, (Math.abs(rate) / 60) * 100)}%`,
+                                  height: '100%',
                                   zIndex: 10
                                 }}
                               >
-                                <span className="absolute bottom-1 z-20">{rate.toFixed(1)}%</span>
+                                <span className="z-20">{rate.toFixed(1)}%</span>
                               </div>
                             );
                           })}
@@ -500,58 +515,25 @@ export default function IndividualTaxReport() {
                         {/* Taxable Income Indicator */}
                         {taxableIncome > 0 && (
                           <div
-                            className="absolute top-0 w-0.5 h-72 z-30"
+                            className="absolute h-0.5 z-30 left-14"
                             style={{
                               backgroundColor: '#D4B26A',
-                              left: `${Math.min(95, (taxableIncome / maxScale) * 100)}%`
+                              width: 'calc(100% - 56px)',
+                              top: `${100 - Math.min(95, (taxableIncome / maxScale) * 100)}%`
                             }}
                           >
                             <div 
                               className="absolute text-xs font-medium whitespace-nowrap"
                               style={{
                                 color: '#D4B26A',
-                                right: '32px',
-                                top: '8px'
+                                right: '-60px',
+                                top: '-8px'
                               }}
                             >
                               {typeIndex === 0 ? `$${(taxableIncome/1000).toFixed(0)}k` : ''}
                             </div>
                           </div>
                         )}
-                        
-                        {/* Scale Labels */}
-                        <div className="absolute bottom-0 w-full h-72 pointer-events-none">
-                          {[0, 51, 56, 103, 112, 150, 173, 220, 247, 300].map((amount, index) => {
-                            const position = (amount / 300) * 100;
-                            
-                            // Calculate spacing to prevent overlap
-                            const prevPosition = index > 0 ? ([0, 51, 56, 103, 112, 150, 173, 220, 247, 300][index - 1] / 300) * 100 : 0;
-                            const spacing = position - prevPosition;
-                            const minSpacing = 7; // 7% minimum spacing
-                            
-                            let adjustedPosition = position;
-                            if (spacing < minSpacing && index > 0) {
-                              adjustedPosition = prevPosition + minSpacing;
-                            }
-                            
-                            // Special handling for $300k label
-                            const isTopLabel = amount === 300;
-                            const topOffset = isTopLabel ? '4%' : '0px';
-                            
-                            return (
-                              <div
-                                key={index}
-                                className="absolute text-xs text-gray-600"
-                                style={{
-                                  left: `${Math.min(90, adjustedPosition)}%`,
-                                  bottom: topOffset
-                                }}
-                              >
-                                ${amount}k
-                              </div>
-                            );
-                          })}
-                        </div>
                       </div>
                     </div>
                   );
@@ -742,105 +724,7 @@ export default function IndividualTaxReport() {
           </Card>
         </div>
 
-        {/* Federal Tax Bracket Visualization */}
-        <div className="mb-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {['Ordinary Income', 'Capital Gains', 'Eligible Dividends', 'Non-Eligible Dividends'].map((incomeType, typeIndex) => {
-                  const getFederalRatesForType = (type: string) => {
-                    switch (type) {
-                      case 'Capital Gains':
-                        return [7.50, 10.25, 13.00, 14.50, 16.50];
-                      case 'Eligible Dividends':
-                        return [-0.03, 7.56, 15.15, 19.73, 24.81];
-                      case 'Non-Eligible Dividends':
-                        return [6.87, 13.19, 18.52, 27.57, 27.57];
-                      default: // Ordinary Income
-                        return [15.00, 20.50, 26.00, 29.00, 33.00];
-                    }
-                  };
 
-                  const rates = getFederalRatesForType(incomeType);
-                  const federalThresholds = [0, 55867, 111733, 173205, 246752];
-                  const maxScale = 300000;
-
-                  return (
-                    <div key={typeIndex} className="space-y-2">
-                      <h4 className="font-medium text-sm text-gray-700">{incomeType}</h4>
-                      <div className="relative">
-                        <div className="flex h-72 bg-gray-100 rounded">
-                          {rates.map((rate, index) => {
-                            const isCurrentBracket = index < federalThresholds.length - 1 ? 
-                              (taxableIncome >= federalThresholds[index] && taxableIncome < federalThresholds[index + 1]) :
-                              (taxableIncome >= federalThresholds[index]);
-                            
-                            return (
-                              <div
-                                key={index}
-                                className={`flex-1 flex items-end justify-center text-black text-xs relative ${
-                                  isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
-                                }`}
-                                style={{ 
-                                  height: `${Math.max(10, (Math.abs(rate) / 40) * 100)}%`,
-                                  zIndex: 10
-                                }}
-                              >
-                                <span className="absolute bottom-1 z-20">{rate.toFixed(1)}%</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                        
-                        {/* Taxable Income Indicator */}
-                        {taxableIncome > 0 && (
-                          <div
-                            className="absolute top-0 w-0.5 h-72 z-30"
-                            style={{
-                              backgroundColor: '#D4B26A',
-                              left: `${Math.min(95, (taxableIncome / maxScale) * 100)}%`
-                            }}
-                          >
-                            <div 
-                              className="absolute text-xs font-medium whitespace-nowrap"
-                              style={{
-                                color: '#D4B26A',
-                                right: '32px',
-                                top: '8px'
-                              }}
-                            >
-                              {typeIndex === 0 ? `$${(taxableIncome/1000).toFixed(0)}k` : ''}
-                            </div>
-                          </div>
-                        )}
-                        
-                        {/* Scale Labels */}
-                        <div className="absolute bottom-0 w-full h-72 pointer-events-none">
-                          {[0, 56, 112, 173, 247, 300].map((amount, index) => {
-                            const position = (amount / 300) * 100;
-                            
-                            return (
-                              <div
-                                key={index}
-                                className="absolute text-xs text-gray-600"
-                                style={{
-                                  left: `${Math.min(90, position)}%`,
-                                  bottom: amount === 300 ? '4%' : '0px'
-                                }}
-                              >
-                                ${amount}k
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
         {/* Provincial Tax Bracket Analysis */}
         <div className="mb-6">
