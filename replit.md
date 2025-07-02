@@ -414,6 +414,7 @@ Changelog:
 - July 2, 2025. Added Canada Training Credit (Line 45350) to Refundable Credits section: included field in T1 extraction display and Tax Credits Analysis section with proper field mapping and section total calculations for comprehensive refundable credit tracking
 - July 2, 2025. Fixed Line 45355 field label: corrected from "Climate Action Incentive" to "Multigenerational Home Renovation Tax Credit" across ExtractedDataDisplay, T1FieldEditDialog, and TaxReport components for accurate Canadian tax form terminology
 - July 2, 2025. Fixed Line 45400 field label: corrected from "Canada Child Benefit" to "Refund of Investment Tax" across ExtractedDataDisplay, T1FieldEditDialog, and TaxReport components for accurate Canadian tax form terminology
+- July 2, 2025. Added Part XII.2 Tax Credit (Line 45600) to Refundable Credits section: included field in T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for Part XII.2 tax credit tracking
 ```
 
 ## User Preferences
