@@ -1953,7 +1953,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <div className="text-xl font-bold text-blue-600">
                         {formatCurrency(getFieldValue('58800'))}
                       </div>
-                      <div className="text-sm text-blue-700 mt-1">Line 58800</div>
                     </div>
                   )}
                 </div>
