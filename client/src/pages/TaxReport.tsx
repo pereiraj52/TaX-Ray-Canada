@@ -4085,6 +4085,11 @@ export default function TaxReport() {
 
                 // Define government benefits
                 const benefits = [
+                  // Basic Personal Amount
+                  { category: "Basic Personal Amount", items: [
+                    { name: "Basic Personal Amount", line: "30000" },
+                  ]},
+                  
                   // Canada Workers Benefit
                   { category: "Canada Workers Benefit", items: [
                     { name: "Canada Workers Benefit (Single)", line: "45300" },
@@ -4108,11 +4113,6 @@ export default function TaxReport() {
                   // GST/HST Credit
                   { category: "GST/HST Credit", items: [
                     { name: "GST/HST Credit", line: "45350" },
-                  ]},
-                  
-                  // Basic Personal Amount
-                  { category: "Basic Personal Amount", items: [
-                    { name: "Basic Personal Amount", line: "30000" },
                   ]},
                 ];
 
