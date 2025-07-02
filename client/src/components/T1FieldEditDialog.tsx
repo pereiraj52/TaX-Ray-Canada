@@ -189,6 +189,7 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       { fieldCode: '45400', fieldName: 'Refund of Investment Tax', fieldType: 'currency' },
       { fieldCode: '45600', fieldName: 'Part XII.2 Tax Credit', fieldType: 'currency' },
       { fieldCode: '45700', fieldName: 'Employee & Partner GST/HST Rebate', fieldType: 'currency' },
+      { fieldCode: '46900', fieldName: 'Eligible Educator School Supply Tax Credit', fieldType: 'currency' },
       { fieldCode: '47900', fieldName: 'Provincial Credits', fieldType: 'currency' },
       { fieldCode: '48200', fieldName: 'Total Credits', fieldType: 'currency' },
       { fieldCode: '48400', fieldName: 'Refund or Balance Owing', fieldType: 'currency' },

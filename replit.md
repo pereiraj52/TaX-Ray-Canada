@@ -416,6 +416,7 @@ Changelog:
 - July 2, 2025. Fixed Line 45400 field label: corrected from "Canada Child Benefit" to "Refund of Investment Tax" across ExtractedDataDisplay, T1FieldEditDialog, and TaxReport components for accurate Canadian tax form terminology
 - July 2, 2025. Added Part XII.2 Tax Credit (Line 45600) to Refundable Credits section: included field in T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for Part XII.2 tax credit tracking
 - July 2, 2025. Fixed Line 45700 field label: corrected from "Teacher and Early Childhood Educator School Supply Tax Credit" to "Employee & Partner GST/HST Rebate" across ExtractedDataDisplay, T1FieldEditDialog, TaxReport, and PDF parser mapping for accurate Canadian tax form terminology
+- July 2, 2025. Added Eligible Educator School Supply Tax Credit (Line 46900) to Refundable Credits section: included field in T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for educator school supply tax credit tracking
 ```
 
 ## User Preferences

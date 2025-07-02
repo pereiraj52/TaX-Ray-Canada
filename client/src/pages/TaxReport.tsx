@@ -3036,6 +3036,7 @@ export default function TaxReport() {
                     { name: "Refund of Investment Tax", line: "45400" },
                     { name: "Part XII.2 Tax Credit", line: "45600" },
                     { name: "Employee & Partner GST/HST Rebate", line: "45700" },
+                    { name: "Eligible Educator School Supply Tax Credit", line: "46900" },
                   ]},
                 ];
 
