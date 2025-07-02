@@ -32,14 +32,14 @@ export default function TaxReport() {
 
   // State for collapsible sections in Federal Tax Credits Analysis
   const [collapsedFederalCreditSections, setCollapsedFederalCreditSections] = useState<{[key: string]: boolean}>({
-    'basic-credits': true,
-    'employment-credits': true,
-    'personal-situation-credits': true,
-    'disability-caregiver-credits': true,
-    'education-credits': true,
-    'medical-credits': true,
-    'charitable-gifts-donations': true,
-    'refundable-credits': true,
+    'basic-credits-non-refundable': true,
+    'employment-credits-non-refundable': true,
+    'personal-situation-credits-non-refundable': true,
+    'disability-caregiver-credits-non-refundable': true,
+    'education-credits-non-refundable': true,
+    'medical-credits-non-refundable': true,
+    'charitable-gifts-donations-non-refundable': true,
+    'federal-refundable-credits': true,
   });
 
   const toggleFederalCreditSection = (sectionKey: string) => {
@@ -52,7 +52,7 @@ export default function TaxReport() {
   // State for collapsible sections in Provincial Tax Credits Analysis
   const [collapsedProvincialCreditSections, setCollapsedProvincialCreditSections] = useState<{[key: string]: boolean}>({
     'ontario-non-refundable-credits': true,
-    'ontario-refundable-credits': true,
+    'ontario-refundable-tax-credits': true,
   });
 
   const toggleProvincialCreditSection = (sectionKey: string) => {
