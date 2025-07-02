@@ -2706,7 +2706,7 @@ export default function TaxReport() {
                     );
                   })}
                 </div>
-
+                )}
 
               </div>
             );
