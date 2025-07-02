@@ -3882,6 +3882,7 @@ export default function TaxReport() {
                 return sum + spouseAFNI;
               }, 0);
               const clawbackPercentage = calculateCCBClawbackPercentage(adjustedFamilyNetIncome, numUnder6, num6to17);
+              const totalEligibleChildren = numUnder6 + num6to17;
 
               // Calculate family benefit information
               const benefitInfo = [
@@ -3918,7 +3919,7 @@ export default function TaxReport() {
                             Canada Child Benefit Clawback
                           </h4>
                           <span className="font-medium text-primary text-sm">
-                            {clawbackPercentage.toFixed(2)}% clawback
+                            {totalEligibleChildren > 0 ? `${clawbackPercentage.toFixed(2)}% clawback` : 'Ineligible'}
                           </span>
                         </div>
                         
@@ -4009,7 +4010,7 @@ export default function TaxReport() {
                                           className="absolute inset-0 flex items-center justify-center font-semibold text-lg"
                                           style={{ color: '#111111' }}
                                         >
-                                          Clawback: {clawbackPercentage.toFixed(1)}%
+                                          Clawback: {totalChildren > 0 ? `${clawbackPercentage.toFixed(1)}%` : 'Ineligible'}
                                         </div>
                                       </div>
                                     </div>
