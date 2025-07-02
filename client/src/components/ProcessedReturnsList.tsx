@@ -296,6 +296,17 @@ export default function ProcessedReturnsList({ householdId, onT1ReturnClick, onE
                           >
                             <RefreshCw className="h-3 w-3" />
                           </Button>
+                          <Link href={`/household/${householdId}/individual/${t1Return.clientId}/${year}`}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              disabled={t1Return.processingStatus !== 'completed'}
+                              className="h-6 w-6 p-0 text-purple-500 hover:text-purple-700 hover:bg-purple-50"
+                              title="Individual tax report"
+                            >
+                              <FileText className="h-3 w-3" />
+                            </Button>
+                          </Link>
                           <Dialog open={isManualEntryOpen} onOpenChange={setIsManualEntryOpen}>
                             <DialogTrigger asChild>
                               <Button
