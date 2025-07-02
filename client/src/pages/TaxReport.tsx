@@ -4144,6 +4144,27 @@ export default function TaxReport() {
                                 </h4>
                                 <span className="font-medium text-primary text-sm">
                                   {(() => {
+                                    // Special handling for Basic Personal Amount clawback calculation
+                                    if (category.category === "Basic Personal Amount") {
+                                      // BPA clawback thresholds
+                                      const clawbackStart = 173205;
+                                      const clawbackEnd = 246752;
+                                      
+                                      // Get taxable income (Line 26000)
+                                      const taxableIncome = getFieldValue("26000");
+                                      
+                                      // Calculate clawback percentage
+                                      let clawbackPercentage = 0;
+                                      if (taxableIncome > clawbackStart) {
+                                        const excessIncome = Math.min(taxableIncome - clawbackStart, clawbackEnd - clawbackStart);
+                                        const totalClawbackRange = clawbackEnd - clawbackStart;
+                                        clawbackPercentage = (excessIncome / totalClawbackRange) * 100;
+                                      }
+                                      
+                                      return `${clawbackPercentage.toFixed(2)}% clawback`;
+                                    }
+                                    
+                                    // Default handling for other benefits
                                     const categoryTotal = category.items.reduce((sum, item) => {
                                       return sum + getFieldValue(item.line);
                                     }, 0);
@@ -4172,6 +4193,59 @@ export default function TaxReport() {
                                     const categoryTotal = category.items.reduce((sum, item) => {
                                       return sum + getFieldValue(item.line);
                                     }, 0);
+                                    
+                                    // Special handling for Basic Personal Amount clawback calculation
+                                    if (category.category === "Basic Personal Amount") {
+                                      // BPA clawback thresholds
+                                      const clawbackStart = 173205;
+                                      const clawbackEnd = 246752;
+                                      
+                                      // Get taxable income (Line 26000)
+                                      const taxableIncome = getFieldValue("26000");
+                                      
+                                      // Calculate clawback percentage
+                                      let clawbackPercentage = 0;
+                                      if (taxableIncome > clawbackStart) {
+                                        const excessIncome = Math.min(taxableIncome - clawbackStart, clawbackEnd - clawbackStart);
+                                        const totalClawbackRange = clawbackEnd - clawbackStart;
+                                        clawbackPercentage = (excessIncome / totalClawbackRange) * 100;
+                                      }
+                                      
+                                      const progressPercentage = Math.min(clawbackPercentage, 100);
+                                      
+                                      return (
+                                        <div className="relative mt-10">
+                                          <div className="w-full" style={{ height: '36px' }}>
+                                            <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
+                                              {/* Progress fill */}
+                                              <div 
+                                                className="h-full transition-all duration-300"
+                                                style={{ 
+                                                  width: `${progressPercentage}%`,
+                                                  background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                                }}
+                                              />
+                                              {/* Clawback percentage overlay */}
+                                              <div 
+                                                className="absolute inset-0 flex items-center justify-center text-lg"
+                                                style={{ color: '#111111' }}
+                                              >
+                                                Clawback: {clawbackPercentage.toFixed(1)}%
+                                              </div>
+                                            </div>
+                                          </div>
+                                          
+                                          {/* Scale labels */}
+                                          <div className="flex justify-between text-gray-500 mt-2 text-sm">
+                                            <span>Start: {formatCurrency(clawbackStart)}</span>
+                                            <span>Income: {formatCurrency(taxableIncome)}</span>
+                                            <span>End: {formatCurrency(clawbackEnd)}</span>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                    
+                                    // Default handling for other benefits
                                     const hasAmount = categoryTotal > 0;
                                     return (
                                       <div className="relative mt-10">
