@@ -51,8 +51,12 @@ export default function HouseholdDetail() {
   };
 
   const getClientAvatarColor = (index: number) => {
-    const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500'];
-    return colors[index % colors.length];
+    // Primary client: #88AA73, Secondary client: #D4B26A
+    if (index === 0) return 'bg-[#88AA73]';
+    if (index === 1) return 'bg-[#D4B26A]';
+    // Fallback colors for additional clients
+    const colors = ['bg-purple-500', 'bg-pink-500'];
+    return colors[(index - 2) % colors.length];
   };
 
   const getClientStatus = (client: any) => {
