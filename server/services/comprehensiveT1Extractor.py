@@ -1131,7 +1131,7 @@ class ComprehensiveT1Extractor:
             '58640': 'amounts_transferred_spouse',
             # Medical and other
             '58769': 'medical_expenses',
-            '58729': 'donations_gifts',
+            '58969': 'donations_gifts',
             # Calculated amounts
             '58800': 'total_credits',
             '58840': 'total_non_refundable_credits',
