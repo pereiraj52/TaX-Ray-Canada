@@ -4236,7 +4236,7 @@ export default function TaxReport() {
                                           </div>
                                           
                                           {/* Scale labels */}
-                                          <div className="flex justify-between text-gray-500 mt-2 text-sm">
+                                          <div className="flex justify-between font-medium text-primary mt-2">
                                             <span>Start: {formatCurrency(clawbackStart)}</span>
                                             <span>Income: {formatCurrency(taxableIncome)}</span>
                                             <span>End: {formatCurrency(clawbackEnd)}</span>
@@ -4270,7 +4270,7 @@ export default function TaxReport() {
                                         </div>
                                         
                                         {/* Scale labels */}
-                                        <div className="flex justify-between text-gray-500 mt-2 text-sm">
+                                        <div className="flex justify-between font-medium text-primary mt-2">
                                           <span>Start: $0</span>
                                           <span>Amount: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
                                           <span>End: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
