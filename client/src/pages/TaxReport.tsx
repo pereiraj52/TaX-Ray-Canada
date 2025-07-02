@@ -3988,7 +3988,7 @@ export default function TaxReport() {
                               return (
                                 <div className="relative mt-6">
                                     {/* Bar background */}
-                                    <div className="w-full" style={{ height: '48px' }}>
+                                    <div className="w-full" style={{ height: '36px' }}>
                                       <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
                                         {/* Progress fill */}
                                         <div 
@@ -4002,7 +4002,7 @@ export default function TaxReport() {
                                         {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
                                           <div 
                                             className="absolute top-0 w-1 bg-black"
-                                            style={{ left: `${progressPercentage}%`, height: '48px' }}
+                                            style={{ left: `${progressPercentage}%`, height: '36px' }}
                                           />
                                         )}
                                         {/* Clawback percentage overlay */}
