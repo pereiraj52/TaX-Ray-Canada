@@ -3986,7 +3986,7 @@ export default function TaxReport() {
                               const progressPercentage = ((currentPosition - chartMin) / (chartMax - chartMin)) * 100;
                               
                               return (
-                                <div className="relative mt-12">
+                                <div className="relative mt-10">
                                     {/* Bar background */}
                                     <div className="w-full" style={{ height: '36px' }}>
                                       <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
