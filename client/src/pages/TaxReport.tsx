@@ -4007,7 +4007,7 @@ export default function TaxReport() {
                                         )}
                                         {/* Clawback percentage overlay */}
                                         <div 
-                                          className="absolute inset-0 flex items-center justify-center font-semibold text-lg"
+                                          className="absolute inset-0 flex items-center justify-center text-lg"
                                           style={{ color: '#111111' }}
                                         >
                                           Clawback: {totalChildren > 0 ? `${clawbackPercentage.toFixed(1)}%` : 'Ineligible'}
