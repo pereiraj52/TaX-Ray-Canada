@@ -3029,6 +3029,7 @@ export default function TaxReport() {
                     { name: "Quebec Abatement", line: "44000" },
                     { name: "CPP Overpayment", line: "44800" },
                     { name: "EI Overpayment", line: "45000" },
+                    { name: "Refundable Medical Expense Supplement", line: "45200" },
                     { name: "Climate Action Incentive", line: "45355" },
                     { name: "Canada Child Benefit", line: "45400" },
                     { name: "Canada Workers Benefit", line: "45600" },

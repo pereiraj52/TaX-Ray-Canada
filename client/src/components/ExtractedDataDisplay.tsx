@@ -1752,7 +1752,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Refundable Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['44000', '44800', '45000', '45355', '45400', '45600', '45700']))}
+                    {formatCurrency(getSectionTotal(['44000', '44800', '45000', '45200', '45355', '45400', '45600', '45700']))}
                   </span>
                 </button>
                 {!collapsedSections['refundable-credits'] && (
@@ -1768,6 +1768,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="field-row">
                       <span className="field-label">EI Overpayment (Line 45000):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Refundable Medical Expense Supplement (Line 45200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Climate Action Incentive (Line 45355):</span>

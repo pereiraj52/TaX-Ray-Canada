@@ -182,6 +182,7 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       { fieldCode: '44800', fieldName: 'CPP Overpayment', fieldType: 'currency' },
       { fieldCode: '44900', fieldName: 'Climate Action Incentive', fieldType: 'currency' },
       { fieldCode: '45000', fieldName: 'EI Overpayment', fieldType: 'currency' },
+      { fieldCode: '45200', fieldName: 'Refundable Medical Expense Supplement', fieldType: 'currency' },
       { fieldCode: '45300', fieldName: 'Working Income Tax Benefit', fieldType: 'currency' },
       { fieldCode: '45350', fieldName: 'Canada Training Credit', fieldType: 'currency' },
       { fieldCode: '45355', fieldName: 'Climate Action Incentive', fieldType: 'currency' },
