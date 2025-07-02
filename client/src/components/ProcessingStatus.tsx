@@ -32,6 +32,13 @@ export default function ProcessingStatus({ t1ReturnId, onStatusChange }: Process
       if (onStatusChange) {
         onStatusChange(status);
       }
+
+      // Automatically refresh the page after processing completes
+      if (status === "completed") {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000); // Small delay to let user see the completion message
+      }
     }
     previousStatus.current = status;
   }, [status, onStatusChange, queryClient]);
