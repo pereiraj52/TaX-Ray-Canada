@@ -243,6 +243,16 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     return getSectionTotal(['44000', '44800', '45000', '45200', '45300', '45350', '45355', '45400', '45600', '45700', '46900', '47555', '47556']);
   };
 
+  const getClientProvince = (): string => {
+    // Get province from client data or from extracted personal info
+    if (t1Return.client?.province) {
+      return t1Return.client.province;
+    }
+    // Fallback to extracted province from T1 form
+    const provinceField = t1Return.formFields.find(field => field.fieldCode === 'province' || field.fieldName === 'Province');
+    return provinceField?.fieldValue || 'ON'; // Default to Ontario if not found
+  };
+
   const getRefundOrBalance = (): number => {
     // Calculate refund/balance: Taxes Paid (43700) - Total Tax (42000 + 42800)
     // Positive = Refund, Negative = Balance Due
@@ -1818,24 +1828,25 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 )}
               </div>
 
-              {/* Ontario Credits Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('ontario-credits')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['ontario-credits'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Ontario Provincial Credits</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58689', '58729']))}
-                  </span>
-                </button>
+              {/* Provincial Credits Section - Only show if province has provincial tax */}
+              {getClientProvince() === 'ON' && (
+                <div className="border border-gray-200 rounded-lg">
+                  <button
+                    onClick={() => toggleSection('ontario-credits')}
+                    className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                  >
+                    <div className="flex items-center">
+                      {collapsedSections['ontario-credits'] ? (
+                        <ChevronRight className="h-4 w-4 mr-2" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 mr-2" />
+                      )}
+                      <h4 className="font-medium text-primary">Ontario Provincial Credits</h4>
+                    </div>
+                    <span className="font-medium text-primary">
+                      {formatCurrency(getSectionTotal(['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58689', '58729']))}
+                    </span>
+                  </button>
                 {!collapsedSections['ontario-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
@@ -1912,7 +1923,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     </div>
                   </div>
                 )}
-              </div>
+                </div>
+              )}
 
               {/* Summary Section */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
@@ -1932,13 +1944,15 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       {formatCurrency(getTotalRefundableCredits())}
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-blue-800 mb-2">Ontario Tax Credits</div>
-                    <div className="text-xl font-bold text-blue-600">
-                      {formatCurrency(getFieldValue('58800'))}
+                  {getClientProvince() === 'ON' && (
+                    <div className="text-center">
+                      <div className="font-semibold text-blue-800 mb-2">Ontario Tax Credits</div>
+                      <div className="text-xl font-bold text-blue-600">
+                        {formatCurrency(getFieldValue('58800'))}
+                      </div>
+                      <div className="text-sm text-blue-700 mt-1">Line 58800</div>
                     </div>
-                    <div className="text-sm text-blue-700 mt-1">Line 58800</div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
