@@ -3060,20 +3060,24 @@ export default function TaxReport() {
                     { name: "Eligible Educator School Supply Tax Credit", line: "46900" },
                     { name: "Canadian Journalism Labour Tax Credit", line: "47555" },
                     { name: "Return of Fuel Charge Proceeds to Farmers", line: "47556" },
-                    // Ontario Refundable Credits (Form 479ON)
-                    ...(() => {
-                      const provinceField = spouse.formFields.find(f => f.fieldCode === 'province');
-                      const province = provinceField?.fieldValue;
-                      return province === 'ON' ? [
-                        { name: "Ontario Seniors Care at Home Credit", line: "63095" },
-                        { name: "Ontario Seniors Public Transit Credit", line: "63100" },
-                        { name: "Ontario Political Contribution Credit", line: "63110" },
-                        { name: "Ontario Flow Through Credit", line: "63220" },
-                        { name: "Ontario Co-operative Education Credit", line: "63300" },
-                      ] : [];
-                    })(),
                   ]},
                 ];
+
+                // Add Ontario Refundable Credits section if client is in Ontario
+                const provinceField = spouse.formFields.find(f => f.fieldCode === 'province');
+                const province = provinceField?.fieldValue;
+                if (province === 'ON') {
+                  credits.push({
+                    category: "Ontario Refundable Credits", 
+                    items: [
+                      { name: "Ontario Seniors Care at Home Credit", line: "63095" },
+                      { name: "Ontario Seniors Public Transit Credit", line: "63100" },
+                      { name: "Ontario Political Contribution Credit", line: "63110" },
+                      { name: "Ontario Flow Through Credit", line: "63220" },
+                      { name: "Ontario Co-operative Education Credit", line: "63300" },
+                    ]
+                  });
+                }
 
                 return (
                   <Card key={spouseIndex}>

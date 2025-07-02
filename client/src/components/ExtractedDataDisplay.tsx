@@ -1770,11 +1770,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Refundable Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(
-                      getClientProvince() === 'ON' 
-                        ? ['44000', '44800', '45000', '45200', '45300', '45350', '45355', '45400', '45600', '45700', '46900', '47555', '47556', '63095', '63100', '63110', '63220', '63300']
-                        : ['44000', '44800', '45000', '45200', '45300', '45350', '45355', '45400', '45600', '45700', '46900', '47555', '47556']
-                    ))}
+                    {formatCurrency(getSectionTotal(['44000', '44800', '45000', '45200', '45300', '45350', '45355', '45400', '45600', '45700', '46900', '47555', '47556']))}
                   </span>
                 </button>
                 {!collapsedSections['refundable-credits'] && (
@@ -1831,32 +1827,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-label">Return of Fuel Charge Proceeds to Farmers (Line 47556):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
                     </div>
-                    
-                    {/* Ontario Refundable Credits from Form 479ON */}
-                    {getClientProvince() === 'ON' && (
-                      <>
-                        <div className="field-row">
-                          <span className="field-label">Ontario Seniors Care at Home Credit (Line 63095):</span>
-                          <span className="field-value">{formatCurrency(getFieldValue('63095'))}</span>
-                        </div>
-                        <div className="field-row">
-                          <span className="field-label">Ontario Seniors Public Transit Credit (Line 63100):</span>
-                          <span className="field-value">{formatCurrency(getFieldValue('63100'))}</span>
-                        </div>
-                        <div className="field-row">
-                          <span className="field-label">Ontario Political Contribution Credit (Line 63110):</span>
-                          <span className="field-value">{formatCurrency(getFieldValue('63110'))}</span>
-                        </div>
-                        <div className="field-row">
-                          <span className="field-label">Ontario Flow Through Credit (Line 63220):</span>
-                          <span className="field-value">{formatCurrency(getFieldValue('63220'))}</span>
-                        </div>
-                        <div className="field-row">
-                          <span className="field-label">Ontario Co-operative Education Credit (Line 63300):</span>
-                          <span className="field-value">{formatCurrency(getFieldValue('63300'))}</span>
-                        </div>
-                      </>
-                    )}
                   </div>
                 )}
               </div>
@@ -1959,9 +1929,55 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
               )}
 
+              {/* Ontario Refundable Credits Section - Only show if province has provincial tax */}
+              {getClientProvince() === 'ON' && (
+                <div className="border border-gray-200 rounded-lg">
+                  <button
+                    onClick={() => toggleSection('ontario-refundable-credits')}
+                    className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                  >
+                    <div className="flex items-center">
+                      {collapsedSections['ontario-refundable-credits'] ? (
+                        <ChevronRight className="h-4 w-4 mr-2" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 mr-2" />
+                      )}
+                      <h4 className="font-medium text-primary">Ontario Refundable Credits</h4>
+                    </div>
+                    <span className="font-medium text-primary">
+                      {formatCurrency(getSectionTotal(['63095', '63100', '63110', '63220', '63300']))}
+                    </span>
+                  </button>
+                {!collapsedSections['ontario-refundable-credits'] && (
+                  <div className="p-4 border-t border-gray-200 space-y-4">
+                    <div className="field-row">
+                      <span className="field-label">Ontario Seniors Care at Home Credit (Line 63095):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63095'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Seniors Public Transit Credit (Line 63100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63100'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Political Contribution Credit (Line 63110):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63110'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Flow Through Credit (Line 63220):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63220'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="field-label">Ontario Co-operative Education Credit (Line 63300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63300'))}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+              )}
+
               {/* Summary Section */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="text-center">
                     <div className="font-semibold text-blue-800 mb-2">Federal Non-Refundable</div>
                     <div className="text-xl font-bold text-blue-600">
@@ -1978,15 +1994,23 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     </div>
                   </div>
                   {getClientProvince() === 'ON' && (
-                    <div className="text-center">
-                      <div className="font-semibold text-blue-800 mb-2">Ontario Non-Refundable Credits</div>
-                      <div className="text-xl font-bold text-blue-600">
-                        {formatCurrency(getFieldValue('58800'))}
+                    <>
+                      <div className="text-center">
+                        <div className="font-semibold text-blue-800 mb-2">Ontario Non-Refundable</div>
+                        <div className="text-xl font-bold text-blue-600">
+                          {formatCurrency(getFieldValue('58800'))}
+                        </div>
+                        <div className="text-sm text-blue-700 mt-2">
+                          Tax Savings: {formatCurrency(getFieldValue('61500'))}
+                        </div>
                       </div>
-                      <div className="text-sm text-blue-700 mt-2">
-                        Tax Savings: {formatCurrency(getFieldValue('61500'))}
+                      <div className="text-center">
+                        <div className="font-semibold text-blue-800 mb-2">Ontario Refundable</div>
+                        <div className="text-xl font-bold text-blue-600">
+                          {formatCurrency(getSectionTotal(['63095', '63100', '63110', '63220', '63300']))}
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               </div>
