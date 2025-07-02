@@ -249,7 +249,7 @@ export class T1PDFParser {
         gst_hst_credit: { code: '45350', name: 'Canada Training Credit' },
         canada_child_benefit: { code: '45400', name: 'Refund of Investment Tax' },
         part_xii2_tax_credit: { code: '45600', name: 'Part XII.2 Tax Credit' },
-        gst_hst_rebate: { code: '45700', name: 'Teacher and Early Childhood Educator School Supply Tax Credit' },
+        gst_hst_rebate: { code: '45700', name: 'Employee & Partner GST/HST Rebate' },
         provincial_credits: { code: '47900', name: 'Provincial Credits' },
         total_credits: { code: '48200', name: 'Total Credits' },
         refund_or_balance_owing: { code: '48400', name: 'Refund or Balance Owing' },

@@ -3035,7 +3035,7 @@ export default function TaxReport() {
                     { name: "Multigenerational Home Renovation Tax Credit", line: "45355" },
                     { name: "Refund of Investment Tax", line: "45400" },
                     { name: "Part XII.2 Tax Credit", line: "45600" },
-                    { name: "Teacher and Early Childhood Educator School Supply Tax Credit", line: "45700" },
+                    { name: "Employee & Partner GST/HST Rebate", line: "45700" },
                   ]},
                 ];
 

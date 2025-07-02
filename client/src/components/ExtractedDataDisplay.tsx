@@ -1794,7 +1794,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('45600'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Teacher and Early Childhood Educator School Supply Tax Credit (Line 45700):</span>
+                      <span className="field-label">Employee & Partner GST/HST Rebate (Line 45700):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45700'))}</span>
                     </div>
                   </div>
