@@ -3427,6 +3427,25 @@ export default function TaxReport() {
                                         <span className="text-gray-400 text-xs">
                                           (Line {item.line})
                                         </span>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Info className="h-3 w-3 text-gray-400 cursor-help ml-1" />
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p className="text-sm max-w-xs">
+                                              {item.name === "Ontario Basic Personal Amount" && "Ontario non-refundable tax credit that reduces your provincial tax payable, available to all Ontario residents."}
+                                              {item.name === "Ontario CPP/QPP Contributions" && "Ontario tax credit for Canada or Quebec Pension Plan contributions deducted from employment income."}
+                                              {item.name === "Ontario Employment Insurance Premiums" && "Ontario tax credit for Employment Insurance premiums deducted from employment income."}
+                                              {item.name === "Ontario Medical Expenses" && "Ontario tax credit for qualifying medical expenses exceeding provincial thresholds."}
+                                              {item.name === "Ontario Donations and Gifts" && "Ontario tax credit for charitable donations and gifts to qualified organizations."}
+                                              {item.name === "Ontario Dividend Tax Credit" && "Ontario tax credit for eligible dividends received from Canadian corporations."}
+                                              {item.name === "Ontario Total Credits" && "Total of all Ontario tax credits before applying provincial tax rates."}
+                                              {item.name === "Ontario Total Non-Refundable Credits" && "Total Ontario non-refundable tax credits that reduce provincial tax payable."}
+                                              {item.name === "Ontario Non-Refundable Tax Credits" && "Final amount of Ontario non-refundable tax credits applied against provincial tax."}
+                                              {!["Ontario Basic Personal Amount", "Ontario CPP/QPP Contributions", "Ontario Employment Insurance Premiums", "Ontario Medical Expenses", "Ontario Donations and Gifts", "Ontario Dividend Tax Credit", "Ontario Total Credits", "Ontario Total Non-Refundable Credits", "Ontario Non-Refundable Tax Credits"].includes(item.name) && "Ontario provincial tax credit information"}
+                                            </p>
+                                          </TooltipContent>
+                                        </Tooltip>
                                       </div>
                                       <span className="font-medium text-right text-gray-700">
                                         {hasClaim ? formatCurrency(amount) : '$0'}
