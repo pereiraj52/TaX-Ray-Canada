@@ -2969,7 +2969,7 @@ export default function TaxReport() {
                 };
 
                 // Define all possible tax credits with their line numbers
-                const credits = [
+                let credits = [
                   // Basic Credits
                   { category: "Basic Credits (Non-Refundable)", items: [
                     { name: "Basic Personal Amount", line: "30000" },
