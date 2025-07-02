@@ -2961,10 +2961,30 @@ export default function TaxReport() {
                                 const taxableIncome = getFieldValue("26000"); // Taxable income
                                 const deductionAmount = totalIncome - taxableIncome;
                                 
-                                // Estimate tax savings using combined marginal rate (approximate)
-                                // Using Ontario combined rate for estimation
-                                const estimatedMarginalRate = 0.4341; // 43.41% approximate combined rate
-                                const estimatedSavings = deductionAmount * estimatedMarginalRate;
+                                // Calculate actual marginal tax rate based on taxable income
+                                const calculateMarginalRate = (income: number) => {
+                                  // 2024 Combined Ontario tax brackets (federal + provincial + surtax)
+                                  const combinedBrackets = [
+                                    { min: 0, max: 51446, rate: 20.05 },
+                                    { min: 51446, max: 55867, rate: 24.15 },
+                                    { min: 55867, max: 102894, rate: 31.48 },
+                                    { min: 102894, max: 111733, rate: 35.58 },
+                                    { min: 111733, max: 150000, rate: 43.41 },
+                                    { min: 150000, max: 173205, rate: 46.16 },
+                                    { min: 173205, max: 220000, rate: 47.74 },
+                                    { min: 220000, max: 246752, rate: 51.97 },
+                                    { min: 246752, max: Infinity, rate: 53.53 }
+                                  ];
+                                  
+                                  // Find the bracket for this income level
+                                  const bracket = combinedBrackets.find(b => income > b.min && income <= b.max) || 
+                                                combinedBrackets[combinedBrackets.length - 1];
+                                  
+                                  return bracket.rate / 100; // Convert percentage to decimal
+                                };
+                                
+                                const marginalRate = calculateMarginalRate(taxableIncome);
+                                const estimatedSavings = deductionAmount * marginalRate;
                                 
                                 return formatCurrency(estimatedSavings);
                               })()}
