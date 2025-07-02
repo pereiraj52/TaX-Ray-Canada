@@ -4139,10 +4139,10 @@ export default function TaxReport() {
                           return (
                             <div key={categoryIndex} className="space-y-4">
                               <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                                <h4 className="text-base text-gray-600">
+                                <h4 className="font-medium text-primary text-sm">
                                   {category.category}
                                 </h4>
-                                <span className="text-base text-gray-600">
+                                <span className="font-medium text-primary text-sm">
                                   {(() => {
                                     const categoryTotal = category.items.reduce((sum, item) => {
                                       return sum + getFieldValue(item.line);
@@ -4157,9 +4157,9 @@ export default function TaxReport() {
                                   {category.items.map((item, itemIndex) => {
                                     const amount = getFieldValue(item.line);
                                     return (
-                                      <div key={itemIndex} className="flex justify-between">
+                                      <div key={itemIndex} className="flex justify-between text-sm">
                                         <div className="text-gray-700">{item.name}</div>
-                                        <div className="text-gray-700">
+                                        <div className="font-medium text-gray-700">
                                           {amount > 0 ? formatCurrency(amount) : formatCurrency(0)}
                                         </div>
                                       </div>
