@@ -3922,20 +3922,22 @@ export default function TaxReport() {
                           </span>
                         </div>
                         
-                        {/* CCB Details */}
-                        <div className="space-y-3">
-                          {benefitInfo.map((info, index) => (
-                            <div key={index} className="flex justify-between items-center text-sm">
-                              <span className="text-gray-700">{info.name}</span>
-                              <span className="font-medium text-gray-700">
-                                {formatValue(info.value, info.format)}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                        
-                        {/* CCB Clawback Chart */}
-                        <div>
+                        {/* CCB Details and Chart - Side by side layout */}
+                        <div className="grid grid-cols-3 gap-6">
+                          {/* Left 1/3 - CCB Details */}
+                          <div className="space-y-3">
+                            {benefitInfo.map((info, index) => (
+                              <div key={index} className="text-sm">
+                                <div className="text-gray-700">{info.name}</div>
+                                <div className="font-medium text-gray-700">
+                                  {formatValue(info.value, info.format)}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          
+                          {/* Right 2/3 - CCB Clawback Chart */}
+                          <div className="col-span-2">
                           {(() => {
                             const baseThreshold = 37487;
                             const additionalThreshold = 81222;
