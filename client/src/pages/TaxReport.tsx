@@ -3026,7 +3026,7 @@ export default function TaxReport() {
                   
                   // Refundable Credits
                   { category: "Refundable Credits", items: [
-                    { name: "Investment Tax Credit", line: "44000" },
+                    { name: "Quebec Abatement", line: "44000" },
                     { name: "CPP Overpayment", line: "44800" },
                     { name: "EI Overpayment", line: "45000" },
                     { name: "Climate Action Incentive", line: "45355" },

@@ -178,7 +178,7 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       
       // Refund/Credits (Lines 43000-48000)
       { fieldCode: '43700', fieldName: 'Total Income Tax Deducted', fieldType: 'currency' },
-      { fieldCode: '44000', fieldName: 'Investment Tax Credit', fieldType: 'currency' },
+      { fieldCode: '44000', fieldName: 'Quebec Abatement', fieldType: 'currency' },
       { fieldCode: '44800', fieldName: 'CPP Overpayment', fieldType: 'currency' },
       { fieldCode: '44900', fieldName: 'Climate Action Incentive', fieldType: 'currency' },
       { fieldCode: '45000', fieldName: 'EI Overpayment', fieldType: 'currency' },

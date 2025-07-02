@@ -1758,7 +1758,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['refundable-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Investment Tax Credit (Line 44000):</span>
+                      <span className="field-label">Quebec Abatement (Line 44000):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('44000'))}</span>
                     </div>
                     <div className="field-row">
