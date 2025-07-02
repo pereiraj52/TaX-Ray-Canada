@@ -1786,7 +1786,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canada Child Benefit (Line 45400):</span>
+                      <span className="field-label">Refund of Investment Tax (Line 45400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
                     </div>
                     <div className="field-row">
