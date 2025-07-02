@@ -83,7 +83,8 @@ export default function TaxReport() {
   };
 
   return (
-    <Layout title="" subtitle="">
+    <TooltipProvider>
+      <Layout title="" subtitle="">
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -4038,7 +4039,8 @@ export default function TaxReport() {
           </div>
         </div>
 
-      </div>
-    </Layout>
+        </div>
+      </Layout>
+    </TooltipProvider>
   );
 }
