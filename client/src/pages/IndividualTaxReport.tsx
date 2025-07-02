@@ -963,101 +963,213 @@ export default function IndividualTaxReport() {
 
                 return (
                   <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg font-medium text-gray-900">
-                        {targetClient.firstName} {targetClient.lastName} - Combined Tax Bracket Visualization
-                      </CardTitle>
-                      <div className="text-sm text-gray-600">
-                        Taxable Income: ${taxableIncome.toLocaleString()}
-                      </div>
-                    </CardHeader>
                     <CardContent className="p-6">
-                      {(() => {
-                        // Define the income types and their rates
-                        const incomeTypes = [
-                          { 
-                            name: 'Ordinary Income',
-                            rates: [20.05, 24.15, 29.65, 31.48, 37.91, 43.41, 46.16, 47.74, 53.53]
-                          },
-                          { 
-                            name: 'Capital Gains',
-                            rates: [10.03, 12.08, 14.83, 15.74, 18.96, 21.71, 23.08, 23.87, 26.77]
-                          },
-                          { 
-                            name: 'Eligible Dividends',
-                            rates: [-1.20, 1.64, 5.07, 6.31, 11.99, 17.02, 19.29, 20.73, 39.34]
-                          },
-                          { 
-                            name: 'Non-Eligible Dividends',
-                            rates: [13.95, 16.84, 21.43, 22.86, 27.54, 31.43, 33.39, 34.49, 47.74]
-                          }
-                        ];
+                      <div className="space-y-4">
+                        <div>
+                          <h3 className="font-medium text-gray-900 mb-4">
+                            {targetClient.firstName} {targetClient.lastName} - Combined Tax Bracket Visualization
+                          </h3>
 
-                        const combinedThresholds = [0, 51446, 55867, 102894, 111733, 150000, 173205, 220000, 246752];
-                        const thresholdLabels = ['$0', '$51k', '$56k', '$103k', '$112k', '$150k', '$173k', '$220k', '$247k', '$300k'];
+                          {/* Multiple Tax Type Bars */}
+                          <div className="relative">
+                          {/* Vertical bar chart with scale */}
+                          <div className="flex items-start justify-center">
+                            {/* Income scale labels on left (vertical axis) - combined brackets */}
+                            <div className="w-16 h-72 relative flex flex-col mr-4 text-xs text-gray-700 font-medium">
+                              {/* Combined tax bracket thresholds */}
+                              {(() => {
+                                const combinedThresholds = [
+                                  { income: 0, label: "$0" },
+                                  { income: 51446, label: "$51k" },
+                                  { income: 55867, label: "$56k" },
+                                  { income: 102894, label: "$103k" },
+                                  { income: 111733, label: "$112k" },
+                                  { income: 150000, label: "$150k" },
+                                  { income: 173205, label: "$173k" },
+                                  { income: 220000, label: "$220k" },
+                                  { income: 246752, label: "$247k" },
+                                  { income: 300000, label: "$300k" }
+                                ];
 
-                        return (
-                          <div className="space-y-0">
-                            {/* Grid layout with 9 rows (income brackets) and 4 columns (income types) */}
-                            <div className="grid grid-rows-10 gap-0">
-                              {/* Top row - income labels and taxable income indicator */}
-                              <div className="grid grid-cols-5 gap-1 mb-2">
-                                <div></div>
-                                {incomeTypes.map((incomeType, typeIndex) => (
-                                  <div key={typeIndex} className="text-center">
-                                    <h4 className="font-medium text-sm text-gray-700">
-                                      {incomeType.name.replace(' ', '\n').split('\n').map((word, i) => (
-                                        <div key={i}>{word}</div>
-                                      ))}
-                                    </h4>
+                                // Calculate positions and handle overlaps
+                                let adjustedThresholds = combinedThresholds.map(threshold => ({
+                                  ...threshold,
+                                  position: (threshold.income / 300000) * 100
+                                }));
+
+                                // Adjust positions to prevent overlap (minimum 7% spacing)
+                                for (let i = 1; i < adjustedThresholds.length; i++) {
+                                  const current = adjustedThresholds[i];
+                                  const previous = adjustedThresholds[i - 1];
+                                  const minSpacing = 7; // 7% minimum spacing
+                                  
+                                  if (current.position - previous.position < minSpacing) {
+                                    current.position = previous.position + minSpacing;
+                                  }
+                                }
+
+                                // Special positioning for $300k label
+                                const topThreshold = adjustedThresholds[adjustedThresholds.length - 1];
+                                if (topThreshold.income === 300000) {
+                                  topThreshold.position = 100 - 4; // 4% down from top
+                                }
+
+                                return adjustedThresholds.map((threshold, idx) => (
+                                  <div 
+                                    key={idx}
+                                    className="absolute right-0 text-right"
+                                    style={{
+                                      bottom: `${threshold.position}%`,
+                                      transform: 'translateY(0%)'
+                                    }}
+                                  >
+                                    {threshold.label}
                                   </div>
-                                ))}
-                              </div>
-
-                              {/* Tax bracket rows (top to bottom: $300k to $0) */}
-                              {[...Array(9)].map((_, rowIndex) => {
-                                const bracketIndex = 8 - rowIndex; // Start from highest bracket
-                                const threshold = thresholdLabels[bracketIndex + 1];
-                                const isCurrentRow = taxableIncome >= combinedThresholds[bracketIndex] && 
-                                                    (bracketIndex === 8 || taxableIncome < combinedThresholds[bracketIndex + 1]);
+                                ));
+                              })()}
+                            </div>
+                            
+                            {/* Four Income Type Bars */}
+                            <div className="flex space-x-3">
+                              {(() => {
+                                // Get client's province
+                                const clientProvince = getClientProvince();
                                 
-                                return (
-                                  <div key={rowIndex} className="grid grid-cols-5 gap-1 h-12">
-                                    {/* Left threshold label */}
-                                    <div className="flex items-center justify-end pr-2 text-xs text-gray-600">
-                                      <div className="flex items-center">
-                                        {threshold}
-                                        {isCurrentRow && (
-                                          <span className="ml-2 text-orange-600 font-medium text-xs">
-                                            Taxable Income: ${taxableIncome.toLocaleString()}
-                                          </span>
-                                        )}
+                                // Province-specific tax rates for Ontario
+                                const taxRatesON = {
+                                  ordinary: [
+                                    { rate: 20.05, min: 0, max: 51446, label: "20.05%" },
+                                    { rate: 24.15, min: 51446, max: 55867, label: "24.15%" },
+                                    { rate: 29.65, min: 55867, max: 102894, label: "29.65%" },
+                                    { rate: 31.48, min: 102894, max: 111733, label: "31.48%" },
+                                    { rate: 37.91, min: 111733, max: 150000, label: "37.91%" },
+                                    { rate: 43.41, min: 150000, max: 173205, label: "43.41%" },
+                                    { rate: 46.16, min: 173205, max: 220000, label: "46.16%" },
+                                    { rate: 47.74, min: 220000, max: 246752, label: "47.74%" },
+                                    { rate: 53.53, min: 246752, max: 300000, label: "53.53%" }
+                                  ],
+                                  capitalGains: [
+                                    { rate: 10.03, min: 0, max: 51446, label: "10.03%" },
+                                    { rate: 12.08, min: 51446, max: 55867, label: "12.08%" },
+                                    { rate: 14.83, min: 55867, max: 102894, label: "14.83%" },
+                                    { rate: 15.74, min: 102894, max: 111733, label: "15.74%" },
+                                    { rate: 18.95, min: 111733, max: 150000, label: "18.95%" },
+                                    { rate: 21.70, min: 150000, max: 173205, label: "21.70%" },
+                                    { rate: 23.08, min: 173205, max: 220000, label: "23.08%" },
+                                    { rate: 23.87, min: 220000, max: 246752, label: "23.87%" },
+                                    { rate: 26.76, min: 246752, max: 300000, label: "26.76%" }
+                                  ],
+                                  eligibleDividends: [
+                                    { rate: -1.20, min: 0, max: 51446, label: "-1.20%" },
+                                    { rate: 6.39, min: 51446, max: 55867, label: "6.39%" },
+                                    { rate: 8.92, min: 55867, max: 90599, label: "8.92%" },
+                                    { rate: 12.24, min: 90599, max: 102894, label: "12.24%" },
+                                    { rate: 17.79, min: 102894, max: 106732, label: "17.79%" },
+                                    { rate: 25.38, min: 106732, max: 111733, label: "25.38%" },
+                                    { rate: 27.53, min: 111733, max: 150000, label: "27.53%" },
+                                    { rate: 32.11, min: 150000, max: 173205, label: "32.11%" },
+                                    { rate: 34.26, min: 173205, max: 220000, label: "34.26%" },
+                                    { rate: 39.34, min: 220000, max: 246752, label: "39.34%" },
+                                    { rate: 39.34, min: 246752, max: 300000, label: "39.34%" }
+                                  ],
+                                  nonEligibleDividends: [
+                                    { rate: 13.95, min: 0, max: 51446, label: "13.95%" },
+                                    { rate: 20.28, min: 51446, max: 55867, label: "20.28%" },
+                                    { rate: 22.38, min: 55867, max: 90599, label: "22.38%" },
+                                    { rate: 25.16, min: 90599, max: 102894, label: "25.16%" },
+                                    { rate: 29.78, min: 102894, max: 106732, label: "29.78%" },
+                                    { rate: 36.10, min: 106732, max: 111733, label: "36.10%" },
+                                    { rate: 37.90, min: 111733, max: 150000, label: "37.90%" },
+                                    { rate: 41.72, min: 150000, max: 173205, label: "41.72%" },
+                                    { rate: 43.31, min: 173205, max: 220000, label: "43.31%" },
+                                    { rate: 47.74, min: 220000, max: 246752, label: "47.74%" },
+                                    { rate: 47.74, min: 246752, max: 300000, label: "47.74%" }
+                                  ]
+                                };
+
+                                // Get the brackets for the client's province (defaulting to ON)
+                                const brackets = taxRatesON;
+
+                                const incomeTypes = [
+                                  { name: 'Ordinary Income', brackets: brackets.ordinary },
+                                  { name: 'Capital Gains', brackets: brackets.capitalGains },
+                                  { name: 'Eligible Dividends', brackets: brackets.eligibleDividends },
+                                  { name: 'Non-Eligible Dividends', brackets: brackets.nonEligibleDividends }
+                                ];
+
+                                return incomeTypes.map((incomeType, typeIdx) => {
+                                  const maxScale = 300000; // Scale chart to $300k max
+                                  const currentIncome = taxableIncome;
+
+                                  return (
+                                    <div key={typeIdx} className="flex flex-col items-center">
+                                      {/* Vertical bar */}
+                                      <div className="relative w-20 h-72 bg-gray-100 border">
+                                        {incomeType.brackets.map((bracket, idx) => {
+                                          // Skip brackets that start above $300k
+                                          if (bracket.min >= maxScale) return null;
+                                          
+                                          // Check if this is the current bracket for the taxpayer's income
+                                          const isCurrentBracket = currentIncome > bracket.min && 
+                                            (currentIncome <= bracket.max || bracket.max >= maxScale);
+                                          
+                                          const bracketTop = Math.min(bracket.max, maxScale);
+                                          const bracketHeight = bracketTop - bracket.min;
+                                          const heightPercent = (bracketHeight / maxScale) * 100;
+                                          const bottomPercent = (bracket.min / maxScale) * 100;
+                                          
+                                          // Highlight current bracket with accent color, others with primary
+                                          let bgColor = isCurrentBracket ? 'bg-accent' : 'bg-primary';
+                                          
+                                          return (
+                                            <div 
+                                              key={idx}
+                                              className={`absolute w-full ${bgColor} flex items-center justify-center border-t border-white`}
+                                              style={{
+                                                bottom: `${bottomPercent}%`,
+                                                height: `${heightPercent}%`
+                                              }}
+                                            >
+                                              <span className="text-xs font-medium text-black whitespace-nowrap z-20 relative">
+                                                {bracket.label}
+                                              </span>
+                                            </div>
+                                          );
+                                        })}
+                                        
+                                        {/* Current income indicator line - show across all 4 bars */}
+                                        <div 
+                                          className="absolute left-0 w-full h-1 z-10"
+                                          style={{
+                                            bottom: `${currentIncome > maxScale ? '100%' : Math.min(currentIncome / maxScale, 1) * 100 + '%'}`,
+                                            backgroundColor: '#D4B26A'
+                                          }}
+                                        >
+                                          {/* Income label to the left of the bars - only show on first bar */}
+                                          {typeIdx === 0 && (
+                                            <div 
+                                              className="absolute right-32 -top-2 text-xs font-semibold whitespace-nowrap"
+                                              style={{ color: '#D4B26A' }}
+                                            >
+                                              Taxable Income: ${Math.round(currentIncome / 1000)}k
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                      
+                                      {/* Label below the bar */}
+                                      <div className="mt-2 text-xs text-center text-gray-700 font-medium w-20">
+                                        {incomeType.name}
                                       </div>
                                     </div>
-                                    
-                                    {/* Four income type columns */}
-                                    {incomeTypes.map((incomeType, typeIndex) => {
-                                      const rate = incomeType.rates[bracketIndex];
-                                      const isCurrentBracket = isCurrentRow;
-                                      
-                                      return (
-                                        <div
-                                          key={typeIndex}
-                                          className={`h-12 flex items-center justify-center text-black text-xs font-medium rounded ${
-                                            isCurrentBracket ? 'bg-[#C7E6C2]' : 'bg-[#88AA73]'
-                                          }`}
-                                        >
-                                          {rate.toFixed(2)}%
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                );
-                              })}
+                                  );
+                                });
+                              })()}
                             </div>
                           </div>
-                        );
-                      })()}
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 );
