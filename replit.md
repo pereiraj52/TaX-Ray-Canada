@@ -405,6 +405,7 @@ Changelog:
 - July 1, 2025. Updated Charitable Gifts & Donations section summary: changed collapsed section total from Line 34900 (Donations & Gifts) to calculated Total Eligible Gifts & Donations (sum of Lines 34000 and 34200) for accurate section summary display matching the calculated field within the section
 - July 1, 2025. Updated Line 34900 field label: changed from "Donations & Gifts" to "Donation & Gift Credits" for accurate terminology across T1 extraction display, Tax Credits Analysis, and PDF parser mapping, corrected field naming to reflect proper Canadian tax form terminology
 - July 1, 2025. Fixed Line 34900 (Donation & Gift Credits) extraction issue: modified _extract_line_amount method in Python extractor to allow charitable donation credits with values less than $1.00, enabling extraction of amounts like $0.79 by setting minimum amount threshold to $0 for line 34900 while maintaining $1 minimum for other lines to avoid false positives
+- July 2, 2025. Updated Federal Tax Credits summary label: changed from "Federal Tax Credits" to "Total Non-Refundable" in T1 extraction display credits summary section for more accurate terminology reflecting non-refundable tax credit totals
 ```
 
 ## User Preferences
