@@ -887,7 +887,7 @@ export default function IndividualTaxReport() {
                 return (
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-lg font-medium text-gray-900">
+                      <CardTitle className="text-lg font-medium text-gray-900 mb-1">
                         {clientName} - Combined Tax Bracket Analysis
                       </CardTitle>
                     </CardHeader>
