@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Download, FileText, Calendar, User } from "lucide-react";
+import { ArrowLeft, Download, FileText, Calendar, User, Info } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { HouseholdAPI } from "@/lib/api";
 import { HouseholdWithClients } from "@shared/schema";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip as ChartTooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 export default function TaxReport() {
   const params = useParams();
@@ -627,7 +628,7 @@ export default function TaxReport() {
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                           </Pie>
-                          <Tooltip content={CustomTooltip} />
+                          <ChartTooltip content={CustomTooltip} />
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
@@ -969,7 +970,7 @@ export default function TaxReport() {
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                           </Pie>
-                          <Tooltip 
+                          <ChartTooltip 
                             content={({ active, payload }: any) => {
                               if (active && payload && payload.length) {
                                 const data = payload[0];
