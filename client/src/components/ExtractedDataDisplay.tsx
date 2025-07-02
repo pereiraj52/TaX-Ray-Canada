@@ -37,8 +37,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
     // Credit sections
     'basic-credits': true,
     'employment-credits': true,
-    'personal-situation-credits': true,
+    'personal-situation-credits-new': true,
+    'disability-caregiver-credits': true,
+    'education-credits': true,
     'education-medical-credits': true,
+    'charitable-gifts-donations-credits': true,
     'ontario-credits': true,
     'refundable-credits': true,
     // Account sections
