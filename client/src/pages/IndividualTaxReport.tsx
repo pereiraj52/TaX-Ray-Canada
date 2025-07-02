@@ -891,7 +891,7 @@ export default function IndividualTaxReport() {
                         {clientName} - Combined Tax Bracket Analysis
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="p-6">
+                    <CardContent className="p-6 pt-2">
                       <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-sm">
                           <thead>
