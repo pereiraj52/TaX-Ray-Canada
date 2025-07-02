@@ -1130,7 +1130,7 @@ class ComprehensiveT1Extractor:
             '58560': 'tuition_education_amounts',
             '58640': 'amounts_transferred_spouse',
             # Medical and other
-            '58689': 'medical_expenses',
+            '58769': 'medical_expenses',
             '58729': 'donations_gifts',
             # Calculated amounts
             '58800': 'total_credits',

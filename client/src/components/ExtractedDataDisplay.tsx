@@ -1847,7 +1847,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <h4 className="font-medium text-primary">Ontario Non-Refundable Credits</h4>
                     </div>
                     <span className="font-medium text-primary">
-                      {formatCurrency(getSectionTotal(['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58689', '58729']))}
+                      {formatCurrency(getSectionTotal(['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58769', '58729']))}
                     </span>
                   </button>
                 {!collapsedSections['ontario-credits'] && (
@@ -1917,8 +1917,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('58640'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Medical Expenses (Line 58689):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('58689'))}</span>
+                      <span className="field-label">Ontario Medical Expenses (Line 58769):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58769'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Ontario Donations & Gifts (Line 58729):</span>

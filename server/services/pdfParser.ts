@@ -315,7 +315,7 @@ export class T1PDFParser {
         student_loan_interest: { code: '58520', name: 'Ontario Student Loan Interest' },
         tuition_education_amounts: { code: '58560', name: 'Ontario Tuition and Education Amounts' },
         amounts_transferred_spouse: { code: '58640', name: 'Ontario Amounts Transferred from Spouse' },
-        medical_expenses: { code: '58689', name: 'Ontario Medical Expenses' },
+        medical_expenses: { code: '58769', name: 'Ontario Medical Expenses' },
         donations_gifts: { code: '58729', name: 'Ontario Donations and Gifts' },
         total_credits: { code: '58800', name: 'Ontario Total Credits' },
         total_non_refundable_credits: { code: '58840', name: 'Ontario Total Non-Refundable Credits' },

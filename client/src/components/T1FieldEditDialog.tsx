@@ -214,7 +214,7 @@ export default function T1FieldEditDialog({ open, onOpenChange, t1Return }: T1Fi
       { fieldCode: '58520', fieldName: 'Ontario Student Loan Interest', fieldType: 'currency' },
       { fieldCode: '58560', fieldName: 'Ontario Tuition and Education Amounts', fieldType: 'currency' },
       { fieldCode: '58640', fieldName: 'Ontario Amounts Transferred from Spouse', fieldType: 'currency' },
-      { fieldCode: '58689', fieldName: 'Ontario Medical Expenses', fieldType: 'currency' },
+      { fieldCode: '58769', fieldName: 'Ontario Medical Expenses', fieldType: 'currency' },
       { fieldCode: '58729', fieldName: 'Ontario Donations and Gifts', fieldType: 'currency' },
       { fieldCode: '58800', fieldName: 'Ontario Tax Credits', fieldType: 'currency' },
     ];
