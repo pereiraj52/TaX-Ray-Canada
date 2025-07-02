@@ -3463,9 +3463,9 @@ export default function TaxReport() {
           </div>
         </div>
 
-        {/* Government Clawback Analysis */}
+        {/* Household Income Clawback Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Clawback Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Household Income Clawback Analysis</h2>
           
           {/* Family-wide Government Clawbacks Summary */}
           <div className="w-full mb-6">
@@ -3670,12 +3670,32 @@ export default function TaxReport() {
               return (
                 <Card>
                   <CardContent className="p-6">
-                    <h3 className="font-medium text-gray-900 mb-6">
-                      Canada Child Benefit
-                    </h3>
-                    
-                    {/* CCB Clawback Chart - Full Width */}
-                    {(() => {
+                    <div className="space-y-6">
+                      {/* Canada Child Benefit Clawback Sub-Category */}
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                          <h4 className="font-medium text-primary text-sm">
+                            Canada Child Benefit Clawback
+                          </h4>
+                          <span className="font-medium text-primary text-sm">
+                            {clawbackPercentage.toFixed(2)}% clawback
+                          </span>
+                        </div>
+                        
+                        {/* CCB Details */}
+                        <div className="space-y-3">
+                          {benefitInfo.map((info, index) => (
+                            <div key={index} className="flex justify-between items-center text-sm">
+                              <span className="text-gray-700">{info.name}</span>
+                              <span className="font-medium text-gray-700">
+                                {formatValue(info.value, info.format)}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        {/* CCB Clawback Chart */}
+                        {(() => {
                               const baseThreshold = 37487;
                               const additionalThreshold = 81222;
                               const totalChildren = numUnder6 + num6to17;
@@ -3761,6 +3781,9 @@ export default function TaxReport() {
                                 </div>
                               );
                             })()}
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               );
