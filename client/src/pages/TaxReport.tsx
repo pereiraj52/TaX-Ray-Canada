@@ -3000,9 +3000,9 @@ export default function TaxReport() {
           </div>
         </div>
 
-        {/* Tax Credits Analysis */}
+        {/* Federal Tax Credits Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Credits Analysis</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Credits Analysis</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {
@@ -3061,8 +3061,8 @@ export default function TaxReport() {
                   }).format(amount);
                 };
 
-                // Define all possible tax credits with their line numbers
-                let credits = [
+                // Define federal tax credits only
+                const federalCredits = [
                   // Basic Credits
                   { category: "Basic Credits (Non-Refundable)", items: [
                     { name: "Basic Personal Amount", line: "30000" },
@@ -3126,20 +3126,8 @@ export default function TaxReport() {
                     { name: "Donation & Gift Credits", line: "34900" },
                   ]},
                   
-                  // Provincial Credits (Ontario)
-                  { category: "Provincial Credits", items: [
-                    { name: "Ontario Basic Personal Amount", line: "58000" },
-                    { name: "Ontario Spouse Amount", line: "58120" },
-                    { name: "Ontario Eligible Dependant Amount", line: "58140" },
-                    { name: "Ontario Caregiver Amount", line: "58160" },
-                    { name: "Ontario Disability Amount", line: "58200" },
-                    { name: "Ontario Senior Homeowners' Property Tax Credit", line: "61700" },
-                    { name: "Ontario Energy and Property Tax Credit", line: "61800" },
-                    { name: "Ontario Northern Ontario Energy Credit", line: "61900" },
-                  ]},
-                  
-                  // Refundable Credits
-                  { category: "Refundable Credits", items: [
+                  // Federal Refundable Credits
+                  { category: "Federal Refundable Credits", items: [
                     { name: "Quebec Abatement", line: "44000" },
                     { name: "CPP Overpayment", line: "44800" },
                     { name: "EI Overpayment", line: "45000" },
@@ -3156,31 +3144,15 @@ export default function TaxReport() {
                   ]},
                 ];
 
-                // Add Ontario Refundable Credits section if client is in Ontario
-                const provinceField = spouse.formFields.find(f => f.fieldCode === 'province');
-                const province = provinceField?.fieldValue;
-                if (province === 'ON') {
-                  credits.push({
-                    category: "Ontario Refundable Credits", 
-                    items: [
-                      { name: "Ontario Seniors Care at Home Credit", line: "63095" },
-                      { name: "Ontario Seniors Public Transit Credit", line: "63100" },
-                      { name: "Ontario Political Contribution Credit", line: "63110" },
-                      { name: "Ontario Flow Through Credit", line: "63220" },
-                      { name: "Ontario Co-operative Education Credit", line: "63300" },
-                    ]
-                  });
-                }
-
                 return (
                   <Card key={spouseIndex}>
                     <CardContent className="p-6">
                       <h3 className="font-medium text-gray-900 mb-6">
-                        {spouse.clientName} - Tax Credits
+                        {spouse.clientName} - Federal Tax Credits
                       </h3>
                       
                       <div className="space-y-6">
-                        {credits.map((category, categoryIndex) => {
+                        {federalCredits.map((category, categoryIndex) => {
                           const categoryTotal = category.items.reduce((sum, item) => {
                             return sum + getFieldValue(item.line);
                           }, 0);
@@ -3228,120 +3200,263 @@ export default function TaxReport() {
                           );
                         })}
                         
-                        {/* Credits Summary - Split Federal and Provincial */}
-                        <div className="pt-4 border-t-2 border-primary space-y-6">
-                          {/* Federal Tax Credits Section */}
-                          <div className="space-y-3">
-                            <h4 className="font-medium text-gray-900 text-base">Federal Tax Credits</h4>
-                            
-                            <div className="flex justify-between items-center">
-                              <span className="font-semibold text-primary">
-                                Federal Non-Refundable Credits
-                              </span>
-                              <span className="font-semibold text-primary text-lg">
-                                {formatCurrency(credits.slice(0, 6).reduce((total, category) => {
-                                  return total + category.items.reduce((sum, item) => {
-                                    return sum + getFieldValue(item.line);
-                                  }, 0);
-                                }, 0))}
-                              </span>
-                            </div>
-                            
-                            <div className="flex justify-between items-center">
-                              <span className="font-semibold text-primary">
-                                Federal Refundable Credits
-                              </span>
-                              <span className="font-semibold text-primary text-lg">
-                                {formatCurrency(credits.slice(7, 8).reduce((total, category) => {
-                                  return total + category.items.reduce((sum, item) => {
-                                    return sum + getFieldValue(item.line);
-                                  }, 0);
-                                }, 0))}
-                              </span>
-                            </div>
-                            
-                            <div className="flex justify-between items-center">
-                              <span className="font-medium text-primary text-sm">
-                                Federal Tax Reduction
-                              </span>
-                              <span className="font-medium text-primary">
-                                {(() => {
-                                  // Calculate federal tax reduction from non-refundable credits
-                                  const federalNonRefundableCredits = credits.slice(0, 6).reduce((total, category) => {
-                                    return total + category.items.reduce((sum, item) => {
-                                      return sum + getFieldValue(item.line);
-                                    }, 0);
-                                  }, 0);
-                                  
-                                  // Apply federal basic rate (15%) to federal non-refundable credits
-                                  const federalReduction = federalNonRefundableCredits * 0.15;
-                                  
-                                  return formatCurrency(federalReduction);
-                                })()}
-                              </span>
-                            </div>
+                        {/* Federal Credits Summary */}
+                        <div className="pt-4 border-t-2 border-primary space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Federal Non-Refundable Credits
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {formatCurrency(federalCredits.slice(0, 7).reduce((total, category) => {
+                                return total + category.items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                              }, 0))}
+                            </span>
                           </div>
                           
-                          {/* Provincial Tax Credits Section */}
-                          {(() => {
-                            const provinceField = spouse.formFields.find(f => f.fieldCode === 'province');
-                            const province = provinceField?.fieldValue;
-                            if (province === 'ON') {
-                              return (
-                                <div className="space-y-3">
-                                  <h4 className="font-medium text-gray-900 text-base">Provincial Tax Credits (Ontario)</h4>
-                                  
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-primary">
-                                      Ontario Non-Refundable Credits
-                                    </span>
-                                    <span className="font-semibold text-primary text-lg">
-                                      {formatCurrency(credits.slice(6, 7).reduce((total, category) => {
-                                        return total + category.items.reduce((sum, item) => {
-                                          return sum + getFieldValue(item.line);
-                                        }, 0);
-                                      }, 0))}
-                                    </span>
-                                  </div>
-                                  
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-primary">
-                                      Ontario Refundable Credits
-                                    </span>
-                                    <span className="font-semibold text-primary text-lg">
-                                      {formatCurrency(credits.slice(8).reduce((total, category) => {
-                                        return total + category.items.reduce((sum, item) => {
-                                          return sum + getFieldValue(item.line);
-                                        }, 0);
-                                      }, 0))}
-                                    </span>
-                                  </div>
-                                  
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-medium text-primary text-sm">
-                                      Provincial Tax Reduction
-                                    </span>
-                                    <span className="font-medium text-primary">
-                                      {(() => {
-                                        // Calculate provincial tax reduction from Ontario non-refundable credits
-                                        const provincialNonRefundableCredits = credits.slice(6, 7).reduce((total, category) => {
-                                          return total + category.items.reduce((sum, item) => {
-                                            return sum + getFieldValue(item.line);
-                                          }, 0);
-                                        }, 0);
-                                        
-                                        // Apply Ontario basic rate (5.05%) to provincial non-refundable credits
-                                        const provincialReduction = provincialNonRefundableCredits * 0.0505;
-                                        
-                                        return formatCurrency(provincialReduction);
-                                      })()}
-                                    </span>
-                                  </div>
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Federal Refundable Credits
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {formatCurrency(federalCredits.slice(7, 8).reduce((total, category) => {
+                                return total + category.items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                              }, 0))}
+                            </span>
+                          </div>
+                          
+                          <div className="flex justify-between items-center">
+                            <span className="font-medium text-primary text-sm">
+                              Federal Tax Reduction
+                            </span>
+                            <span className="font-medium text-primary">
+                              {(() => {
+                                // Calculate federal tax reduction from non-refundable credits
+                                const federalNonRefundableCredits = federalCredits.slice(0, 7).reduce((total, category) => {
+                                  return total + category.items.reduce((sum, item) => {
+                                    return sum + getFieldValue(item.line);
+                                  }, 0);
+                                }, 0);
+                                
+                                // Apply federal basic rate (15%) to federal non-refundable credits
+                                const federalReduction = federalNonRefundableCredits * 0.15;
+                                
+                                return formatCurrency(federalReduction);
+                              })()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              });
+            })()}
+          </div>
+        </div>
+
+        {/* Provincial Tax Credits Analysis */}
+        <div className="space-y-6 mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Provincial Tax Credits Analysis</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {(() => {
+              // Get T1 returns for the specified year for both spouses
+              const spouseData = [];
+              
+              // Primary client
+              if (household?.clients?.[0]) {
+                const client = household.clients[0];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+              
+              // Secondary client
+              if (household?.clients?.[1]) {
+                const client = household.clients[1];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+
+              return spouseData.map((spouse, spouseIndex) => {
+                if (!spouse.t1Return) return null;
+
+                // Helper function to get field value
+                const getFieldValue = (lineNumber: string) => {
+                  const field = spouse.formFields.find(f => f.fieldCode === lineNumber);
+                  return field?.fieldValue ? parseFloat(field.fieldValue) : 0;
+                };
+
+                // Helper function to format currency
+                const formatCurrency = (amount: number) => {
+                  return new Intl.NumberFormat('en-CA', {
+                    style: 'currency',
+                    currency: 'CAD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  }).format(amount);
+                };
+
+                // Check if client is in Ontario to show provincial credits
+                const provinceField = spouse.formFields.find(f => f.fieldCode === 'province');
+                const province = provinceField?.fieldValue;
+                
+                if (province !== 'ON') {
+                  return (
+                    <Card key={spouseIndex}>
+                      <CardContent className="p-6">
+                        <h3 className="font-medium text-gray-900 mb-6">
+                          {spouse.clientName} - Provincial Tax Credits
+                        </h3>
+                        <div className="text-center text-gray-500 py-8">
+                          No provincial tax credits available for this province
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+
+                // Define provincial tax credits (Ontario only)
+                const provincialCredits = [
+                  // Ontario Non-Refundable Credits
+                  { category: "Ontario Non-Refundable Credits", items: [
+                    { name: "Ontario Basic Personal Amount", line: "58000" },
+                    { name: "Ontario Spouse Amount", line: "58120" },
+                    { name: "Ontario Eligible Dependant Amount", line: "58140" },
+                    { name: "Ontario Caregiver Amount", line: "58160" },
+                    { name: "Ontario Disability Amount", line: "58200" },
+                    { name: "Ontario Senior Homeowners' Property Tax Credit", line: "61700" },
+                    { name: "Ontario Energy and Property Tax Credit", line: "61800" },
+                    { name: "Ontario Northern Ontario Energy Credit", line: "61900" },
+                  ]},
+                  
+                  // Ontario Refundable Credits
+                  { category: "Ontario Refundable Credits", items: [
+                    { name: "Ontario Seniors Care at Home Credit", line: "63095" },
+                    { name: "Ontario Seniors Public Transit Credit", line: "63100" },
+                    { name: "Ontario Political Contribution Credit", line: "63110" },
+                    { name: "Ontario Flow Through Credit", line: "63220" },
+                    { name: "Ontario Co-operative Education Credit", line: "63300" },
+                  ]},
+                ];
+
+                return (
+                  <Card key={spouseIndex}>
+                    <CardContent className="p-6">
+                      <h3 className="font-medium text-gray-900 mb-6">
+                        {spouse.clientName} - Provincial Tax Credits (Ontario)
+                      </h3>
+                      
+                      <div className="space-y-6">
+                        {provincialCredits.map((category, categoryIndex) => {
+                          const categoryTotal = category.items.reduce((sum, item) => {
+                            return sum + getFieldValue(item.line);
+                          }, 0);
+
+                          return (
+                            <div key={categoryIndex} className="border rounded-lg p-4">
+                              <div className="flex justify-between items-center cursor-pointer">
+                                <h4 className="font-medium text-gray-900">{category.category}</h4>
+                                <div className="flex items-center space-x-2">
+                                  <span className="font-medium text-primary">
+                                    {formatCurrency(categoryTotal)}
+                                  </span>
                                 </div>
-                              );
-                            }
-                            return null;
-                          })()}
+                              </div>
+                              
+                              <div className="mt-3 space-y-2">
+                                {category.items.map((item, itemIndex) => {
+                                  const amount = getFieldValue(item.line);
+                                  const hasClaim = amount > 0;
+                                  
+                                  return (
+                                    <div key={itemIndex} className="flex justify-between items-center text-sm">
+                                      <div className="flex items-center space-x-2">
+                                        <span 
+                                          className="font-medium"
+                                          style={{ color: hasClaim ? '#88AA73' : '#D4B26A' }}
+                                        >
+                                          {hasClaim ? '✓' : '✗'}
+                                        </span>
+                                        <span className="text-gray-700">
+                                          {item.name}
+                                        </span>
+                                        <span className="text-gray-400 text-xs">
+                                          (Line {item.line})
+                                        </span>
+                                      </div>
+                                      <span className="font-medium text-right text-gray-700">
+                                        {hasClaim ? formatCurrency(amount) : '$0'}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                        
+                        {/* Provincial Credits Summary */}
+                        <div className="pt-4 border-t-2 border-primary space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Ontario Non-Refundable Credits
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {formatCurrency(provincialCredits.slice(0, 1).reduce((total, category) => {
+                                return total + category.items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                              }, 0))}
+                            </span>
+                          </div>
+                          
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-primary">
+                              Ontario Refundable Credits
+                            </span>
+                            <span className="font-semibold text-primary text-lg">
+                              {formatCurrency(provincialCredits.slice(1, 2).reduce((total, category) => {
+                                return total + category.items.reduce((sum, item) => {
+                                  return sum + getFieldValue(item.line);
+                                }, 0);
+                              }, 0))}
+                            </span>
+                          </div>
+                          
+                          <div className="flex justify-between items-center">
+                            <span className="font-medium text-primary text-sm">
+                              Provincial Tax Reduction
+                            </span>
+                            <span className="font-medium text-primary">
+                              {(() => {
+                                // Calculate provincial tax reduction from Ontario non-refundable credits
+                                const provincialNonRefundableCredits = provincialCredits.slice(0, 1).reduce((total, category) => {
+                                  return total + category.items.reduce((sum, item) => {
+                                    return sum + getFieldValue(item.line);
+                                  }, 0);
+                                }, 0);
+                                
+                                // Apply Ontario basic rate (5.05%) to provincial non-refundable credits
+                                const provincialReduction = provincialNonRefundableCredits * 0.0505;
+                                
+                                return formatCurrency(provincialReduction);
+                              })()}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
