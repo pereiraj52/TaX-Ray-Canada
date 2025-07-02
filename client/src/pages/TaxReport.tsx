@@ -2657,34 +2657,42 @@ export default function TaxReport() {
                     // Ontario provincial tax brackets for visualization - different rates for different income types
                     const provincialOrdinaryBrackets = [
                       { rate: 5.05, min: 0, max: 51446, label: "5.05%" },
-                      { rate: 9.15, min: 51446, max: 102894, label: "9.15%" },
-                      { rate: 11.16, min: 102894, max: 150000, label: "11.16%" },
+                      { rate: 9.15, min: 51446, max: 90599, label: "9.15%" },
+                      { rate: 9.15, min: 90599, max: 102894, label: "9.15%" },
+                      { rate: 11.16, min: 102894, max: 106732, label: "11.16%" },
+                      { rate: 11.16, min: 106732, max: 150000, label: "11.16%" },
                       { rate: 12.16, min: 150000, max: 220000, label: "12.16%" },
                       { rate: 13.16, min: 220000, max: 300000, label: "13.16%" }
                     ];
                     
                     const provincialCapitalGainsBrackets = [
-                      { rate: 2.525, min: 0, max: 51446, label: "2.53%" },
-                      { rate: 4.575, min: 51446, max: 102894, label: "4.58%" },
-                      { rate: 5.58, min: 102894, max: 150000, label: "5.58%" },
+                      { rate: 2.53, min: 0, max: 51446, label: "2.53%" },
+                      { rate: 4.58, min: 51446, max: 90599, label: "4.58%" },
+                      { rate: 4.58, min: 90599, max: 102894, label: "4.58%" },
+                      { rate: 5.58, min: 102894, max: 106732, label: "5.58%" },
+                      { rate: 5.58, min: 106732, max: 150000, label: "5.58%" },
                       { rate: 6.08, min: 150000, max: 220000, label: "6.08%" },
                       { rate: 6.58, min: 220000, max: 300000, label: "6.58%" }
                     ];
                     
                     const provincialEligibleDividendBrackets = [
-                      { rate: -1.91, min: 0, max: 51446, label: "-1.91%" },
-                      { rate: 0.45, min: 51446, max: 102894, label: "0.45%" },
-                      { rate: 3.28, min: 102894, max: 150000, label: "3.28%" },
-                      { rate: 4.69, min: 150000, max: 220000, label: "4.69%" },
-                      { rate: 6.11, min: 220000, max: 300000, label: "6.11%" }
+                      { rate: -6.83, min: 0, max: 51446, label: "-6.83%" },
+                      { rate: -1.17, min: 51446, max: 90599, label: "-1.17%" },
+                      { rate: 1.36, min: 90599, max: 102894, label: "1.36%" },
+                      { rate: 4.68, min: 102894, max: 106732, label: "4.68%" },
+                      { rate: 10.23, min: 106732, max: 150000, label: "10.23%" },
+                      { rate: 12.38, min: 150000, max: 220000, label: "12.38%" },
+                      { rate: 14.53, min: 220000, max: 300000, label: "14.53%" }
                     ];
                     
                     const provincialNonEligibleDividendBrackets = [
-                      { rate: 3.16, min: 0, max: 51446, label: "3.16%" },
-                      { rate: 8.55, min: 51446, max: 102894, label: "8.55%" },
-                      { rate: 11.73, min: 102894, max: 150000, label: "11.73%" },
-                      { rate: 13.73, min: 150000, max: 220000, label: "13.73%" },
-                      { rate: 15.76, min: 220000, max: 300000, label: "15.76%" }
+                      { rate: 2.37, min: 0, max: 51446, label: "2.37%" },
+                      { rate: 7.08, min: 51446, max: 90599, label: "7.08%" },
+                      { rate: 9.19, min: 90599, max: 102894, label: "9.19%" },
+                      { rate: 11.97, min: 102894, max: 106732, label: "11.97%" },
+                      { rate: 16.59, min: 106732, max: 150000, label: "16.59%" },
+                      { rate: 18.38, min: 150000, max: 220000, label: "18.38%" },
+                      { rate: 20.17, min: 220000, max: 300000, label: "20.17%" }
                     ];
 
                     return (
