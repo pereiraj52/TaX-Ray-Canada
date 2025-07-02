@@ -3375,11 +3375,13 @@ export default function TaxReport() {
                     { name: "Ontario Dividend Tax Credit", line: "61520" },
                   ]},
                   
-                  // Ontario Credit Totals
-                  { category: "Ontario Credit Totals", items: [
-                    { name: "Ontario Total Credits", line: "58800" },
-                    { name: "Ontario Total Non-Refundable Credits", line: "58840" },
-                    { name: "Ontario Non-Refundable Tax Credits", line: "61500" },
+                  // Ontario Refundable Tax Credits
+                  { category: "Ontario Refundable Tax Credits", items: [
+                    { name: "Ontario Seniors Care at Home Credit", line: "63095" },
+                    { name: "Ontario Seniors Public Transit Credit", line: "63100" },
+                    { name: "Ontario Political Contribution Credit", line: "63110" },
+                    { name: "Ontario Flow Through Credit", line: "63220" },
+                    { name: "Ontario Co-operative Education Credit", line: "63300" },
                   ]},
                 ];
 
@@ -3439,10 +3441,12 @@ export default function TaxReport() {
                                               {item.name === "Ontario Medical Expenses" && "Ontario tax credit for qualifying medical expenses exceeding provincial thresholds."}
                                               {item.name === "Ontario Donations and Gifts" && "Ontario tax credit for charitable donations and gifts to qualified organizations."}
                                               {item.name === "Ontario Dividend Tax Credit" && "Ontario tax credit for eligible dividends received from Canadian corporations."}
-                                              {item.name === "Ontario Total Credits" && "Total of all Ontario tax credits before applying provincial tax rates."}
-                                              {item.name === "Ontario Total Non-Refundable Credits" && "Total Ontario non-refundable tax credits that reduce provincial tax payable."}
-                                              {item.name === "Ontario Non-Refundable Tax Credits" && "Final amount of Ontario non-refundable tax credits applied against provincial tax."}
-                                              {!["Ontario Basic Personal Amount", "Ontario CPP/QPP Contributions", "Ontario Employment Insurance Premiums", "Ontario Medical Expenses", "Ontario Donations and Gifts", "Ontario Dividend Tax Credit", "Ontario Total Credits", "Ontario Total Non-Refundable Credits", "Ontario Non-Refundable Tax Credits"].includes(item.name) && "Ontario provincial tax credit information"}
+                                              {item.name === "Ontario Seniors Care at Home Credit" && "Refundable tax credit for eligible home care and support services for seniors in Ontario."}
+                                              {item.name === "Ontario Seniors Public Transit Credit" && "Refundable tax credit for public transit costs for eligible Ontario seniors."}
+                                              {item.name === "Ontario Political Contribution Credit" && "Refundable tax credit for contributions made to registered Ontario political parties or candidates."}
+                                              {item.name === "Ontario Flow Through Credit" && "Refundable tax credit for flow-through share investments in Ontario resource exploration."}
+                                              {item.name === "Ontario Co-operative Education Credit" && "Refundable tax credit for employers participating in co-operative education programs in Ontario."}
+                                              {!["Ontario Basic Personal Amount", "Ontario CPP/QPP Contributions", "Ontario Employment Insurance Premiums", "Ontario Medical Expenses", "Ontario Donations and Gifts", "Ontario Dividend Tax Credit", "Ontario Seniors Care at Home Credit", "Ontario Seniors Public Transit Credit", "Ontario Political Contribution Credit", "Ontario Flow Through Credit", "Ontario Co-operative Education Credit"].includes(item.name) && "Ontario provincial tax credit information"}
                                             </p>
                                           </TooltipContent>
                                         </Tooltip>
