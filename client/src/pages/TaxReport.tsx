@@ -3333,23 +3333,19 @@ export default function TaxReport() {
                 const provincialCredits = [
                   // Ontario Non-Refundable Credits
                   { category: "Ontario Non-Refundable Credits", items: [
-                    { name: "Ontario Basic Personal Amount", line: "58000" },
-                    { name: "Ontario Spouse Amount", line: "58120" },
-                    { name: "Ontario Eligible Dependant Amount", line: "58140" },
-                    { name: "Ontario Caregiver Amount", line: "58160" },
-                    { name: "Ontario Disability Amount", line: "58200" },
-                    { name: "Ontario Senior Homeowners' Property Tax Credit", line: "61700" },
-                    { name: "Ontario Energy and Property Tax Credit", line: "61800" },
-                    { name: "Ontario Northern Ontario Energy Credit", line: "61900" },
+                    { name: "Ontario Basic Personal Amount", line: "58040" },
+                    { name: "Ontario CPP/QPP Contributions", line: "58240" },
+                    { name: "Ontario Employment Insurance Premiums", line: "58300" },
+                    { name: "Ontario Medical Expenses", line: "58769" },
+                    { name: "Ontario Donations and Gifts", line: "58969" },
+                    { name: "Ontario Dividend Tax Credit", line: "61520" },
                   ]},
                   
-                  // Ontario Refundable Credits
-                  { category: "Ontario Refundable Credits", items: [
-                    { name: "Ontario Seniors Care at Home Credit", line: "63095" },
-                    { name: "Ontario Seniors Public Transit Credit", line: "63100" },
-                    { name: "Ontario Political Contribution Credit", line: "63110" },
-                    { name: "Ontario Flow Through Credit", line: "63220" },
-                    { name: "Ontario Co-operative Education Credit", line: "63300" },
+                  // Ontario Credit Totals
+                  { category: "Ontario Credit Totals", items: [
+                    { name: "Ontario Total Credits", line: "58800" },
+                    { name: "Ontario Total Non-Refundable Credits", line: "58840" },
+                    { name: "Ontario Non-Refundable Tax Credits", line: "61500" },
                   ]},
                 ];
 
