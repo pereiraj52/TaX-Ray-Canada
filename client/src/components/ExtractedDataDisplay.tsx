@@ -1917,6 +1917,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <div className="text-xl font-bold text-blue-600">
                       {formatCurrency(getTotalCredits())}
                     </div>
+                    <div className="text-sm text-blue-700 mt-2">
+                      Tax Savings: {formatCurrency(getFieldValue('35000'))}
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="font-semibold text-blue-800 mb-2">Ontario Tax Credits</div>
