@@ -3032,7 +3032,7 @@ export default function TaxReport() {
                     { name: "Refundable Medical Expense Supplement", line: "45200" },
                     { name: "Climate Action Incentive", line: "45355" },
                     { name: "Canada Child Benefit", line: "45400" },
-                    { name: "Canada Workers Benefit", line: "45600" },
+                    { name: "Canada Workers Benefit", line: "45300" },
                     { name: "Teacher and Early Childhood Educator School Supply Tax Credit", line: "45700" },
                   ]},
                 ];

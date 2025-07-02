@@ -1752,7 +1752,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                     <h4 className="font-medium text-primary">Refundable Credits</h4>
                   </div>
                   <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['44000', '44800', '45000', '45200', '45355', '45400', '45600', '45700']))}
+                    {formatCurrency(getSectionTotal(['44000', '44800', '45000', '45200', '45300', '45355', '45400', '45700']))}
                   </span>
                 </button>
                 {!collapsedSections['refundable-credits'] && (
@@ -1774,16 +1774,16 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
                     </div>
                     <div className="field-row">
+                      <span className="field-label">Canada Workers Benefit (Line 45300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
+                    </div>
+                    <div className="field-row">
                       <span className="field-label">Climate Action Incentive (Line 45355):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Canada Child Benefit (Line 45400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Canada Workers Benefit (Line 45600):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('45600'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Teacher and Early Childhood Educator School Supply Tax Credit (Line 45700):</span>

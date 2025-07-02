@@ -410,6 +410,7 @@ Changelog:
 - July 2, 2025. Revised refundable tax credit section: updated to include Lines 44000 (Quebec Abatement), 44800 (CPP Overpayment), 45000 (EI Overpayment), 45355 (Climate Action Incentive), 45400 (Canada Child Benefit), 45600 (Canada Workers Benefit), and 45700 (Teacher and Early Childhood Educator School Supply Tax Credit) in both T1 extraction display and Tax Credits Analysis, removed outdated credit fields for accurate refundable credit tracking
 - July 2, 2025. Fixed Line 44000 field label: corrected from "Investment Tax Credit" to "Quebec Abatement" across ExtractedDataDisplay, T1FieldEditDialog, and TaxReport components for accurate Canadian tax form terminology
 - July 2, 2025. Added Refundable Medical Expense Supplement (Line 45200): included new field in refundable credits section across T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for refundable medical expense supplement tracking
+- July 2, 2025. Fixed Canada Workers Benefit line number: corrected from Line 45600 to Line 45300 across ExtractedDataDisplay, T1FieldEditDialog, TaxReport, and PDF parser mapping for accurate Canadian tax form line number referencing
 ```
 
 ## User Preferences
