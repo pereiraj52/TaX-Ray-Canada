@@ -3228,60 +3228,120 @@ export default function TaxReport() {
                           );
                         })}
                         
-                        {/* Total Credits Summary */}
-                        <div className="pt-4 border-t-2 border-primary space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="font-semibold text-primary">
-                              Federal Non-Refundable Credits
-                            </span>
-                            <span className="font-semibold text-primary text-lg">
-                              {formatCurrency(credits.slice(0, 4).reduce((total, category) => {
-                                return total + category.items.reduce((sum, item) => {
-                                  return sum + getFieldValue(item.line);
-                                }, 0);
-                              }, 0))}
-                            </span>
-                          </div>
-                          
-                          <div className="flex justify-between items-center">
-                            <span className="font-semibold text-primary">
-                              Total Refundable Credits
-                            </span>
-                            <span className="font-semibold text-primary text-lg">
-                              {formatCurrency(credits.slice(5, 6).reduce((total, category) => {
-                                return total + category.items.reduce((sum, item) => {
-                                  return sum + getFieldValue(item.line);
-                                }, 0);
-                              }, 0))}
-                            </span>
-                          </div>
-                          
-                          {/* Estimated Tax Reduction */}
-                          <div className="flex justify-between items-center">
-                            <span className="font-semibold text-primary">
-                              Estimated Tax Reduction
-                            </span>
-                            <span className="font-semibold text-primary text-lg">
-                              {(() => {
-                                // Calculate estimated tax reduction from non-refundable credits
-                                const nonRefundableCredits = credits.slice(0, 4).reduce((total, category) => {
+                        {/* Credits Summary - Split Federal and Provincial */}
+                        <div className="pt-4 border-t-2 border-primary space-y-6">
+                          {/* Federal Tax Credits Section */}
+                          <div className="space-y-3">
+                            <h4 className="font-medium text-gray-900 text-base">Federal Tax Credits</h4>
+                            
+                            <div className="flex justify-between items-center">
+                              <span className="font-semibold text-primary">
+                                Federal Non-Refundable Credits
+                              </span>
+                              <span className="font-semibold text-primary text-lg">
+                                {formatCurrency(credits.slice(0, 6).reduce((total, category) => {
                                   return total + category.items.reduce((sum, item) => {
                                     return sum + getFieldValue(item.line);
                                   }, 0);
-                                }, 0);
-                                
-                                // Apply federal basic rate (15%) to non-refundable credits
-                                const federalReduction = nonRefundableCredits * 0.15;
-                                // Apply provincial basic rate (5.05% for Ontario) to provincial credits
-                                const provincialCredits = credits[4].items.reduce((sum, item) => {
-                                  return sum + getFieldValue(item.line);
-                                }, 0);
-                                const provincialReduction = provincialCredits * 0.0505;
-                                
-                                return formatCurrency(federalReduction + provincialReduction);
-                              })()}
-                            </span>
+                                }, 0))}
+                              </span>
+                            </div>
+                            
+                            <div className="flex justify-between items-center">
+                              <span className="font-semibold text-primary">
+                                Federal Refundable Credits
+                              </span>
+                              <span className="font-semibold text-primary text-lg">
+                                {formatCurrency(credits.slice(7, 8).reduce((total, category) => {
+                                  return total + category.items.reduce((sum, item) => {
+                                    return sum + getFieldValue(item.line);
+                                  }, 0);
+                                }, 0))}
+                              </span>
+                            </div>
+                            
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium text-primary text-sm">
+                                Federal Tax Reduction
+                              </span>
+                              <span className="font-medium text-primary">
+                                {(() => {
+                                  // Calculate federal tax reduction from non-refundable credits
+                                  const federalNonRefundableCredits = credits.slice(0, 6).reduce((total, category) => {
+                                    return total + category.items.reduce((sum, item) => {
+                                      return sum + getFieldValue(item.line);
+                                    }, 0);
+                                  }, 0);
+                                  
+                                  // Apply federal basic rate (15%) to federal non-refundable credits
+                                  const federalReduction = federalNonRefundableCredits * 0.15;
+                                  
+                                  return formatCurrency(federalReduction);
+                                })()}
+                              </span>
+                            </div>
                           </div>
+                          
+                          {/* Provincial Tax Credits Section */}
+                          {(() => {
+                            const provinceField = spouse.formFields.find(f => f.fieldCode === 'province');
+                            const province = provinceField?.fieldValue;
+                            if (province === 'ON') {
+                              return (
+                                <div className="space-y-3">
+                                  <h4 className="font-medium text-gray-900 text-base">Provincial Tax Credits (Ontario)</h4>
+                                  
+                                  <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-primary">
+                                      Ontario Non-Refundable Credits
+                                    </span>
+                                    <span className="font-semibold text-primary text-lg">
+                                      {formatCurrency(credits.slice(6, 7).reduce((total, category) => {
+                                        return total + category.items.reduce((sum, item) => {
+                                          return sum + getFieldValue(item.line);
+                                        }, 0);
+                                      }, 0))}
+                                    </span>
+                                  </div>
+                                  
+                                  <div className="flex justify-between items-center">
+                                    <span className="font-semibold text-primary">
+                                      Ontario Refundable Credits
+                                    </span>
+                                    <span className="font-semibold text-primary text-lg">
+                                      {formatCurrency(credits.slice(8).reduce((total, category) => {
+                                        return total + category.items.reduce((sum, item) => {
+                                          return sum + getFieldValue(item.line);
+                                        }, 0);
+                                      }, 0))}
+                                    </span>
+                                  </div>
+                                  
+                                  <div className="flex justify-between items-center">
+                                    <span className="font-medium text-primary text-sm">
+                                      Provincial Tax Reduction
+                                    </span>
+                                    <span className="font-medium text-primary">
+                                      {(() => {
+                                        // Calculate provincial tax reduction from Ontario non-refundable credits
+                                        const provincialNonRefundableCredits = credits.slice(6, 7).reduce((total, category) => {
+                                          return total + category.items.reduce((sum, item) => {
+                                            return sum + getFieldValue(item.line);
+                                          }, 0);
+                                        }, 0);
+                                        
+                                        // Apply Ontario basic rate (5.05%) to provincial non-refundable credits
+                                        const provincialReduction = provincialNonRefundableCredits * 0.0505;
+                                        
+                                        return formatCurrency(provincialReduction);
+                                      })()}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          })()}
                         </div>
                       </div>
                     </CardContent>

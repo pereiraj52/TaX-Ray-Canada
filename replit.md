@@ -447,6 +447,7 @@ Changelog:
 - July 2, 2025. Extended marginal tax bracket highlighting to Federal and Provincial Tax Bracket Analysis: added same thin border outline (#D4B26A) around current marginal tax bracket in all three tax bracket analysis sections for consistent visual identification across Combined, Federal, and Provincial tax bracket tables
 - July 2, 2025. Fixed taxable income indicator positioning in Provincial Tax Bracket Visualization: corrected hardcoded 220000 threshold to use proper maxScale (300000) calculation and updated bracket highlighting logic to accurately position income indicator line based on actual taxable income relative to chart scale
 - July 2, 2025. Fixed Tax Deductions Analysis estimated tax savings calculation: replaced hardcoded 43.41% marginal rate with dynamic calculation using authentic 2024 Combined Ontario tax brackets, now applies person-specific marginal tax rate based on actual taxable income level for accurate tax savings estimates
+- July 2, 2025. Separated Tax Credits Analysis summaries into Federal Tax Credits and Provincial Tax Credits sections: created distinct sections for federal non-refundable/refundable credits with 15% tax reduction calculation and Ontario non-refundable/refundable credits with 5.05% tax reduction calculation, with province-conditional display for Ontario residents
 ```
 
 ## User Preferences
