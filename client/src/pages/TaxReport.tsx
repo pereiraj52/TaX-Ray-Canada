@@ -3785,7 +3785,7 @@ export default function TaxReport() {
                   <CardContent className="p-6">
                     <div className="space-y-6">
                       {/* Card Title */}
-                      <h3 className="font-medium text-gray-900 mb-6">Family Benefit - Clawback Analysis</h3>
+                      <h3 className="font-medium text-gray-900 mb-6">Family Benefits - Clawback Analysis</h3>
                       
                       {/* Canada Child Benefit Clawback Sub-Category */}
                       <div className="space-y-4">
