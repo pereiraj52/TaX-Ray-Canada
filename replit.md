@@ -443,6 +443,7 @@ Changelog:
 - July 2, 2025. Removed Effective Marginal rate from tax rates section: eliminated third KPI block showing effective marginal rate including clawbacks, updated grid layout from 3 to 2 columns displaying only Average Rate and Marginal Rate for cleaner tax rate analysis
 - July 2, 2025. Fixed Tax Rates summary marginal rate calculation: updated marginal rate brackets to match Combined Tax Bracket Analysis using authentic 2024 Ontario rates with surtax (20.05%-53.53%), ensuring consistency between Tax Rates summary and Combined Tax Bracket Analysis sections
 - July 2, 2025. Fixed Tax Rates summary average rate calculation: changed from simple Total Tax / Total Income to use same calculation as "You Paid" percentage in Financial Summary (includes federal tax, provincial tax, CPP contributions, and EI premiums), updated description from "Total Tax / Total Income" to "You Paid %" for accuracy
+- July 2, 2025. Added marginal tax bracket highlighting in Combined Tax Bracket Analysis: implemented thin border outline (#D4B26A) around client's current marginal tax bracket row for visual identification of active tax tier
 ```
 
 ## User Preferences
