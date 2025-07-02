@@ -3927,7 +3927,7 @@ export default function TaxReport() {
                           {/* Left 1/3 - CCB Details */}
                           <div className="space-y-3">
                             {benefitInfo.map((info, index) => (
-                              <div key={index} className="text-sm">
+                              <div key={index} className="flex justify-between text-sm">
                                 <div className="text-gray-700">{info.name}</div>
                                 <div className="font-medium text-gray-700">
                                   {formatValue(info.value, info.format)}
