@@ -437,6 +437,7 @@ Changelog:
 - July 2, 2025. Added automatic page refresh when T1 extraction processing completes: modified ProcessingStatus component to automatically reload the page 1 second after T1 data extraction finishes successfully, ensuring users see the latest extracted data without manual refresh
 - July 2, 2025. Fixed credits section initialization to ensure all subcategories start collapsed: added 'ontario-refundable-credits' to the collapsedSections state initialization, ensuring all credit subsections including Ontario Refundable Credits start collapsed when opening the Credits tab
 - July 2, 2025. Fixed Tax Credits calculation in household financial summary: corrected calculation to sum both line 35000 (federal non-refundable tax credits) and line 61500 (Ontario non-refundable tax credits) for accurate total tax credits display in household tax reports
+- July 2, 2025. Fixed Tax Credits calculation in individual financial summaries: corrected individual client Tax Credits calculation to sum both line 35000 (federal non-refundable tax credits) and line 61500 (Ontario non-refundable tax credits) for accurate individual tax credit totals, resolving issue where individual summaries showed only federal credits while household totals were correct
 ```
 
 ## User Preferences

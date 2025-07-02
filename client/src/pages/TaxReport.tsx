@@ -710,6 +710,14 @@ export default function TaxReport() {
                           totalTax = taxField?.fieldValue ? parseFloat(String(taxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           taxPaid = taxPaidField?.fieldValue ? parseFloat(String(taxPaidField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           totalCredits = creditsField?.fieldValue ? parseFloat(String(creditsField.fieldValue).replace(/[,$\s]/g, '')) : 0;
+                          
+                          // Also add Ontario non-refundable tax credits (Line 61500) if available
+                          const ontarioCreditsField = t1WithFields.formFields.find((field: any) => field.fieldCode === '61500');
+                          if (ontarioCreditsField?.fieldValue) {
+                            const ontarioCredits = parseFloat(String(ontarioCreditsField.fieldValue).replace(/[,$\s]/g, ''));
+                            if (!isNaN(ontarioCredits)) totalCredits += ontarioCredits;
+                          }
+                          
                           federalTax = federalTaxField?.fieldValue ? parseFloat(String(federalTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           provincialTax = provincialTaxField?.fieldValue ? parseFloat(String(provincialTaxField.fieldValue).replace(/[,$\s]/g, '')) : 0;
                           cppContributions = cppField?.fieldValue ? parseFloat(String(cppField.fieldValue).replace(/[,$\s]/g, '')) : 0;
