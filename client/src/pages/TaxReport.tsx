@@ -725,8 +725,8 @@ export default function TaxReport() {
                         }
                         
                         const totalDeductions = totalIncome - totalTaxableIncome;
-                        // Use the same calculation method as Summary tab: Total Income - Total Tax (field 43700)
-                        const netIncome = totalIncome - taxPaid;
+                        // Calculate net income using financial summary values: Income - Federal Tax - Provincial Tax - CPP - EI
+                        const netIncome = totalIncome - federalTax - provincialTax - cppContributions - eiPremiums;
                         
                         const calculatePercentage = (amount: number) => {
                           if (totalIncome === 0) return '0.0%';

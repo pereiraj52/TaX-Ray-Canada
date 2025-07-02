@@ -438,6 +438,7 @@ Changelog:
 - July 2, 2025. Fixed credits section initialization to ensure all subcategories start collapsed: added 'ontario-refundable-credits' to the collapsedSections state initialization, ensuring all credit subsections including Ontario Refundable Credits start collapsed when opening the Credits tab
 - July 2, 2025. Fixed Tax Credits calculation in household financial summary: corrected calculation to sum both line 35000 (federal non-refundable tax credits) and line 61500 (Ontario non-refundable tax credits) for accurate total tax credits display in household tax reports
 - July 2, 2025. Fixed Tax Credits calculation in individual financial summaries: corrected individual client Tax Credits calculation to sum both line 35000 (federal non-refundable tax credits) and line 61500 (Ontario non-refundable tax credits) for accurate individual tax credit totals, resolving issue where individual summaries showed only federal credits while household totals were correct
+- July 2, 2025. Updated Net Income calculation in individual financial summaries: changed from simplified formula (Total Income - Total Tax) to detailed breakdown (Total Income - Federal Tax - Provincial Tax - CPP Contributions - EI Premiums) for accurate take-home income calculation using actual financial summary values
 ```
 
 ## User Preferences
