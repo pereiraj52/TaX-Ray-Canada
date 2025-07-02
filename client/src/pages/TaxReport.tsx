@@ -4185,7 +4185,7 @@ export default function TaxReport() {
                                         {/* CWB Clawback Bar Chart */}
                                         <div className="w-2/3 ml-4">
                                           <div className="relative">
-                                            <div className="w-full" style={{ height: '32px' }}>
+                                            <div className="w-full" style={{ height: '36px' }}>
                                               <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
                                                 {/* Progress fill */}
                                                 <div 
@@ -4197,7 +4197,7 @@ export default function TaxReport() {
                                                 />
                                                 {/* Clawback percentage overlay */}
                                                 <div 
-                                                  className="absolute inset-0 flex items-center justify-center font-medium text-sm"
+                                                  className="absolute inset-0 flex items-center justify-center text-lg"
                                                   style={{ color: '#111111' }}
                                                 >
                                                   Clawback: {clawbackPercentage.toFixed(1)}%
@@ -4234,7 +4234,7 @@ export default function TaxReport() {
                                       {/* Bar chart for each benefit */}
                                       <div className="w-2/3 ml-4">
                                         <div className="relative">
-                                          <div className="w-full" style={{ height: '32px' }}>
+                                          <div className="w-full" style={{ height: '36px' }}>
                                             <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
                                               {/* Progress fill */}
                                               <div 
@@ -4246,7 +4246,7 @@ export default function TaxReport() {
                                               />
                                               {/* Status overlay */}
                                               <div 
-                                                className="absolute inset-0 flex items-center justify-center font-medium text-sm"
+                                                className="absolute inset-0 flex items-center justify-center text-lg"
                                                 style={{ color: '#111111' }}
                                               >
                                                 {hasAmount ? `Received: ${formatCurrency(amount)}` : 'Not Received'}
