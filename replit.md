@@ -444,6 +444,7 @@ Changelog:
 - July 2, 2025. Fixed Tax Rates summary marginal rate calculation: updated marginal rate brackets to match Combined Tax Bracket Analysis using authentic 2024 Ontario rates with surtax (20.05%-53.53%), ensuring consistency between Tax Rates summary and Combined Tax Bracket Analysis sections
 - July 2, 2025. Fixed Tax Rates summary average rate calculation: changed from simple Total Tax / Total Income to use same calculation as "You Paid" percentage in Financial Summary (includes federal tax, provincial tax, CPP contributions, and EI premiums), updated description from "Total Tax / Total Income" to "You Paid %" for accuracy
 - July 2, 2025. Added marginal tax bracket highlighting in Combined Tax Bracket Analysis: implemented thin border outline (#D4B26A) around client's current marginal tax bracket row for visual identification of active tax tier
+- July 2, 2025. Extended marginal tax bracket highlighting to Federal and Provincial Tax Bracket Analysis: added same thin border outline (#D4B26A) around current marginal tax bracket in all three tax bracket analysis sections for consistent visual identification across Combined, Federal, and Provincial tax bracket tables
 ```
 
 ## User Preferences

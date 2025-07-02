@@ -2201,18 +2201,35 @@ export default function TaxReport() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {adjustedFederalBracketBreakdown.map((bracket, index) => (
-                                    <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
-                                      <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
-                                      <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
-                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
-                                        ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                      </td>
-                                      <td className="py-2 px-2 text-right text-gray-700 text-xs">
-                                        ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                      </td>
-                                    </tr>
-                                  ))}
+                                  {adjustedFederalBracketBreakdown.map((bracket, index) => {
+                                    // Check if this is the current marginal tax bracket
+                                    const isCurrentBracket = bracket.incomeInBracket > 0 && 
+                                      index === adjustedFederalBracketBreakdown.findIndex((b, i) => 
+                                        b.incomeInBracket > 0 && 
+                                        (i === adjustedFederalBracketBreakdown.length - 1 || 
+                                         adjustedFederalBracketBreakdown[i + 1].incomeInBracket === 0)
+                                      );
+                                    
+                                    return (
+                                      <tr 
+                                        key={index} 
+                                        className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}
+                                        style={isCurrentBracket ? { 
+                                          border: '2px solid #D4B26A',
+                                          borderRadius: '4px'
+                                        } : {}}
+                                      >
+                                        <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                        <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                        <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                          ${bracket.incomeInBracket.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                        </td>
+                                        <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                          ${bracket.tax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
                                   <tr className="border-b-2 border-gray-800 font-semibold bg-gray-100">
                                     <td className="py-2 px-2">Total</td>
                                     <td className="py-2 px-2"></td>
@@ -2520,18 +2537,35 @@ export default function TaxReport() {
 
                                       return (
                                         <>
-                                          {adjustedProvincialBracketBreakdown.map((bracket, index) => (
-                                            <tr key={index} className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}>
-                                              <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
-                                              <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
-                                              <td className="py-2 px-2 text-right text-gray-700 text-xs">
-                                                ${bracket.incomeInBracket.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                              </td>
-                                              <td className="py-2 px-2 text-right text-gray-700 text-xs">
-                                                ${bracket.tax.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                                              </td>
-                                            </tr>
-                                          ))}
+                                          {adjustedProvincialBracketBreakdown.map((bracket, index) => {
+                                            // Check if this is the current marginal tax bracket
+                                            const isCurrentBracket = bracket.incomeInBracket > 0 && 
+                                              index === adjustedProvincialBracketBreakdown.findIndex((b, i) => 
+                                                b.incomeInBracket > 0 && 
+                                                (i === adjustedProvincialBracketBreakdown.length - 1 || 
+                                                 adjustedProvincialBracketBreakdown[i + 1].incomeInBracket === 0)
+                                              );
+                                            
+                                            return (
+                                              <tr 
+                                                key={index} 
+                                                className={`border-b ${bracket.incomeInBracket > 0 ? 'bg-accent/20' : ''}`}
+                                                style={isCurrentBracket ? { 
+                                                  border: '2px solid #D4B26A',
+                                                  borderRadius: '4px'
+                                                } : {}}
+                                              >
+                                                <td className="py-2 px-2 font-medium text-primary">{bracket.rate}</td>
+                                                <td className="py-2 px-2 text-gray-700 text-xs">{bracket.threshold}</td>
+                                                <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                                  ${bracket.incomeInBracket.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                </td>
+                                                <td className="py-2 px-2 text-right text-gray-700 text-xs">
+                                                  ${bracket.tax.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                </td>
+                                              </tr>
+                                            );
+                                          })}
                                           <tr className="border-t-2 border-black font-bold">
                                             <td className="py-2 px-2 text-gray-900">Total</td>
                                             <td className="py-2 px-2 text-gray-900"></td>
