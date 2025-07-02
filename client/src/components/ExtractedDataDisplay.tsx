@@ -1913,11 +1913,10 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="text-center">
-                    <div className="font-semibold text-blue-800 mb-2">Total Non-Refundable</div>
+                    <div className="font-semibold text-blue-800 mb-2">Federal Non-Refundable</div>
                     <div className="text-xl font-bold text-blue-600">
                       {formatCurrency(getTotalCredits())}
                     </div>
-                    <div className="text-sm text-blue-700 mt-1">Calculated from federal categories</div>
                   </div>
                   <div className="text-center">
                     <div className="font-semibold text-blue-800 mb-2">Ontario Tax Credits</div>

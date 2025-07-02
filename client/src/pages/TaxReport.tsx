@@ -3102,7 +3102,7 @@ export default function TaxReport() {
                         <div className="pt-4 border-t-2 border-primary space-y-3">
                           <div className="flex justify-between items-center">
                             <span className="font-semibold text-primary">
-                              Total Non-Refundable Credits
+                              Federal Non-Refundable Credits
                             </span>
                             <span className="font-semibold text-primary text-lg">
                               {formatCurrency(credits.slice(0, 4).reduce((total, category) => {

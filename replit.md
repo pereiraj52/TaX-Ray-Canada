@@ -418,6 +418,7 @@ Changelog:
 - July 2, 2025. Fixed Line 45700 field label: corrected from "Teacher and Early Childhood Educator School Supply Tax Credit" to "Employee & Partner GST/HST Rebate" across ExtractedDataDisplay, T1FieldEditDialog, TaxReport, and PDF parser mapping for accurate Canadian tax form terminology
 - July 2, 2025. Added Eligible Educator School Supply Tax Credit (Line 46900) to Refundable Credits section: included field in T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for educator school supply tax credit tracking
 - July 2, 2025. Added Canadian Journalism Labour Tax Credit (Line 47555) and Return of Fuel Charge Proceeds to Farmers (Line 47556) to Refundable Credits section: included both fields in T1 extraction display, Tax Credits Analysis, T1FieldEditDialog, and PDF parser mapping with comprehensive field coverage for specialized refundable credit tracking
+- July 2, 2025. Updated credits summary terminology: changed "Total Non-Refundable" to "Federal Non-Refundable" in both T1 extraction display and Tax Credits Analysis sections, removed "Calculated from federal categories" descriptive text for cleaner interface
 ```
 
 ## User Preferences
