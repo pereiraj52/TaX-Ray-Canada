@@ -920,305 +920,193 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             
             <div className="space-y-6">
               {/* Employment Income Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('employment')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections.employment ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Employment Income</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['10100', '10105', '10120', '10130', '10400']))}
-                  </span>
-                </button>
-                {!collapsedSections.employment && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Employment Income <span style={{ color: '#A3A3A3' }}>(Line 10100)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('10100'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Tax-Exempt Emergency Volunteer <span style={{ color: '#A3A3A3' }}>(Line 10105)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('10105'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Commissions Included <span style={{ color: '#A3A3A3' }}>(Line 10120)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('10120'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Wage Loss Replacement <span style={{ color: '#A3A3A3' }}>(Line 10130)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('10130'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Other Employment Income <span style={{ color: '#A3A3A3' }}>(Line 10400)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('10400'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="employment"
+                title="Employment Income"
+                fieldCodes={['10100', '10105', '10120', '10130', '10400']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Employment Income <span style={{ color: '#A3A3A3' }}>(Line 10100)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Tax-Exempt Emergency Volunteer <span style={{ color: '#A3A3A3' }}>(Line 10105)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10105'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Commissions Included <span style={{ color: '#A3A3A3' }}>(Line 10120)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10120'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Wage Loss Replacement <span style={{ color: '#A3A3A3' }}>(Line 10130)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10130'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Employment Income <span style={{ color: '#A3A3A3' }}>(Line 10400)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('10400'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Pension & Retirement Income Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('pension')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections.pension ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Pension Income</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['11300', '11400', '11500', '11600']))}
-                  </span>
-                </button>
-                {!collapsedSections.pension && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Old Age Security <span style={{ color: '#A3A3A3' }}>(Line 11300)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11300'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">CPP/QPP Benefits <span style={{ color: '#A3A3A3' }}>(Line 11400)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Other Pensions <span style={{ color: '#A3A3A3' }}>(Line 11500)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11500'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Split Pension Amount <span style={{ color: '#A3A3A3' }}>(Line 11600)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="pension"
+                title="Pension Income"
+                fieldCodes={['11300', '11400', '11500', '11600']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Old Age Security <span style={{ color: '#A3A3A3' }}>(Line 11300)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11300'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">CPP/QPP Benefits <span style={{ color: '#A3A3A3' }}>(Line 11400)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Pensions <span style={{ color: '#A3A3A3' }}>(Line 11500)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Split Pension Amount <span style={{ color: '#A3A3A3' }}>(Line 11600)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Government Benefits Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('government')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections.government ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Government Benefits</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['11700', '11900', '11905']))}
-                  </span>
-                </button>
-                {!collapsedSections.government && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Universal Child Care Benefit <span style={{ color: '#A3A3A3' }}>(Line 11700)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Employment Insurance <span style={{ color: '#A3A3A3' }}>(Line 11900)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11900'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">EI Maternity/Parental <span style={{ color: '#A3A3A3' }}>(Line 11905)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('11905'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="government"
+                title="Government Benefits"
+                fieldCodes={['11700', '11900', '11905']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Universal Child Care Benefit <span style={{ color: '#A3A3A3' }}>(Line 11700)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Employment Insurance <span style={{ color: '#A3A3A3' }}>(Line 11900)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">EI Maternity/Parental <span style={{ color: '#A3A3A3' }}>(Line 11905)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('11905'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Investment Income Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('investment')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections.investment ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Investment Income</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12000', '12010', '12100', '12200', '12400', '12600', '12700']))}
-                  </span>
-                </button>
-                {!collapsedSections.investment && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Taxable Dividends - Eligible <span style={{ color: '#A3A3A3' }}>(Line 12000)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12000'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Non-Eligible Dividends <span style={{ color: '#A3A3A3' }}>(Line 12010)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12010'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Interest and Investment Income <span style={{ color: '#A3A3A3' }}>(Line 12100)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12100'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Partnership Income <span style={{ color: '#A3A3A3' }}>(Line 12200)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12200'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Foreign Dividends <span style={{ color: '#A3A3A3' }}>(Line 12400)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Rental Income <span style={{ color: '#A3A3A3' }}>(Line 12600)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Capital Gains <span style={{ color: '#A3A3A3' }}>(Line 12700)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="investment"
+                title="Investment Income"
+                fieldCodes={['12000', '12010', '12100', '12200', '12400', '12600', '12700']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Taxable Dividends - Eligible <span style={{ color: '#A3A3A3' }}>(Line 12000)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Non-Eligible Dividends <span style={{ color: '#A3A3A3' }}>(Line 12010)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12010'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Interest and Investment Income <span style={{ color: '#A3A3A3' }}>(Line 12100)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Partnership Income <span style={{ color: '#A3A3A3' }}>(Line 12200)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Foreign Dividends <span style={{ color: '#A3A3A3' }}>(Line 12400)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Rental Income <span style={{ color: '#A3A3A3' }}>(Line 12600)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Capital Gains <span style={{ color: '#A3A3A3' }}>(Line 12700)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Registered Account Income Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('registered-account')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['registered-account'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Registered Account Income</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['12500', '12900', '12905', '12906']))}
-                  </span>
-                </button>
-                {!collapsedSections['registered-account'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">RDSP Income <span style={{ color: '#A3A3A3' }}>(Line 12500)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">RRSP Income <span style={{ color: '#A3A3A3' }}>(Line 12900)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">FHSA Income <span style={{ color: '#A3A3A3' }}>(Line 12905)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">FHSA Income - Other <span style={{ color: '#A3A3A3' }}>(Line 12906)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="registered-account"
+                title="Registered Account Income"
+                fieldCodes={['12500', '12900', '12905', '12906']}
+              >
+                <div className="field-row">
+                  <span className="field-label">RDSP Income <span style={{ color: '#A3A3A3' }}>(Line 12500)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">RRSP Income <span style={{ color: '#A3A3A3' }}>(Line 12900)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">FHSA Income <span style={{ color: '#A3A3A3' }}>(Line 12905)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">FHSA Income - Other <span style={{ color: '#A3A3A3' }}>(Line 12906)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
+                </div>
+              </CollapsibleSection>
 
 
               {/* Self-Employment Income Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('selfemployment')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections.selfemployment ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Self-Employment Income</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['13500', '13700', '13900', '14100', '14300']))}
-                  </span>
-                </button>
-                {!collapsedSections.selfemployment && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Business Income <span style={{ color: '#A3A3A3' }}>(Line 13500)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Professional Income <span style={{ color: '#A3A3A3' }}>(Line 13700)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13700'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Commission Income <span style={{ color: '#A3A3A3' }}>(Line 13900)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13900'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Farming Income <span style={{ color: '#A3A3A3' }}>(Line 14100)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('14100'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Fishing Income <span style={{ color: '#A3A3A3' }}>(Line 14300)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('14300'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="selfemployment"
+                title="Self-Employment Income"
+                fieldCodes={['13500', '13700', '13900', '14100', '14300']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Business Income <span style={{ color: '#A3A3A3' }}>(Line 13500)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Professional Income <span style={{ color: '#A3A3A3' }}>(Line 13700)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13700'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Commission Income <span style={{ color: '#A3A3A3' }}>(Line 13900)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Farming Income <span style={{ color: '#A3A3A3' }}>(Line 14100)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Fishing Income <span style={{ color: '#A3A3A3' }}>(Line 14300)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14300'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Other Sources Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('othersources')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections.othersources ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Other Sources</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['13000', '13010', '14400', '14500', '14600']))}
-                  </span>
-                </button>
-                {!collapsedSections.othersources && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Other Income <span style={{ color: '#A3A3A3' }}>(Line 13000)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Scholarships <span style={{ color: '#A3A3A3' }}>(Line 13010)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Workers' Compensation <span style={{ color: '#A3A3A3' }}>(Line 14400)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Social Assistance <span style={{ color: '#A3A3A3' }}>(Line 14500)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('14500'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Net Federal Supplements <span style={{ color: '#A3A3A3' }}>(Line 14600)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('14600'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="othersources"
+                title="Other Sources"
+                fieldCodes={['13000', '13010', '14400', '14500', '14600']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Other Income <span style={{ color: '#A3A3A3' }}>(Line 13000)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Scholarships <span style={{ color: '#A3A3A3' }}>(Line 13010)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Workers' Compensation <span style={{ color: '#A3A3A3' }}>(Line 14400)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Social Assistance <span style={{ color: '#A3A3A3' }}>(Line 14500)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Net Federal Supplements <span style={{ color: '#A3A3A3' }}>(Line 14600)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('14600'))}</span>
+                </div>
+              </CollapsibleSection>
               
               {/* Total Income Summary */}
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
@@ -1402,101 +1290,68 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             
             <div className="space-y-4">
               {/* Basic Credits Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('basic-credits')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['basic-credits'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Basic Credits (Non-Refundable)</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['30000', '30100', '30300', '30400', '30450']))}
-                  </span>
-                </button>
-                {!collapsedSections['basic-credits'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">Basic Personal Amount <span style={{ color: '#A3A3A3' }}>(Line 30000)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Age Amount <span style={{ color: '#A3A3A3' }}>(Line 30100)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('30100'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Spouse Amount <span style={{ color: '#A3A3A3' }}>(Line 30300)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Eligible Dependant <span style={{ color: '#A3A3A3' }}>(Line 30400)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('30400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Canada Caregiver <span style={{ color: '#A3A3A3' }}>(Line 30450)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="basic-credits"
+                title="Basic Credits (Non-Refundable)"
+                fieldCodes={['30000', '30100', '30300', '30400', '30450']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Basic Personal Amount <span style={{ color: '#A3A3A3' }}>(Line 30000)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Age Amount <span style={{ color: '#A3A3A3' }}>(Line 30100)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30100'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Spouse Amount <span style={{ color: '#A3A3A3' }}>(Line 30300)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Eligible Dependant <span style={{ color: '#A3A3A3' }}>(Line 30400)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Canada Caregiver <span style={{ color: '#A3A3A3' }}>(Line 30450)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Employment Credits Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('employment-credits')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['employment-credits'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Employment Credits (Non-Refundable)</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['30800', '31000', '31200', '31217', '31220', '31230', '31240']))}
-                  </span>
-                </button>
-                {!collapsedSections['employment-credits'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
-                    <div className="field-row">
-                      <span className="field-label">CPP/QPP Contributions <span style={{ color: '#A3A3A3' }}>(Line 30800)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">CPP/QPP (Self Employed) Contributions (Line 31000):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('31000'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Employment Insurance Premiums <span style={{ color: '#A3A3A3' }}>(Line 31200)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Employment Insurance (Self Employed) Premiums (Line 31217):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('31217'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Canada Employment Amount <span style={{ color: '#A3A3A3' }}>(Line 31220)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Volunteer firefighters' amount (VFA) (Line 31230):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('31230'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Search and rescue volunteers' amount (SRVA) (Line 31240):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('31240'))}</span>
-                    </div>
-
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="employment-credits"
+                title="Employment Credits (Non-Refundable)"
+                fieldCodes={['30800', '31000', '31200', '31217', '31220', '31230', '31240']}
+              >
+                <div className="field-row">
+                  <span className="field-label">CPP/QPP Contributions <span style={{ color: '#A3A3A3' }}>(Line 30800)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">CPP/QPP (Self Employed) Contributions <span style={{ color: '#A3A3A3' }}>(Line 31000)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Employment Insurance Premiums <span style={{ color: '#A3A3A3' }}>(Line 31200)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Employment Insurance (Self Employed) Premiums <span style={{ color: '#A3A3A3' }}>(Line 31217)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31217'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Canada Employment Amount <span style={{ color: '#A3A3A3' }}>(Line 31220)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Volunteer firefighters' amount (VFA) <span style={{ color: '#A3A3A3' }}>(Line 31230)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31230'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Search and rescue volunteers' amount (SRVA) <span style={{ color: '#A3A3A3' }}>(Line 31240)</span>:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('31240'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Personal Situation Credits Section */}
               <div className="border border-gray-200 rounded-lg">
