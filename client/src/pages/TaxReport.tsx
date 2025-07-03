@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight } from "lucide-react";
+import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight, HelpCircle } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -221,6 +221,109 @@ export default function TaxReport() {
       }
     }
     return 'ON'; // Default to Ontario
+  };
+
+  // Tooltip mapping function for tax line numbers
+  const getTooltipText = (lineNumber: string) => {
+    const tooltips: { [key: string]: string } = {
+      // Deductions
+      '20700': 'Registered Pension Plan (RPP) contributions deducted from your employment income',
+      '20800': 'Registered Retirement Savings Plan (RRSP) contributions for tax deduction',
+      '20805': 'First Home Savings Account (FHSA) contributions for tax deduction',
+      '20810': 'Pooled Registered Pension Plan (PRPP) contributions',
+      '20820': 'Specified Pension Plan (SPP) contributions',
+      '20900': 'Pooled fund deduction for retirement savings',
+      '21000': 'Split pension deduction with your spouse or partner',
+      '21200': 'Annual union, professional, or like dues',
+      '21300': 'Universal Child Care Benefit (UCCB) repayment',
+      '21400': 'Child care expenses for working parents',
+      '21500': 'Disability supports deduction for work-related expenses',
+      '21700': 'Business investment loss deduction',
+      '21900': 'Moving expenses for work or business relocation',
+      '22000': 'Support payments allowable as tax deduction',
+      '22100': 'Carrying charges and interest expenses on investments',
+      '22200': 'Canada Pension Plan (CPP) or Quebec Pension Plan (QPP) contributions for self-employed',
+      '22215': 'Enhanced Canada Pension Plan (CPP) or Quebec Pension Plan (QPP) deduction',
+      '22400': 'Exploration and development expenses',
+      '22900': 'Other employment expenses',
+      '23100': 'Clergy residence deduction',
+      '23200': 'Other deductions not listed elsewhere',
+      '23500': 'Social benefits repayment',
+      
+      // Credits
+      '30000': 'Basic personal amount - non-refundable tax credit available to all taxpayers',
+      '30100': 'Age amount if you are 65 or older at year-end',
+      '30300': 'Spouse or common-law partner amount',
+      '30400': 'Amount for an eligible dependant',
+      '30425': 'Canada caregiver amount for spouse, partner, or eligible dependants',
+      '30450': 'Canada caregiver amount for spouse, partner, or adult children',
+      '30500': 'Canada caregiver amount for children under 18',
+      '31000': 'Canada Pension Plan (CPP) or Quebec Pension Plan (QPP) contributions',
+      '31200': 'Employment Insurance (EI) premiums',
+      '31217': 'Employment Insurance (EI) premiums for self-employed',
+      '31220': 'Volunteer firefighters amount',
+      '31230': 'Volunteer firefighters amount (VFA)',
+      '31240': 'Search and rescue volunteers amount (SRVA)',
+      '31270': 'Home buyers amount for first-time home buyers',
+      '31285': 'Home accessibility expenses for seniors and persons with disabilities',
+      '31300': 'Adoption expenses',
+      '31350': 'Digital news subscription credit',
+      '31400': 'Pension income amount for eligible pension income',
+      '31900': 'Interest paid on student loans',
+      '32300': 'Tuition and education amounts',
+      '32400': 'Tuition amounts transferred from a child',
+      '32600': 'Amounts transferred from your spouse or partner',
+      '33099': 'Medical expenses for you, your spouse, and dependants',
+      '33200': 'Net eligible medical expenses after applying the threshold',
+      '34000': 'Allowable charitable donations',
+      '34200': 'Total ecological gifts',
+      '34900': 'Donation and gift credits',
+      
+      // Provincial Credits (Ontario)
+      '58080': 'Ontario basic personal amount',
+      '58120': 'Ontario age amount',
+      '58160': 'Ontario spouse or common-law partner amount',
+      '58200': 'Ontario amount for an eligible dependant',
+      '58240': 'Ontario caregiver amount',
+      '58480': 'Ontario health premium',
+      '58760': 'Ontario tuition and education amounts',
+      '58769': 'Ontario medical expenses',
+      '58969': 'Ontario donations and gifts',
+      
+      // Refundable Credits
+      '44000': 'Quebec abatement for residents of Quebec',
+      '44800': 'Canada Pension Plan (CPP) overpayment',
+      '45000': 'Employment Insurance (EI) overpayment',
+      '45200': 'Refundable medical expense supplement',
+      '45300': 'Canada workers benefit',
+      '45350': 'Canada training credit',
+      '45355': 'Multigenerational home renovation tax credit',
+      '45400': 'Refund of investment tax',
+      '45600': 'Part XII.2 tax credit',
+      '45700': 'Employee and partner GST/HST rebate',
+      '46900': 'Eligible educator school supply tax credit',
+      '47555': 'Canadian journalism labour tax credit',
+      '47556': 'Return of fuel charge proceeds to farmers',
+      
+      // Additional Provincial Credits (Ontario)
+      '63095': 'Ontario seniors care at home credit',
+      '63100': 'Ontario seniors public transit credit',
+      '63110': 'Ontario political contribution credit',
+      '63220': 'Ontario flow through credit',
+      '63300': 'Ontario co-operative education credit',
+      
+      // Additional common lines that might appear
+      '20600': 'Pension adjustment - informational amount for pension plan benefits',
+      '30800': 'Canada Pension Plan (CPP) or Quebec Pension Plan (QPP) contributions',
+      '35000': 'Total tax credits for calculation purposes',
+      '42000': 'Federal tax calculated before credits',
+      '42800': 'Provincial tax calculated before credits',
+      '43500': 'Total tax payable before deductions',
+      '43700': 'Total tax payable after deductions',
+      '48400': 'Refund or balance owing'
+    };
+
+    return tooltips[lineNumber] || 'Information about this tax form line number';
   };
 
   return (
@@ -3120,6 +3223,14 @@ export default function TaxReport() {
                                       <div className="flex-1">
                                         <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                           {item.name} <span style={{ color: '#A3A3A3' }}>(Line {item.line})</span>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p className="max-w-xs">{getTooltipText(item.line)}</p>
+                                            </TooltipContent>
+                                          </Tooltip>
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
@@ -3401,6 +3512,14 @@ export default function TaxReport() {
                                         <div className="flex-1">
                                           <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                             {item.name} <span style={{ color: '#A3A3A3' }}>(Line {item.line})</span>
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                              </TooltipTrigger>
+                                              <TooltipContent>
+                                                <p className="max-w-xs">{getTooltipText(item.line)}</p>
+                                              </TooltipContent>
+                                            </Tooltip>
                                           </div>
                                         </div>
                                         <div className="text-right font-medium text-primary text-sm">
@@ -3631,6 +3750,14 @@ export default function TaxReport() {
                                       <div className="flex-1">
                                         <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                           {item.name} <span style={{ color: '#A3A3A3' }}>(Line {item.line})</span>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p className="max-w-xs">{getTooltipText(item.line)}</p>
+                                            </TooltipContent>
+                                          </Tooltip>
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
