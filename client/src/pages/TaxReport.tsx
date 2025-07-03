@@ -4059,8 +4059,16 @@ export default function TaxReport() {
                             ) : (
                               <ChevronDown className="w-4 h-4" />
                             )}
-                            <h4 className="font-medium text-primary text-sm">
+                            <h4 className="font-medium text-primary text-sm flex items-center">
                               Canada Child Benefit
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="max-w-xs">The Canada Child Benefit (CCB) is a tax-free monthly payment made to eligible families to help with the cost of raising children under 18 years of age. The benefit amount is based on family income and number of children.</p>
+                                </TooltipContent>
+                              </Tooltip>
                             </h4>
                           </div>
                           <span className="font-medium text-primary text-sm">
@@ -4124,6 +4132,16 @@ export default function TaxReport() {
                                     <div className="flex-1">
                                       <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                         {info.name}
+                                        {info.name === "Clawback %" && (
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p className="max-w-xs">The percentage of Canada Child Benefit that is reduced (clawed back) based on your family's adjusted net income. Higher family income results in higher clawback percentages.</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        )}
                                       </div>
                                     </div>
                                     <div className="text-right font-medium text-primary text-sm">
@@ -4357,8 +4375,18 @@ export default function TaxReport() {
                                   ) : (
                                     <ChevronDown className="w-4 h-4" />
                                   )}
-                                  <h4 className="font-medium text-primary text-sm">
+                                  <h4 className="font-medium text-primary text-sm flex items-center">
                                     {category.category}
+                                    {category.category === "Basic Personal Amount" && (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                          <p className="max-w-xs">The Basic Personal Amount (BPA) is a non-refundable tax credit that reduces the amount of federal income tax you pay. For 2024, the maximum BPA is $15,705, but it decreases for high-income earners with net income over $173,205.</p>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    )}
                                   </h4>
                                 </div>
                                 <span className="font-medium text-primary text-sm">
@@ -4469,6 +4497,16 @@ export default function TaxReport() {
                                           <div className="flex-1">
                                             <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                               {item.name}
+                                              {item.name === "Clawback %" && (
+                                                <Tooltip>
+                                                  <TooltipTrigger asChild>
+                                                    <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                                  </TooltipTrigger>
+                                                  <TooltipContent>
+                                                    <p className="max-w-xs">The percentage of your Basic Personal Amount that is reduced due to high income. The BPA starts reducing when net income exceeds $173,205 and reaches minimum at $246,752.</p>
+                                                  </TooltipContent>
+                                                </Tooltip>
+                                              )}
                                             </div>
                                             {!item.isStatic && !item.isCalculated && (
                                               <div className="text-sm" style={{ color: '#A3A3A3' }}>
