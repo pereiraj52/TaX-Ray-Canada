@@ -30,6 +30,24 @@ export default function TaxReport() {
     }));
   };
 
+  // Function to check if all deduction sections are expanded
+  const areAllDeductionSectionsExpanded = () => {
+    const deductionSectionKeys = ['retirement-plan-deductions', 'personal-deductions', 'employment-deductions', 'specialized-deductions'];
+    return deductionSectionKeys.every(key => !collapsedDeductionSections[key]);
+  };
+
+  // Function to toggle all deduction sections
+  const toggleAllDeductionSections = () => {
+    const allExpanded = areAllDeductionSectionsExpanded();
+    const newState = { ...collapsedDeductionSections };
+    
+    Object.keys(newState).forEach(key => {
+      newState[key] = allExpanded; // If all expanded, collapse all; otherwise expand all
+    });
+    
+    setCollapsedDeductionSections(newState);
+  };
+
   // State for collapsible sections in Federal Tax Credits Analysis
   const [collapsedFederalCreditSections, setCollapsedFederalCreditSections] = useState<{[key: string]: boolean}>({
     'basic-credits-non-refundable': true,
@@ -2891,7 +2909,17 @@ export default function TaxReport() {
 
         {/* Tax Deductions Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Deductions Analysis</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Tax Deductions Analysis</h2>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleAllDeductionSections}
+              className="deductions-card-button"
+            >
+              {areAllDeductionSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+            </Button>
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {

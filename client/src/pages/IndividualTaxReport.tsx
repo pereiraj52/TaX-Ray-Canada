@@ -31,6 +31,24 @@ export default function IndividualTaxReport() {
     }));
   };
 
+  // Function to check if all deduction sections are expanded
+  const areAllDeductionSectionsExpanded = () => {
+    const deductionSectionKeys = ['retirement-plan-deductions', 'personal-deductions', 'employment-deductions', 'specialized-deductions'];
+    return deductionSectionKeys.every(key => !collapsedDeductionSections[key]);
+  };
+
+  // Function to toggle all deduction sections
+  const toggleAllDeductionSections = () => {
+    const allExpanded = areAllDeductionSectionsExpanded();
+    const newState = { ...collapsedDeductionSections };
+    
+    Object.keys(newState).forEach(key => {
+      newState[key] = allExpanded; // If all expanded, collapse all; otherwise expand all
+    });
+    
+    setCollapsedDeductionSections(newState);
+  };
+
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
     queryFn: () => HouseholdAPI.getHousehold(householdId),
