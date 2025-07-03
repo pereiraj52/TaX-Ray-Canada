@@ -2988,7 +2988,6 @@ export default function TaxReport() {
                       <h3 className="font-medium text-gray-900 mb-6">
                         {spouse.clientName} - Tax Deductions
                       </h3>
-                      
                       <div className="space-y-4">
                         {deductions.map((category, categoryIndex) => {
                           const categoryTotal = category.items.reduce((sum, item) => {
@@ -3020,7 +3019,6 @@ export default function TaxReport() {
                                   {category.items.map((item, itemIndex) => {
                                     const amount = getFieldValue(item.line);
                                     const hasClaim = amount > 0;
-                                  
                                   return (
                                     <div key={itemIndex} className={`flex items-center gap-3 ${itemIndex < category.items.length - 1 ? 'border-b border-gray-200 pb-3' : ''}`}>
                                       <div className="w-5 h-5 flex items-center justify-center">
@@ -3047,7 +3045,6 @@ export default function TaxReport() {
                             </div>
                           );
                         })}
-                        
                         {/* Total Deductions Summary */}
                         <div className="pt-4 border-t-2 border-primary space-y-3">
                           <div className="flex justify-between items-center">
@@ -3062,7 +3059,6 @@ export default function TaxReport() {
                               }, 0))}
                             </span>
                           </div>
-                          
                           {/* Estimated Tax Savings */}
                           <div className="flex justify-between items-center">
                             <span className="font-semibold text-primary">
@@ -3073,7 +3069,6 @@ export default function TaxReport() {
                                 const totalIncome = getFieldValue("15000"); // Total income
                                 const taxableIncome = getFieldValue("26000"); // Taxable income
                                 const deductionAmount = totalIncome - taxableIncome;
-                                
                                 // Calculate actual marginal tax rate based on taxable income
                                 const calculateMarginalRate = (income: number) => {
                                   // 2024 Combined Ontario tax brackets (federal + provincial + surtax)
@@ -3088,17 +3083,13 @@ export default function TaxReport() {
                                     { min: 220000, max: 246752, rate: 51.97 },
                                     { min: 246752, max: Infinity, rate: 53.53 }
                                   ];
-                                  
                                   // Find the bracket for this income level
                                   const bracket = combinedBrackets.find(b => income > b.min && income <= b.max) || 
                                                 combinedBrackets[combinedBrackets.length - 1];
-                                  
                                   return bracket.rate / 100; // Convert percentage to decimal
                                 };
-                                
                                 const marginalRate = calculateMarginalRate(taxableIncome);
                                 const estimatedSavings = deductionAmount * marginalRate;
-                                
                                 return formatCurrency(estimatedSavings);
                               })()}
                             </span>
