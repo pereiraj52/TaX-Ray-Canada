@@ -1262,19 +1262,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
         {activeTab === 'deductions' && (
           <div className="space-y-6">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div className="deductions-card rounded-lg p-4 mb-6">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold text-yellow-800">Deductions from Income</h3>
+                <h3 className="font-semibold deductions-card-text">Deductions from Income</h3>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={toggleAllDeductionSections}
-                  className="text-yellow-700 border-yellow-300 hover:bg-yellow-100"
+                  className="deductions-card-button"
                 >
                   {areAllDeductionSectionsExpanded() ? 'Collapse All' : 'Expand All'}
                 </Button>
               </div>
-              <p className="text-yellow-700 text-sm">Federal and provincial deductions that reduce taxable income</p>
+              <p className="deductions-card-text text-sm">Federal and provincial deductions that reduce taxable income</p>
             </div>
             <div className="space-y-4">
               {/* Retirement Plan Deductions Section */}
@@ -1390,39 +1390,39 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </div>
               </CollapsibleSection>
               {/* Summary Section */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-6">
+              <div className="deductions-card rounded-lg p-6 mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Retirement Plan</div>
-                    <div className="text-xl font-bold text-yellow-600">
+                    <div className="font-semibold deductions-card-text mb-2">Retirement Plan</div>
+                    <div className="text-xl font-bold deductions-card-text">
                       {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810', '21000']))}
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Personal</div>
-                    <div className="text-xl font-bold text-yellow-600">
+                    <div className="font-semibold deductions-card-text mb-2">Personal</div>
+                    <div className="text-xl font-bold deductions-card-text">
                       {formatCurrency(getSectionTotal(['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']))}
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Employment</div>
-                    <div className="text-xl font-bold text-yellow-600">
+                    <div className="font-semibold deductions-card-text mb-2">Employment</div>
+                    <div className="text-xl font-bold deductions-card-text">
                       {formatCurrency(getSectionTotal(['22200', '22215', '22900', '23100']))}
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Specialized</div>
-                    <div className="text-xl font-bold text-yellow-600">
+                    <div className="font-semibold deductions-card-text mb-2">Specialized</div>
+                    <div className="text-xl font-bold deductions-card-text">
                       {formatCurrency(getSectionTotal(['22400', '23200', '23500']))}
                     </div>
                   </div>
                 </div>
                 <div className="text-center mt-4">
-                  <div className="font-semibold text-yellow-800 mb-2">Total Deductions</div>
-                  <div className="text-2xl font-bold text-yellow-600">
+                  <div className="font-semibold deductions-card-text mb-2">Total Deductions</div>
+                  <div className="text-2xl font-bold deductions-card-text">
                     {formatCurrency(getTotalDeductions())}
                   </div>
-                  <div className="text-sm text-yellow-700 mt-1">Calculated from all deduction categories</div>
+                  <div className="text-sm deductions-card-text mt-1">Calculated from all deduction categories</div>
                 </div>
               </div>
             </div>
