@@ -126,7 +126,7 @@ export default function TaxReport() {
     'guaranteed-income-supplement': true,
     'child-disability-benefit': true,
     'canada-training-credit': true,
-    'gst-hst-credit': true,
+    'gst/hst-credit': true,
     'canada-child-benefit': true,
   });
 
@@ -139,7 +139,7 @@ export default function TaxReport() {
 
   // Function to check if all clawback sections are expanded
   const areAllClawbackSectionsExpanded = () => {
-    const clawbackSectionKeys = ['basic-personal-amount', 'canada-workers-benefit', 'old-age-security', 'guaranteed-income-supplement', 'child-disability-benefit', 'canada-training-credit', 'gst-hst-credit', 'canada-child-benefit'];
+    const clawbackSectionKeys = ['basic-personal-amount', 'canada-workers-benefit', 'old-age-security', 'guaranteed-income-supplement', 'child-disability-benefit', 'canada-training-credit', 'gst/hst-credit', 'canada-child-benefit'];
     return clawbackSectionKeys.every(key => !collapsedClawbackSections[key]);
   };
 
@@ -148,7 +148,7 @@ export default function TaxReport() {
     const allExpanded = areAllClawbackSectionsExpanded();
     const newState = { ...collapsedClawbackSections };
     
-    const clawbackSectionKeys = ['basic-personal-amount', 'canada-workers-benefit', 'old-age-security', 'guaranteed-income-supplement', 'child-disability-benefit', 'canada-training-credit', 'gst-hst-credit', 'canada-child-benefit'];
+    const clawbackSectionKeys = ['basic-personal-amount', 'canada-workers-benefit', 'old-age-security', 'guaranteed-income-supplement', 'child-disability-benefit', 'canada-training-credit', 'gst/hst-credit', 'canada-child-benefit'];
     clawbackSectionKeys.forEach(key => {
       newState[key] = allExpanded; // If all expanded, collapse all; otherwise expand all
     });
