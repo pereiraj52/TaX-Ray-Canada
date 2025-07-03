@@ -3304,17 +3304,19 @@ export default function TaxReport() {
                           const isCollapsed = collapsedFederalCreditSections[sectionKey];
 
                           return (
-                            <div key={categoryIndex} className="mb-4">
-                              <div 
-                                className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
-                                onClick={() => toggleFederalCreditSection(sectionKey)}
-                              >
-                                <div className="flex items-center space-x-2">
-                                  {isCollapsed ? (
-                                    <ChevronRight className="h-4 w-4 text-gray-500" />
-                                  ) : (
-                                    <ChevronDown className="h-4 w-4 text-gray-500" />
-                                  )}
+                            <div key={categoryIndex} className="space-y-4">
+                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => toggleFederalCreditSection(sectionKey)}
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                  >
+                                    {isCollapsed ? (
+                                      <ChevronRight className="w-4 h-4" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4" />
+                                    )}
+                                  </button>
                                   <h4 className="font-medium text-primary text-sm">
                                     {category.category}
                                   </h4>
@@ -3325,84 +3327,30 @@ export default function TaxReport() {
                               </div>
                               
                               {!isCollapsed && (
-                                <div className="px-3 pb-3 space-y-2">
+                                <div className="space-y-3">
                                   {category.items.map((item, itemIndex) => {
-                                  const amount = getFieldValue(item.line);
-                                  const hasClaim = amount > 0;
-                                  
-                                  return (
-                                    <div key={itemIndex} className="flex justify-between items-center text-sm">
-                                      <div className="flex items-center space-x-2">
-                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
-                                          {hasClaim ? '✓' : '✗'}
+                                    const amount = getFieldValue(item.line);
+                                    const hasClaim = amount > 0;
+                                    
+                                    return (
+                                      <div key={itemIndex} className="flex items-center gap-3">
+                                        <div className="w-5 h-5 flex items-center justify-center">
+                                          <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
+                                            {hasClaim ? '✓' : '✗'}
+                                          </div>
                                         </div>
-                                        <span className="text-gray-700">
-                                          {item.name}
-                                        </span>
-                                        <span className="text-gray-400 text-xs">
-                                          (Line {item.line})
-                                        </span>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <Info className="h-3 w-3 text-gray-400 cursor-help ml-1" />
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            <p className="text-sm max-w-xs">
-                                              {item.name === "Basic Personal Amount" && "Non-refundable tax credit that reduces your federal tax payable, available to all Canadian residents."}
-                                              {item.name === "Age Amount" && "Non-refundable tax credit for residents 65 years or older, subject to income limits."}
-                                              {item.name === "Spouse/Common-law Partner Amount" && "Credit for supporting a spouse or common-law partner with low income."}
-                                              {item.name === "Amount for Eligible Dependant" && "Credit for supporting an eligible dependent, typically a child or other relative."}
-                                              {item.name === "Canada Caregiver Amount Spouse/Partner/Adult Children" && "Credit for caring for a spouse, common-law partner, or eligible dependent with impairment."}
-                                              {item.name === "Canada Caregiver Amount for Children" && "Credit for caring for children under 18 with physical or mental impairment."}
-                                              {item.name === "CPP/QPP (Self Employed) Contributions" && "Credit for Canada or Quebec Pension Plan contributions made by self-employed individuals."}
-                                              {item.name === "Employment Insurance (Self Employed) Premiums" && "Credit for EI premiums paid by self-employed individuals enrolled in EI special benefits."}
-                                              {item.name === "Employment Insurance Premiums" && "Credit for Employment Insurance premiums deducted from employment income."}
-                                              {item.name === "CPP or QPP Contributions" && "Credit for Canada or Quebec Pension Plan contributions deducted from employment income."}
-                                              {item.name === "Volunteer firefighters' amount (VFA)" && "Credit for eligible volunteer firefighters who provide at least 200 hours of service."}
-                                              {item.name === "Search and rescue volunteers' amount (SRVA)" && "Credit for eligible search and rescue volunteers who provide at least 200 hours of service."}
-                                              {item.name === "Home buyers' Amount" && "First-time home buyers' tax credit for qualifying home purchases."}
-                                              {item.name === "Adoption Expenses" && "Credit for eligible adoption expenses incurred during the adoption process."}
-                                              {item.name === "Digital News Subscription" && "Credit for qualifying digital news subscription expenses."}
-                                              {item.name === "Pension Income Amount" && "Credit for eligible pension income from qualifying pension sources."}
-                                              {item.name === "Home Accessibility Expenses" && "Credit for eligible home accessibility expenses for seniors or persons with disabilities."}
-                                              {item.name === "Caregiver Amount" && "Credit for caring for an infirm dependent age 18 or older."}
-                                              {item.name === "Disability Amount (Self)" && "Credit for individuals with severe and prolonged impairments in physical or mental functions."}
-                                              {item.name === "Disability Amount (Dependant)" && "Credit for supporting a dependent with severe and prolonged impairments."}
-                                              {item.name === "Interest on Student Loans" && "Credit for interest paid on qualifying student loans from government sources."}
-                                              {item.name === "Tuition & Education Amounts" && "Credit for tuition fees paid to qualifying educational institutions."}
-                                              {item.name === "Tuition Transferred" && "Tuition credit transferred to parent, grandparent, spouse, or common-law partner."}
-                                              {item.name === "Amounts Transferred from Spouse/Partner" && "Credits transferred from spouse or common-law partner including age, pension, and disability amounts."}
-                                              {item.name === "Medical Expenses" && "Credit for qualifying medical expenses exceeding 3% of net income or $2,635, whichever is less."}
-                                              {item.name === "Allowable Medical Expenses" && "Medical expenses that qualify for the medical expense tax credit."}
-                                              {item.name === "Net Eligible Medical Expenses" && "Medical expenses eligible for tax credit after applying income thresholds."}
-                                              {item.name === "Allowable Amount of Medical Expenses" && "Final amount of medical expenses eligible for the non-refundable tax credit."}
-                                              {item.name === "Total eligible amount of charitable donations" && "Total donations and gifts eligible for charitable tax credits from Schedule 9."}
-                                              {item.name === "Allowable Charitable Donations" && "Charitable donations eligible for tax credits up to annual limits."}
-                                              {item.name === "Total Ecological Gifts" && "Donations of ecologically sensitive land eligible for enhanced tax credits."}
-                                              {item.name === "Total Eligible Gifts & Donations" && "Sum of allowable charitable donations and ecological gifts eligible for tax credits."}
-                                              {item.name === "Donation & Gift Credits" && "Non-refundable tax credit for charitable donations and gifts to qualified organizations."}
-                                              {item.name === "Quebec Abatement" && "Refundable credit reducing federal tax for Quebec residents who pay provincial income tax."}
-                                              {item.name === "CPP Overpayment" && "Refund of excess Canada Pension Plan contributions deducted during the year."}
-                                              {item.name === "EI Overpayment" && "Refund of excess Employment Insurance premiums deducted during the year."}
-                                              {item.name === "Refundable Medical Expense Supplement" && "Refundable credit for working individuals with high medical expenses and modest income."}
-                                              {item.name === "Canada Workers Benefit" && "Refundable tax credit for working individuals and families with low income."}
-                                              {item.name === "Canada Training Credit" && "Refundable credit to help cover training costs for eligible individuals."}
-                                              {item.name === "Multigenerational Home Renovation Tax Credit" && "Refundable credit for eligible home renovations to accommodate senior or disabled relatives."}
-                                              {item.name === "Refund of Investment Tax" && "Refund of investment tax credit overpayments from previous years."}
-                                              {item.name === "Part XII.2 Tax Credit" && "Refundable credit related to Part XII.2 tax on certain distributions."}
-                                              {item.name === "Employee & Partner GST/HST Rebate" && "Refund of GST/HST paid on employment expenses claimed as deductions."}
-                                              {item.name === "Eligible Educator School Supply Tax Credit" && "Refundable credit for teachers and early childhood educators purchasing school supplies."}
-                                              {item.name === "Canadian Journalism Labour Tax Credit" && "Refundable credit for eligible journalism organizations employing qualified journalists."}
-                                              {item.name === "Return of Fuel Charge Proceeds to Farmers" && "Refund of fuel charge proceeds for eligible farming operations."}
-                                              {!["Basic Personal Amount", "Age Amount", "Spouse/Common-law Partner Amount", "Amount for Eligible Dependant", "Canada Caregiver Amount Spouse/Partner/Adult Children", "Canada Caregiver Amount for Children", "CPP/QPP (Self Employed) Contributions", "Employment Insurance (Self Employed) Premiums", "Employment Insurance Premiums", "CPP or QPP Contributions", "Volunteer firefighters' amount (VFA)", "Search and rescue volunteers' amount (SRVA)", "Home buyers' Amount", "Adoption Expenses", "Digital News Subscription", "Pension Income Amount", "Home Accessibility Expenses", "Caregiver Amount", "Disability Amount (Self)", "Disability Amount (Dependant)", "Interest on Student Loans", "Tuition & Education Amounts", "Tuition Transferred", "Amounts Transferred from Spouse/Partner", "Medical Expenses", "Allowable Medical Expenses", "Net Eligible Medical Expenses", "Allowable Amount of Medical Expenses", "Total eligible amount of charitable donations", "Allowable Charitable Donations", "Total Ecological Gifts", "Total Eligible Gifts & Donations", "Donation & Gift Credits", "Quebec Abatement", "CPP Overpayment", "EI Overpayment", "Refundable Medical Expense Supplement", "Canada Workers Benefit", "Canada Training Credit", "Multigenerational Home Renovation Tax Credit", "Refund of Investment Tax", "Part XII.2 Tax Credit", "Employee & Partner GST/HST Rebate", "Eligible Educator School Supply Tax Credit", "Canadian Journalism Labour Tax Credit", "Return of Fuel Charge Proceeds to Farmers"].includes(item.name) && "Tax credit information"}
-                                            </p>
-                                          </TooltipContent>
-                                        </Tooltip>
+                                        <div className="flex-1">
+                                          <div className="font-medium text-primary text-sm underline">
+                                            {item.name}
+                                          </div>
+                                          <div className="text-gray-600 text-sm">
+                                            (Line {item.line})
+                                          </div>
+                                        </div>
+                                        <div className="text-right font-medium text-primary text-sm">
+                                          {hasClaim ? formatCurrency(amount) : ''}
+                                        </div>
                                       </div>
-                                      <span className="font-medium text-right text-gray-700">
-                                        {hasClaim ? formatCurrency(amount) : '$0'}
-                                      </span>
-                                    </div>
                                     );
                                   })}
                                 </div>
@@ -3464,7 +3412,7 @@ export default function TaxReport() {
                     </CardContent>
                   </Card>
                 );
-              });
+              })();
             })()}
           </div>
         </div>
@@ -3579,17 +3527,19 @@ export default function TaxReport() {
                           const isCollapsed = collapsedProvincialCreditSections[sectionKey];
 
                           return (
-                            <div key={categoryIndex} className="mb-4">
-                              <div 
-                                className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
-                                onClick={() => toggleProvincialCreditSection(sectionKey)}
-                              >
-                                <div className="flex items-center space-x-2">
-                                  {isCollapsed ? (
-                                    <ChevronRight className="h-4 w-4 text-gray-500" />
-                                  ) : (
-                                    <ChevronDown className="h-4 w-4 text-gray-500" />
-                                  )}
+                            <div key={categoryIndex} className="space-y-4">
+                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => toggleProvincialCreditSection(sectionKey)}
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                  >
+                                    {isCollapsed ? (
+                                      <ChevronRight className="w-4 h-4" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4" />
+                                    )}
+                                  </button>
                                   <h4 className="font-medium text-primary text-sm">
                                     {category.category}
                                   </h4>
@@ -3600,7 +3550,7 @@ export default function TaxReport() {
                               </div>
                               
                               {!isCollapsed && (
-                                <div className="px-3 pb-3 space-y-2">
+                                <div className="space-y-3">
                                   {category.items.map((item, itemIndex) => {
                                   const amount = getFieldValue(item.line);
                                   const hasClaim = amount > 0;
