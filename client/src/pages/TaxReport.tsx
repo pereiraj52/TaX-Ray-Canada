@@ -4319,7 +4319,23 @@ export default function TaxReport() {
                                       return (
                                         <div key={index} className="flex items-center gap-3">
                                           <div className="w-5 h-5 flex items-center justify-center">
-                                            {info.name === "Clawback %" ? (
+                                            {info.name === "Family Status" ? (
+                                              (() => {
+                                                if (info.value === "Married/Common-law") {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                      ✓
+                                                    </div>
+                                                  );
+                                                } else {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                      ✗
+                                                    </div>
+                                                  );
+                                                }
+                                              })()
+                                            ) : info.name === "Clawback %" ? (
                                               (() => {
                                                 if (cwbClawbackPercentage === 0) {
                                                   return (
@@ -4341,7 +4357,7 @@ export default function TaxReport() {
                                                   );
                                                 }
                                               })()
-                                            ) : (info.name === "Maximum CWB (Family)" || info.name === "Adjusted Family Net Income" || info.name === "Actual CWB (Family)" || info.name === "Family Status") ? null : hasValue ? (
+                                            ) : (info.name === "Maximum CWB (Family)" || info.name === "Adjusted Family Net Income" || info.name === "Actual CWB (Family)") ? null : hasValue ? (
                                               <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                                 ✓
                                               </div>
