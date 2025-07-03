@@ -4024,6 +4024,7 @@ export default function TaxReport() {
                 { name: "Number of children", value: household?.children?.length || 0, format: 'number' },
                 { name: "Maximum CCB", value: calculateMaxUCCB(), format: 'currency' },
                 { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
+                { name: "Actual CCB", value: 0, format: 'currency' }, // TODO: Get actual CCB received from tax data
                 { name: "Clawback %", value: clawbackPercentage, format: 'percentage' },
               ];
 
@@ -4081,7 +4082,7 @@ export default function TaxReport() {
                             {/* Left 1/2 - CCB Details */}
                             <div className="space-y-3">
                               {benefitInfo.map((info, index) => {
-                                const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Number of children" || info.name === "Maximum CCB");
+                                const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Number of children" || info.name === "Maximum CCB" || info.name === "Actual CCB");
                                 return (
                                   <div key={index} className="flex items-center gap-3">
                                     <div className="w-5 h-5 flex items-center justify-center">
@@ -4119,7 +4120,7 @@ export default function TaxReport() {
                                             );
                                           }
                                         })()
-                                      ) : (info.name === "Maximum CCB" || info.name === "Adjusted Family Net Income") ? null : hasValue ? (
+                                      ) : (info.name === "Maximum CCB" || info.name === "Adjusted Family Net Income" || info.name === "Actual CCB") ? null : hasValue ? (
                                         <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                           ✓
                                         </div>
