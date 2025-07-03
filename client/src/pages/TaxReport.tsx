@@ -4465,7 +4465,7 @@ export default function TaxReport() {
                                           {/* Scale labels */}
                                           <div className="flex justify-between font-medium text-primary text-sm mt-2">
                                             <span>Start: {formatCurrency(clawbackStart)}</span>
-                                            <span>Income: {formatCurrency(taxableIncome)}</span>
+                                            <span>∆ BPA: {formatCurrency(15705 - 14156)}</span>
                                             <span>End: {formatCurrency(clawbackEnd)}</span>
                                           </div>
                                         </div>
