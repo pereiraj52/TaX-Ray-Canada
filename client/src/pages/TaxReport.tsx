@@ -4310,7 +4310,7 @@ export default function TaxReport() {
                   { category: "Basic Personal Amount", items: [
                     { name: "Minimum BPA", line: "BPA-MIN", isStatic: true, staticValue: 14156 },
                     { name: "Maximum BPA", line: "BPA-MAX", isStatic: true, staticValue: 15705 },
-                    { name: "Actual Amount", line: "30000" },
+                    { name: "Actual BPA", line: "30000" },
                     { name: "Clawback %", line: "BPA-CLAWBACK", isCalculated: true },
                   ]},
                   
@@ -4445,8 +4445,8 @@ export default function TaxReport() {
                                         // Regular field value
                                         amount = getFieldValue(item.line);
                                         displayValue = amount > 0 ? formatCurrency(amount) : '';
-                                        // Don't show icon for Actual Amount line
-                                        if (item.name === "Actual Amount") {
+                                        // Don't show icon for Actual BPA line
+                                        if (item.name === "Actual BPA") {
                                           showIcon = false;
                                         }
                                       }
