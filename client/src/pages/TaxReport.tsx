@@ -67,6 +67,25 @@ export default function TaxReport() {
     }));
   };
 
+  // Function to check if all federal credit sections are expanded
+  const areAllFederalCreditSectionsExpanded = () => {
+    const federalCreditSectionKeys = ['basic-credits-non-refundable', 'employment-credits-non-refundable', 'personal-situation-credits-non-refundable', 'disability-&-caregiver-credits-non-refundable', 'education-credits-non-refundable', 'medical-credits-non-refundable', 'charitable-gifts-&-donations-non-refundable', 'federal-refundable-credits'];
+    return federalCreditSectionKeys.every(key => !collapsedFederalCreditSections[key]);
+  };
+
+  // Function to toggle all federal credit sections
+  const toggleAllFederalCreditSections = () => {
+    const allExpanded = areAllFederalCreditSectionsExpanded();
+    const newState = { ...collapsedFederalCreditSections };
+    
+    const federalCreditSectionKeys = ['basic-credits-non-refundable', 'employment-credits-non-refundable', 'personal-situation-credits-non-refundable', 'disability-&-caregiver-credits-non-refundable', 'education-credits-non-refundable', 'medical-credits-non-refundable', 'charitable-gifts-&-donations-non-refundable', 'federal-refundable-credits'];
+    federalCreditSectionKeys.forEach(key => {
+      newState[key] = allExpanded; // If all expanded, collapse all; otherwise expand all
+    });
+    
+    setCollapsedFederalCreditSections(newState);
+  };
+
   // State for collapsible sections in Provincial Tax Credits Analysis
   const [collapsedProvincialCreditSections, setCollapsedProvincialCreditSections] = useState<{[key: string]: boolean}>({
     'ontario-non-refundable-credits': true,
@@ -3140,7 +3159,17 @@ export default function TaxReport() {
 
         {/* Federal Tax Credits Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Credits Analysis</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Federal Tax Credits Analysis</h2>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleAllFederalCreditSections}
+              className="credits-card-button"
+            >
+              {areAllFederalCreditSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+            </Button>
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {
