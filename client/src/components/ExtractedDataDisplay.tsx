@@ -722,7 +722,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </span>
                 </button>
                 {!collapsedSections['rrsp-section'] && (
-                  <div className="mt-4">
+                  <div className="mt-4 pl-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="flex justify-between items-center py-2">
                         <span className="font-medium text-primary">Account Balance:</span>
@@ -798,7 +798,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </span>
               </button>
               {!collapsedSections['tfsa-section'] && (
-                <div className="mt-4">
+                <div className="mt-4 pl-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
@@ -838,7 +838,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </span>
               </button>
               {!collapsedSections['fhsa-section'] && (
-                <div className="mt-4">
+                <div className="mt-4 pl-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
@@ -878,7 +878,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </span>
               </button>
               {!collapsedSections['resp-section'] && (
-                <div className="mt-4">
+                <div className="mt-4 pl-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
@@ -954,7 +954,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </span>
               </button>
               {!collapsedSections['rdsp-section'] && (
-                <div className="mt-4">
+                <div className="mt-4 pl-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Account Balance:</span>
@@ -1030,7 +1030,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </span>
               </button>
               {!collapsedSections['capital-loss-section'] && (
-                <div className="mt-4">
+                <div className="mt-4 pl-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">Available Losses:</span>
@@ -1064,7 +1064,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </span>
               </button>
               {!collapsedSections['amt-section'] && (
-                <div className="mt-4">
+                <div className="mt-4 pl-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex justify-between items-center py-2">
                       <span className="font-medium text-primary">AMT Carry Forward:</span>
