@@ -57,6 +57,26 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   });
   const { toast } = useToast();
 
+  // Income section IDs for expand/collapse all functionality
+  const incomeSectionIds = ['employment', 'pension', 'government', 'investment', 'registered-account', 'selfemployment', 'othersources'];
+
+  // Function to toggle all income sections
+  const toggleAllIncomeSections = () => {
+    const allExpanded = incomeSectionIds.every(id => !collapsedSections[id]);
+    const newState = { ...collapsedSections };
+    
+    incomeSectionIds.forEach(id => {
+      newState[id] = allExpanded; // If all expanded, collapse all; otherwise expand all
+    });
+    
+    setCollapsedSections(newState);
+  };
+
+  // Check if all income sections are expanded
+  const areAllIncomeSectionsExpanded = () => {
+    return incomeSectionIds.every(id => !collapsedSections[id]);
+  };
+
   // Comprehensive tooltip mapping for T1 line numbers
   const getTooltipText = (lineNumber: string): string => {
     const tooltips: Record<string, string> = {
@@ -1083,7 +1103,17 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         {activeTab === 'income' && (
           <div className="space-y-6">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-blue-800 mb-2">Income Sources</h3>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-semibold text-blue-800">Income Sources</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleAllIncomeSections}
+                  className="text-blue-700 border-blue-300 hover:bg-blue-100"
+                >
+                  {areAllIncomeSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+                </Button>
+              </div>
               <p className="text-blue-700 text-sm">All income reported on T1 tax return</p>
             </div>
             
