@@ -4152,7 +4152,7 @@ export default function TaxReport() {
                                 <div className="relative mt-10">
                                     {/* Bar background */}
                                     <div className="w-full" style={{ height: '36px' }}>
-                                      <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: '#D4B26A' }}>
+                                      <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: '#E8E3F0' }}>
                                         {/* Progress fill */}
                                         <div 
                                           className="h-full transition-all duration-300"
@@ -4441,7 +4441,7 @@ export default function TaxReport() {
                                       return (
                                         <div className="relative mt-10">
                                           <div className="w-full" style={{ height: '36px' }}>
-                                            <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: '#D4B26A' }}>
+                                            <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: '#E8E3F0' }}>
                                               {/* Progress fill */}
                                               <div 
                                                 className="h-full transition-all duration-300"
@@ -4475,7 +4475,7 @@ export default function TaxReport() {
                                     return (
                                       <div className="relative mt-10">
                                         <div className="w-full" style={{ height: '36px' }}>
-                                          <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: '#D4B26A' }}>
+                                          <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: '#E8E3F0' }}>
                                             {/* Progress fill */}
                                             <div 
                                               className="h-full transition-all duration-300"
