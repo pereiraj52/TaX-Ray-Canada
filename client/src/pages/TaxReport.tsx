@@ -2998,7 +2998,7 @@ export default function TaxReport() {
                           const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-');
 
                           return (
-                            <div key={categoryIndex} className="border border-gray-200 rounded-lg">
+                            <div key={categoryIndex} className="mb-4">
                               <button
                                 onClick={() => toggleDeductionSection(sectionKey)}
                                 className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
@@ -3016,7 +3016,7 @@ export default function TaxReport() {
                                 </span>
                               </button>
                               {!collapsedDeductionSections[sectionKey] && (
-                                <div className="p-4 border-t border-gray-200 space-y-2">
+                                <div className="p-4 space-y-2">
                                   {category.items.map((item, itemIndex) => {
                                     const amount = getFieldValue(item.line);
                                     const hasClaim = amount > 0;
@@ -3304,7 +3304,7 @@ export default function TaxReport() {
                           const isCollapsed = collapsedFederalCreditSections[sectionKey];
 
                           return (
-                            <div key={categoryIndex} className="border border-gray-200 rounded-lg">
+                            <div key={categoryIndex} className="mb-4">
                               <div 
                                 className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
                                 onClick={() => toggleFederalCreditSection(sectionKey)}
@@ -3579,7 +3579,7 @@ export default function TaxReport() {
                           const isCollapsed = collapsedProvincialCreditSections[sectionKey];
 
                           return (
-                            <div key={categoryIndex} className="border border-gray-200 rounded-lg">
+                            <div key={categoryIndex} className="mb-4">
                               <div 
                                 className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
                                 onClick={() => toggleProvincialCreditSection(sectionKey)}
