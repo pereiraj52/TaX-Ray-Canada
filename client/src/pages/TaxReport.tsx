@@ -4316,27 +4316,42 @@ export default function TaxReport() {
                   
                   // Canada Workers Benefit
                   { category: "Canada Workers Benefit", items: [
-                    { name: "Canada Workers Benefit (Single)", line: "45300" },
+                    { name: "Minimum CWB (Single)", line: "CWB-MIN", isStatic: true, staticValue: 0 },
+                    { name: "Maximum CWB (Single)", line: "CWB-MAX", isStatic: true, staticValue: 1590 },
+                    { name: "Actual CWB (Single)", line: "45300" },
+                    { name: "Clawback %", line: "CWB-CLAWBACK", isCalculated: true },
                   ]},
                   
                   // Old Age Security
                   { category: "Old Age Security", items: [
-                    { name: "Old Age Security", line: "11300" },
+                    { name: "Minimum OAS", line: "OAS-MIN", isStatic: true, staticValue: 0 },
+                    { name: "Maximum OAS", line: "OAS-MAX", isStatic: true, staticValue: 8856 },
+                    { name: "Actual OAS", line: "11300" },
+                    { name: "Clawback %", line: "OAS-CLAWBACK", isCalculated: true },
                   ]},
                   
                   // Guaranteed Income Supplement
                   { category: "Guaranteed Income Supplement", items: [
-                    { name: "Guaranteed Income Supplement", line: "11400" },
+                    { name: "Minimum GIS", line: "GIS-MIN", isStatic: true, staticValue: 0 },
+                    { name: "Maximum GIS", line: "GIS-MAX", isStatic: true, staticValue: 11040 },
+                    { name: "Actual GIS", line: "11400" },
+                    { name: "Clawback %", line: "GIS-CLAWBACK", isCalculated: true },
                   ]},
                   
                   // Child Disability Benefit
                   { category: "Child Disability Benefit", items: [
-                    { name: "Child Disability Benefit", line: "11700" },
+                    { name: "Minimum CDB", line: "CDB-MIN", isStatic: true, staticValue: 0 },
+                    { name: "Maximum CDB", line: "CDB-MAX", isStatic: true, staticValue: 3348 },
+                    { name: "Actual CDB", line: "11700" },
+                    { name: "Clawback %", line: "CDB-CLAWBACK", isCalculated: true },
                   ]},
                   
                   // GST/HST Credit
                   { category: "GST/HST Credit", items: [
-                    { name: "GST/HST Credit", line: "45350" },
+                    { name: "Minimum GST/HST", line: "GST-MIN", isStatic: true, staticValue: 0 },
+                    { name: "Maximum GST/HST", line: "GST-MAX", isStatic: true, staticValue: 1040 },
+                    { name: "Actual GST/HST", line: "45350" },
+                    { name: "Clawback %", line: "GST-CLAWBACK", isCalculated: true },
                   ]},
                 ];
 
@@ -4445,8 +4460,10 @@ export default function TaxReport() {
                                         // Regular field value
                                         amount = getFieldValue(item.line);
                                         displayValue = amount > 0 ? formatCurrency(amount) : '';
-                                        // Don't show icon for Actual BPA line
-                                        if (item.name === "Actual BPA") {
+                                        // Don't show icon for Actual benefit amount lines
+                                        if (item.name === "Actual BPA" || item.name === "Actual CWB (Single)" || 
+                                            item.name === "Actual OAS" || item.name === "Actual GIS" || 
+                                            item.name === "Actual CDB" || item.name === "Actual GST/HST") {
                                           showIcon = false;
                                         }
                                       }
