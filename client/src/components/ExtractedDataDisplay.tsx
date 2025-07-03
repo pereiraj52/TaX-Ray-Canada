@@ -494,88 +494,89 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               <p className="text-purple-700 text-sm">Registered accounts, contribution room, and capital loss information</p>
             </div>
             
-            {/* RRSP/RRIF Section */}
-            <div className="mt-6">
-              <button
-                onClick={() => toggleSection('rrsp-section')}
-                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center">
-                  {collapsedSections['rrsp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                  <span>RRSP/RRIF</span>
-                </div>
-                <span className="text-primary font-medium">
-                  {formatCurrency(getFieldValue("20800"))}
-                </span>
-              </button>
-              {!collapsedSections['rrsp-section'] && (
-                <div className="mt-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+            <div className="space-y-4">
+              {/* RRSP/RRIF Section */}
+              <div>
+                <button
+                  onClick={() => toggleSection('rrsp-section')}
+                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center">
+                    {collapsedSections['rrsp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
+                    <span>RRSP/RRIF</span>
+                  </div>
+                  <span className="text-primary font-medium">
+                    {formatCurrency(getFieldValue("20800"))}
+                  </span>
+                </button>
+                {!collapsedSections['rrsp-section'] && (
+                  <div className="mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">Account Balance:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">$0.00</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">Contribution Room:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">$0.00</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("20800"))}</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">2024 Contribution:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">{formatCurrency(getFieldValue("20800"))}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">HBP Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">HBP Balance:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 HBP Required:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_required_2024'))}</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">2024 HBP Required:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_required_2024'))}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 HBP Repaid:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue('24600'))}</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">2024 HBP Repaid:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">{formatCurrency(getFieldValue('24600'))}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">LLP Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_balance'))}</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">LLP Balance:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_balance'))}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 LLP Required:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_required_2024'))}</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">2024 LLP Required:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_required_2024'))}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 LLP Repaid:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue('24630'))}</span>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="font-medium text-primary">2024 LLP Repaid:</span>
+                        <div className="text-right">
+                          <span className="font-medium text-primary">{formatCurrency(getFieldValue('24630'))}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* TFSA Section */}
-            <div className="mt-6">
-              <button
-                onClick={() => toggleSection('tfsa-section')}
-                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-              >
+              {/* TFSA Section */}
+              <div>
+                <button
+                  onClick={() => toggleSection('tfsa-section')}
+                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+                >
                 <div className="flex items-center">
                   {collapsedSections['tfsa-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
                   <span>TFSA</span>
@@ -610,12 +611,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               )}
             </div>
 
-            {/* FHSA Section */}
-            <div className="mt-6">
-              <button
-                onClick={() => toggleSection('fhsa-section')}
-                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-              >
+              {/* FHSA Section */}
+              <div>
+                <button
+                  onClick={() => toggleSection('fhsa-section')}
+                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+                >
                 <div className="flex items-center">
                   {collapsedSections['fhsa-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
                   <span>FHSA</span>
@@ -650,12 +651,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               )}
             </div>
 
-            {/* RESP Section */}
-            <div className="mt-6">
-              <button
-                onClick={() => toggleSection('resp-section')}
-                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-              >
+              {/* RESP Section */}
+              <div>
+                <button
+                  onClick={() => toggleSection('resp-section')}
+                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+                >
                 <div className="flex items-center">
                   {collapsedSections['resp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
                   <span>RESP</span>
@@ -726,12 +727,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               )}
             </div>
 
-            {/* RDSP Section */}
-            <div className="mt-6">
-              <button
-                onClick={() => toggleSection('rdsp-section')}
-                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-              >
+              {/* RDSP Section */}
+              <div>
+                <button
+                  onClick={() => toggleSection('rdsp-section')}
+                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+                >
                 <div className="flex items-center">
                   {collapsedSections['rdsp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
                   <span>RDSP</span>
@@ -802,12 +803,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               )}
             </div>
 
-            {/* Capital Loss Carry Forwards Section */}
-            <div className="mt-6">
-              <button
-                onClick={() => toggleSection('capital-loss-section')}
-                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-              >
+              {/* Capital Loss Carry Forwards Section */}
+              <div>
+                <button
+                  onClick={() => toggleSection('capital-loss-section')}
+                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+                >
                 <div className="flex items-center">
                   {collapsedSections['capital-loss-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
                   <span>Capital Loss Carry Forwards</span>
@@ -836,12 +837,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               )}
             </div>
 
-            {/* AMT Section */}
-            <div className="mt-6">
-              <button
-                onClick={() => toggleSection('amt-section')}
-                className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-              >
+              {/* AMT Section */}
+              <div>
+                <button
+                  onClick={() => toggleSection('amt-section')}
+                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
+                >
                 <div className="flex items-center">
                   {collapsedSections['amt-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
                   <span>AMT</span>
@@ -862,6 +863,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                 </div>
               )}
+            </div>
             </div>
           </div>
         )}
@@ -918,7 +920,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               <p className="text-blue-700 text-sm">All income reported on T1 tax return</p>
             </div>
             
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Employment Income Section */}
               <CollapsibleSection
                 id="employment"
