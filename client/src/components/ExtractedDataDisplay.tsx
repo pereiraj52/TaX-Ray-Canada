@@ -498,7 +498,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           </span>
         </button>
         {!isCollapsed && (
-          <div className="mt-4">
+          <div className="mt-4 pl-6">
             {children}
           </div>
         )}
