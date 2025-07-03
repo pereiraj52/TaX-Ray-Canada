@@ -32,6 +32,7 @@
   --background-alt: hsl(84, 33%, 96%);
   --summary-card: #E8E3F0; /* Custom color for T1 extract summary cards */
   --deductions-card: #FBE8E3; /* Custom color for deductions summary cards */
+  --credits-card: #E5F0E3; /* Custom color for credits summary cards */
 }
 
 @layer base {
@@ -76,6 +77,21 @@
   }
   .deductions-card-button:hover {
     background-color: #E8CFC0;
+  }
+  .credits-card {
+    background-color: var(--credits-card);
+    border: 1px solid #C8D6C6;
+    color: #4A5568;
+  }
+  .credits-card-text {
+    color: #4A5568;
+  }
+  .credits-card-button {
+    color: #4A5568;
+    border-color: #C8D6C6;
+  }
+  .credits-card-button:hover {
+    background-color: #C8D6C6;
   }
 }
 

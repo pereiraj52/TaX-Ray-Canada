@@ -1431,19 +1431,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
         {activeTab === 'credits' && (
           <div className="space-y-6">
-            <div className="summary-card rounded-lg p-4 mb-6">
+            <div className="credits-card rounded-lg p-4 mb-6">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold summary-card-text">Non-Refundable Tax Credits</h3>
+                <h3 className="font-semibold credits-card-text">Non-Refundable Tax Credits</h3>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={toggleAllCreditSections}
-                  className="summary-card-button"
+                  className="credits-card-button"
                 >
                   {areAllCreditSectionsExpanded() ? 'Collapse All' : 'Expand All'}
                 </Button>
               </div>
-              <p className="summary-card-text text-sm">Federal and provincial tax credits that reduce taxes payable</p>
+              <p className="credits-card-text text-sm">Federal and provincial tax credits that reduce taxes payable</p>
             </div>
             
             <div className="space-y-4">
@@ -1816,37 +1816,37 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               )}
 
               {/* Summary Section */}
-              <div className="summary-card rounded-lg p-6 mt-6">
+              <div className="credits-card rounded-lg p-6 mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="text-center">
-                    <div className="font-semibold summary-card-text mb-2">Federal Non-Refundable</div>
-                    <div className="text-xl font-bold summary-card-text">
+                    <div className="font-semibold credits-card-text mb-2">Federal Non-Refundable</div>
+                    <div className="text-xl font-bold credits-card-text">
                       {formatCurrency(getTotalCredits())}
                     </div>
-                    <div className="text-sm summary-card-text mt-2">
+                    <div className="text-sm credits-card-text mt-2">
                       Tax Savings: {formatCurrency(getFieldValue('35000'))}
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold summary-card-text mb-2">Federal Refundable</div>
-                    <div className="text-xl font-bold summary-card-text">
+                    <div className="font-semibold credits-card-text mb-2">Federal Refundable</div>
+                    <div className="text-xl font-bold credits-card-text">
                       {formatCurrency(getTotalRefundableCredits())}
                     </div>
                   </div>
                   {getClientProvince() === 'ON' && (
                     <>
                       <div className="text-center">
-                        <div className="font-semibold summary-card-text mb-2">Ontario Non-Refundable</div>
-                        <div className="text-xl font-bold summary-card-text">
+                        <div className="font-semibold credits-card-text mb-2">Ontario Non-Refundable</div>
+                        <div className="text-xl font-bold credits-card-text">
                           {formatCurrency(getFieldValue('58800'))}
                         </div>
-                        <div className="text-sm summary-card-text mt-2">
+                        <div className="text-sm credits-card-text mt-2">
                           Tax Savings: {formatCurrency(getFieldValue('61500'))}
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="font-semibold summary-card-text mb-2">Ontario Refundable</div>
-                        <div className="text-xl font-bold summary-card-text">
+                        <div className="font-semibold credits-card-text mb-2">Ontario Refundable</div>
+                        <div className="text-xl font-bold credits-card-text">
                           {formatCurrency(getSectionTotal(['63095', '63100', '63110', '63220', '63300']))}
                         </div>
                       </div>
