@@ -60,7 +60,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   // Section IDs for expand/collapse all functionality
   const incomeSectionIds = ['employment', 'pension', 'government', 'investment', 'registered-account', 'selfemployment', 'othersources'];
   const deductionSectionIds = ['retirement-plan-deductions', 'personal-deductions', 'employment-deductions', 'specialized-deductions'];
-  const creditSectionIds = ['basic-credits', 'employment-credits', 'personal-situation-credits-new', 'disability-caregiver-credits', 'education-credits', 'medical-credits', 'charitable-gifts-donations-credits', 'ontario-credits', 'ontario-refundable-credits', 'refundable-credits'];
+  const creditSectionIds = ['basic-credits', 'employment-credits', 'personal-situation-credits-new', 'disability-caregiver-credits', 'education-credits', 'education-medical-credits', 'charitable-gifts-donations-credits', 'ontario-credits', 'ontario-refundable-credits', 'refundable-credits'];
   const accountSectionIds = ['rrsp-rrif-section', 'tfsa-section', 'fhsa-section', 'resp-section', 'rdsp-section', 'capital-loss-section', 'amt-section'];
 
   // Function to toggle all sections for a specific tab
