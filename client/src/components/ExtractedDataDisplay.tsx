@@ -1242,181 +1242,117 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             </div>
             <div className="space-y-4">
               {/* Retirement Plan Deductions Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('retirement-plan-deductions')}
-                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['retirement-plan-deductions'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Retirement Plan Deductions</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810', '21000']))}
-                  </span>
-                </button>
-                {!collapsedSections['retirement-plan-deductions'] && (
-                  <div className="space-y-2 p-4 border-t border-gray-200">
-                    <div className="field-row">
-                      <span className="field-label">Pension Adjustment (Line 20600):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('20600'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Registered Pension Plan Deduction (Line 20700):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">RRSP Deduction (Line 20800):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">FHSA Deduction (Line 20805):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('20805'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">PRPP Employer Contributions (Line 20810):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('20810'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Split Pension Deduction (Line 21000):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21000'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="retirement-plan-deductions"
+                title="Retirement Plan Deductions"
+                fieldCodes={['20700', '20800', '20805', '20810', '21000']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Pension Adjustment (Line 20600):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('20600'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Registered Pension Plan Deduction (Line 20700):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">RRSP Deduction (Line 20800):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">FHSA Deduction (Line 20805):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('20805'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">PRPP Employer Contributions (Line 20810):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('20810'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Split Pension Deduction (Line 21000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21000'))}</span>
+                </div>
+              </CollapsibleSection>
               {/* Personal Deductions Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('personal-deductions')}
-                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['personal-deductions'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Personal Deductions</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']))}
-                  </span>
-                </button>
-                {!collapsedSections['personal-deductions'] && (
-                  <div className="space-y-2 p-4 border-t border-gray-200">
-                    <div className="field-row">
-                      <span className="field-label">Annual Union Dues (Line 21200):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">UCCB Repayment (Line 21300):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21300'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Child Care Expenses (Line 21400):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Disability Supports (Line 21500):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21500'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Business Investment Loss (Line 21700):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21700'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Moving Expenses (Line 21900):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Support Payments Allowable (Line 22000):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Carrying Charges (Line 22100):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="personal-deductions"
+                title="Personal Deductions"
+                fieldCodes={['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Annual Union Dues (Line 21200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">UCCB Repayment (Line 21300):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21300'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Child Care Expenses (Line 21400):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Disability Supports (Line 21500):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21500'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Business Investment Loss (Line 21700):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21700'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Moving Expenses (Line 21900):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Support Payments Allowable (Line 22000):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Carrying Charges (Line 22100):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
+                </div>
+              </CollapsibleSection>
               {/* Employment Deductions Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('employment-deductions')}
-                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['employment-deductions'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Employment Deductions</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['22200', '22215', '22900', '23100']))}
-                  </span>
-                </button>
-                {!collapsedSections['employment-deductions'] && (
-                  <div className="space-y-2 p-4 border-t border-gray-200">
-                    <div className="field-row">
-                      <span className="field-label">CPP/QPP Self-Employed (Line 22200):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Enhanced CPP/QPP Deduction (Line 22215):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Other Employment Expenses (Line 22900):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Clergy Residence (Line 23100):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('23100'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="employment-deductions"
+                title="Employment Deductions"
+                fieldCodes={['22200', '22215', '22900', '23100']}
+              >
+                <div className="field-row">
+                  <span className="field-label">CPP/QPP Self-Employed (Line 22200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Enhanced CPP/QPP Deduction (Line 22215):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Employment Expenses (Line 22900):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Clergy Residence (Line 23100):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('23100'))}</span>
+                </div>
+              </CollapsibleSection>
               {/* Specialized Deductions Section */}
-              <div className="border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => toggleSection('specialized-deductions')}
-                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['specialized-deductions'] ? (
-                      <ChevronRight className="h-4 w-4 mr-2" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 mr-2" />
-                    )}
-                    <h4 className="font-medium text-primary">Specialized Deductions</h4>
-                  </div>
-                  <span className="font-medium text-primary">
-                    {formatCurrency(getSectionTotal(['22400', '23200', '23500']))}
-                  </span>
-                </button>
-                {!collapsedSections['specialized-deductions'] && (
-                  <div className="space-y-2 p-4 border-t border-gray-200">
-                    <div className="field-row">
-                      <span className="field-label">Exploration Development (Line 22400):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Other Deductions (Line 23200):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-label">Social Benefits Repayment (Line 23500):</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('23500'))}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="specialized-deductions"
+                title="Specialized Deductions"
+                fieldCodes={['22400', '23200', '23500']}
+              >
+                <div className="field-row">
+                  <span className="field-label">Exploration Development (Line 22400):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Other Deductions (Line 23200):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="field-label">Social Benefits Repayment (Line 23500):</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('23500'))}</span>
+                </div>
+              </CollapsibleSection>
               {/* Summary Section */}
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
