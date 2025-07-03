@@ -3123,7 +3123,7 @@ export default function TaxReport() {
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
-                                        {hasClaim ? formatCurrency(amount) : ''}
+                                        {formatCurrency(amount)}
                                       </div>
                                     </div>
                                   );
@@ -3404,7 +3404,7 @@ export default function TaxReport() {
                                           </div>
                                         </div>
                                         <div className="text-right font-medium text-primary text-sm">
-                                          {hasClaim ? formatCurrency(amount) : ''}
+                                          {formatCurrency(amount)}
                                         </div>
                                       </div>
                                     );
@@ -3634,7 +3634,7 @@ export default function TaxReport() {
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
-                                        {hasClaim ? formatCurrency(amount) : ''}
+                                        {formatCurrency(amount)}
                                       </div>
                                     </div>
                                     );
