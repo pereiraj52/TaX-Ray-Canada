@@ -23,6 +23,34 @@ export default function TaxReport() {
     'specialized-deductions': true,
   });
 
+  // State for collapsible sections in Federal Tax Credits Analysis
+  const [collapsedFederalCreditSections, setCollapsedFederalCreditSections] = useState<{[key: string]: boolean}>({
+    'basic-credits-non-refundable': true,
+    'employment-credits-non-refundable': true,
+    'personal-situation-credits-non-refundable': true,
+    'disability-&-caregiver-credits-non-refundable': true,
+    'education-credits-non-refundable': true,
+    'medical-credits-non-refundable': true,
+    'charitable-gifts-&-donations-non-refundable': true,
+    'federal-refundable-credits': true,
+  });
+
+  // State for collapsible sections in Provincial Tax Credits Analysis
+  const [collapsedProvincialCreditSections, setCollapsedProvincialCreditSections] = useState<{[key: string]: boolean}>({
+    'ontario-non-refundable-credits': true,
+    'ontario-refundable-tax-credits': true,
+  });
+
+  // State for collapsible sections in Clawback Analysis
+  const [collapsedClawbackSections, setCollapsedClawbackSections] = useState<{[key: string]: boolean}>({
+    'basic-personal-amount': true,
+    'canada-workers-benefit': true,
+    'old-age-security': true,
+    'guaranteed-income-supplement': true,
+    'child-disability-benefit': true,
+    'canada-training-credit': true,
+  });
+
   const toggleDeductionSection = (sectionKey: string) => {
     setCollapsedDeductionSections(prev => ({
       ...prev,
@@ -48,18 +76,7 @@ export default function TaxReport() {
     setCollapsedDeductionSections(newState);
   };
 
-  // State for collapsible sections in Federal Tax Credits Analysis
-  const [collapsedFederalCreditSections, setCollapsedFederalCreditSections] = useState<{[key: string]: boolean}>({
-    'basic-credits-non-refundable': true,
-    'employment-credits-non-refundable': true,
-    'personal-situation-credits-non-refundable': true,
-    'disability-&-caregiver-credits-non-refundable': true,
-    'education-credits-non-refundable': true,
-    'medical-credits-non-refundable': true,
-    'charitable-gifts-&-donations-non-refundable': true,
-    'federal-refundable-credits': true,
-  });
-
+  // Toggle functions for federal credit sections
   const toggleFederalCreditSection = (sectionKey: string) => {
     setCollapsedFederalCreditSections(prev => ({
       ...prev,
@@ -67,12 +84,23 @@ export default function TaxReport() {
     }));
   };
 
-  // State for collapsible sections in Provincial Tax Credits Analysis
-  const [collapsedProvincialCreditSections, setCollapsedProvincialCreditSections] = useState<{[key: string]: boolean}>({
-    'ontario-non-refundable-credits': true,
-    'ontario-refundable-tax-credits': true,
-  });
+  const areAllFederalCreditSectionsExpanded = () => {
+    const federalCreditSectionKeys = ['basic-credits-non-refundable', 'employment-credits-non-refundable', 'personal-situation-credits-non-refundable', 'disability-&-caregiver-credits-non-refundable', 'education-credits-non-refundable', 'medical-credits-non-refundable', 'charitable-gifts-&-donations-non-refundable', 'federal-refundable-credits'];
+    return federalCreditSectionKeys.every(key => !collapsedFederalCreditSections[key]);
+  };
 
+  const toggleAllFederalCreditSections = () => {
+    const allExpanded = areAllFederalCreditSectionsExpanded();
+    const newState = { ...collapsedFederalCreditSections };
+    
+    Object.keys(newState).forEach(key => {
+      newState[key] = allExpanded;
+    });
+    
+    setCollapsedFederalCreditSections(newState);
+  };
+
+  // Toggle functions for provincial credit sections
   const toggleProvincialCreditSection = (sectionKey: string) => {
     setCollapsedProvincialCreditSections(prev => ({
       ...prev,
@@ -80,23 +108,49 @@ export default function TaxReport() {
     }));
   };
 
-  // State for collapsible sections in Clawback Analysis
-  const [collapsedClawbackSections, setCollapsedClawbackSections] = useState<{[key: string]: boolean}>({
-    'basic-personal-amount': true,
-    'canada-workers-benefit': true,
-    'old-age-security': true,
-    'guaranteed-income-supplement': true,
-    'child-disability-benefit': true,
-    'canada-training-credit': true,
-    'canada-child-benefit': true,
-  });
+  const areAllProvincialCreditSectionsExpanded = () => {
+    const provincialCreditSectionKeys = ['ontario-non-refundable-credits', 'ontario-refundable-tax-credits'];
+    return provincialCreditSectionKeys.every(key => !collapsedProvincialCreditSections[key]);
+  };
 
+  const toggleAllProvincialCreditSections = () => {
+    const allExpanded = areAllProvincialCreditSectionsExpanded();
+    const newState = { ...collapsedProvincialCreditSections };
+    
+    Object.keys(newState).forEach(key => {
+      newState[key] = allExpanded;
+    });
+    
+    setCollapsedProvincialCreditSections(newState);
+  };
+
+  // Toggle functions for clawback sections
   const toggleClawbackSection = (sectionKey: string) => {
     setCollapsedClawbackSections(prev => ({
       ...prev,
       [sectionKey]: !prev[sectionKey]
     }));
   };
+
+  const areAllClawbackSectionsExpanded = () => {
+    const clawbackSectionKeys = ['basic-personal-amount', 'canada-workers-benefit', 'old-age-security', 'guaranteed-income-supplement', 'child-disability-benefit', 'canada-training-credit'];
+    return clawbackSectionKeys.every(key => !collapsedClawbackSections[key]);
+  };
+
+  const toggleAllClawbackSections = () => {
+    const allExpanded = areAllClawbackSectionsExpanded();
+    const newState = { ...collapsedClawbackSections };
+    
+    Object.keys(newState).forEach(key => {
+      newState[key] = allExpanded;
+    });
+    
+    setCollapsedClawbackSections(newState);
+  };
+
+
+
+
 
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
@@ -3140,7 +3194,17 @@ export default function TaxReport() {
 
         {/* Federal Tax Credits Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Federal Tax Credits Analysis</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Federal Tax Credits Analysis</h2>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleAllFederalCreditSections}
+              className="credits-card-button"
+            >
+              {areAllFederalCreditSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+            </Button>
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {
