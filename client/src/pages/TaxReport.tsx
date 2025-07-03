@@ -3033,13 +3033,11 @@ export default function TaxReport() {
                                         </div>
                                       </div>
                                       <div className="flex-1">
-                                        <div className="flex items-center justify-between">
-                                          <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                            {item.name}
+                                        <div className="font-medium text-sm" style={{ color: '#111111' }}>
+                                          {item.name}
                                         </div>
-                                          <div className="text-sm" style={{ color: '#A3A3A3' }}>
-                                            (Line {item.line})
-                                          </div>
+                                        <div className="text-gray-600 text-sm">
+                                          (Line {item.line})
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
@@ -3309,13 +3307,11 @@ export default function TaxReport() {
                                           </div>
                                         </div>
                                         <div className="flex-1">
-                                          <div className="flex items-center justify-between">
                                           <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                              {item.name}
+                                            {item.name}
                                           </div>
-                                          <div className="text-sm" style={{ color: '#A3A3A3' }}>
+                                          <div className="text-gray-600 text-sm">
                                             (Line {item.line})
-                                          </div>
                                           </div>
                                         </div>
                                         <div className="text-right font-medium text-primary text-sm">
@@ -3534,13 +3530,11 @@ export default function TaxReport() {
                                         </div>
                                       </div>
                                       <div className="flex-1">
-                                        <div className="flex items-center justify-between">
-                                          <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                            {item.name}
+                                        <div className="font-medium text-sm" style={{ color: '#111111' }}>
+                                          {item.name}
                                         </div>
-                                          <div className="text-sm" style={{ color: '#A3A3A3' }}>
-                                            (Line {item.line})
-                                          </div>
+                                        <div className="text-gray-600 text-sm">
+                                          (Line {item.line})
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
@@ -3868,10 +3862,8 @@ export default function TaxReport() {
                                       )}
                                     </div>
                                     <div className="flex-1">
-                                      <div className="flex items-center justify-between">
-                                        <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                          {info.name}
-                                        </div>
+                                      <div className="font-medium text-sm" style={{ color: '#111111' }}>
+                                        {info.name}
                                       </div>
                                     </div>
                                     <div className="text-right font-medium text-primary text-sm">
@@ -4153,36 +4145,128 @@ export default function TaxReport() {
                                             )}
                                           </div>
                                           <div className="flex-1">
-                                            <div className="flex items-center justify-between">
-                                              <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                                {item.name}
-                                              </div>
-                                              <div className="text-sm" style={{ color: '#A3A3A3' }}>
-                                                (Line {item.line})
-                                              </div>
+                                            <div className="font-medium text-sm" style={{ color: '#111111' }}>
+                                              {item.name}
+                                            </div>
+                                            <div className="text-gray-600 text-sm">
+                                              {item.line}
                                             </div>
                                           </div>
                                           <div className="text-right font-medium text-primary text-sm">
-                                            {amount > 0 ? formatValue(amount, 'currency') : ''}
+                                            {amount > 0 ? formatCurrency(amount) : ''}
                                           </div>
                                         </div>
                                       );
                                     })}
-                                  </div>
+                                </div>
+                                
+                                <div className="col-span-2">
+                                  {(() => {
+                                    const categoryTotal = category.items.reduce((sum, item) => {
+                                      return sum + getFieldValue(item.line);
+                                    }, 0);
+                                    
+                                    // Special handling for Basic Personal Amount clawback calculation
+                                    if (category.category === "Basic Personal Amount") {
+                                      // BPA clawback thresholds
+                                      const clawbackStart = 173205;
+                                      const clawbackEnd = 246752;
+                                      
+                                      // Get taxable income (Line 26000)
+                                      const taxableIncome = getFieldValue("26000");
+                                      
+                                      // Calculate clawback percentage
+                                      let clawbackPercentage = 0;
+                                      if (taxableIncome > clawbackStart) {
+                                        const excessIncome = Math.min(taxableIncome - clawbackStart, clawbackEnd - clawbackStart);
+                                        const totalClawbackRange = clawbackEnd - clawbackStart;
+                                        clawbackPercentage = (excessIncome / totalClawbackRange) * 100;
+                                      }
+                                      
+                                      const progressPercentage = Math.min(clawbackPercentage, 100);
+                                      
+                                      return (
+                                        <div className="relative mt-10">
+                                          <div className="w-full" style={{ height: '36px' }}>
+                                            <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
+                                              {/* Progress fill */}
+                                              <div 
+                                                className="h-full transition-all duration-300"
+                                                style={{ 
+                                                  width: `${progressPercentage}%`,
+                                                  background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                                }}
+                                              />
+                                              {/* Clawback percentage overlay */}
+                                              <div 
+                                                className="absolute inset-0 flex items-center justify-center text-lg"
+                                                style={{ color: '#111111' }}
+                                              >
+                                                Clawback: {clawbackPercentage.toFixed(1)}%
+                                              </div>
+                                            </div>
+                                          </div>
+                                          
+                                          {/* Scale labels */}
+                                          <div className="flex justify-between font-medium text-primary mt-2">
+                                            <span>Start: {formatCurrency(clawbackStart)}</span>
+                                            <span>Income: {formatCurrency(taxableIncome)}</span>
+                                            <span>End: {formatCurrency(clawbackEnd)}</span>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                    
+                                    // Default handling for other benefits
+                                    const hasAmount = categoryTotal > 0;
+                                    return (
+                                      <div className="relative mt-10">
+                                        <div className="w-full" style={{ height: '36px' }}>
+                                          <div className="w-full h-full bg-gray-200 rounded-lg overflow-hidden relative">
+                                            {/* Progress fill */}
+                                            <div 
+                                              className="h-full transition-all duration-300"
+                                              style={{ 
+                                                width: hasAmount ? '100%' : '0%',
+                                                background: hasAmount ? 'linear-gradient(to right, #D4B26A, #F4E4B8)' : 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                              }}
+                                            />
+                                            {/* Status overlay */}
+                                            <div 
+                                              className="absolute inset-0 flex items-center justify-center text-lg"
+                                              style={{ color: '#111111' }}
+                                            >
+                                              {hasAmount ? 'Clawback: 100.0%' : 'Clawback: 0.0%'}
+                                            </div>
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Scale labels */}
+                                        <div className="flex justify-between font-medium text-primary mt-2">
+                                          <span>Start: $0</span>
+                                          <span>Amount: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
+                                          <span>End: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
+                                        </div>
+                                      </div>
+                                    );
+                                  })()}
+                                </div>
                                 </div>
                               )}
                             </div>
                           );
                         })}
+
                       </div>
                     </CardContent>
                   </Card>
-                </div>
-              </div>
-            </div>
+                );
+              });
+            })()}
           </div>
         </div>
-      </div>
+
+        </div>
       </Layout>
     </TooltipProvider>
   );
