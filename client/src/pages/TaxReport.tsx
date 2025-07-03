@@ -4266,8 +4266,51 @@ export default function TaxReport() {
           {/* Canada Workers Benefit (Family) Section */}
           <div className="mb-6">
             {(() => {
+              // Helper function to get field value for a specific spouse
+              const getFieldValue = (spouseFormFields: any[], lineNumber: string) => {
+                const field = spouseFormFields.find(f => f.fieldCode === lineNumber);
+                return field?.fieldValue ? parseFloat(field.fieldValue) : 0;
+              };
+
+              // Helper function to format currency
+              const formatCurrency = (amount: number) => {
+                return new Intl.NumberFormat('en-CA', {
+                  style: 'currency',
+                  currency: 'CAD',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                }).format(amount);
+              };
+
+              // Get T1 returns for the specified year for both spouses
+              const spouseData: any[] = [];
+              
+              // Primary client
+              if (household?.clients?.[0]) {
+                const client = household.clients[0];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+              
+              // Secondary client
+              if (household?.clients?.[1]) {
+                const client = household.clients[1];
+                const t1Return = client.t1Returns?.find(ret => ret.taxYear === taxYear);
+                const formFields = t1Return?.formFields || [];
+                spouseData.push({
+                  clientName: `${client.firstName} ${client.lastName}`,
+                  t1Return,
+                  formFields
+                });
+              }
+
               // Calculate family adjusted net income (same as CCB)
-              const adjustedFamilyNetIncome = spouseData.reduce((sum, spouse) => {
+              const adjustedFamilyNetIncome = spouseData.reduce((sum: number, spouse: any) => {
                 const line23600 = getFieldValue(spouse.formFields, '23600'); // Net income
                 const line11700 = getFieldValue(spouse.formFields, '11700'); // Taxable capital gains
                 const line21300 = getFieldValue(spouse.formFields, '21300'); // UCCB repayment
