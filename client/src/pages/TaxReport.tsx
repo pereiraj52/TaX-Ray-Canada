@@ -4154,15 +4154,17 @@ export default function TaxReport() {
                                     <div className="w-full" style={{ height: '36px' }}>
                                       <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: totalEligibleChildren > 0 ? '#E8E3F0' : '#D4B26A' }}>
                                         {/* Progress fill */}
-                                        <div 
-                                          className="h-full transition-all duration-300"
-                                          style={{ 
-                                            width: `${progressPercentage}%`,
-                                            background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
-                                          }}
-                                        />
+                                        {totalEligibleChildren > 0 && (
+                                          <div 
+                                            className="h-full transition-all duration-300"
+                                            style={{ 
+                                              width: `${progressPercentage}%`,
+                                              background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                            }}
+                                          />
+                                        )}
                                         {/* Current position indicator */}
-                                        {adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
+                                        {totalEligibleChildren > 0 && adjustedFamilyNetIncome >= chartMin && adjustedFamilyNetIncome <= chartMax && (
                                           <div 
                                             className="absolute top-0 w-1 bg-black"
                                             style={{ left: `${progressPercentage}%`, height: '36px' }}
