@@ -3188,18 +3188,16 @@ export default function TaxReport() {
 
                           return (
                             <div key={categoryIndex} className="space-y-4">
-                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                              <button
+                                onClick={() => toggleDeductionSection(sectionKey)}
+                                className="w-full flex justify-between items-center pb-2 border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <button
-                                    onClick={() => toggleDeductionSection(sectionKey)}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    {isCollapsed ? (
-                                      <ChevronRight className="w-4 h-4" />
-                                    ) : (
-                                      <ChevronDown className="w-4 h-4" />
-                                    )}
-                                  </button>
+                                  {isCollapsed ? (
+                                    <ChevronRight className="w-4 h-4" />
+                                  ) : (
+                                    <ChevronDown className="w-4 h-4" />
+                                  )}
                                   <h4 className="font-medium text-primary text-sm">
                                     {category.category}
                                   </h4>
@@ -3207,7 +3205,7 @@ export default function TaxReport() {
                                 <span className="font-medium text-primary text-sm">
                                   {formatCurrency(categoryTotal)}
                                 </span>
-                              </div>
+                              </button>
                               
                               {!isCollapsed && (
                                 <div className="space-y-3">
@@ -3476,18 +3474,16 @@ export default function TaxReport() {
 
                           return (
                             <div key={categoryIndex} className="space-y-4">
-                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                              <button
+                                onClick={() => toggleFederalCreditSection(sectionKey)}
+                                className="w-full flex justify-between items-center pb-2 border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <button
-                                    onClick={() => toggleFederalCreditSection(sectionKey)}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    {isCollapsed ? (
-                                      <ChevronRight className="w-4 h-4" />
-                                    ) : (
-                                      <ChevronDown className="w-4 h-4" />
-                                    )}
-                                  </button>
+                                  {isCollapsed ? (
+                                    <ChevronRight className="w-4 h-4" />
+                                  ) : (
+                                    <ChevronDown className="w-4 h-4" />
+                                  )}
                                   <h4 className="font-medium text-primary text-sm">
                                     {category.category}
                                   </h4>
@@ -3495,7 +3491,7 @@ export default function TaxReport() {
                                 <span className="font-medium text-primary text-sm">
                                   {formatCurrency(categoryTotal)}
                                 </span>
-                              </div>
+                              </button>
                               
                               {!isCollapsed && (
                                 <div className="space-y-3">
@@ -3714,18 +3710,16 @@ export default function TaxReport() {
 
                           return (
                             <div key={categoryIndex} className="space-y-4">
-                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                              <button
+                                onClick={() => toggleProvincialCreditSection(sectionKey)}
+                                className="w-full flex justify-between items-center pb-2 border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <button
-                                    onClick={() => toggleProvincialCreditSection(sectionKey)}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    {isCollapsed ? (
-                                      <ChevronRight className="w-4 h-4" />
-                                    ) : (
-                                      <ChevronDown className="w-4 h-4" />
-                                    )}
-                                  </button>
+                                  {isCollapsed ? (
+                                    <ChevronRight className="w-4 h-4" />
+                                  ) : (
+                                    <ChevronDown className="w-4 h-4" />
+                                  )}
                                   <h4 className="font-medium text-primary text-sm">
                                     {category.category}
                                   </h4>
@@ -3733,7 +3727,7 @@ export default function TaxReport() {
                                 <span className="font-medium text-primary text-sm">
                                   {formatCurrency(categoryTotal)}
                                 </span>
-                              </div>
+                              </button>
                               
                               {!isCollapsed && (
                                 <div className="space-y-3">
@@ -4055,18 +4049,16 @@ export default function TaxReport() {
                       
                       {/* Canada Child Benefit Clawback Sub-Category */}
                       <div className="space-y-4">
-                        <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                        <button
+                          onClick={() => toggleClawbackSection('canada-child-benefit')}
+                          className="w-full flex justify-between items-center pb-2 border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                        >
                           <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => toggleClawbackSection('canada-child-benefit')}
-                              className="p-1 hover:bg-gray-100 rounded"
-                            >
-                              {collapsedClawbackSections['canada-child-benefit'] ? (
-                                <ChevronRight className="w-4 h-4" />
-                              ) : (
-                                <ChevronDown className="w-4 h-4" />
-                              )}
-                            </button>
+                            {collapsedClawbackSections['canada-child-benefit'] ? (
+                              <ChevronRight className="w-4 h-4" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4" />
+                            )}
                             <h4 className="font-medium text-primary text-sm">
                               Canada Child Benefit Clawback
                             </h4>
@@ -4074,7 +4066,7 @@ export default function TaxReport() {
                           <span className="font-medium text-primary text-sm">
                             {totalEligibleChildren > 0 ? `${clawbackPercentage.toFixed(2)}% clawback` : 'Ineligible'}
                           </span>
-                        </div>
+                        </button>
                         
                         {!collapsedClawbackSections['canada-child-benefit'] && (
                           <div className="grid grid-cols-3 gap-6">
@@ -4313,18 +4305,16 @@ export default function TaxReport() {
 
                           return (
                             <div key={categoryIndex} className="space-y-4">
-                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                              <button
+                                onClick={() => toggleClawbackSection(sectionKey)}
+                                className="w-full flex justify-between items-center pb-2 border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                              >
                                 <div className="flex items-center gap-2">
-                                  <button
-                                    onClick={() => toggleClawbackSection(sectionKey)}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    {isCollapsed ? (
-                                      <ChevronRight className="w-4 h-4" />
-                                    ) : (
-                                      <ChevronDown className="w-4 h-4" />
-                                    )}
-                                  </button>
+                                  {isCollapsed ? (
+                                    <ChevronRight className="w-4 h-4" />
+                                  ) : (
+                                    <ChevronDown className="w-4 h-4" />
+                                  )}
                                   <h4 className="font-medium text-primary text-sm">
                                     {category.category}
                                   </h4>
@@ -4358,7 +4348,7 @@ export default function TaxReport() {
                                     return categoryTotal > 0 ? '100.00% clawback' : '0.00% clawback';
                                   })()}
                                 </span>
-                              </div>
+                              </button>
                               
                               {!isCollapsed && (
                                 <div className="grid grid-cols-3 gap-6">
