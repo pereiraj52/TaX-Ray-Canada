@@ -723,61 +723,41 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 </button>
                 {!collapsedSections['rrsp-section'] && (
                   <div className="mt-4 pl-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">Account Balance:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">$0.00</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">Contribution Room:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">$0.00</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 Contribution:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getFieldValue("20800"))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">HBP Balance:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 HBP Required:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_required_2024'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 HBP Repaid:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getFieldValue('24600'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">LLP Balance:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_balance'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 LLP Required:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_required_2024'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 LLP Repaid:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getFieldValue('24630'))}</span>
-                        </div>
-                      </div>
+                    <div className="field-row">
+                      <span className="font-medium text-primary">Account Balance:</span>
+                      <span className="field-value">$0.00</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="font-medium text-primary">Contribution Room:</span>
+                      <span className="field-value">$0.00</span>
+                    </div>
+                    <div className="field-row">
+                      <FieldLabelWithTooltip label="2024 Contribution" lineNumber="20800" />
+                      <span className="field-value">{formatCurrency(getFieldValue("20800"))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="font-medium text-primary">HBP Balance:</span>
+                      <span className="field-value">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="font-medium text-primary">2024 HBP Required:</span>
+                      <span className="field-value">{formatCurrency(getHouseholdFieldValue('hbp_required_2024'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <FieldLabelWithTooltip label="2024 HBP Repaid" lineNumber="24600" />
+                      <span className="field-value">{formatCurrency(getFieldValue('24600'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="font-medium text-primary">LLP Balance:</span>
+                      <span className="field-value">{formatCurrency(getHouseholdFieldValue('llp_balance'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <span className="font-medium text-primary">2024 LLP Required:</span>
+                      <span className="field-value">{formatCurrency(getHouseholdFieldValue('llp_required_2024'))}</span>
+                    </div>
+                    <div className="field-row">
+                      <FieldLabelWithTooltip label="2024 LLP Repaid" lineNumber="24630" />
+                      <span className="field-value">{formatCurrency(getFieldValue('24630'))}</span>
                     </div>
                   </div>
                 )}
@@ -799,25 +779,17 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </button>
               {!collapsedSections['tfsa-section'] && (
                 <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Account Balance:</span>
+                    <span className="field-value">$0.00</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Contribution Room:</span>
+                    <span className="field-value">$0.00</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">2024 Contribution:</span>
+                    <span className="field-value">$0.00</span>
                   </div>
                 </div>
               )}
@@ -839,25 +811,17 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </button>
               {!collapsedSections['fhsa-section'] && (
                 <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("20805"))}</span>
-                      </div>
-                    </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Account Balance:</span>
+                    <span className="field-value">$0.00</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Contribution Room:</span>
+                    <span className="field-value">$0.00</span>
+                  </div>
+                  <div className="field-row">
+                    <FieldLabelWithTooltip label="2024 Contribution" lineNumber="20805" />
+                    <span className="field-value">{formatCurrency(getFieldValue("20805"))}</span>
                   </div>
                 </div>
               )}
