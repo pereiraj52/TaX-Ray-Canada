@@ -4152,7 +4152,7 @@ export default function TaxReport() {
                                 <div className="relative mt-10">
                                     {/* Bar background */}
                                     <div className="w-full" style={{ height: '36px' }}>
-                                      <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: '#E8E3F0' }}>
+                                      <div className="w-full h-full rounded-lg overflow-hidden relative" style={{ backgroundColor: totalEligibleChildren > 0 ? '#E8E3F0' : '#D4B26A' }}>
                                         {/* Progress fill */}
                                         <div 
                                           className="h-full transition-all duration-300"
@@ -4173,7 +4173,7 @@ export default function TaxReport() {
                                           className="absolute inset-0 flex items-center justify-center text-sm"
                                           style={{ color: '#111111' }}
                                         >
-                                          Clawback: {totalChildren > 0 ? `${clawbackPercentage.toFixed(1)}%` : 'Ineligible'}
+                                          Clawback: {totalEligibleChildren > 0 ? `${clawbackPercentage.toFixed(1)}%` : 'Ineligible'}
                                         </div>
                                       </div>
                                     </div>
