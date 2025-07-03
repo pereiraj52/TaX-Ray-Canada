@@ -4069,8 +4069,8 @@ export default function TaxReport() {
                         </button>
                         
                         {!collapsedClawbackSections['canada-child-benefit'] && (
-                          <div className="grid grid-cols-3 gap-6">
-                            {/* Left 1/3 - CCB Details */}
+                          <div className="grid grid-cols-2 gap-6">
+                            {/* Left 1/2 - CCB Details */}
                             <div className="space-y-3">
                               {benefitInfo.map((info, index) => {
                                 const hasValue = info.value !== null && info.value !== undefined && info.value !== 0;
@@ -4100,8 +4100,8 @@ export default function TaxReport() {
                               })}
                             </div>
                           
-                          {/* Right 2/3 - CCB Clawback Chart */}
-                          <div className="col-span-2">
+                          {/* Right 1/2 - CCB Clawback Chart */}
+                          <div className="col-span-1">
                           {(() => {
                             const baseThreshold = 37487;
                             const additionalThreshold = 81222;
@@ -4351,7 +4351,7 @@ export default function TaxReport() {
                               </button>
                               
                               {!isCollapsed && (
-                                <div className="grid grid-cols-3 gap-6">
+                                <div className="grid grid-cols-2 gap-6">
                                   <div className="space-y-3">
                                     {category.items.map((item, itemIndex) => {
                                       const amount = getFieldValue(item.line);
@@ -4384,7 +4384,7 @@ export default function TaxReport() {
                                     })}
                                 </div>
                                 
-                                <div className="col-span-2">
+                                <div className="col-span-1">
                                   {(() => {
                                     const categoryTotal = category.items.reduce((sum, item) => {
                                       return sum + getFieldValue(item.line);
