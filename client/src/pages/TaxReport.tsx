@@ -4280,9 +4280,14 @@ export default function TaxReport() {
                           // Calculate actual CWB: Maximum CWB - (Maximum CWB × Clawback %)
                           const actualCWBFamily = maxCWBFamily - (maxCWBFamily * (cwbClawbackPercentage / 100));
 
+                          // Check if either client is disabled
+                          const isEitherClientDisabled = household?.clients?.some(client => client.disabled) || false;
+                          const disabilityStatus = isEitherClientDisabled ? "Eligible" : "Ineligible";
+
                           // Calculate family benefit information
                           const cwbBenefitInfo = [
                             { name: "Family Status", value: "Married/Common-law", format: 'text' },
+                            { name: "Disability Supplement", value: disabilityStatus, format: 'text' },
                             { name: "Maximum CWB (Family)", value: maxCWBFamily, format: 'currency' },
                             { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
                             { name: "Actual CWB (Family)", value: actualCWBFamily, format: 'currency' },
@@ -4315,13 +4320,29 @@ export default function TaxReport() {
                                   {/* Left 1/2 - CWB Family Details */}
                                   <div className="space-y-3">
                                     {cwbBenefitInfo.map((info, index) => {
-                                      const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Family Status" || info.name === "Maximum CWB (Family)" || info.name === "Actual CWB (Family)");
+                                      const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Family Status" || info.name === "Disability Supplement" || info.name === "Maximum CWB (Family)" || info.name === "Actual CWB (Family)");
                                       return (
                                         <div key={index} className="flex items-center gap-3">
                                           <div className="w-5 h-5 flex items-center justify-center">
                                             {info.name === "Family Status" ? (
                                               (() => {
                                                 if (info.value === "Married/Common-law") {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                      ✓
+                                                    </div>
+                                                  );
+                                                } else {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                      ✗
+                                                    </div>
+                                                  );
+                                                }
+                                              })()
+                                            ) : info.name === "Disability Supplement" ? (
+                                              (() => {
+                                                if (info.value === "Eligible") {
                                                   return (
                                                     <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                                       ✓
