@@ -136,6 +136,25 @@ export default function TaxReport() {
     }));
   };
 
+  // Function to check if all clawback sections are expanded
+  const areAllClawbackSectionsExpanded = () => {
+    const clawbackSectionKeys = ['basic-personal-amount', 'canada-workers-benefit', 'old-age-security', 'guaranteed-income-supplement', 'child-disability-benefit', 'canada-training-credit', 'canada-child-benefit'];
+    return clawbackSectionKeys.every(key => !collapsedClawbackSections[key]);
+  };
+
+  // Function to toggle all clawback sections
+  const toggleAllClawbackSections = () => {
+    const allExpanded = areAllClawbackSectionsExpanded();
+    const newState = { ...collapsedClawbackSections };
+    
+    const clawbackSectionKeys = ['basic-personal-amount', 'canada-workers-benefit', 'old-age-security', 'guaranteed-income-supplement', 'child-disability-benefit', 'canada-training-credit', 'canada-child-benefit'];
+    clawbackSectionKeys.forEach(key => {
+      newState[key] = allExpanded; // If all expanded, collapse all; otherwise expand all
+    });
+    
+    setCollapsedClawbackSections(newState);
+  };
+
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
     queryFn: () => HouseholdAPI.getHousehold(householdId),
@@ -3695,7 +3714,17 @@ export default function TaxReport() {
 
         {/* Clawback Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Clawback Analysis</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Clawback Analysis</h2>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleAllClawbackSections}
+              className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+            >
+              {areAllClawbackSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+            </Button>
+          </div>
           
           {/* Family-wide Government Clawbacks Summary */}
           <div className="w-full mb-6">
