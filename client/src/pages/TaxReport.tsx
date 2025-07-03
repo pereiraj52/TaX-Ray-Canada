@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight, HelpCircle, TrendingDown } from "lucide-react";
+import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight, HelpCircle } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -4461,7 +4461,6 @@ export default function TaxReport() {
                                                 className="absolute inset-0 flex items-center justify-center text-sm"
                                                 style={{ color: '#111111' }}
                                               >
-                                                <TrendingDown className="w-4 h-4 mr-1" />
                                                 Clawback: {clawbackPercentage.toFixed(1)}%
                                               </div>
                                             </div>
