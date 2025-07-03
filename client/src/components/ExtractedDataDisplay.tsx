@@ -290,12 +290,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
   if (t1Return.processingStatus === 'processing') {
     return (
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div className="summary-card rounded-lg p-4">
         <div className="flex items-center">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-3"></div>
           <span className="text-blue-800 font-medium">Processing T1 return...</span>
         </div>
-        <div className="mt-2 text-sm text-blue-700">
+        <div className="mt-2 text-sm summary-card-text">
           Extracting data from uploaded PDF. This may take a few moments.
         </div>
       </div>
@@ -598,7 +598,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Key Tax Information */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <div className="summary-card rounded-lg p-6">
                 <h3 className="font-semibold text-primary mb-4">Key Tax Information</h3>
                 <div className="space-y-3">
                   {(() => {
@@ -1041,19 +1041,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
         {activeTab === 'income' && (
           <div className="space-y-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="summary-card rounded-lg p-4 mb-6">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold text-blue-800">Income Sources</h3>
+                <h3 className="font-semibold summary-card-text">Income Sources</h3>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={toggleAllIncomeSections}
-                  className="text-blue-700 border-blue-300 hover:bg-blue-100"
+                  className="summary-card-button"
                 >
                   {areAllIncomeSectionsExpanded() ? 'Collapse All' : 'Expand All'}
                 </Button>
               </div>
-              <p className="text-blue-700 text-sm">All income reported on T1 tax return</p>
+              <p className="summary-card-text text-sm">All income reported on T1 tax return</p>
             </div>
             
             <div className="space-y-4">
@@ -1431,19 +1431,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
         {activeTab === 'credits' && (
           <div className="space-y-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="summary-card rounded-lg p-4 mb-6">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold text-blue-800">Non-Refundable Tax Credits</h3>
+                <h3 className="font-semibold summary-card-text">Non-Refundable Tax Credits</h3>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={toggleAllCreditSections}
-                  className="text-blue-700 border-blue-300 hover:bg-blue-100"
+                  className="summary-card-button"
                 >
                   {areAllCreditSectionsExpanded() ? 'Collapse All' : 'Expand All'}
                 </Button>
               </div>
-              <p className="text-blue-700 text-sm">Federal and provincial tax credits that reduce taxes payable</p>
+              <p className="summary-card-text text-sm">Federal and provincial tax credits that reduce taxes payable</p>
             </div>
             
             <div className="space-y-4">
@@ -1816,37 +1816,37 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               )}
 
               {/* Summary Section */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
+              <div className="summary-card rounded-lg p-6 mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="text-center">
-                    <div className="font-semibold text-blue-800 mb-2">Federal Non-Refundable</div>
-                    <div className="text-xl font-bold text-blue-600">
+                    <div className="font-semibold summary-card-text mb-2">Federal Non-Refundable</div>
+                    <div className="text-xl font-bold summary-card-text">
                       {formatCurrency(getTotalCredits())}
                     </div>
-                    <div className="text-sm text-blue-700 mt-2">
+                    <div className="text-sm summary-card-text mt-2">
                       Tax Savings: {formatCurrency(getFieldValue('35000'))}
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-semibold text-blue-800 mb-2">Federal Refundable</div>
-                    <div className="text-xl font-bold text-blue-600">
+                    <div className="font-semibold summary-card-text mb-2">Federal Refundable</div>
+                    <div className="text-xl font-bold summary-card-text">
                       {formatCurrency(getTotalRefundableCredits())}
                     </div>
                   </div>
                   {getClientProvince() === 'ON' && (
                     <>
                       <div className="text-center">
-                        <div className="font-semibold text-blue-800 mb-2">Ontario Non-Refundable</div>
-                        <div className="text-xl font-bold text-blue-600">
+                        <div className="font-semibold summary-card-text mb-2">Ontario Non-Refundable</div>
+                        <div className="text-xl font-bold summary-card-text">
                           {formatCurrency(getFieldValue('58800'))}
                         </div>
-                        <div className="text-sm text-blue-700 mt-2">
+                        <div className="text-sm summary-card-text mt-2">
                           Tax Savings: {formatCurrency(getFieldValue('61500'))}
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="font-semibold text-blue-800 mb-2">Ontario Refundable</div>
-                        <div className="text-xl font-bold text-blue-600">
+                        <div className="font-semibold summary-card-text mb-2">Ontario Refundable</div>
+                        <div className="text-xl font-bold summary-card-text">
                           {formatCurrency(getSectionTotal(['63095', '63100', '63110', '63220', '63300']))}
                         </div>
                       </div>

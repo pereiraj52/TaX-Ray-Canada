@@ -30,6 +30,7 @@
   --warning: hsl(44, 63%, 63%); /* #D4B26A - Secondary accent */
   --error: hsl(0, 72%, 51%);
   --background-alt: hsl(84, 33%, 96%);
+  --summary-card: #DDEBEF; /* Custom color for T1 extract summary cards */
 }
 
 @layer base {
@@ -41,6 +42,24 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+  }
+}
+
+@layer components {
+  .summary-card {
+    background-color: var(--summary-card);
+    border: 1px solid #C8D8E0;
+    color: #4A5568;
+  }
+  .summary-card-text {
+    color: #4A5568;
+  }
+  .summary-card-button {
+    color: #4A5568;
+    border-color: #C8D8E0;
+  }
+  .summary-card-button:hover {
+    background-color: #C8D8E0;
   }
 }
 
