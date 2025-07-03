@@ -4179,7 +4179,7 @@ export default function TaxReport() {
                                     </div>
                                     
                                     {/* Scale labels */}
-                                    <div className="flex justify-between font-medium text-primary mt-2">
+                                    <div className="flex justify-between font-medium text-primary text-sm mt-2">
                                       <span>Start: {formatCurrency(chartMin)}</span>
                                       <span>Max CCB: {formatCurrency(totalMaxBenefit)}</span>
                                       <span>End: {formatCurrency(chartMax)}</span>
@@ -4432,7 +4432,7 @@ export default function TaxReport() {
                                           </div>
                                           
                                           {/* Scale labels */}
-                                          <div className="flex justify-between font-medium text-primary mt-2">
+                                          <div className="flex justify-between font-medium text-primary text-sm mt-2">
                                             <span>Start: {formatCurrency(clawbackStart)}</span>
                                             <span>Income: {formatCurrency(taxableIncome)}</span>
                                             <span>End: {formatCurrency(clawbackEnd)}</span>
@@ -4466,7 +4466,7 @@ export default function TaxReport() {
                                         </div>
                                         
                                         {/* Scale labels */}
-                                        <div className="flex justify-between font-medium text-primary mt-2">
+                                        <div className="flex justify-between font-medium text-primary text-sm mt-2">
                                           <span>Start: $0</span>
                                           <span>Amount: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
                                           <span>End: {hasAmount ? formatCurrency(categoryTotal) : '$0'}</span>
