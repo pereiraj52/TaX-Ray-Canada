@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, ChevronDown, ChevronRight, Minus, Plus, Building2, TrendingUp } from "lucide-react";
+import { CheckCircle, Edit, FileText, DollarSign, Calculator, User, File, ChevronDown, ChevronRight, Minus, Plus, Building2, TrendingUp, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { T1ReturnWithFields } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { HouseholdAPI } from "@/lib/api";
@@ -56,7 +57,172 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   });
   const { toast } = useToast();
 
+  // Comprehensive tooltip mapping for T1 line numbers
+  const getTooltipText = (lineNumber: string): string => {
+    const tooltips: Record<string, string> = {
+      // Income lines
+      '10100': 'Employment income from all sources including salary, wages, commissions, and benefits',
+      '10120': 'Commissions earned from employment including sales commissions and performance bonuses',
+      '10130': 'Other employment income including tips, gratuities, and employee benefits',
+      '10400': 'Other employment income such as standby charges, employee loans, and taxable benefits',
+      '11300': 'Old Age Security pension payments received during the tax year',
+      '11400': 'Guaranteed Income Supplement and Allowance payments for seniors',
+      '11500': 'Canada Pension Plan or Quebec Pension Plan benefits received',
+      '11600': 'Canada Pension Plan or Quebec Pension Plan disability benefits',
+      '11700': 'Universal Child Care Benefit payments received for dependent children',
+      '11701': 'Universal Child Care Benefit for dependants under 18 years of age',
+      '11800': 'Split income from certain sources subject to tax on split income (TOSI)',
+      '12000': 'Eligible dividends from Canadian corporations entitled to enhanced dividend tax credit',
+      '12010': 'Non-eligible dividends from Canadian corporations with basic dividend tax credit',
+      '12100': 'Interest and other investment income from savings accounts, bonds, and GICs',
+      '12200': 'Partnership income or loss from partnership activities and investments',
+      '12500': 'RDSP income from Registered Disability Savings Plan withdrawals',
+      '12600': 'Rental income from real estate properties after deducting expenses',
+      '12700': 'Taxable capital gains from sale of investments and properties (50% of actual gain)',
+      '12800': 'Investment income including foreign investment income and other investment earnings',
+      '12900': 'RRSP income from Registered Retirement Savings Plan withdrawals',
+      '12905': 'FHSA income from First Home Savings Account withdrawals for non-qualifying purposes',
+      '12906': 'FHSA income - other types of First Home Savings Account withdrawals',
+      '13000': 'Other income not captured in other categories including miscellaneous income',
+      '13010': 'Scholarships, fellowships, bursaries, and study grants exceeding exempt amounts',
+      '13500': 'Business income from self-employment, consulting, or business operations',
+      '14400': "Workers' compensation benefits received during the tax year",
+      '14500': 'Social assistance payments received from government programs',
+      '14600': 'Net federal supplements including refundable tax credits and supplements',
+      '15000': 'Total income - sum of all income sources before deductions',
 
+      // Deduction lines  
+      '20600': 'Pension adjustment - employer pension contributions that reduce RRSP contribution room',
+      '20700': 'Registered Pension Plan deduction for employee contributions to employer pension plan',
+      '20800': 'RRSP deduction for contributions to Registered Retirement Savings Plans',
+      '20805': 'FHSA deduction for contributions to First Home Savings Account',
+      '20810': 'Specified pension plan deduction for contributions to specified pension plans',
+      '21000': 'Split pension deduction - pension income allocated from spouse or common-law partner',
+      '21300': 'UCCB repayment - Universal Child Care Benefit amounts required to be repaid',
+      '22000': 'Support payments allowable - deductible spousal or child support payments made',
+      '22100': 'Carrying charges and interest expenses on investments and loans for investment purposes',
+      '22200': 'CPP or QPP contributions on self-employment earnings',
+      '22215': 'Enhanced CPP contributions for self-employed individuals',
+      '22400': 'Moving expenses for employment, business, or education relocation',
+      '22900': 'Union, professional, or like dues paid for employment or professional membership',
+      '23100': 'Child care expenses for eligible children to enable employment or education',
+      '23200': 'Disability supports deduction for disability-related expenses',
+      '23300': 'Total deductions - sum of all allowable deductions from income',
+      '23500': 'Social benefits repayment including EI and OAS recovery amounts',
+
+      // Credit lines
+      '30000': 'Basic personal amount - non-refundable tax credit available to all taxpayers',
+      '30100': 'Age amount for taxpayers 65 years of age or older',
+      '30300': 'Spouse or common-law partner amount for supporting a spouse with low income',
+      '30400': 'Amount for eligible dependant supporting a dependant in your home',
+      '30425': 'Caregiver amount for caring for dependants with physical or mental impairment',
+      '30450': 'Canada caregiver amount for spouse, partner, or adult children with disabilities',
+      '30500': 'Canada caregiver amount for children under 18 with disabilities',
+      '30800': 'CPP or QPP contributions through employment - non-refundable tax credit',
+      '31000': 'CPP or QPP contributions on self-employment earnings - non-refundable tax credit',
+      '31200': 'Employment Insurance premiums through employment - non-refundable tax credit',
+      '31217': 'Employment Insurance premiums on self-employment earnings - non-refundable tax credit',
+      '31230': 'Volunteer firefighters amount for eligible volunteer firefighter services',
+      '31240': 'Search and rescue volunteers amount for eligible search and rescue services',
+      '31270': "Home buyers' amount for first-time home buyers",
+      '31285': 'Home accessibility tax credit for home modifications for seniors or disabled persons',
+      '31300': 'Adoption expenses for eligible adoption costs',
+      '31350': 'Digital news subscription amount for eligible digital news subscriptions',
+      '31400': 'Pension income amount for eligible pension, annuity, and RRIF income',
+      '31900': 'Interest paid on student loans for post-secondary education',
+      '32300': 'Tuition and education amounts for post-secondary education expenses',
+      '32400': 'Tuition transferred from child or grandchild',
+      '32600': 'Amounts transferred from spouse or common-law partner',
+      '33099': 'Medical expenses for you, your spouse, and dependants',
+      '33200': 'Net eligible medical expenses after applying income threshold',
+      '34000': 'Allowable charitable donations and gifts to qualified organizations',
+      '34200': 'Total ecological gifts to qualified ecological organizations',
+      '34900': 'Donation and gift tax credits calculated on eligible donations',
+      '35000': 'Total non-refundable tax credits - sum of all federal non-refundable credits',
+
+      // Tax lines
+      '42000': 'Federal tax calculated on taxable income using federal tax brackets',
+      '42200': 'OAS recovery tax - Old Age Security clawback for high-income taxpayers',
+      '42210': 'EI benefit repayment for high-income Employment Insurance recipients',
+      '42800': 'Provincial or territorial tax calculated using provincial tax brackets',
+      '43500': 'Total tax - combined federal and provincial tax before credits and other taxes',
+      '43700': 'Total tax after applying non-refundable tax credits',
+
+      // Refundable credits
+      '44000': 'Quebec abatement - reduction in federal tax for Quebec residents',
+      '44800': 'CPP overpayment - refund of excess Canada Pension Plan contributions',
+      '45000': 'EI overpayment - refund of excess Employment Insurance premiums',
+      '45200': 'Refundable medical expense supplement for low-income taxpayers',
+      '45300': 'Canada Workers Benefit for low-income working individuals and families',
+      '45350': 'Canada Training Credit for eligible training and education expenses',
+      '45355': 'Multigenerational home renovation tax credit for eligible home renovations',
+      '45400': 'Refund of investment tax credit for certain investment expenditures',
+      '45600': 'Part XII.2 tax credit related to certain investment income',
+      '45700': 'Employee and partner GST/HST rebate for employment-related GST/HST paid',
+      '46900': 'Eligible educator school supply tax credit for teachers and early childhood educators',
+      '47555': 'Canadian journalism labour tax credit for qualifying journalism organizations',
+      '47556': 'Return of fuel charge proceeds to farmers for fuel charge exemptions',
+
+      // Ontario credits
+      '58040': 'Ontario basic personal amount - provincial non-refundable tax credit',
+      '58080': 'Ontario age amount for Ontario residents 65 years of age or older',
+      '58120': 'Ontario spouse amount for supporting a spouse with low income',
+      '58160': 'Ontario eligible dependant amount for supporting a dependant',
+      '58185': 'Ontario caregiver amount for caring for dependants with impairments',
+      '58240': 'Ontario CPP or QPP contributions credit',
+      '58280': 'Ontario CPP or QPP self-employment contributions credit',
+      '58300': 'Ontario Employment Insurance premiums credit',
+      '58305': 'Ontario volunteer firefighter amount',
+      '58330': 'Ontario adoption expenses credit',
+      '58360': 'Ontario pension income amount',
+      '58440': 'Ontario disability amount',
+      '58480': 'Ontario disability amount transferred from dependant',
+      '58520': 'Ontario student loan interest credit',
+      '58560': 'Ontario tuition and education amounts',
+      '58640': 'Ontario amounts transferred from spouse',
+      '58769': 'Ontario medical expenses credit',
+      '58969': 'Ontario donations and gifts credit',
+      '61500': 'Ontario non-refundable tax credits - total provincial credits',
+      '63095': 'Ontario seniors care at home credit',
+      '63100': 'Ontario seniors public transit credit',
+      '63110': 'Ontario political contribution credit',
+      '63220': 'Ontario flow-through share credit',
+      '63300': 'Ontario co-operative education credit',
+
+      // Account and other lines
+      '24600': 'Home Buyers Plan repayment to RRSP',
+      '24630': 'Lifelong Learning Plan repayment to RRSP',
+      '25200': 'Capital losses applied against capital gains',
+      '40427': 'Alternative Minimum Tax carry forward from previous years',
+
+      // Schedule 7 lines
+      'S7-RRSP': 'Schedule 7 RRSP contributions and transfers',
+      'S7-FHSA': 'Schedule 7 First Home Savings Account contributions',
+      'S7-SPP': 'Schedule 7 Specified Pension Plan contributions',
+      'S7-HBP': 'Schedule 7 Home Buyers Plan repayments',
+      'S7-LLP': 'Schedule 7 Lifelong Learning Plan repayments',
+
+      // Schedule 9 lines
+      'S9-TOTAL': 'Schedule 9 total eligible amount of charitable donations'
+    };
+
+    return tooltips[lineNumber] || 'Information about this T1 tax form line number';
+  };
+
+  // Helper component for field labels with tooltips
+  const FieldLabelWithTooltip = ({ label, lineNumber }: { label: string; lineNumber: string }) => (
+    <span className="field-label">
+      {label} <span style={{ color: '#A3A3A3' }}>(Line {lineNumber})</span>:
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="max-w-xs">{getTooltipText(lineNumber)}</p>
+        </TooltipContent>
+      </Tooltip>
+    </span>
+  );
 
   const generateReportMutation = useMutation({
     mutationFn: () => {
@@ -316,7 +482,8 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <TooltipProvider>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-primary">
           {t1Return.client ? `${t1Return.client.firstName} ${t1Return.client.lastName}` : 'Client'} - {getTextFieldValue('province')} - {t1Return.taxYear}
@@ -928,7 +1095,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['10100', '10105', '10120', '10130', '10400']}
               >
                 <div className="field-row">
-                  <span className="field-label">Employment Income <span style={{ color: '#A3A3A3' }}>(Line 10100)</span>:</span>
+                  <FieldLabelWithTooltip label="Employment Income" lineNumber="10100" />
                   <span className="field-value">{formatCurrency(getFieldValue('10100'))}</span>
                 </div>
                 <div className="field-row">
@@ -944,7 +1111,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   <span className="field-value">{formatCurrency(getFieldValue('10130'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Other Employment Income <span style={{ color: '#A3A3A3' }}>(Line 10400)</span>:</span>
+                  <FieldLabelWithTooltip label="Other Employment Income" lineNumber="10400" />
                   <span className="field-value">{formatCurrency(getFieldValue('10400'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1146,7 +1313,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">RRSP Deduction <span style={{ color: '#A3A3A3' }}>(Line 20800)</span>:</span>
+                  <FieldLabelWithTooltip label="RRSP Deduction" lineNumber="20800" />
                       <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
                 </div>
                 <div className="field-row">
@@ -1298,7 +1465,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['30000', '30100', '30300', '30400', '30450']}
               >
                 <div className="field-row">
-                  <span className="field-label">Basic Personal Amount <span style={{ color: '#A3A3A3' }}>(Line 30000)</span>:</span>
+                  <FieldLabelWithTooltip label="Basic Personal Amount" lineNumber="30000" />
                   <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
                 </div>
                 <div className="field-row">
@@ -1711,7 +1878,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             
             <div className="max-w-2xl mx-auto space-y-6">
               <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Federal Tax (Line 42000):</span>
+                <FieldLabelWithTooltip label="Federal Tax" lineNumber="42000" />
                 <span className="font-medium text-primary">{formatCurrency(getFieldValue('42000'))}</span>
               </div>
               
@@ -1757,6 +1924,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         onOpenChange={setEditDialogOpen}
         t1Return={t1Return}
       />
-    </div>
+      </div>
+    </TooltipProvider>
   );
 }
