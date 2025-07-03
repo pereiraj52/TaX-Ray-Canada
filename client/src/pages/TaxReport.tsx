@@ -99,6 +99,25 @@ export default function TaxReport() {
     }));
   };
 
+  // Function to check if all provincial credit sections are expanded
+  const areAllProvincialCreditSectionsExpanded = () => {
+    const provincialCreditSectionKeys = ['ontario-non-refundable-credits', 'ontario-refundable-tax-credits'];
+    return provincialCreditSectionKeys.every(key => !collapsedProvincialCreditSections[key]);
+  };
+
+  // Function to toggle all provincial credit sections
+  const toggleAllProvincialCreditSections = () => {
+    const allExpanded = areAllProvincialCreditSectionsExpanded();
+    const newState = { ...collapsedProvincialCreditSections };
+    
+    const provincialCreditSectionKeys = ['ontario-non-refundable-credits', 'ontario-refundable-tax-credits'];
+    provincialCreditSectionKeys.forEach(key => {
+      newState[key] = allExpanded; // If all expanded, collapse all; otherwise expand all
+    });
+    
+    setCollapsedProvincialCreditSections(newState);
+  };
+
   // State for collapsible sections in Clawback Analysis
   const [collapsedClawbackSections, setCollapsedClawbackSections] = useState<{[key: string]: boolean}>({
     'basic-personal-amount': true,
@@ -3443,7 +3462,17 @@ export default function TaxReport() {
 
         {/* Provincial Tax Credits Analysis */}
         <div className="space-y-6 mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Provincial Tax Credits Analysis</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Provincial Tax Credits Analysis</h2>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleAllProvincialCreditSections}
+              className="credits-card-button"
+            >
+              {areAllProvincialCreditSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+            </Button>
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {
