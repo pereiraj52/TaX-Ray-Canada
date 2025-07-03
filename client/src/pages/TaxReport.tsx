@@ -4095,7 +4095,7 @@ export default function TaxReport() {
                                             );
                                           } else {
                                             return (
-                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#A3A3A3' }}>
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#C7E6C2' }}>
                                                 –
                                               </div>
                                             );
@@ -4445,7 +4445,7 @@ export default function TaxReport() {
                                                   );
                                                 } else {
                                                   return (
-                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#A3A3A3' }}>
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#C7E6C2' }}>
                                                       –
                                                     </div>
                                                   );
