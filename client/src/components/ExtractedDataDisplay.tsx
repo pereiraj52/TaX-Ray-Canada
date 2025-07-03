@@ -57,25 +57,40 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   });
   const { toast } = useToast();
 
-  // Income section IDs for expand/collapse all functionality
+  // Section IDs for expand/collapse all functionality
   const incomeSectionIds = ['employment', 'pension', 'government', 'investment', 'registered-account', 'selfemployment', 'othersources'];
+  const deductionSectionIds = ['retirement-plan-deductions', 'personal-deductions', 'employment-deductions', 'specialized-deductions'];
+  const creditSectionIds = ['basic-credits', 'employment-credits', 'personal-situation-credits-new', 'disability-caregiver-credits', 'education-credits', 'medical-credits', 'charitable-gifts-donations-credits', 'ontario-credits', 'ontario-refundable-credits', 'refundable-credits'];
+  const accountSectionIds = ['rrsp-rrif-section', 'tfsa-section', 'fhsa-section', 'resp-section', 'rdsp-section', 'capital-loss-section', 'amt-section'];
 
-  // Function to toggle all income sections
-  const toggleAllIncomeSections = () => {
-    const allExpanded = incomeSectionIds.every(id => !collapsedSections[id]);
+  // Function to toggle all sections for a specific tab
+  const toggleAllSections = (sectionIds: string[]) => {
+    const allExpanded = sectionIds.every(id => !collapsedSections[id]);
     const newState = { ...collapsedSections };
     
-    incomeSectionIds.forEach(id => {
+    sectionIds.forEach(id => {
       newState[id] = allExpanded; // If all expanded, collapse all; otherwise expand all
     });
     
     setCollapsedSections(newState);
   };
 
-  // Check if all income sections are expanded
-  const areAllIncomeSectionsExpanded = () => {
-    return incomeSectionIds.every(id => !collapsedSections[id]);
+  // Check if all sections are expanded for a specific tab
+  const areAllSectionsExpanded = (sectionIds: string[]) => {
+    return sectionIds.every(id => !collapsedSections[id]);
   };
+
+  // Specific toggle functions for each tab
+  const toggleAllIncomeSections = () => toggleAllSections(incomeSectionIds);
+  const toggleAllDeductionSections = () => toggleAllSections(deductionSectionIds);
+  const toggleAllCreditSections = () => toggleAllSections(creditSectionIds);
+  const toggleAllAccountSections = () => toggleAllSections(accountSectionIds);
+
+  // Check functions for each tab
+  const areAllIncomeSectionsExpanded = () => areAllSectionsExpanded(incomeSectionIds);
+  const areAllDeductionSectionsExpanded = () => areAllSectionsExpanded(deductionSectionIds);
+  const areAllCreditSectionsExpanded = () => areAllSectionsExpanded(creditSectionIds);
+  const areAllAccountSectionsExpanded = () => areAllSectionsExpanded(accountSectionIds);
 
   // Comprehensive tooltip mapping for T1 line numbers
   const getTooltipText = (lineNumber: string): string => {
@@ -677,7 +692,17 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         {activeTab === 'accounts' && (
           <div className="space-y-6">
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-purple-800 mb-2">Investment & Savings Accounts</h3>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-semibold text-purple-800">Investment & Savings Accounts</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleAllAccountSections}
+                  className="text-purple-700 border-purple-300 hover:bg-purple-100"
+                >
+                  {areAllAccountSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+                </Button>
+              </div>
               <p className="text-purple-700 text-sm">Registered accounts, contribution room, and capital loss information</p>
             </div>
             
@@ -1324,7 +1349,17 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         {activeTab === 'deductions' && (
           <div className="space-y-6">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-yellow-800 mb-2">Deductions from Income</h3>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-semibold text-yellow-800">Deductions from Income</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleAllDeductionSections}
+                  className="text-yellow-700 border-yellow-300 hover:bg-yellow-100"
+                >
+                  {areAllDeductionSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+                </Button>
+              </div>
               <p className="text-yellow-700 text-sm">Federal and provincial deductions that reduce taxable income</p>
             </div>
             <div className="space-y-4">
@@ -1483,7 +1518,17 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
         {activeTab === 'credits' && (
           <div className="space-y-6">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-blue-800 mb-2">Non-Refundable Tax Credits</h3>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-semibold text-blue-800">Non-Refundable Tax Credits</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleAllCreditSections}
+                  className="text-blue-700 border-blue-300 hover:bg-blue-100"
+                >
+                  {areAllCreditSectionsExpanded() ? 'Collapse All' : 'Expand All'}
+                </Button>
+              </div>
               <p className="text-blue-700 text-sm">Federal and provincial tax credits that reduce taxes payable</p>
             </div>
             
