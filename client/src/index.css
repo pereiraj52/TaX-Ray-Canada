@@ -34,7 +34,7 @@
   --deductions-card: #FBE8E3; /* Custom color for deductions summary cards */
   --credits-card: #E5F0E3; /* Custom color for credits summary cards */
   --taxes-card: #F5EBDD; /* Custom color for taxes summary cards */
-  --accounts-card: #F5EBDD; /* Custom color for accounts summary cards */
+  --accounts-card: #DDEBEF; /* Custom color for accounts summary cards */
 }
 
 @layer base {
@@ -112,7 +112,7 @@
   }
   .accounts-card {
     background-color: var(--accounts-card);
-    border: 1px solid #E8D6C0;
+    border: 1px solid #C8D3D9;
     color: #4A5568;
   }
   .accounts-card-text {
@@ -120,10 +120,10 @@
   }
   .accounts-card-button {
     color: #4A5568;
-    border-color: #E8D6C0;
+    border-color: #C8D3D9;
   }
   .accounts-card-button:hover {
-    background-color: #E8D6C0;
+    background-color: #C8D3D9;
   }
 }
 
