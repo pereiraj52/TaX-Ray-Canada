@@ -4170,7 +4170,7 @@ export default function TaxReport() {
                                         )}
                                         {/* Clawback percentage overlay */}
                                         <div 
-                                          className="absolute inset-0 flex items-center justify-center text-lg"
+                                          className="absolute inset-0 flex items-center justify-center text-sm"
                                           style={{ color: '#111111' }}
                                         >
                                           Clawback: {totalChildren > 0 ? `${clawbackPercentage.toFixed(1)}%` : 'Ineligible'}
@@ -4423,7 +4423,7 @@ export default function TaxReport() {
                                               />
                                               {/* Clawback percentage overlay */}
                                               <div 
-                                                className="absolute inset-0 flex items-center justify-center text-lg"
+                                                className="absolute inset-0 flex items-center justify-center text-sm"
                                                 style={{ color: '#111111' }}
                                               >
                                                 Clawback: {clawbackPercentage.toFixed(1)}%
@@ -4457,7 +4457,7 @@ export default function TaxReport() {
                                             />
                                             {/* Status overlay */}
                                             <div 
-                                              className="absolute inset-0 flex items-center justify-center text-lg"
+                                              className="absolute inset-0 flex items-center justify-center text-sm"
                                               style={{ color: '#111111' }}
                                             >
                                               {hasAmount ? 'Clawback: 100.0%' : 'Clawback: 0.0%'}
