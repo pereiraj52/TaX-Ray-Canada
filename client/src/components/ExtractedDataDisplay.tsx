@@ -843,61 +843,41 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </button>
               {!collapsedSections['resp-section'] && (
                 <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_account_balance'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_contribution_room'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_2024_contribution'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CESG Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_total_grant'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CESG Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_grant_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CESG Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CLB Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_received'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CLB Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CLB Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_remaining'))}</span>
-                      </div>
-                    </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Account Balance:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_account_balance'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Contribution Room:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_contribution_room'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">2024 Contribution:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_2024_contribution'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Total CESG Received:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_total_grant'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CESG Room 2024:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_grant_room_2024'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CESG Remaining:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Total CLB Received:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_clb_received'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CLB Room 2024:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_clb_room_2024'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CLB Remaining:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_clb_remaining'))}</span>
                   </div>
                 </div>
               )}
@@ -919,61 +899,41 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </button>
               {!collapsedSections['rdsp-section'] && (
                 <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CDSG Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_received'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSG Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSG Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_remaining'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CDSB Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_received'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSB Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSB Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_remaining'))}</span>
-                      </div>
-                    </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Account Balance:</span>
+                    <span className="field-value">$0.00</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Contribution Room:</span>
+                    <span className="field-value">$0.00</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">2024 Contribution:</span>
+                    <span className="field-value">$0.00</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Total CDSG Received:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_received'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CDSG Room 2024:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_room_2024'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CDSG Remaining:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_remaining'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Total CDSB Received:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_received'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CDSB Room 2024:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_room_2024'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">CDSB Remaining:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_remaining'))}</span>
                   </div>
                 </div>
               )}
@@ -995,19 +955,13 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </button>
               {!collapsedSections['capital-loss-section'] && (
                 <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Available Losses:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('capital_loss_available'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Applied This Year:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("25200"))}</span>
-                      </div>
-                    </div>
+                  <div className="field-row">
+                    <span className="font-medium text-primary">Available Losses:</span>
+                    <span className="field-value">{formatCurrency(getHouseholdFieldValue('capital_loss_available'))}</span>
+                  </div>
+                  <div className="field-row">
+                    <FieldLabelWithTooltip label="Applied This Year" lineNumber="25200" />
+                    <span className="field-value">{formatCurrency(getFieldValue("25200"))}</span>
                   </div>
                 </div>
               )}
@@ -1029,13 +983,9 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               </button>
               {!collapsedSections['amt-section'] && (
                 <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">AMT Carry Forward:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("40427"))}</span>
-                      </div>
-                    </div>
+                  <div className="field-row">
+                    <FieldLabelWithTooltip label="AMT Carry Forward" lineNumber="40427" />
+                    <span className="field-value">{formatCurrency(getFieldValue("40427"))}</span>
                   </div>
                 </div>
               )}
