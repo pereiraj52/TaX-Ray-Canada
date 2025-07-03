@@ -2998,12 +2998,12 @@ export default function TaxReport() {
                           const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-');
 
                           return (
-                            <div key={categoryIndex} className="mb-4">
+                            <div key={categoryIndex} className={`mb-4 ${categoryIndex < deductions.length - 1 ? 'border-b border-gray-200 pb-4' : ''}`}>
                               <button
                                 onClick={() => toggleDeductionSection(sectionKey)}
                                 className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
                               >
-                                <div className="flex items-center">
+                                <div className="flex items-center pl-4">
                                   {collapsedDeductionSections[sectionKey] ? (
                                     <ChevronRight className="h-4 w-4 mr-2" />
                                   ) : (
@@ -3274,9 +3274,9 @@ export default function TaxReport() {
                           const isCollapsed = collapsedFederalCreditSections[sectionKey];
 
                           return (
-                            <div key={categoryIndex} className="space-y-4">
+                            <div key={categoryIndex} className={`space-y-4 ${categoryIndex < federalCredits.length - 1 ? 'border-b border-gray-200 pb-4 mb-4' : ''}`}>
                               <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 pl-4">
                                   <button
                                     onClick={() => toggleFederalCreditSection(sectionKey)}
                                     className="p-1 hover:bg-gray-100 rounded"
@@ -3497,9 +3497,9 @@ export default function TaxReport() {
                           const isCollapsed = collapsedProvincialCreditSections[sectionKey];
 
                           return (
-                            <div key={categoryIndex} className="space-y-4">
+                            <div key={categoryIndex} className={`space-y-4 ${categoryIndex < provincialCredits.length - 1 ? 'border-b border-gray-200 pb-4 mb-4' : ''}`}>
                               <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 pl-4">
                                   <button
                                     onClick={() => toggleProvincialCreditSection(sectionKey)}
                                     className="p-1 hover:bg-gray-100 rounded"
