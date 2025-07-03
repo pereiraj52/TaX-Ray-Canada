@@ -2988,34 +2988,40 @@ export default function TaxReport() {
                       <h3 className="font-medium text-gray-900 mb-6">
                         {spouse.clientName} - Tax Deductions
                       </h3>
-                      <div className="space-y-4">
+                      <div className="space-y-6">
                         {deductions.map((category, categoryIndex) => {
                           const categoryTotal = category.items.reduce((sum, item) => {
                             return sum + getFieldValue(item.line);
                           }, 0);
 
                           const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-');
+                          const isCollapsed = collapsedDeductionSections[sectionKey];
 
                           return (
-                            <div key={categoryIndex} className={`${categoryIndex < deductions.length - 1 ? 'border-b border-gray-200 pb-4 mb-4' : 'mb-4'}`}>
-                              <button
-                                onClick={() => toggleDeductionSection(sectionKey)}
-                                className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
-                              >
-                                <div className="flex items-center">
-                                  {collapsedDeductionSections[sectionKey] ? (
-                                    <ChevronRight className="h-4 w-4 mr-2" />
-                                  ) : (
-                                    <ChevronDown className="h-4 w-4 mr-2" />
-                                  )}
-                                  <h4 className="font-medium text-primary text-sm">{category.category}</h4>
+                            <div key={categoryIndex} className="space-y-4">
+                              <div className="flex justify-between items-center pb-2 border-b border-gray-200">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => toggleDeductionSection(sectionKey)}
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                  >
+                                    {isCollapsed ? (
+                                      <ChevronRight className="w-4 h-4" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4" />
+                                    )}
+                                  </button>
+                                  <h4 className="font-medium text-primary text-sm">
+                                    {category.category}
+                                  </h4>
                                 </div>
                                 <span className="font-medium text-primary text-sm">
                                   {formatCurrency(categoryTotal)}
                                 </span>
-                              </button>
-                              {!collapsedDeductionSections[sectionKey] && (
-                                <div className="p-4 space-y-2">
+                              </div>
+                              
+                              {!isCollapsed && (
+                                <div className="space-y-3">
                                   {category.items.map((item, itemIndex) => {
                                     const amount = getFieldValue(item.line);
                                     const hasClaim = amount > 0;
