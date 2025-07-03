@@ -70,6 +70,7 @@ export default function TaxReport() {
     'guaranteed-income-supplement': true,
     'child-disability-benefit': true,
     'canada-training-credit': true,
+    'canada-child-benefit': true,
   });
 
   const toggleClawbackSection = (sectionKey: string) => {
@@ -3932,27 +3933,57 @@ export default function TaxReport() {
                       {/* Canada Child Benefit Clawback Sub-Category */}
                       <div className="space-y-4">
                         <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                          <h4 className="font-medium text-primary text-sm">
-                            Canada Child Benefit Clawback
-                          </h4>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => toggleClawbackSection('canada-child-benefit')}
+                              className="p-1 hover:bg-gray-100 rounded"
+                            >
+                              {collapsedClawbackSections['canada-child-benefit'] ? (
+                                <ChevronRight className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </button>
+                            <h4 className="font-medium text-primary text-sm">
+                              Canada Child Benefit Clawback
+                            </h4>
+                          </div>
                           <span className="font-medium text-primary text-sm">
                             {totalEligibleChildren > 0 ? `${clawbackPercentage.toFixed(2)}% clawback` : 'Ineligible'}
                           </span>
                         </div>
                         
-                        {/* CCB Details and Chart - Side by side layout */}
-                        <div className="grid grid-cols-3 gap-6">
-                          {/* Left 1/3 - CCB Details */}
-                          <div className="space-y-3">
-                            {benefitInfo.map((info, index) => (
-                              <div key={index} className="flex justify-between text-sm">
-                                <div className="text-gray-700">{info.name}</div>
-                                <div className="font-medium text-gray-700">
-                                  {formatValue(info.value, info.format)}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
+                        {!collapsedClawbackSections['canada-child-benefit'] && (
+                          <div className="grid grid-cols-3 gap-6">
+                            {/* Left 1/3 - CCB Details */}
+                            <div className="space-y-3">
+                              {benefitInfo.map((info, index) => {
+                                const hasValue = info.value !== null && info.value !== undefined && info.value !== 0;
+                                return (
+                                  <div key={index} className="flex items-center gap-3">
+                                    <div className="w-5 h-5 flex items-center justify-center">
+                                      {hasValue ? (
+                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                          ✓
+                                        </div>
+                                      ) : (
+                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                          ✗
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="flex-1">
+                                      <div className="font-medium text-primary text-sm underline">
+                                        {info.name}
+                                      </div>
+                                    </div>
+                                    <div className="text-right font-medium text-primary text-sm">
+                                      {hasValue ? formatValue(info.value, info.format) : ''}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           
                           {/* Right 2/3 - CCB Clawback Chart */}
                           <div className="col-span-2">
@@ -4044,6 +4075,7 @@ export default function TaxReport() {
                             })()}
                           </div>
                         </div>
+                        )}
                       </div>
                     </div>
                   </CardContent>
