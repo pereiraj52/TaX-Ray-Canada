@@ -4064,7 +4064,7 @@ export default function TaxReport() {
                             </h4>
                           </div>
                           <span className="font-medium text-primary text-sm">
-                            {totalEligibleChildren > 0 ? `${clawbackPercentage.toFixed(2)}% clawback` : 'Ineligible'}
+                            {totalEligibleChildren > 0 ? `${clawbackPercentage.toFixed(2)}%` : 'Ineligible'}
                           </span>
                         </button>
                         
@@ -4338,14 +4338,14 @@ export default function TaxReport() {
                                         clawbackPercentage = (excessIncome / totalClawbackRange) * 100;
                                       }
                                       
-                                      return `${clawbackPercentage.toFixed(2)}% clawback`;
+                                      return `${clawbackPercentage.toFixed(2)}%`;
                                     }
                                     
                                     // Default handling for other benefits
                                     const categoryTotal = category.items.reduce((sum, item) => {
                                       return sum + getFieldValue(item.line);
                                     }, 0);
-                                    return categoryTotal > 0 ? '100.00% clawback' : '0.00% clawback';
+                                    return categoryTotal > 0 ? '100.00%' : '0.00%';
                                   })()}
                                 </span>
                               </button>
