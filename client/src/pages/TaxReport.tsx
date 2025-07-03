@@ -4073,7 +4073,7 @@ export default function TaxReport() {
                             {/* Left 1/2 - CCB Details */}
                             <div className="space-y-3">
                               {benefitInfo.map((info, index) => {
-                                const hasValue = info.value !== null && info.value !== undefined && info.value !== 0;
+                                const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Number of children" || info.name === "Maximum CCB");
                                 return (
                                   <div key={index} className="flex items-center gap-3">
                                     <div className="w-5 h-5 flex items-center justify-center">
