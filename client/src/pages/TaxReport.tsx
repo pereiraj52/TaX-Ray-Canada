@@ -4262,6 +4262,229 @@ export default function TaxReport() {
               );
             })()}
           </div>
+
+          {/* Canada Workers Benefit (Family) Section */}
+          <div className="mb-6">
+            {(() => {
+              // Calculate family adjusted net income (same as CCB)
+              const adjustedFamilyNetIncome = spouseData.reduce((sum, spouse) => {
+                const line23600 = getFieldValue(spouse.formFields, '23600'); // Net income
+                const line11700 = getFieldValue(spouse.formFields, '11700'); // Taxable capital gains
+                const line21300 = getFieldValue(spouse.formFields, '21300'); // UCCB repayment
+                const line12800 = getFieldValue(spouse.formFields, '12800'); // Investment income
+                
+                // AFNI = Net income - Taxable capital gains + UCCB repayment + Investment income
+                const spouseAFNI = line23600 - line11700 + line21300 + line12800;
+                return sum + spouseAFNI;
+              }, 0);
+
+              // Calculate family CWB clawback percentage
+              const calculateCWBFamilyClawbackPercentage = (familyIncome: number) => {
+                const clawbackStart = 29833; // Family clawback start threshold
+                const clawbackEnd = 48093;   // Family clawback end threshold
+                
+                if (familyIncome <= clawbackStart) {
+                  return 0;
+                } else if (familyIncome >= clawbackEnd) {
+                  return 100;
+                } else {
+                  return ((familyIncome - clawbackStart) / (clawbackEnd - clawbackStart)) * 100;
+                }
+              };
+
+              const clawbackPercentage = calculateCWBFamilyClawbackPercentage(adjustedFamilyNetIncome);
+              const maxCWBFamily = 1800; // Maximum CWB for families
+
+              // Calculate actual CWB: Maximum CWB - (Maximum CWB × Clawback %)
+              const actualCWBFamily = maxCWBFamily - (maxCWBFamily * (clawbackPercentage / 100));
+
+              // Calculate family benefit information
+              const benefitInfo = [
+                { name: "Family Status", value: "Married/Common-law", format: 'text' },
+                { name: "Maximum CWB (Family)", value: maxCWBFamily, format: 'currency' },
+                { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
+                { name: "Actual CWB (Family)", value: actualCWBFamily, format: 'currency' },
+                { name: "Clawback %", value: clawbackPercentage, format: 'percentage' },
+              ];
+
+              // Helper function to format values based on type
+              const formatValue = (value: number | string, format: string) => {
+                switch (format) {
+                  case 'currency':
+                    return typeof value === 'number' ? formatCurrency(value) : value;
+                  case 'percentage':
+                    return typeof value === 'number' ? `${value.toFixed(2)}%` : value;
+                  case 'text':
+                    return value;
+                  default:
+                    return value;
+                }
+              };
+
+              return (
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="space-y-6">
+                      {/* Canada Workers Benefit (Family) Clawback Sub-Category */}
+                      <div className="space-y-4">
+                        <button
+                          onClick={() => toggleClawbackSection('canada-workers-benefit-family')}
+                          className="w-full flex justify-between items-center pb-2 border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            {collapsedClawbackSections['canada-workers-benefit-family'] ? (
+                              <ChevronRight className="w-4 h-4" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4" />
+                            )}
+                            <h4 className="font-medium text-primary text-sm flex items-center">
+                              Canada Workers Benefit (Family)
+                            </h4>
+                          </div>
+                          <span className="font-medium text-primary text-sm">
+                            {`${clawbackPercentage.toFixed(2)}%`}
+                          </span>
+                        </button>
+                        
+                        {!collapsedClawbackSections['canada-workers-benefit-family'] && (
+                          <div className="grid grid-cols-2 gap-6">
+                            {/* Left 1/2 - CWB Family Details */}
+                            <div className="space-y-3">
+                              {benefitInfo.map((info, index) => {
+                                const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Family Status" || info.name === "Maximum CWB (Family)" || info.name === "Actual CWB (Family)");
+                                return (
+                                  <div key={index} className="flex items-center gap-3">
+                                    <div className="w-5 h-5 flex items-center justify-center">
+                                      {info.name === "Clawback %" ? (
+                                        (() => {
+                                          if (clawbackPercentage === 0) {
+                                            return (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                ✓
+                                              </div>
+                                            );
+                                          } else if (clawbackPercentage === 100) {
+                                            return (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                ✗
+                                              </div>
+                                            );
+                                          } else {
+                                            return (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#C7E6C2' }}>
+                                                –
+                                              </div>
+                                            );
+                                          }
+                                        })()
+                                      ) : (info.name === "Maximum CWB (Family)" || info.name === "Adjusted Family Net Income" || info.name === "Actual CWB (Family)" || info.name === "Family Status") ? null : hasValue ? (
+                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                          ✓
+                                        </div>
+                                      ) : (
+                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                          ✗
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="flex-1">
+                                      <div className="font-medium text-sm" style={{ color: '#111111' }}>
+                                        {info.name}
+                                        {info.name === "Actual CWB (Family)" && (
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p className="max-w-xs">The Canada Workers Benefit (CWB) is a refundable tax credit for working individuals and families with low income. The family benefit amount is higher than the single amount and is based on combined family income.</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        )}
+                                        {info.name === "Clawback %" && (
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p className="max-w-xs">The percentage of Canada Workers Benefit that is reduced (clawed back) based on your family's adjusted net income. Higher family income results in higher clawback percentages.</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <div className="text-right font-medium text-primary text-sm">
+                                      {hasValue ? formatValue(info.value, info.format) : ''}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          
+                          {/* Right 1/2 - CWB Family Clawback Chart */}
+                          <div className="col-span-1">
+                          {(() => {
+                            const baseThreshold = 29833;
+                            const endThreshold = 48093;
+                            
+                            // Chart min/max
+                            const chartMin = baseThreshold;
+                            const chartMax = endThreshold;
+                            const chartRange = chartMax - chartMin;
+                            
+                            // Current position
+                            const currentIncome = adjustedFamilyNetIncome;
+                            const progressPercentage = Math.min(100, Math.max(0, ((currentIncome - chartMin) / chartRange) * 100));
+                            
+                            return (
+                              <div className="space-y-4">
+                                <h5 className="font-medium text-primary text-sm">CWB Family Clawback Progression</h5>
+                                
+                                <div className="relative">
+                                  {/* Progress bar */}
+                                  <div 
+                                    className="w-full rounded"
+                                    style={{ 
+                                      height: '48px',
+                                      background: 'linear-gradient(to right, #88AA73, #C7E6C2)'
+                                    }}
+                                  >
+                                    {/* Income position indicator */}
+                                    {currentIncome >= chartMin && currentIncome <= chartMax && (
+                                      <div 
+                                        className="absolute top-0 w-1 bg-black"
+                                        style={{ left: `${progressPercentage}%`, height: '48px' }}
+                                      />
+                                    )}
+                                    {/* Clawback percentage overlay */}
+                                    <div 
+                                      className="absolute inset-0 flex items-center justify-center text-sm"
+                                      style={{ color: '#111111' }}
+                                    >
+                                      Clawback: {`${clawbackPercentage.toFixed(1)}%`}
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                {/* Scale labels */}
+                                <div className="flex justify-between font-medium text-primary text-sm mt-2">
+                                  <span>Start: {formatCurrency(chartMin)}</span>
+                                  <span>Max CWB: {formatCurrency(maxCWBFamily)}</span>
+                                  <span>End: {formatCurrency(chartMax)}</span>
+                                </div>
+                                
+                            </div>
+                            );
+                          })()}
+                          </div>
+                        </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })()}
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {(() => {
