@@ -3022,55 +3022,25 @@ export default function TaxReport() {
                                     const hasClaim = amount > 0;
                                   
                                   return (
-                                    <div key={itemIndex} className="flex justify-between items-center text-sm">
-                                      <div className="flex items-center space-x-2">
+                                    <div key={itemIndex} className={`flex items-center gap-3 ${itemIndex < category.items.length - 1 ? 'border-b border-gray-200 pb-3' : ''}`}>
+                                      <div className="w-5 h-5 flex items-center justify-center">
                                         <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
                                           {hasClaim ? '✓' : '✗'}
                                         </div>
-                                        <span className="text-gray-700">
-                                          {item.name}
-                                        </span>
-                                        <span className="text-gray-400 text-xs">
-                                          (Line {item.line})
-                                        </span>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <Info className="h-3 w-3 text-gray-400 cursor-help ml-1" />
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            <p className="text-sm max-w-xs">
-                                              {item.name === "RPP Deduction" && "Registered Pension Plan (RPP) contributions deducted from your employment income."}
-                                              {item.name === "RRSP Deduction" && "Registered Retirement Savings Plan contributions that reduce your taxable income."}
-                                              {item.name === "FHSA Deduction" && "First Home Savings Account contributions, providing tax deduction and tax-free growth."}
-                                              {item.name === "PRPP Deduction" && "Pooled Registered Pension Plan contributions made through your employer."}
-                                              {item.name === "SPP Deduction" && "Saskatchewan Pension Plan contributions for retirement savings."}
-                                              {item.name === "Pooled Fund Deduction" && "Contributions to pooled registered pension plans."}
-                                              {item.name === "Split Pension Deduction" && "Pension income split with your spouse to optimize household taxes."}
-                                              {item.name === "Annual Union Dues" && "Professional or union membership fees paid during the tax year."}
-                                              {item.name === "UCCB Repayment" && "Universal Child Care Benefit overpayments that must be repaid."}
-                                              {item.name === "Child Care Expenses" && "Eligible child care costs for children under 16 or with disabilities."}
-                                              {item.name === "Disability Supports" && "Medical expenses and support costs for persons with disabilities."}
-                                              {item.name === "Business Investment Loss" && "Allowable business investment loss from qualifying small business investments."}
-                                              {item.name === "Moving Expenses" && "Eligible moving costs for employment, education, or business relocation."}
-                                              {item.name === "Support Payments Allowable" && "Court-ordered spousal or child support payments made."}
-                                              {item.name === "Carrying Charges" && "Investment-related expenses like interest on money borrowed to invest."}
-                                              {item.name === "CPP/QPP Self-Employed" && "Canada or Quebec Pension Plan contributions for self-employed individuals."}
-                                              {item.name === "Enhanced CPP/QPP Deduction" && "Additional enhanced CPP contributions for higher retirement benefits."}
-                                              {item.name === "Other Employment Expenses" && "Qualifying employment expenses like office supplies, travel, or vehicle costs."}
-                                              {item.name === "Clergy Residence" && "Residence deduction available to eligible members of the clergy."}
-                                              {item.name === "Exploration Development" && "Canadian exploration and development expenses for resource investments."}
-                                              {item.name === "Other Deductions" && "Miscellaneous deductions not covered in other categories."}
-                                              {item.name === "Social Benefits Repayment" && "Employment insurance or old age security benefits that must be repaid."}
-                                              {!["RPP Deduction", "RRSP Deduction", "FHSA Deduction", "PRPP Deduction", "SPP Deduction", "Pooled Fund Deduction", "Split Pension Deduction", "Annual Union Dues", "UCCB Repayment", "Child Care Expenses", "Disability Supports", "Business Investment Loss", "Moving Expenses", "Support Payments Allowable", "Carrying Charges", "CPP/QPP Self-Employed", "Enhanced CPP/QPP Deduction", "Other Employment Expenses", "Clergy Residence", "Exploration Development", "Other Deductions", "Social Benefits Repayment"].includes(item.name) && "Tax deduction information"}
-                                            </p>
-                                          </TooltipContent>
-                                        </Tooltip>
                                       </div>
-                                      <span className="font-medium text-right text-gray-700">
-                                        {hasClaim ? formatCurrency(amount) : '$0'}
-                                      </span>
+                                      <div className="flex-1">
+                                        <div className="font-medium text-primary text-sm underline">
+                                          {item.name}
+                                        </div>
+                                        <div className="text-gray-600 text-sm">
+                                          (Line {item.line})
+                                        </div>
+                                      </div>
+                                      <div className="text-right font-medium text-primary text-sm">
+                                        {hasClaim ? formatCurrency(amount) : ''}
+                                      </div>
                                     </div>
-                                    );
+                                  );
                                   })}
                                 </div>
                               )}
@@ -3333,7 +3303,7 @@ export default function TaxReport() {
                                     const hasClaim = amount > 0;
                                     
                                     return (
-                                      <div key={itemIndex} className="flex items-center gap-3">
+                                      <div key={itemIndex} className={`flex items-center gap-3 ${itemIndex < category.items.length - 1 ? 'border-b border-gray-200 pb-3' : ''}`}>
                                         <div className="w-5 h-5 flex items-center justify-center">
                                           <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
                                             {hasClaim ? '✓' : '✗'}
@@ -3556,42 +3526,23 @@ export default function TaxReport() {
                                   const hasClaim = amount > 0;
                                   
                                   return (
-                                    <div key={itemIndex} className="flex justify-between items-center text-sm">
-                                      <div className="flex items-center space-x-2">
+                                    <div key={itemIndex} className={`flex items-center gap-3 ${itemIndex < category.items.length - 1 ? 'border-b border-gray-200 pb-3' : ''}`}>
+                                      <div className="w-5 h-5 flex items-center justify-center">
                                         <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
                                           {hasClaim ? '✓' : '✗'}
                                         </div>
-                                        <span className="text-gray-700">
-                                          {item.name}
-                                        </span>
-                                        <span className="text-gray-400 text-xs">
-                                          (Line {item.line})
-                                        </span>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <Info className="h-3 w-3 text-gray-400 cursor-help ml-1" />
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            <p className="text-sm max-w-xs">
-                                              {item.name === "Ontario Basic Personal Amount" && "Ontario non-refundable tax credit that reduces your provincial tax payable, available to all Ontario residents."}
-                                              {item.name === "Ontario CPP/QPP Contributions" && "Ontario tax credit for Canada or Quebec Pension Plan contributions deducted from employment income."}
-                                              {item.name === "Ontario Employment Insurance Premiums" && "Ontario tax credit for Employment Insurance premiums deducted from employment income."}
-                                              {item.name === "Ontario Medical Expenses" && "Ontario tax credit for qualifying medical expenses exceeding provincial thresholds."}
-                                              {item.name === "Ontario Donations and Gifts" && "Ontario tax credit for charitable donations and gifts to qualified organizations."}
-                                              {item.name === "Ontario Dividend Tax Credit" && "Ontario tax credit for eligible dividends received from Canadian corporations."}
-                                              {item.name === "Ontario Seniors Care at Home Credit" && "Refundable tax credit for eligible home care and support services for seniors in Ontario."}
-                                              {item.name === "Ontario Seniors Public Transit Credit" && "Refundable tax credit for public transit costs for eligible Ontario seniors."}
-                                              {item.name === "Ontario Political Contribution Credit" && "Refundable tax credit for contributions made to registered Ontario political parties or candidates."}
-                                              {item.name === "Ontario Flow Through Credit" && "Refundable tax credit for flow-through share investments in Ontario resource exploration."}
-                                              {item.name === "Ontario Co-operative Education Credit" && "Refundable tax credit for employers participating in co-operative education programs in Ontario."}
-                                              {!["Ontario Basic Personal Amount", "Ontario CPP/QPP Contributions", "Ontario Employment Insurance Premiums", "Ontario Medical Expenses", "Ontario Donations and Gifts", "Ontario Dividend Tax Credit", "Ontario Seniors Care at Home Credit", "Ontario Seniors Public Transit Credit", "Ontario Political Contribution Credit", "Ontario Flow Through Credit", "Ontario Co-operative Education Credit"].includes(item.name) && "Ontario provincial tax credit information"}
-                                            </p>
-                                          </TooltipContent>
-                                        </Tooltip>
                                       </div>
-                                      <span className="font-medium text-right text-gray-700">
-                                        {hasClaim ? formatCurrency(amount) : '$0'}
-                                      </span>
+                                      <div className="flex-1">
+                                        <div className="font-medium text-primary text-sm underline">
+                                          {item.name}
+                                        </div>
+                                        <div className="text-gray-600 text-sm">
+                                          (Line {item.line})
+                                        </div>
+                                      </div>
+                                      <div className="text-right font-medium text-primary text-sm">
+                                        {hasClaim ? formatCurrency(amount) : ''}
+                                      </div>
                                     </div>
                                     );
                                   })}
