@@ -4060,7 +4060,7 @@ export default function TaxReport() {
                               <ChevronDown className="w-4 h-4" />
                             )}
                             <h4 className="font-medium text-primary text-sm">
-                              Canada Child Benefit Clawback
+                              Canada Child Benefit
                             </h4>
                           </div>
                           <span className="font-medium text-primary text-sm">
