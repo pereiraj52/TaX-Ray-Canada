@@ -4251,7 +4251,10 @@ export default function TaxReport() {
                 const benefits = [
                   // Basic Personal Amount
                   { category: "Basic Personal Amount", items: [
-                    { name: "Basic Personal Amount", line: "30000" },
+                    { name: "Minimum BPA", line: "BPA-MIN", isStatic: true, staticValue: 14156 },
+                    { name: "Maximum BPA", line: "BPA-MAX", isStatic: true, staticValue: 15705 },
+                    { name: "Actual Amount", line: "30000" },
+                    { name: "Clawback %", line: "BPA-CLAWBACK", isCalculated: true },
                   ]},
                   
                   // Canada Workers Benefit
@@ -4354,30 +4357,56 @@ export default function TaxReport() {
                                 <div className="grid grid-cols-2 gap-6">
                                   <div className="space-y-3">
                                     {category.items.map((item, itemIndex) => {
-                                      const amount = getFieldValue(item.line);
+                                      let amount = 0;
+                                      let displayValue = '';
+                                      let showIcon = true;
+                                      
+                                      if (item.isStatic) {
+                                        // Static value (Minimum BPA, Maximum BPA)
+                                        amount = item.staticValue;
+                                        displayValue = formatCurrency(amount);
+                                        showIcon = false;
+                                      } else if (item.isCalculated && item.line === "BPA-CLAWBACK") {
+                                        // Calculate clawback percentage
+                                        const actualAmount = getFieldValue("30000");
+                                        const minBPA = 14156;
+                                        const maxBPA = 15705;
+                                        const clawbackPercentage = ((actualAmount - minBPA) / (maxBPA - minBPA)) * 100;
+                                        displayValue = `${Math.max(0, Math.min(100, clawbackPercentage)).toFixed(2)}%`;
+                                        showIcon = false;
+                                      } else {
+                                        // Regular field value
+                                        amount = getFieldValue(item.line);
+                                        displayValue = amount > 0 ? formatCurrency(amount) : '';
+                                      }
+                                      
                                       return (
                                         <div key={itemIndex} className="flex items-center gap-3">
                                           <div className="w-5 h-5 flex items-center justify-center">
-                                            {amount > 0 ? (
-                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
-                                                ✓
-                                              </div>
-                                            ) : (
-                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
-                                                ✗
-                                              </div>
-                                            )}
+                                            {showIcon ? (
+                                              amount > 0 ? (
+                                                <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                  ✓
+                                                </div>
+                                              ) : (
+                                                <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                  ✗
+                                                </div>
+                                              )
+                                            ) : null}
                                           </div>
                                           <div className="flex-1">
                                             <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                               {item.name}
                                             </div>
-                                            <div className="text-sm" style={{ color: '#A3A3A3' }}>
-                                              (Line {item.line})
-                                            </div>
+                                            {!item.isStatic && !item.isCalculated && (
+                                              <div className="text-sm" style={{ color: '#A3A3A3' }}>
+                                                (Line {item.line})
+                                              </div>
+                                            )}
                                           </div>
                                           <div className="text-right font-medium text-primary text-sm">
-                                            {amount > 0 ? formatCurrency(amount) : ''}
+                                            {displayValue}
                                           </div>
                                         </div>
                                       );
