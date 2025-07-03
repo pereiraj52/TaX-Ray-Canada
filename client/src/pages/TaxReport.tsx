@@ -4399,16 +4399,6 @@ export default function TaxReport() {
                                   )}
                                   <h4 className="font-medium text-primary text-sm flex items-center">
                                     {category.category}
-                                    {category.category === "Basic Personal Amount" && (
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                          <p className="max-w-xs">The Basic Personal Amount (BPA) is a non-refundable tax credit that reduces the amount of federal income tax you pay. For 2024, the maximum BPA is $15,705, but it decreases for high-income earners with net income over $173,205.</p>
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    )}
                                   </h4>
                                 </div>
                                 <span className="font-medium text-primary text-sm">
@@ -4521,6 +4511,16 @@ export default function TaxReport() {
                                           <div className="flex-1">
                                             <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                               {item.name}
+                                              {item.name === "Actual BPA" && (
+                                                <Tooltip>
+                                                  <TooltipTrigger asChild>
+                                                    <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                                  </TooltipTrigger>
+                                                  <TooltipContent>
+                                                    <p className="max-w-xs">The Basic Personal Amount (BPA) is a non-refundable tax credit that reduces the amount of federal income tax you pay. For 2024, the maximum BPA is $15,705, but it decreases for high-income earners with net income over $173,205.</p>
+                                                  </TooltipContent>
+                                                </Tooltip>
+                                              )}
                                               {item.name === "Clawback %" && (
                                                 <Tooltip>
                                                   <TooltipTrigger asChild>
