@@ -4019,12 +4019,16 @@ export default function TaxReport() {
               const clawbackPercentage = calculateCCBClawbackPercentage(adjustedFamilyNetIncome, numUnder6, num6to17);
               const totalEligibleChildren = numUnder6 + num6to17;
 
+              // Calculate actual CCB: Maximum CCB - (Maximum CCB × Clawback %)
+              const maxCCB = calculateMaxUCCB();
+              const actualCCB = maxCCB - (maxCCB * (clawbackPercentage / 100));
+
               // Calculate family benefit information
               const benefitInfo = [
                 { name: "Number of children", value: household?.children?.length || 0, format: 'number' },
-                { name: "Maximum CCB", value: calculateMaxUCCB(), format: 'currency' },
+                { name: "Maximum CCB", value: maxCCB, format: 'currency' },
                 { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
-                { name: "Actual CCB", value: 0, format: 'currency' }, // TODO: Get actual CCB received from tax data
+                { name: "Actual CCB", value: actualCCB, format: 'currency' },
                 { name: "Clawback %", value: clawbackPercentage, format: 'percentage' },
               ];
 
