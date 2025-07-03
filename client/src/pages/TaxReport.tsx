@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight, HelpCircle } from "lucide-react";
+import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight, HelpCircle, Minus } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -4077,7 +4077,31 @@ export default function TaxReport() {
                                 return (
                                   <div key={index} className="flex items-center gap-3">
                                     <div className="w-5 h-5 flex items-center justify-center">
-                                      {hasValue ? (
+                                      {info.name === "Clawback %" ? (
+                                        (() => {
+                                          const clampedPercentage = Math.max(0, Math.min(100, clawbackPercentage));
+                                          
+                                          if (clampedPercentage === 0) {
+                                            return (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                ✓
+                                              </div>
+                                            );
+                                          } else if (clampedPercentage === 100) {
+                                            return (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                ✗
+                                              </div>
+                                            );
+                                          } else {
+                                            return (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#A3A3A3' }}>
+                                                –
+                                              </div>
+                                            );
+                                          }
+                                        })()
+                                      ) : hasValue ? (
                                         <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                           ✓
                                         </div>
@@ -4400,9 +4424,33 @@ export default function TaxReport() {
                                                 </div>
                                               )
                                             ) : item.name === "Clawback %" ? (
-                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
-                                                ✓
-                                              </div>
+                                              (() => {
+                                                const actualAmount = getFieldValue("30000");
+                                                const minBPA = 14156;
+                                                const maxBPA = 15705;
+                                                const clawbackPercentage = ((maxBPA - actualAmount) / (maxBPA - minBPA)) * 100;
+                                                const clampedPercentage = Math.max(0, Math.min(100, clawbackPercentage));
+                                                
+                                                if (clampedPercentage === 0) {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                      ✓
+                                                    </div>
+                                                  );
+                                                } else if (clampedPercentage === 100) {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                      ✗
+                                                    </div>
+                                                  );
+                                                } else {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#A3A3A3' }}>
+                                                      –
+                                                    </div>
+                                                  );
+                                                }
+                                              })()
                                             ) : null}
                                           </div>
                                           <div className="flex-1">
