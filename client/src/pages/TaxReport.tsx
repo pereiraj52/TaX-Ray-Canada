@@ -2889,7 +2889,7 @@ export default function TaxReport() {
           })()}
         </div>
 
-        {/* Deductions Analysis */}
+        {/* Tax Deductions Analysis */}
         <div className="space-y-6 mt-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Tax Deductions Analysis</h2>
           
@@ -3024,12 +3024,9 @@ export default function TaxReport() {
                                   return (
                                     <div key={itemIndex} className="flex justify-between items-center text-sm">
                                       <div className="flex items-center space-x-2">
-                                        <span 
-                                          className="font-medium"
-                                          style={{ color: hasClaim ? '#88AA73' : '#D4B26A' }}
-                                        >
+                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
                                           {hasClaim ? '✓' : '✗'}
-                                        </span>
+                                        </div>
                                         <span className="text-gray-700">
                                           {item.name}
                                         </span>
@@ -3336,12 +3333,9 @@ export default function TaxReport() {
                                   return (
                                     <div key={itemIndex} className="flex justify-between items-center text-sm">
                                       <div className="flex items-center space-x-2">
-                                        <span 
-                                          className="font-medium"
-                                          style={{ color: hasClaim ? '#88AA73' : '#D4B26A' }}
-                                        >
+                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
                                           {hasClaim ? '✓' : '✗'}
-                                        </span>
+                                        </div>
                                         <span className="text-gray-700">
                                           {item.name}
                                         </span>
@@ -3614,12 +3608,9 @@ export default function TaxReport() {
                                   return (
                                     <div key={itemIndex} className="flex justify-between items-center text-sm">
                                       <div className="flex items-center space-x-2">
-                                        <span 
-                                          className="font-medium"
-                                          style={{ color: hasClaim ? '#88AA73' : '#D4B26A' }}
-                                        >
+                                        <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: hasClaim ? '#88AA73' : '#D4B26A' }}>
                                           {hasClaim ? '✓' : '✗'}
-                                        </span>
+                                        </div>
                                         <span className="text-gray-700">
                                           {item.name}
                                         </span>
