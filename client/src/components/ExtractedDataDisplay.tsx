@@ -691,19 +691,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
 
         {activeTab === 'accounts' && (
           <div className="space-y-6">
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
+            <div className="accounts-card rounded-lg p-4 mb-6">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold text-purple-800">Investment & Savings Accounts</h3>
+                <h3 className="font-semibold accounts-card-text">Investment & Savings Accounts</h3>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={toggleAllAccountSections}
-                  className="text-purple-700 border-purple-300 hover:bg-purple-100"
+                  className="accounts-card-button"
                 >
                   {areAllAccountSectionsExpanded() ? 'Collapse All' : 'Expand All'}
                 </Button>
               </div>
-              <p className="text-purple-700 text-sm">Registered accounts, contribution room, and capital loss information</p>
+              <p className="accounts-card-text text-sm">Registered accounts, contribution room, and capital loss information</p>
             </div>
             
             <div className="space-y-4">
