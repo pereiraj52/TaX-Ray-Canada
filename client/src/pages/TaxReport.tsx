@@ -4401,8 +4401,6 @@ export default function TaxReport() {
                                   
                                   return (
                                     <div className="space-y-4">
-                                      <h5 className="font-medium text-primary text-sm">CWB Family Clawback Progression</h5>
-                                      
                                       <div className="relative" style={{ marginTop: '20px' }}>
                                         {/* Progress bar */}
                                         <div 
