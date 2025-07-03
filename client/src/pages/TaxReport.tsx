@@ -3720,7 +3720,7 @@ export default function TaxReport() {
               variant="outline"
               size="sm"
               onClick={toggleAllClawbackSections}
-              className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+              className="credits-card-button"
             >
               {areAllClawbackSectionsExpanded() ? 'Collapse All' : 'Expand All'}
             </Button>
