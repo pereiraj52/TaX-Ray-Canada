@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight, HelpCircle, CheckCircle } from "lucide-react";
+import { ArrowLeft, Download, FileText, Calendar, User, Info, ChevronDown, ChevronRight, HelpCircle } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -4400,7 +4400,9 @@ export default function TaxReport() {
                                                 </div>
                                               )
                                             ) : item.name === "Clawback %" ? (
-                                              <CheckCircle className="w-4 h-4" style={{ color: '#88AA73' }} />
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                ✓
+                                              </div>
                                             ) : null}
                                           </div>
                                           <div className="flex-1">
