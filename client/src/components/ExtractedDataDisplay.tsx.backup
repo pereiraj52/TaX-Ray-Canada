@@ -999,32 +999,20 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections.pension && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Old Age Security:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('11300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 11300)</span>
-                      </div>
+                      <span className="field-label">Old Age Security (Line 11300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11300'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">CPP/QPP Benefits:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('11400'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 11400)</span>
-                      </div>
+                      <span className="field-label">CPP/QPP Benefits (Line 11400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11400'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Other Pensions:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('11500'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 11500)</span>
-                      </div>
+                      <span className="field-label">Other Pensions (Line 11500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11500'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Split Pension Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 11600)</span>
-                      </div>
+                      <span className="field-label">Split Pension Amount (Line 11600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
                     </div>
                   </div>
                 )}
@@ -1051,25 +1039,16 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections.government && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Universal Child Care Benefit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 11700)</span>
-                      </div>
+                      <span className="field-label">Universal Child Care Benefit (Line 11700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Employment Insurance:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('11900'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 11900)</span>
-                      </div>
+                      <span className="field-label">Employment Insurance (Line 11900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11900'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">EI Maternity/Parental:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('11905'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 11905)</span>
-                      </div>
+                      <span className="field-label">EI Maternity/Parental (Line 11905):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('11905'))}</span>
                     </div>
                   </div>
                 )}
@@ -1096,53 +1075,32 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections.investment && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Taxable Dividends - Eligible:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12000'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12000)</span>
-                      </div>
+                      <span className="field-label">Taxable Dividends - Eligible (Line 12000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Non-Eligible Dividends:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12010'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12010)</span>
-                      </div>
+                      <span className="field-label">Non-Eligible Dividends (Line 12010):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12010'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Interest and Investment Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12100'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12100)</span>
-                      </div>
+                      <span className="field-label">Interest and Investment Income (Line 12100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12100'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Partnership Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12200'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12200)</span>
-                      </div>
+                      <span className="field-label">Partnership Income (Line 12200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12200'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Foreign Dividends:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12400'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12400)</span>
-                      </div>
+                      <span className="field-label">Foreign Dividends (Line 12400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12400'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Rental Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12600)</span>
-                      </div>
+                      <span className="field-label">Rental Income (Line 12600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Capital Gains:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12700)</span>
-                      </div>
+                      <span className="field-label">Capital Gains (Line 12700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
                     </div>
                   </div>
                 )}
@@ -1169,32 +1127,20 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['registered-account'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">RDSP Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12500)</span>
-                      </div>
+                      <span className="field-label">RDSP Income (Line 12500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">RRSP Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12900)</span>
-                      </div>
+                      <span className="field-label">RRSP Income (Line 12900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">FHSA Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12905)</span>
-                      </div>
+                      <span className="field-label">FHSA Income (Line 12905):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">FHSA Income - Other:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 12906)</span>
-                      </div>
+                      <span className="field-label">FHSA Income - Other (Line 12906):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
                     </div>
                   </div>
                 )}
@@ -1222,39 +1168,24 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections.selfemployment && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Business Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 13500)</span>
-                      </div>
+                      <span className="field-label">Business Income (Line 13500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Professional Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('13700'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 13700)</span>
-                      </div>
+                      <span className="field-label">Professional Income (Line 13700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('13700'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Commission Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('13900'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 13900)</span>
-                      </div>
+                      <span className="field-label">Commission Income (Line 13900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('13900'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Farming Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('14100'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 14100)</span>
-                      </div>
+                      <span className="field-label">Farming Income (Line 14100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('14100'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Fishing Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('14300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 14300)</span>
-                      </div>
+                      <span className="field-label">Fishing Income (Line 14300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('14300'))}</span>
                     </div>
                   </div>
                 )}
@@ -1281,39 +1212,24 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections.othersources && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Other Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 13000)</span>
-                      </div>
+                      <span className="field-label">Other Income (Line 13000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Scholarships:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 13010)</span>
-                      </div>
+                      <span className="field-label">Scholarships (Line 13010):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Workers' Compensation:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 14400)</span>
-                      </div>
+                      <span className="field-label">Workers' Compensation (Line 14400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Social Assistance:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('14500'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 14500)</span>
-                      </div>
+                      <span className="field-label">Social Assistance (Line 14500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('14500'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Net Federal Supplements:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('14600'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 14600)</span>
-                      </div>
+                      <span className="field-label">Net Federal Supplements (Line 14600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('14600'))}</span>
                     </div>
                   </div>
                 )}
@@ -1322,7 +1238,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               {/* Total Income Summary */}
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <div className="flex justify-between">
-                  <span className="font-semibold text-green-800">Total Income:</span>
+                  <span className="font-semibold text-green-800">Total Income (Line 15000):</span>
                   <span className="font-bold text-green-600 text-lg">
                     {formatCurrency(getFieldValue('15000'))}
                   </span>
@@ -1584,39 +1500,24 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['basic-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Basic Personal Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30000)</span>
-                      </div>
+                      <span className="field-label">Basic Personal Amount (Line 30000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Age Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30100'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30100)</span>
-                      </div>
+                      <span className="field-label">Age Amount (Line 30100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30100'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Spouse Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30300)</span>
-                      </div>
+                      <span className="field-label">Spouse Amount (Line 30300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Eligible Dependant:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30400'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30400)</span>
-                      </div>
+                      <span className="field-label">Eligible Dependant (Line 30400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30400'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canada Caregiver:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30450)</span>
-                      </div>
+                      <span className="field-label">Canada Caregiver (Line 30450):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
                     </div>
                   </div>
                 )}
@@ -1643,33 +1544,24 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['employment-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">CPP/QPP Contributions:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30800)</span>
-                      </div>
+                      <span className="field-label">CPP/QPP Contributions (Line 30800):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">CPP/QPP (Self Employed) Contributions (Line 31000):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Employment Insurance Premiums:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31200)</span>
-                      </div>
+                      <span className="field-label">Employment Insurance Premiums (Line 31200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Employment Insurance (Self Employed) Premiums (Line 31217):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('31217'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canada Employment Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31220)</span>
-                      </div>
+                      <span className="field-label">Canada Employment Amount (Line 31220):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Volunteer firefighters' amount (VFA) (Line 31230):</span>
@@ -1705,32 +1597,20 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['personal-situation-credits-new'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Home buyers' Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31270'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31270)</span>
-                      </div>
+                      <span className="field-label">Home buyers' Amount (Line 31270):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31270'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Adoption Expenses:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31300)</span>
-                      </div>
+                      <span className="field-label">Adoption Expenses (Line 31300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31300'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Digital News Subscription:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31350'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31350)</span>
-                      </div>
+                      <span className="field-label">Digital News Subscription (Line 31350):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31350'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Pension Income Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31400)</span>
-                      </div>
+                      <span className="field-label">Pension Income Amount (Line 31400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
                     </div>
                   </div>
                 )}
@@ -1757,53 +1637,32 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['disability-caregiver-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Canada Caregiver Amount Spouse/Partner/Adult Children:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30450)</span>
-                      </div>
+                      <span className="field-label">Canada Caregiver Amount Spouse/Partner/Adult Children (Line 30450):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canada Caregiver Amount for Children:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('30500'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 30500)</span>
-                      </div>
+                      <span className="field-label">Canada Caregiver Amount for Children (Line 30500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('30500'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Home Accessibility Expenses:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31285'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31285)</span>
-                      </div>
+                      <span className="field-label">Home Accessibility Expenses (Line 31285):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31285'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Caregiver Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31500'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31500)</span>
-                      </div>
+                      <span className="field-label">Caregiver Amount (Line 31500):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31500'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Disability Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31600'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31600)</span>
-                      </div>
+                      <span className="field-label">Disability Amount (Line 31600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31600'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Disability Transferred:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31800'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31800)</span>
-                      </div>
+                      <span className="field-label">Disability Transferred (Line 31800):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31800'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Family Caregiver:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31850'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31850)</span>
-                      </div>
+                      <span className="field-label">Family Caregiver (Line 31850):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31850'))}</span>
                     </div>
                   </div>
                 )}
@@ -1830,32 +1689,20 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['education-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Interest on Student Loans:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('31900'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 31900)</span>
-                      </div>
+                      <span className="field-label">Interest on Student Loans (Line 31900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('31900'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Tuition & Education Amounts:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('32300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 32300)</span>
-                      </div>
+                      <span className="field-label">Tuition & Education Amounts (Line 32300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('32300'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Tuition Transferred:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('32400'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 32400)</span>
-                      </div>
+                      <span className="field-label">Tuition Transferred (Line 32400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('32400'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Amounts Transferred From your Spouse/Partner:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('32600'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 32600)</span>
-                      </div>
+                      <span className="field-label">Amounts Transferred From your Spouse/Partner (Line 32600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('32600'))}</span>
                     </div>
                   </div>
                 )}
@@ -1882,25 +1729,16 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['education-medical-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Medical Expenses:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('33099'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 33099)</span>
-                      </div>
+                      <span className="field-label">Medical Expenses (Line 33099):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('33099'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Allowable Medical Expenses:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('33199'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 33199)</span>
-                      </div>
+                      <span className="field-label">Allowable Medical Expenses (Line 33199):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('33199'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Net Eligible Medical Expenses:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('33200'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 33200)</span>
-                      </div>
+                      <span className="field-label">Net Eligible Medical Expenses (Line 33200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('33200'))}</span>
                     </div>
                   </div>
                 )}
@@ -1931,29 +1769,20 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                       <span className="field-value">{formatCurrency(getFieldValue('S9-TOTAL'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Allowable Charitable Donations:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('34000'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 34000)</span>
-                      </div>
+                      <span className="field-label">Allowable Charitable Donations (Line 34000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('34000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Total Ecological Gifts:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('34200'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 34200)</span>
-                      </div>
+                      <span className="field-label">Total Ecological Gifts (Line 34200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('34200'))}</span>
                     </div>
                     <div className="field-row">
                       <span className="field-label">Total Eligible Gifts & Donations:</span>
                       <span className="field-value">{formatCurrency(getFieldValue('34000') + getFieldValue('34200'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Donation & Gift Credits:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 34900)</span>
-                      </div>
+                      <span className="field-label">Donation & Gift Credits (Line 34900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
                     </div>
                   </div>
                 )}
@@ -1980,95 +1809,56 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['refundable-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Quebec Abatement:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('44000'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 44000)</span>
-                      </div>
+                      <span className="field-label">Quebec Abatement (Line 44000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('44000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">CPP Overpayment:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('44800'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 44800)</span>
-                      </div>
+                      <span className="field-label">CPP Overpayment (Line 44800):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('44800'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">EI Overpayment:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45000)</span>
-                      </div>
+                      <span className="field-label">EI Overpayment (Line 45000):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Refundable Medical Expense Supplement:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45200)</span>
-                      </div>
+                      <span className="field-label">Refundable Medical Expense Supplement (Line 45200):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canada Workers Benefit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45300)</span>
-                      </div>
+                      <span className="field-label">Canada Workers Benefit (Line 45300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canada Training Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45350)</span>
-                      </div>
+                      <span className="field-label">Canada Training Credit (Line 45350):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Multigenerational Home Renovation Tax Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45355)</span>
-                      </div>
+                      <span className="field-label">Multigenerational Home Renovation Tax Credit (Line 45355):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Refund of Investment Tax:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45400)</span>
-                      </div>
+                      <span className="field-label">Refund of Investment Tax (Line 45400):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Part XII.2 Tax Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45600'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45600)</span>
-                      </div>
+                      <span className="field-label">Part XII.2 Tax Credit (Line 45600):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45600'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Employee & Partner GST/HST Rebate:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('45700'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 45700)</span>
-                      </div>
+                      <span className="field-label">Employee & Partner GST/HST Rebate (Line 45700):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('45700'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Eligible Educator School Supply Tax Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('46900'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 46900)</span>
-                      </div>
+                      <span className="field-label">Eligible Educator School Supply Tax Credit (Line 46900):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('46900'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Canadian Journalism Labour Tax Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('47555'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 47555)</span>
-                      </div>
+                      <span className="field-label">Canadian Journalism Labour Tax Credit (Line 47555):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('47555'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Return of Fuel Charge Proceeds to Farmers:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 47556)</span>
-                      </div>
+                      <span className="field-label">Return of Fuel Charge Proceeds to Farmers (Line 47556):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
                     </div>
                   </div>
                 )}
@@ -2096,130 +1886,76 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['ontario-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Ontario Basic Personal Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58040'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58040)</span>
-                      </div>
+                      <span className="field-label">Ontario Basic Personal Amount (Line 58040):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58040'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Age Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58080'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58080)</span>
-                      </div>
+                      <span className="field-label">Ontario Age Amount (Line 58080):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58080'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Spouse Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58120'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58120)</span>
-                      </div>
+                      <span className="field-label">Ontario Spouse Amount (Line 58120):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58120'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Eligible Dependant:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58160'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58160)</span>
-                      </div>
+                      <span className="field-label">Ontario Eligible Dependant (Line 58160):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58160'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Caregiver Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58185'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58185)</span>
-                      </div>
+                      <span className="field-label">Ontario Caregiver Amount (Line 58185):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58185'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario CPP/QPP Contributions:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58240'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58240)</span>
-                      </div>
+                      <span className="field-label">Ontario CPP/QPP Contributions (Line 58240):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58240'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario CPP/QPP Self-Employment:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58280'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58280)</span>
-                      </div>
+                      <span className="field-label">Ontario CPP/QPP Self-Employment (Line 58280):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58280'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario EI Premiums:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58300)</span>
-                      </div>
+                      <span className="field-label">Ontario EI Premiums (Line 58300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58300'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Volunteer Firefighter:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58305'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58305)</span>
-                      </div>
+                      <span className="field-label">Ontario Volunteer Firefighter (Line 58305):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58305'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Adoption Expenses:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58330'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58330)</span>
-                      </div>
+                      <span className="field-label">Ontario Adoption Expenses (Line 58330):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58330'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Pension Income:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58360'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58360)</span>
-                      </div>
+                      <span className="field-label">Ontario Pension Income (Line 58360):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58360'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Disability Amount:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58440'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58440)</span>
-                      </div>
+                      <span className="field-label">Ontario Disability Amount (Line 58440):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58440'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Disability Transferred:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58480'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58480)</span>
-                      </div>
+                      <span className="field-label">Ontario Disability Transferred (Line 58480):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58480'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Student Loan Interest:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58520'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58520)</span>
-                      </div>
+                      <span className="field-label">Ontario Student Loan Interest (Line 58520):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58520'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Tuition & Education:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58560'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58560)</span>
-                      </div>
+                      <span className="field-label">Ontario Tuition & Education (Line 58560):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58560'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Amounts Transferred:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58640'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58640)</span>
-                      </div>
+                      <span className="field-label">Ontario Amounts Transferred (Line 58640):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58640'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Medical Expenses:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58769'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58769)</span>
-                      </div>
+                      <span className="field-label">Ontario Medical Expenses (Line 58769):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58769'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Donations & Gifts:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('58969'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 58969)</span>
-                      </div>
+                      <span className="field-label">Ontario Donations & Gifts (Line 58969):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('58969'))}</span>
                     </div>
                   </div>
                 )}
@@ -2248,39 +1984,24 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 {!collapsedSections['ontario-refundable-credits'] && (
                   <div className="p-4 border-t border-gray-200 space-y-4">
                     <div className="field-row">
-                      <span className="field-label">Ontario Seniors Care at Home Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('63095'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 63095)</span>
-                      </div>
+                      <span className="field-label">Ontario Seniors Care at Home Credit (Line 63095):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63095'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Seniors Public Transit Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('63100'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 63100)</span>
-                      </div>
+                      <span className="field-label">Ontario Seniors Public Transit Credit (Line 63100):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63100'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Political Contribution Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('63110'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 63110)</span>
-                      </div>
+                      <span className="field-label">Ontario Political Contribution Credit (Line 63110):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63110'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Flow Through Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('63220'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 63220)</span>
-                      </div>
+                      <span className="field-label">Ontario Flow Through Credit (Line 63220):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63220'))}</span>
                     </div>
                     <div className="field-row">
-                      <span className="field-label">Ontario Co-operative Education Credit:</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="field-value">{formatCurrency(getFieldValue('63300'))}</span>
-                        <span className="text-sm" style={{ color: '#A3A3A3' }}>(Line 63300)</span>
-                      </div>
+                      <span className="field-label">Ontario Co-operative Education Credit (Line 63300):</span>
+                      <span className="field-value">{formatCurrency(getFieldValue('63300'))}</span>
                     </div>
                   </div>
                 )}
