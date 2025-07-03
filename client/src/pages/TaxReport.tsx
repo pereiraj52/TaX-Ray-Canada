@@ -3119,7 +3119,7 @@ export default function TaxReport() {
                                       </div>
                                       <div className="flex-1">
                                         <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                          {item.name} <span className="text-gray-600">(Line {item.line})</span>
+                                          {item.name} <span style={{ color: '#A3A3A3' }}>(Line {item.line})</span>
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
@@ -3400,7 +3400,7 @@ export default function TaxReport() {
                                         </div>
                                         <div className="flex-1">
                                           <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                            {item.name} <span className="text-gray-600">(Line {item.line})</span>
+                                            {item.name} <span style={{ color: '#A3A3A3' }}>(Line {item.line})</span>
                                           </div>
                                         </div>
                                         <div className="text-right font-medium text-primary text-sm">
@@ -3630,7 +3630,7 @@ export default function TaxReport() {
                                       </div>
                                       <div className="flex-1">
                                         <div className="font-medium text-sm" style={{ color: '#111111' }}>
-                                          {item.name} <span className="text-gray-600">(Line {item.line})</span>
+                                          {item.name} <span style={{ color: '#A3A3A3' }}>(Line {item.line})</span>
                                         </div>
                                       </div>
                                       <div className="text-right font-medium text-primary text-sm">
