@@ -3033,7 +3033,7 @@ export default function TaxReport() {
                                         </div>
                                       </div>
                                       <div className="flex-1">
-                                        <div className="font-medium text-primary text-sm underline">
+                                        <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                           {item.name}
                                         </div>
                                         <div className="text-gray-600 text-sm">
@@ -3307,7 +3307,7 @@ export default function TaxReport() {
                                           </div>
                                         </div>
                                         <div className="flex-1">
-                                          <div className="font-medium text-primary text-sm underline">
+                                          <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                             {item.name}
                                           </div>
                                           <div className="text-gray-600 text-sm">
@@ -3530,7 +3530,7 @@ export default function TaxReport() {
                                         </div>
                                       </div>
                                       <div className="flex-1">
-                                        <div className="font-medium text-primary text-sm underline">
+                                        <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                           {item.name}
                                         </div>
                                         <div className="text-gray-600 text-sm">
@@ -3862,7 +3862,7 @@ export default function TaxReport() {
                                       )}
                                     </div>
                                     <div className="flex-1">
-                                      <div className="font-medium text-primary text-sm underline">
+                                      <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                         {info.name}
                                       </div>
                                     </div>
@@ -4145,7 +4145,7 @@ export default function TaxReport() {
                                             )}
                                           </div>
                                           <div className="flex-1">
-                                            <div className="font-medium text-primary text-sm underline">
+                                            <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                               {item.name}
                                             </div>
                                             <div className="text-gray-600 text-sm">
