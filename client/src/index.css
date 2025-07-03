@@ -30,7 +30,7 @@
   --warning: hsl(44, 63%, 63%); /* #D4B26A - Secondary accent */
   --error: hsl(0, 72%, 51%);
   --background-alt: hsl(84, 33%, 96%);
-  --summary-card: #DDEBEF; /* Custom color for T1 extract summary cards */
+  --summary-card: #F5EBDD; /* Custom color for T1 extract summary cards */
 }
 
 @layer base {
