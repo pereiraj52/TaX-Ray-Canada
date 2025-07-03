@@ -4380,6 +4380,10 @@ export default function TaxReport() {
                                         // Regular field value
                                         amount = getFieldValue(item.line);
                                         displayValue = amount > 0 ? formatCurrency(amount) : '';
+                                        // Don't show icon for Actual Amount line
+                                        if (item.name === "Actual Amount") {
+                                          showIcon = false;
+                                        }
                                       }
                                       
                                       return (
