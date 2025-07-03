@@ -33,6 +33,7 @@
   --summary-card: #E8E3F0; /* Custom color for T1 extract summary cards */
   --deductions-card: #FBE8E3; /* Custom color for deductions summary cards */
   --credits-card: #E5F0E3; /* Custom color for credits summary cards */
+  --taxes-card: #F5EBDD; /* Custom color for taxes summary cards */
 }
 
 @layer base {
@@ -92,6 +93,21 @@
   }
   .credits-card-button:hover {
     background-color: #C8D6C6;
+  }
+  .taxes-card {
+    background-color: var(--taxes-card);
+    border: 1px solid #E8D6C0;
+    color: #4A5568;
+  }
+  .taxes-card-text {
+    color: #4A5568;
+  }
+  .taxes-card-button {
+    color: #4A5568;
+    border-color: #E8D6C0;
+  }
+  .taxes-card-button:hover {
+    background-color: #E8D6C0;
   }
 }
 
