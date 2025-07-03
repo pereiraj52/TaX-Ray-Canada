@@ -4066,14 +4066,6 @@ export default function TaxReport() {
                             )}
                             <h4 className="font-medium text-primary text-sm flex items-center">
                               Canada Child Benefit
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p className="max-w-xs">The Canada Child Benefit (CCB) is a tax-free monthly payment made to eligible families to help with the cost of raising children under 18 years of age. The benefit amount is based on family income and number of children.</p>
-                                </TooltipContent>
-                              </Tooltip>
                             </h4>
                           </div>
                           <span className="font-medium text-primary text-sm">
@@ -4137,6 +4129,16 @@ export default function TaxReport() {
                                     <div className="flex-1">
                                       <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                         {info.name}
+                                        {info.name === "Actual CCB" && (
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p className="max-w-xs">The Canada Child Benefit (CCB) is a tax-free monthly payment made to eligible families to help with the cost of raising children under 18 years of age. The benefit amount is based on family income and number of children.</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        )}
                                         {info.name === "Clawback %" && (
                                           <Tooltip>
                                             <TooltipTrigger asChild>
