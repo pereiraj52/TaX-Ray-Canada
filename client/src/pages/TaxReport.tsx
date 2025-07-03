@@ -4372,8 +4372,8 @@ export default function TaxReport() {
                                             <div className="font-medium text-sm" style={{ color: '#111111' }}>
                                               {item.name}
                                             </div>
-                                            <div className="text-gray-600 text-sm">
-                                              {item.line}
+                                            <div className="text-sm" style={{ color: '#A3A3A3' }}>
+                                              (Line {item.line})
                                             </div>
                                           </div>
                                           <div className="text-right font-medium text-primary text-sm">
