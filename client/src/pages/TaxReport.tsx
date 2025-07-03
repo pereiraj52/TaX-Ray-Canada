@@ -2998,7 +2998,7 @@ export default function TaxReport() {
                           const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-');
 
                           return (
-                            <div key={categoryIndex} className="mb-4">
+                            <div key={categoryIndex} className={`${categoryIndex < deductions.length - 1 ? 'border-b border-gray-200 pb-4 mb-4' : 'mb-4'}`}>
                               <button
                                 onClick={() => toggleDeductionSection(sectionKey)}
                                 className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
