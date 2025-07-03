@@ -708,1292 +708,235 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
             
             <div className="space-y-4">
               {/* RRSP/RRIF Section */}
-              <div>
-                <button
-                  onClick={() => toggleSection('rrsp-section')}
-                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-center">
-                    {collapsedSections['rrsp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                    <span>RRSP/RRIF</span>
-                  </div>
-                  <span className="text-primary font-medium">
-                    {formatCurrency(getFieldValue("20800"))}
-                  </span>
-                </button>
-                {!collapsedSections['rrsp-section'] && (
-                  <div className="mt-4 pl-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">Account Balance:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">$0.00</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">Contribution Room:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">$0.00</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 Contribution:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getFieldValue("20800"))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">HBP Balance:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 HBP Required:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('hbp_required_2024'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 HBP Repaid:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getFieldValue('24600'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">LLP Balance:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_balance'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 LLP Required:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('llp_required_2024'))}</span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="font-medium text-primary">2024 LLP Repaid:</span>
-                        <div className="text-right">
-                          <span className="font-medium text-primary">{formatCurrency(getFieldValue('24630'))}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CollapsibleSection
+                id="rrsp-rrif-section"
+                title="RRSP/RRIF"
+                fieldCodes={['20800']}
+              >
+                <div className="field-row">
+                  <span className="font-medium text-primary">Account Balance:</span>
+                  <span className="field-value">$0.00</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Contribution Room:</span>
+                  <span className="field-value">$0.00</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 Contribution:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue("20800"))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">HBP Balance:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('hbp_balance'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 HBP Required:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('hbp_required_2024'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 HBP Repaid:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('24600'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">LLP Balance:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('llp_balance'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 LLP Required:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('llp_required_2024'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 LLP Repaid:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue('24630'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* TFSA Section */}
-              <div>
-                <button
-                  onClick={() => toggleSection('tfsa-section')}
-                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-                >
-                <div className="flex items-center">
-                  {collapsedSections['tfsa-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                  <span>TFSA</span>
+              <CollapsibleSection
+                id="tfsa-section"
+                title="TFSA"
+                fieldCodes={[]}
+              >
+                <div className="field-row">
+                  <span className="font-medium text-primary">Account Balance:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-                <span className="text-gray-400">
-                  $0.00
-                </span>
-              </button>
-              {!collapsedSections['tfsa-section'] && (
-                <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Contribution Room:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-              )}
-            </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 Contribution:</span>
+                  <span className="field-value">$0.00</span>
+                </div>
+              </CollapsibleSection>
 
               {/* FHSA Section */}
-              <div>
-                <button
-                  onClick={() => toggleSection('fhsa-section')}
-                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-                >
-                <div className="flex items-center">
-                  {collapsedSections['fhsa-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                  <span>FHSA</span>
+              <CollapsibleSection
+                id="fhsa-section"
+                title="FHSA"
+                fieldCodes={['20805']}
+              >
+                <div className="field-row">
+                  <span className="font-medium text-primary">Account Balance:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-                <span className="text-primary font-medium">
-                  {formatCurrency(getFieldValue("20805"))}
-                </span>
-              </button>
-              {!collapsedSections['fhsa-section'] && (
-                <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("20805"))}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Contribution Room:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-              )}
-            </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 Contribution:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue("20805"))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* RESP Section */}
-              <div>
-                <button
-                  onClick={() => toggleSection('resp-section')}
-                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-                >
-                <div className="flex items-center">
-                  {collapsedSections['resp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                  <span>RESP</span>
+              <CollapsibleSection
+                id="resp-section"
+                title="RESP"
+                fieldCodes={[]}
+              >
+                <div className="field-row">
+                  <span className="font-medium text-primary">Account Balance:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-                <span className="text-gray-400">
-                  $0.00
-                </span>
-              </button>
-              {!collapsedSections['resp-section'] && (
-                <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_account_balance'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_contribution_room'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_2024_contribution'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CESG Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_total_grant'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CESG Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_grant_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CESG Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_grant_remaining'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CLB Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_received'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CLB Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CLB Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('resp_clb_remaining'))}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Contribution Room:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-              )}
-            </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 Contribution:</span>
+                  <span className="field-value">$0.00</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Total CESG Received:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_cesg_total'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CESG Room 2024:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_cesg_room_2024'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CESG Remaining:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_cesg_remaining'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Total CLB Received:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_clb_total'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CLB Room 2024:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_clb_room_2024'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CLB Remaining:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('resp_clb_remaining'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* RDSP Section */}
-              <div>
-                <button
-                  onClick={() => toggleSection('rdsp-section')}
-                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-                >
-                <div className="flex items-center">
-                  {collapsedSections['rdsp-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                  <span>RDSP</span>
+              <CollapsibleSection
+                id="rdsp-section"
+                title="RDSP"
+                fieldCodes={[]}
+              >
+                <div className="field-row">
+                  <span className="font-medium text-primary">Account Balance:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-                <span className="text-gray-400">
-                  $0.00
-                </span>
-              </button>
-              {!collapsedSections['rdsp-section'] && (
-                <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Account Balance:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Contribution Room:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">2024 Contribution:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">$0.00</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CDSG Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_received'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSG Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSG Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_remaining'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Total CDSB Received:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_received'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSB Room 2024:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_room_2024'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">CDSB Remaining:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_remaining'))}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Contribution Room:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-              )}
-            </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">2024 Contribution:</span>
+                  <span className="field-value">$0.00</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Total CDSG Received:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_total'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CDSG Room 2024:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_room_2024'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CDSG Remaining:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsg_remaining'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Total CDSB Received:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_total'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CDSB Room 2024:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_room_2024'))}</span>
+                </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">CDSB Remaining:</span>
+                  <span className="field-value">{formatCurrency(getHouseholdFieldValue('rdsp_cdsb_remaining'))}</span>
+                </div>
+              </CollapsibleSection>
 
               {/* Capital Loss Carry Forwards Section */}
-              <div>
-                <button
-                  onClick={() => toggleSection('capital-loss-section')}
-                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-                >
-                <div className="flex items-center">
-                  {collapsedSections['capital-loss-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                  <span>Capital Loss Carry Forwards</span>
+              <CollapsibleSection
+                id="capital-loss-section"
+                title="Capital Loss Carry Forwards"
+                fieldCodes={['25200']}
+              >
+                <div className="field-row">
+                  <span className="font-medium text-primary">Available Losses:</span>
+                  <span className="field-value">$0.00</span>
                 </div>
-                <span className="text-primary font-medium">
-                  {formatCurrency(getFieldValue("25200"))}
-                </span>
-              </button>
-              {!collapsedSections['capital-loss-section'] && (
-                <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Available Losses:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getHouseholdFieldValue('capital_loss_available'))}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">Applied This Year:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("25200"))}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="field-row">
+                  <span className="font-medium text-primary">Capital Loss Applied This Year:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue("25200"))}</span>
                 </div>
-              )}
-            </div>
+              </CollapsibleSection>
 
               {/* AMT Section */}
-              <div>
-                <button
-                  onClick={() => toggleSection('amt-section')}
-                  className="w-full flex items-center justify-between font-semibold text-secondary border-b pb-2 hover:bg-gray-50 transition-colors"
-                >
-                <div className="flex items-center">
-                  {collapsedSections['amt-section'] ? <ChevronRight className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}
-                  <span>AMT</span>
+              <CollapsibleSection
+                id="amt-section"
+                title="AMT"
+                fieldCodes={['40427']}
+              >
+                <div className="field-row">
+                  <span className="font-medium text-primary">AMT Carry Forward:</span>
+                  <span className="field-value">{formatCurrency(getFieldValue("40427"))}</span>
                 </div>
-                <span className="text-primary font-medium">
-                  {formatCurrency(getFieldValue("40427"))}
-                </span>
-              </button>
-              {!collapsedSections['amt-section'] && (
-                <div className="mt-4 pl-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="font-medium text-primary">AMT Carry Forward:</span>
-                      <div className="text-right">
-                        <span className="font-medium text-primary">{formatCurrency(getFieldValue("40427"))}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+              </CollapsibleSection>
             </div>
           </div>
         )}
 
         {activeTab === 'identification' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">First Name:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('first_name')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Last Name:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('last_name')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Social Insurance Number:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('sin')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Date of Birth:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('date_of_birth')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Marital Status:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('marital_status')}</span>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Address:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('address_line1')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">City:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('city')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Postal Code:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('postal_code')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Province:</span>
-                <span className="font-medium text-primary">{getTextFieldValue('province')}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'income' && (
           <div className="space-y-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold text-blue-800">Income Sources</h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={toggleAllIncomeSections}
-                  className="text-blue-700 border-blue-300 hover:bg-blue-100"
-                >
-                  {areAllIncomeSectionsExpanded() ? 'Collapse All' : 'Expand All'}
-                </Button>
-              </div>
-              <p className="text-blue-700 text-sm">All income reported on T1 tax return</p>
+            <div className="field-row">
+              <span className="font-medium text-primary">Name:</span>
+              <span className="field-value">{getTextFieldValue("Name")}</span>
             </div>
-            
-            <div className="space-y-4">
-              {/* Employment Income Section */}
-              <CollapsibleSection
-                id="employment"
-                title="Employment Income"
-                fieldCodes={['10100', '10105', '10120', '10130', '10400']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Employment Income" lineNumber="10100" />
-                  <span className="field-value">{formatCurrency(getFieldValue('10100'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Tax-Exempt Emergency Volunteer" lineNumber="10105" />
-                  <span className="field-value">{formatCurrency(getFieldValue('10105'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Commissions Included" lineNumber="10120" />
-                  <span className="field-value">{formatCurrency(getFieldValue('10120'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Wage Loss Replacement" lineNumber="10130" />
-                  <span className="field-value">{formatCurrency(getFieldValue('10130'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Other Employment Income" lineNumber="10400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('10400'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Pension & Retirement Income Section */}
-              <CollapsibleSection
-                id="pension"
-                title="Pension Income"
-                fieldCodes={['11300', '11400', '11500', '11600']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Old Age Security" lineNumber="11300" />
-                  <span className="field-value">{formatCurrency(getFieldValue('11300'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="CPP/QPP Benefits" lineNumber="11400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('11400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Other Pensions" lineNumber="11500" />
-                  <span className="field-value">{formatCurrency(getFieldValue('11500'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Split Pension Amount" lineNumber="11600" />
-                  <span className="field-value">{formatCurrency(getFieldValue('11600'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Government Benefits Section */}
-              <CollapsibleSection
-                id="government"
-                title="Government Benefits"
-                fieldCodes={['11700', '11900', '11905']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Universal Child Care Benefit" lineNumber="11700" />
-                  <span className="field-value">{formatCurrency(getFieldValue('11700'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Employment Insurance" lineNumber="11900" />
-                  <span className="field-value">{formatCurrency(getFieldValue('11900'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="EI Maternity/Parental" lineNumber="11905" />
-                  <span className="field-value">{formatCurrency(getFieldValue('11905'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Investment Income Section */}
-              <CollapsibleSection
-                id="investment"
-                title="Investment Income"
-                fieldCodes={['12000', '12010', '12100', '12200', '12400', '12600', '12700']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Taxable Dividends - Eligible" lineNumber="12000" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Non-Eligible Dividends" lineNumber="12010" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12010'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Interest and Investment Income" lineNumber="12100" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12100'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Partnership Income" lineNumber="12200" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12200'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Foreign Dividends" lineNumber="12400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Rental Income" lineNumber="12600" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12600'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Capital Gains" lineNumber="12700" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12700'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Registered Account Income Section */}
-              <CollapsibleSection
-                id="registered-account"
-                title="Registered Account Income"
-                fieldCodes={['12500', '12900', '12905', '12906']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="RDSP Income" lineNumber="12500" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12500'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="RRSP Income" lineNumber="12900" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12900'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="FHSA Income" lineNumber="12905" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12905'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="FHSA Income - Other" lineNumber="12906" />
-                  <span className="field-value">{formatCurrency(getFieldValue('12906'))}</span>
-                </div>
-              </CollapsibleSection>
-
-
-              {/* Self-Employment Income Section */}
-              <CollapsibleSection
-                id="selfemployment"
-                title="Self-Employment Income"
-                fieldCodes={['13500', '13700', '13900', '14100', '14300']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Business Income" lineNumber="13500" />
-                  <span className="field-value">{formatCurrency(getFieldValue('13500'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Professional Income" lineNumber="13700" />
-                  <span className="field-value">{formatCurrency(getFieldValue('13700'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Commission Income" lineNumber="13900" />
-                  <span className="field-value">{formatCurrency(getFieldValue('13900'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Farming Income" lineNumber="14100" />
-                  <span className="field-value">{formatCurrency(getFieldValue('14100'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Fishing Income" lineNumber="14300" />
-                  <span className="field-value">{formatCurrency(getFieldValue('14300'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Other Sources Section */}
-              <CollapsibleSection
-                id="othersources"
-                title="Other Sources"
-                fieldCodes={['13000', '13010', '14400', '14500', '14600']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Other Income" lineNumber="13000" />
-                  <span className="field-value">{formatCurrency(getFieldValue('13000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Scholarships" lineNumber="13010" />
-                  <span className="field-value">{formatCurrency(getFieldValue('13010'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Workers' Compensation" lineNumber="14400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('14400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Social Assistance" lineNumber="14500" />
-                  <span className="field-value">{formatCurrency(getFieldValue('14500'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Net Federal Supplements" lineNumber="14600" />
-                  <span className="field-value">{formatCurrency(getFieldValue('14600'))}</span>
-                </div>
-              </CollapsibleSection>
-              
-              {/* Total Income Summary */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <div className="flex justify-between">
-                  <span className="font-semibold text-green-800">Total Income:</span>
-                  <span className="font-bold text-green-600 text-lg">
-                    {formatCurrency(getFieldValue('15000'))}
-                  </span>
-                </div>
-                <p className="text-green-700 text-sm mt-1">Sum of all income sources</p>
-              </div>
+            <div className="field-row">
+              <span className="font-medium text-primary">Social Insurance Number:</span>
+              <span className="field-value">{getTextFieldValue("SIN")}</span>
+            </div>
+            <div className="field-row">
+              <span className="font-medium text-primary">Date of Birth:</span>
+              <span className="field-value">{getTextFieldValue("DateOfBirth")}</span>
+            </div>
+            <div className="field-row">
+              <span className="font-medium text-primary">Address:</span>
+              <span className="field-value">{getTextFieldValue("Address")}</span>
+            </div>
+            <div className="field-row">
+              <span className="font-medium text-primary">Province:</span>
+              <span className="field-value">{getTextFieldValue("Province")}</span>
             </div>
           </div>
         )}
-
-        {activeTab === 'deductions' && (
-          <div className="space-y-6">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold text-yellow-800">Deductions from Income</h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={toggleAllDeductionSections}
-                  className="text-yellow-700 border-yellow-300 hover:bg-yellow-100"
-                >
-                  {areAllDeductionSectionsExpanded() ? 'Collapse All' : 'Expand All'}
-                </Button>
-              </div>
-              <p className="text-yellow-700 text-sm">Federal and provincial deductions that reduce taxable income</p>
-            </div>
-            <div className="space-y-4">
-              {/* Retirement Plan Deductions Section */}
-              <CollapsibleSection
-                id="retirement-plan-deductions"
-                title="Retirement Plan Deductions"
-                fieldCodes={['20700', '20800', '20805', '20810', '21000']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Pension Adjustment" lineNumber="20600" />
-                      <span className="field-value">{formatCurrency(getFieldValue('20600'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Registered Pension Plan Deduction" lineNumber="20700" />
-                      <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="RRSP Deduction" lineNumber="20800" />
-                      <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="FHSA Deduction" lineNumber="20805" />
-                      <span className="field-value">{formatCurrency(getFieldValue('20805'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="PRPP Employer Contributions" lineNumber="20810" />
-                      <span className="field-value">{formatCurrency(getFieldValue('20810'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Split Pension Deduction" lineNumber="21000" />
-                      <span className="field-value">{formatCurrency(getFieldValue('21000'))}</span>
-                </div>
-              </CollapsibleSection>
-              {/* Personal Deductions Section */}
-              <CollapsibleSection
-                id="personal-deductions"
-                title="Personal Deductions"
-                fieldCodes={['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Annual Union Dues" lineNumber="22900" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="UCCB Repayment" lineNumber="21300" />
-                      <span className="field-value">{formatCurrency(getFieldValue('21300'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Child Care Expenses" lineNumber="23100" />
-                      <span className="field-value">{formatCurrency(getFieldValue('23100'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Disability Supports" lineNumber="23200" />
-                      <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Business Investment Loss" lineNumber="21700" />
-                      <span className="field-value">{formatCurrency(getFieldValue('21700'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Moving Expenses" lineNumber="22400" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Support Payments Allowable" lineNumber="22000" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Carrying Charges" lineNumber="22100" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
-                </div>
-              </CollapsibleSection>
-              {/* Employment Deductions Section */}
-              <CollapsibleSection
-                id="employment-deductions"
-                title="Employment Deductions"
-                fieldCodes={['22200', '22215', '22900', '23100']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="CPP/QPP Self-Employed" lineNumber="22200" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Enhanced CPP/QPP Deduction" lineNumber="22215" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Other Employment Expenses" lineNumber="22900" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Clergy Residence" lineNumber="23100" />
-                      <span className="field-value">{formatCurrency(getFieldValue('23100'))}</span>
-                </div>
-              </CollapsibleSection>
-              {/* Specialized Deductions Section */}
-              <CollapsibleSection
-                id="specialized-deductions"
-                title="Specialized Deductions"
-                fieldCodes={['22400', '23200', '23500']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Exploration Development" lineNumber="22400" />
-                      <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Other Deductions" lineNumber="23200" />
-                      <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Social Benefits Repayment" lineNumber="23500" />
-                      <span className="field-value">{formatCurrency(getFieldValue('23500'))}</span>
-                </div>
-              </CollapsibleSection>
-              {/* Summary Section */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Retirement Plan</div>
-                    <div className="text-xl font-bold text-yellow-600">
-                      {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810', '21000']))}
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Personal</div>
-                    <div className="text-xl font-bold text-yellow-600">
-                      {formatCurrency(getSectionTotal(['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']))}
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Employment</div>
-                    <div className="text-xl font-bold text-yellow-600">
-                      {formatCurrency(getSectionTotal(['22200', '22215', '22900', '23100']))}
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-yellow-800 mb-2">Specialized</div>
-                    <div className="text-xl font-bold text-yellow-600">
-                      {formatCurrency(getSectionTotal(['22400', '23200', '23500']))}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center mt-4">
-                  <div className="font-semibold text-yellow-800 mb-2">Total Deductions</div>
-                  <div className="text-2xl font-bold text-yellow-600">
-                    {formatCurrency(getTotalDeductions())}
-                  </div>
-                  <div className="text-sm text-yellow-700 mt-1">Calculated from all deduction categories</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'credits' && (
-          <div className="space-y-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold text-blue-800">Non-Refundable Tax Credits</h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={toggleAllCreditSections}
-                  className="text-blue-700 border-blue-300 hover:bg-blue-100"
-                >
-                  {areAllCreditSectionsExpanded() ? 'Collapse All' : 'Expand All'}
-                </Button>
-              </div>
-              <p className="text-blue-700 text-sm">Federal and provincial tax credits that reduce taxes payable</p>
-            </div>
-            
-            <div className="space-y-4">
-              {/* Basic Credits Section */}
-              <CollapsibleSection
-                id="basic-credits"
-                title="Basic Credits (Non-Refundable)"
-                fieldCodes={['30000', '30100', '30300', '30400', '30450']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Basic Personal Amount" lineNumber="30000" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Age Amount" lineNumber="30100" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30100'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Spouse Amount" lineNumber="30300" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30300'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Eligible Dependant" lineNumber="30400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Canada Caregiver" lineNumber="30450" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Employment Credits Section */}
-              <CollapsibleSection
-                id="employment-credits"
-                title="Employment Credits (Non-Refundable)"
-                fieldCodes={['30800', '31000', '31200', '31217', '31220', '31230', '31240']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="CPP/QPP Contributions" lineNumber="30800" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="CPP/QPP (Self Employed) Contributions" lineNumber="31000" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Employment Insurance Premiums" lineNumber="31200" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Employment Insurance (Self Employed) Premiums" lineNumber="31217" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31217'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Canada Employment Amount" lineNumber="31220" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Volunteer firefighters' amount (VFA)" lineNumber="31230" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31230'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Search and rescue volunteers' amount (SRVA)" lineNumber="31240" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31240'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Personal Situation Credits Section */}
-              <CollapsibleSection
-                id="personal-situation-credits-new"
-                title="Personal Situation Credits (Non-Refundable)"
-                fieldCodes={['31270', '31300', '31350', '31400']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Home buyers' Amount" lineNumber="31270" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31270'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Adoption Expenses" lineNumber="31300" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31300'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Digital News Subscription" lineNumber="31350" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31350'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Pension Income Amount" lineNumber="31400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Disability & Caregiver Credits Section */}
-              <CollapsibleSection
-                id="disability-caregiver-credits"
-                title="Disability & Caregiver Credits (Non-Refundable)"
-                fieldCodes={['30450', '30500', '31285', '31500', '31600', '31800', '31850']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Canada Caregiver Amount Spouse/Partner/Adult Children" lineNumber="30450" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Canada Caregiver Amount for Children" lineNumber="30500" />
-                  <span className="field-value">{formatCurrency(getFieldValue('30500'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Home Accessibility Expenses" lineNumber="31285" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31285'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Caregiver Amount" lineNumber="31500" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31500'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Disability Amount" lineNumber="31600" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31600'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Disability Transferred" lineNumber="31800" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31800'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Family Caregiver" lineNumber="31850" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31850'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Education Credits Section */}
-              <CollapsibleSection
-                id="education-credits"
-                title="Education Credits (Non-Refundable)"
-                fieldCodes={['31900', '32300', '32400', '32600']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Interest on Student Loans" lineNumber="31900" />
-                  <span className="field-value">{formatCurrency(getFieldValue('31900'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Tuition & Education Amounts" lineNumber="32300" />
-                  <span className="field-value">{formatCurrency(getFieldValue('32300'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Tuition Transferred" lineNumber="32400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('32400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Amounts Transferred From your Spouse/Partner" lineNumber="32600" />
-                  <span className="field-value">{formatCurrency(getFieldValue('32600'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Medical Credits Section */}
-              <CollapsibleSection
-                id="education-medical-credits"
-                title="Medical Credits (Non-Refundable)"
-                fieldCodes={['33200']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Medical Expenses" lineNumber="33099" />
-                  <span className="field-value">{formatCurrency(getFieldValue('33099'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Allowable Medical Expenses" lineNumber="33199" />
-                  <span className="field-value">{formatCurrency(getFieldValue('33199'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Net Eligible Medical Expenses" lineNumber="33200" />
-                  <span className="field-value">{formatCurrency(getFieldValue('33200'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Charitable Gifts & Donations Section */}
-              <CollapsibleSection
-                id="charitable-gifts-donations-credits"
-                title="Charitable Gifts & Donations (Non-Refundable)"
-                fieldCodes={['CALC-34000+34200']}
-              >
-                <div className="field-row">
-                  <span className="field-label">Total eligible amount of charitable donations:</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('S9-TOTAL'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Allowable Charitable Donations" lineNumber="34000" />
-                  <span className="field-value">{formatCurrency(getFieldValue('34000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Total Ecological Gifts" lineNumber="34200" />
-                  <span className="field-value">{formatCurrency(getFieldValue('34200'))}</span>
-                </div>
-                <div className="field-row">
-                  <span className="field-label">Total Eligible Gifts & Donations:</span>
-                  <span className="field-value">{formatCurrency(getFieldValue('34000') + getFieldValue('34200'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Donation & Gift Credits" lineNumber="34900" />
-                  <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Refundable Credits Section */}
-              <CollapsibleSection
-                id="refundable-credits"
-                title="Refundable Credits"
-                fieldCodes={['44000', '44800', '45000', '45200', '45300', '45350', '45355', '45400', '45600', '45700', '46900', '47555', '47556']}
-              >
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Quebec Abatement" lineNumber="44000" />
-                  <span className="field-value">{formatCurrency(getFieldValue('44000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="CPP Overpayment" lineNumber="44800" />
-                  <span className="field-value">{formatCurrency(getFieldValue('44800'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="EI Overpayment" lineNumber="45000" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Refundable Medical Expense Supplement" lineNumber="45200" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Canada Workers Benefit" lineNumber="45300" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Canada Training Credit" lineNumber="45350" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Multigenerational Home Renovation Tax Credit" lineNumber="45355" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Refund of Investment Tax" lineNumber="45400" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Part XII.2 Tax Credit" lineNumber="45600" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45600'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Employee & Partner GST/HST Rebate" lineNumber="45700" />
-                  <span className="field-value">{formatCurrency(getFieldValue('45700'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Eligible Educator School Supply Tax Credit" lineNumber="46900" />
-                  <span className="field-value">{formatCurrency(getFieldValue('46900'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Canadian Journalism Labour Tax Credit" lineNumber="47555" />
-                  <span className="field-value">{formatCurrency(getFieldValue('47555'))}</span>
-                </div>
-                <div className="field-row">
-                  <FieldLabelWithTooltip label="Return of Fuel Charge Proceeds to Farmers" lineNumber="47556" />
-                  <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
-                </div>
-              </CollapsibleSection>
-
-              {/* Provincial Credits Section - Only show if province has provincial tax */}
-              {getClientProvince() === 'ON' && (
-                <CollapsibleSection
-                  id="ontario-credits"
-                  title="Ontario Non-Refundable Credits"
-                  fieldCodes={['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58769', '58969']}
-                >
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Basic Personal Amount" lineNumber="58040" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58040'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Age Amount" lineNumber="58080" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58080'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Spouse Amount" lineNumber="58120" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58120'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Eligible Dependant" lineNumber="58160" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58160'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Caregiver Amount" lineNumber="58185" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58185'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario CPP/QPP Contributions" lineNumber="58240" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58240'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario CPP/QPP Self-Employment" lineNumber="58280" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58280'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario EI Premiums" lineNumber="58300" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58300'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Volunteer Firefighter" lineNumber="58305" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58305'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Adoption Expenses" lineNumber="58330" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58330'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Pension Income" lineNumber="58360" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58360'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Disability Amount" lineNumber="58440" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58440'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Disability Transferred" lineNumber="58480" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58480'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Student Loan Interest" lineNumber="58520" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58520'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Tuition & Education" lineNumber="58560" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58560'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Amounts Transferred" lineNumber="58640" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58640'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Medical Expenses" lineNumber="58769" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58769'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Donations & Gifts" lineNumber="58969" />
-                    <span className="field-value">{formatCurrency(getFieldValue('58969'))}</span>
-                  </div>
-                </CollapsibleSection>
-              )}
-
-              {/* Ontario Refundable Credits Section - Only show if province has provincial tax */}
-              {getClientProvince() === 'ON' && (
-                <CollapsibleSection
-                  id="ontario-refundable-credits"
-                  title="Ontario Refundable Credits"
-                  fieldCodes={['63095', '63100', '63110', '63220', '63300']}
-                >
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Seniors Care at Home Credit" lineNumber="63095" />
-                    <span className="field-value">{formatCurrency(getFieldValue('63095'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Seniors Public Transit Credit" lineNumber="63100" />
-                    <span className="field-value">{formatCurrency(getFieldValue('63100'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Political Contribution Credit" lineNumber="63110" />
-                    <span className="field-value">{formatCurrency(getFieldValue('63110'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Flow Through Credit" lineNumber="63220" />
-                    <span className="field-value">{formatCurrency(getFieldValue('63220'))}</span>
-                  </div>
-                  <div className="field-row">
-                    <FieldLabelWithTooltip label="Ontario Co-operative Education Credit" lineNumber="63300" />
-                    <span className="field-value">{formatCurrency(getFieldValue('63300'))}</span>
-                  </div>
-                </CollapsibleSection>
-              )}
-
-              {/* Summary Section */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="font-semibold text-blue-800 mb-2">Federal Non-Refundable</div>
-                    <div className="text-xl font-bold text-blue-600">
-                      {formatCurrency(getTotalCredits())}
-                    </div>
-                    <div className="text-sm text-blue-700 mt-2">
-                      Tax Savings: {formatCurrency(getFieldValue('35000'))}
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-semibold text-blue-800 mb-2">Federal Refundable</div>
-                    <div className="text-xl font-bold text-blue-600">
-                      {formatCurrency(getTotalRefundableCredits())}
-                    </div>
-                  </div>
-                  {getClientProvince() === 'ON' && (
-                    <>
-                      <div className="text-center">
-                        <div className="font-semibold text-blue-800 mb-2">Ontario Non-Refundable</div>
-                        <div className="text-xl font-bold text-blue-600">
-                          {formatCurrency(getFieldValue('58800'))}
-                        </div>
-                        <div className="text-sm text-blue-700 mt-2">
-                          Tax Savings: {formatCurrency(getFieldValue('61500'))}
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-semibold text-blue-800 mb-2">Ontario Refundable</div>
-                        <div className="text-xl font-bold text-blue-600">
-                          {formatCurrency(getSectionTotal(['63095', '63100', '63110', '63220', '63300']))}
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'taxes' && (
-          <div className="space-y-6">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-green-800 mb-2">Tax Summary</h3>
-              <p className="text-green-700 text-sm">Federal and provincial taxes, payments, and final balance</p>
-            </div>
-            
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="flex justify-between items-center">
-                <FieldLabelWithTooltip label="Federal Tax" lineNumber="42000" />
-                <span className="font-medium text-primary">{formatCurrency(getFieldValue('42000'))}</span>
-              </div>
-              
-              {getClientProvince() === 'ON' && (
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-primary">Provincial Tax (Ontario):</span>
-                  <span className="font-medium text-primary">{formatCurrency(getFieldValue('42800'))}</span>
-                </div>
-              )}
-              
-              <div className="flex justify-between items-center border-t pt-4">
-                <span className="font-medium text-primary">Total Tax:</span>
-                <span className="font-medium text-primary">{formatCurrency(
-                  (parseFloat(getFieldValue('42000')) || 0) + (parseFloat(getFieldValue('42800')) || 0)
-                )}</span>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">Taxes Paid (Line 43700):</span>
-                <span className="font-medium text-primary">{formatCurrency(getFieldValue('43700'))}</span>
-              </div>
-              
-              <div className="flex justify-between items-center border-t pt-4 bg-gray-50 p-4 rounded-lg">
-                <span className="font-medium text-primary">
-                  {getRefundOrBalance() >= 0 ? 'Refund Due:' : 'Balance Owing:'}
-                </span>
-                <span 
-                  className="font-medium"
-                  style={{ color: getRefundOrBalance() >= 0 ? '#16a34a' : '#D4B26A' }}
-                >
-                  {formatCurrency(Math.abs(getRefundOrBalance()))}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-
       </div>
-      
+
+      {/* Edit Dialog */}
       <T1FieldEditDialog
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
@@ -2002,4 +945,4 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
       </div>
     </TooltipProvider>
   );
-}
+};
