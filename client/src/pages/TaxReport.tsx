@@ -4373,7 +4373,7 @@ export default function TaxReport() {
                                         const actualAmount = getFieldValue("30000");
                                         const minBPA = 14156;
                                         const maxBPA = 15705;
-                                        const clawbackPercentage = ((actualAmount - minBPA) / (maxBPA - minBPA)) * 100;
+                                        const clawbackPercentage = ((maxBPA - actualAmount) / (maxBPA - minBPA)) * 100;
                                         displayValue = `${Math.max(0, Math.min(100, clawbackPercentage)).toFixed(2)}%`;
                                         showIcon = false;
                                       } else {
