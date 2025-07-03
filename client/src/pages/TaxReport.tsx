@@ -4101,7 +4101,7 @@ export default function TaxReport() {
                                             );
                                           }
                                         })()
-                                      ) : hasValue ? (
+                                      ) : (info.name === "Maximum CCB" || info.name === "Adjusted Family Net Income") ? null : hasValue ? (
                                         <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                           ✓
                                         </div>
