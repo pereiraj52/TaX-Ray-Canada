@@ -1336,35 +1336,35 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']}
               >
                 <div className="field-row">
-                  <span className="field-label">Annual Union Dues <span style={{ color: '#A3A3A3' }}>(Line 21200)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
+                  <FieldLabelWithTooltip label="Annual Union Dues" lineNumber="22900" />
+                      <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">UCCB Repayment <span style={{ color: '#A3A3A3' }}>(Line 21300)</span>:</span>
+                  <FieldLabelWithTooltip label="UCCB Repayment" lineNumber="21300" />
                       <span className="field-value">{formatCurrency(getFieldValue('21300'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Child Care Expenses <span style={{ color: '#A3A3A3' }}>(Line 21400)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21400'))}</span>
+                  <FieldLabelWithTooltip label="Child Care Expenses" lineNumber="23100" />
+                      <span className="field-value">{formatCurrency(getFieldValue('23100'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Disability Supports <span style={{ color: '#A3A3A3' }}>(Line 21500)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21500'))}</span>
+                  <FieldLabelWithTooltip label="Disability Supports" lineNumber="23200" />
+                      <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Business Investment Loss <span style={{ color: '#A3A3A3' }}>(Line 21700)</span>:</span>
+                  <FieldLabelWithTooltip label="Business Investment Loss" lineNumber="21700" />
                       <span className="field-value">{formatCurrency(getFieldValue('21700'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Moving Expenses <span style={{ color: '#A3A3A3' }}>(Line 21900)</span>:</span>
-                      <span className="field-value">{formatCurrency(getFieldValue('21900'))}</span>
+                  <FieldLabelWithTooltip label="Moving Expenses" lineNumber="22400" />
+                      <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Support Payments Allowable <span style={{ color: '#A3A3A3' }}>(Line 22000)</span>:</span>
+                  <FieldLabelWithTooltip label="Support Payments Allowable" lineNumber="22000" />
                       <span className="field-value">{formatCurrency(getFieldValue('22000'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Carrying Charges <span style={{ color: '#A3A3A3' }}>(Line 22100)</span>:</span>
+                  <FieldLabelWithTooltip label="Carrying Charges" lineNumber="22100" />
                       <span className="field-value">{formatCurrency(getFieldValue('22100'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1375,19 +1375,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['22200', '22215', '22900', '23100']}
               >
                 <div className="field-row">
-                  <span className="field-label">CPP/QPP Self-Employed <span style={{ color: '#A3A3A3' }}>(Line 22200)</span>:</span>
+                  <FieldLabelWithTooltip label="CPP/QPP Self-Employed" lineNumber="22200" />
                       <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Enhanced CPP/QPP Deduction <span style={{ color: '#A3A3A3' }}>(Line 22215)</span>:</span>
+                  <FieldLabelWithTooltip label="Enhanced CPP/QPP Deduction" lineNumber="22215" />
                       <span className="field-value">{formatCurrency(getFieldValue('22215'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Other Employment Expenses <span style={{ color: '#A3A3A3' }}>(Line 22900)</span>:</span>
+                  <FieldLabelWithTooltip label="Other Employment Expenses" lineNumber="22900" />
                       <span className="field-value">{formatCurrency(getFieldValue('22900'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Clergy Residence <span style={{ color: '#A3A3A3' }}>(Line 23100)</span>:</span>
+                  <FieldLabelWithTooltip label="Clergy Residence" lineNumber="23100" />
                       <span className="field-value">{formatCurrency(getFieldValue('23100'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1398,15 +1398,15 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['22400', '23200', '23500']}
               >
                 <div className="field-row">
-                  <span className="field-label">Exploration Development <span style={{ color: '#A3A3A3' }}>(Line 22400)</span>:</span>
+                  <FieldLabelWithTooltip label="Exploration Development" lineNumber="22400" />
                       <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Other Deductions <span style={{ color: '#A3A3A3' }}>(Line 23200)</span>:</span>
+                  <FieldLabelWithTooltip label="Other Deductions" lineNumber="23200" />
                       <span className="field-value">{formatCurrency(getFieldValue('23200'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Social Benefits Repayment <span style={{ color: '#A3A3A3' }}>(Line 23500)</span>:</span>
+                  <FieldLabelWithTooltip label="Social Benefits Repayment" lineNumber="23500" />
                       <span className="field-value">{formatCurrency(getFieldValue('23500'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1493,31 +1493,31 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['30800', '31000', '31200', '31217', '31220', '31230', '31240']}
               >
                 <div className="field-row">
-                  <span className="field-label">CPP/QPP Contributions <span style={{ color: '#A3A3A3' }}>(Line 30800)</span>:</span>
+                  <FieldLabelWithTooltip label="CPP/QPP Contributions" lineNumber="30800" />
                   <span className="field-value">{formatCurrency(getFieldValue('30800'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">CPP/QPP (Self Employed) Contributions <span style={{ color: '#A3A3A3' }}>(Line 31000)</span>:</span>
+                  <FieldLabelWithTooltip label="CPP/QPP (Self Employed) Contributions" lineNumber="31000" />
                   <span className="field-value">{formatCurrency(getFieldValue('31000'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Employment Insurance Premiums <span style={{ color: '#A3A3A3' }}>(Line 31200)</span>:</span>
+                  <FieldLabelWithTooltip label="Employment Insurance Premiums" lineNumber="31200" />
                   <span className="field-value">{formatCurrency(getFieldValue('31200'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Employment Insurance (Self Employed) Premiums <span style={{ color: '#A3A3A3' }}>(Line 31217)</span>:</span>
+                  <FieldLabelWithTooltip label="Employment Insurance (Self Employed) Premiums" lineNumber="31217" />
                   <span className="field-value">{formatCurrency(getFieldValue('31217'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Canada Employment Amount <span style={{ color: '#A3A3A3' }}>(Line 31220)</span>:</span>
+                  <FieldLabelWithTooltip label="Canada Employment Amount" lineNumber="31220" />
                   <span className="field-value">{formatCurrency(getFieldValue('31220'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Volunteer firefighters' amount (VFA) <span style={{ color: '#A3A3A3' }}>(Line 31230)</span>:</span>
+                  <FieldLabelWithTooltip label="Volunteer firefighters' amount (VFA)" lineNumber="31230" />
                   <span className="field-value">{formatCurrency(getFieldValue('31230'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Search and rescue volunteers' amount (SRVA) <span style={{ color: '#A3A3A3' }}>(Line 31240)</span>:</span>
+                  <FieldLabelWithTooltip label="Search and rescue volunteers' amount (SRVA)" lineNumber="31240" />
                   <span className="field-value">{formatCurrency(getFieldValue('31240'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1529,19 +1529,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['31270', '31300', '31350', '31400']}
               >
                 <div className="field-row">
-                  <span className="field-label">Home buyers' Amount <span style={{ color: '#A3A3A3' }}>(Line 31270)</span>:</span>
+                  <FieldLabelWithTooltip label="Home buyers' Amount" lineNumber="31270" />
                   <span className="field-value">{formatCurrency(getFieldValue('31270'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Adoption Expenses <span style={{ color: '#A3A3A3' }}>(Line 31300)</span>:</span>
+                  <FieldLabelWithTooltip label="Adoption Expenses" lineNumber="31300" />
                   <span className="field-value">{formatCurrency(getFieldValue('31300'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Digital News Subscription <span style={{ color: '#A3A3A3' }}>(Line 31350)</span>:</span>
+                  <FieldLabelWithTooltip label="Digital News Subscription" lineNumber="31350" />
                   <span className="field-value">{formatCurrency(getFieldValue('31350'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Pension Income Amount <span style={{ color: '#A3A3A3' }}>(Line 31400)</span>:</span>
+                  <FieldLabelWithTooltip label="Pension Income Amount" lineNumber="31400" />
                   <span className="field-value">{formatCurrency(getFieldValue('31400'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1553,31 +1553,31 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['30450', '30500', '31285', '31500', '31600', '31800', '31850']}
               >
                 <div className="field-row">
-                  <span className="field-label">Canada Caregiver Amount Spouse/Partner/Adult Children <span style={{ color: '#A3A3A3' }}>(Line 30450)</span>:</span>
+                  <FieldLabelWithTooltip label="Canada Caregiver Amount Spouse/Partner/Adult Children" lineNumber="30450" />
                   <span className="field-value">{formatCurrency(getFieldValue('30450'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Canada Caregiver Amount for Children <span style={{ color: '#A3A3A3' }}>(Line 30500)</span>:</span>
+                  <FieldLabelWithTooltip label="Canada Caregiver Amount for Children" lineNumber="30500" />
                   <span className="field-value">{formatCurrency(getFieldValue('30500'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Home Accessibility Expenses <span style={{ color: '#A3A3A3' }}>(Line 31285)</span>:</span>
+                  <FieldLabelWithTooltip label="Home Accessibility Expenses" lineNumber="31285" />
                   <span className="field-value">{formatCurrency(getFieldValue('31285'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Caregiver Amount <span style={{ color: '#A3A3A3' }}>(Line 31500)</span>:</span>
+                  <FieldLabelWithTooltip label="Caregiver Amount" lineNumber="31500" />
                   <span className="field-value">{formatCurrency(getFieldValue('31500'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Disability Amount <span style={{ color: '#A3A3A3' }}>(Line 31600)</span>:</span>
+                  <FieldLabelWithTooltip label="Disability Amount" lineNumber="31600" />
                   <span className="field-value">{formatCurrency(getFieldValue('31600'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Disability Transferred <span style={{ color: '#A3A3A3' }}>(Line 31800)</span>:</span>
+                  <FieldLabelWithTooltip label="Disability Transferred" lineNumber="31800" />
                   <span className="field-value">{formatCurrency(getFieldValue('31800'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Family Caregiver <span style={{ color: '#A3A3A3' }}>(Line 31850)</span>:</span>
+                  <FieldLabelWithTooltip label="Family Caregiver" lineNumber="31850" />
                   <span className="field-value">{formatCurrency(getFieldValue('31850'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1589,19 +1589,19 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['31900', '32300', '32400', '32600']}
               >
                 <div className="field-row">
-                  <span className="field-label">Interest on Student Loans <span style={{ color: '#A3A3A3' }}>(Line 31900)</span>:</span>
+                  <FieldLabelWithTooltip label="Interest on Student Loans" lineNumber="31900" />
                   <span className="field-value">{formatCurrency(getFieldValue('31900'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Tuition & Education Amounts <span style={{ color: '#A3A3A3' }}>(Line 32300)</span>:</span>
+                  <FieldLabelWithTooltip label="Tuition & Education Amounts" lineNumber="32300" />
                   <span className="field-value">{formatCurrency(getFieldValue('32300'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Tuition Transferred <span style={{ color: '#A3A3A3' }}>(Line 32400)</span>:</span>
+                  <FieldLabelWithTooltip label="Tuition Transferred" lineNumber="32400" />
                   <span className="field-value">{formatCurrency(getFieldValue('32400'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Amounts Transferred From your Spouse/Partner <span style={{ color: '#A3A3A3' }}>(Line 32600)</span>:</span>
+                  <FieldLabelWithTooltip label="Amounts Transferred From your Spouse/Partner" lineNumber="32600" />
                   <span className="field-value">{formatCurrency(getFieldValue('32600'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1613,15 +1613,15 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['33200']}
               >
                 <div className="field-row">
-                  <span className="field-label">Medical Expenses <span style={{ color: '#A3A3A3' }}>(Line 33099)</span>:</span>
+                  <FieldLabelWithTooltip label="Medical Expenses" lineNumber="33099" />
                   <span className="field-value">{formatCurrency(getFieldValue('33099'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Allowable Medical Expenses <span style={{ color: '#A3A3A3' }}>(Line 33199)</span>:</span>
+                  <FieldLabelWithTooltip label="Allowable Medical Expenses" lineNumber="33199" />
                   <span className="field-value">{formatCurrency(getFieldValue('33199'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Net Eligible Medical Expenses <span style={{ color: '#A3A3A3' }}>(Line 33200)</span>:</span>
+                  <FieldLabelWithTooltip label="Net Eligible Medical Expenses" lineNumber="33200" />
                   <span className="field-value">{formatCurrency(getFieldValue('33200'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1637,11 +1637,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   <span className="field-value">{formatCurrency(getFieldValue('S9-TOTAL'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Allowable Charitable Donations <span style={{ color: '#A3A3A3' }}>(Line 34000)</span>:</span>
+                  <FieldLabelWithTooltip label="Allowable Charitable Donations" lineNumber="34000" />
                   <span className="field-value">{formatCurrency(getFieldValue('34000'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Total Ecological Gifts <span style={{ color: '#A3A3A3' }}>(Line 34200)</span>:</span>
+                  <FieldLabelWithTooltip label="Total Ecological Gifts" lineNumber="34200" />
                   <span className="field-value">{formatCurrency(getFieldValue('34200'))}</span>
                 </div>
                 <div className="field-row">
@@ -1649,7 +1649,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   <span className="field-value">{formatCurrency(getFieldValue('34000') + getFieldValue('34200'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Donation & Gift Credits <span style={{ color: '#A3A3A3' }}>(Line 34900)</span>:</span>
+                  <FieldLabelWithTooltip label="Donation & Gift Credits" lineNumber="34900" />
                   <span className="field-value">{formatCurrency(getFieldValue('34900'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1661,55 +1661,55 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                 fieldCodes={['44000', '44800', '45000', '45200', '45300', '45350', '45355', '45400', '45600', '45700', '46900', '47555', '47556']}
               >
                 <div className="field-row">
-                  <span className="field-label">Quebec Abatement <span style={{ color: '#A3A3A3' }}>(Line 44000)</span>:</span>
+                  <FieldLabelWithTooltip label="Quebec Abatement" lineNumber="44000" />
                   <span className="field-value">{formatCurrency(getFieldValue('44000'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">CPP Overpayment <span style={{ color: '#A3A3A3' }}>(Line 44800)</span>:</span>
+                  <FieldLabelWithTooltip label="CPP Overpayment" lineNumber="44800" />
                   <span className="field-value">{formatCurrency(getFieldValue('44800'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">EI Overpayment <span style={{ color: '#A3A3A3' }}>(Line 45000)</span>:</span>
+                  <FieldLabelWithTooltip label="EI Overpayment" lineNumber="45000" />
                   <span className="field-value">{formatCurrency(getFieldValue('45000'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Refundable Medical Expense Supplement <span style={{ color: '#A3A3A3' }}>(Line 45200)</span>:</span>
+                  <FieldLabelWithTooltip label="Refundable Medical Expense Supplement" lineNumber="45200" />
                   <span className="field-value">{formatCurrency(getFieldValue('45200'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Canada Workers Benefit <span style={{ color: '#A3A3A3' }}>(Line 45300)</span>:</span>
+                  <FieldLabelWithTooltip label="Canada Workers Benefit" lineNumber="45300" />
                   <span className="field-value">{formatCurrency(getFieldValue('45300'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Canada Training Credit <span style={{ color: '#A3A3A3' }}>(Line 45350)</span>:</span>
+                  <FieldLabelWithTooltip label="Canada Training Credit" lineNumber="45350" />
                   <span className="field-value">{formatCurrency(getFieldValue('45350'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Multigenerational Home Renovation Tax Credit <span style={{ color: '#A3A3A3' }}>(Line 45355)</span>:</span>
+                  <FieldLabelWithTooltip label="Multigenerational Home Renovation Tax Credit" lineNumber="45355" />
                   <span className="field-value">{formatCurrency(getFieldValue('45355'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Refund of Investment Tax <span style={{ color: '#A3A3A3' }}>(Line 45400)</span>:</span>
+                  <FieldLabelWithTooltip label="Refund of Investment Tax" lineNumber="45400" />
                   <span className="field-value">{formatCurrency(getFieldValue('45400'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Part XII.2 Tax Credit <span style={{ color: '#A3A3A3' }}>(Line 45600)</span>:</span>
+                  <FieldLabelWithTooltip label="Part XII.2 Tax Credit" lineNumber="45600" />
                   <span className="field-value">{formatCurrency(getFieldValue('45600'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Employee & Partner GST/HST Rebate <span style={{ color: '#A3A3A3' }}>(Line 45700)</span>:</span>
+                  <FieldLabelWithTooltip label="Employee & Partner GST/HST Rebate" lineNumber="45700" />
                   <span className="field-value">{formatCurrency(getFieldValue('45700'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Eligible Educator School Supply Tax Credit <span style={{ color: '#A3A3A3' }}>(Line 46900)</span>:</span>
+                  <FieldLabelWithTooltip label="Eligible Educator School Supply Tax Credit" lineNumber="46900" />
                   <span className="field-value">{formatCurrency(getFieldValue('46900'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Canadian Journalism Labour Tax Credit <span style={{ color: '#A3A3A3' }}>(Line 47555)</span>:</span>
+                  <FieldLabelWithTooltip label="Canadian Journalism Labour Tax Credit" lineNumber="47555" />
                   <span className="field-value">{formatCurrency(getFieldValue('47555'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">Return of Fuel Charge Proceeds to Farmers <span style={{ color: '#A3A3A3' }}>(Line 47556)</span>:</span>
+                  <FieldLabelWithTooltip label="Return of Fuel Charge Proceeds to Farmers" lineNumber="47556" />
                   <span className="field-value">{formatCurrency(getFieldValue('47556'))}</span>
                 </div>
               </CollapsibleSection>
@@ -1722,75 +1722,75 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   fieldCodes={['58040', '58080', '58120', '58160', '58185', '58240', '58280', '58300', '58305', '58330', '58360', '58440', '58480', '58520', '58560', '58640', '58769', '58969']}
                 >
                   <div className="field-row">
-                    <span className="field-label">Ontario Basic Personal Amount <span style={{ color: '#A3A3A3' }}>(Line 58040)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Basic Personal Amount" lineNumber="58040" />
                     <span className="field-value">{formatCurrency(getFieldValue('58040'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Age Amount <span style={{ color: '#A3A3A3' }}>(Line 58080)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Age Amount" lineNumber="58080" />
                     <span className="field-value">{formatCurrency(getFieldValue('58080'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Spouse Amount <span style={{ color: '#A3A3A3' }}>(Line 58120)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Spouse Amount" lineNumber="58120" />
                     <span className="field-value">{formatCurrency(getFieldValue('58120'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Eligible Dependant <span style={{ color: '#A3A3A3' }}>(Line 58160)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Eligible Dependant" lineNumber="58160" />
                     <span className="field-value">{formatCurrency(getFieldValue('58160'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Caregiver Amount <span style={{ color: '#A3A3A3' }}>(Line 58185)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Caregiver Amount" lineNumber="58185" />
                     <span className="field-value">{formatCurrency(getFieldValue('58185'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario CPP/QPP Contributions <span style={{ color: '#A3A3A3' }}>(Line 58240)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario CPP/QPP Contributions" lineNumber="58240" />
                     <span className="field-value">{formatCurrency(getFieldValue('58240'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario CPP/QPP Self-Employment <span style={{ color: '#A3A3A3' }}>(Line 58280)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario CPP/QPP Self-Employment" lineNumber="58280" />
                     <span className="field-value">{formatCurrency(getFieldValue('58280'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario EI Premiums <span style={{ color: '#A3A3A3' }}>(Line 58300)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario EI Premiums" lineNumber="58300" />
                     <span className="field-value">{formatCurrency(getFieldValue('58300'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Volunteer Firefighter <span style={{ color: '#A3A3A3' }}>(Line 58305)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Volunteer Firefighter" lineNumber="58305" />
                     <span className="field-value">{formatCurrency(getFieldValue('58305'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Adoption Expenses <span style={{ color: '#A3A3A3' }}>(Line 58330)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Adoption Expenses" lineNumber="58330" />
                     <span className="field-value">{formatCurrency(getFieldValue('58330'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Pension Income <span style={{ color: '#A3A3A3' }}>(Line 58360)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Pension Income" lineNumber="58360" />
                     <span className="field-value">{formatCurrency(getFieldValue('58360'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Disability Amount <span style={{ color: '#A3A3A3' }}>(Line 58440)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Disability Amount" lineNumber="58440" />
                     <span className="field-value">{formatCurrency(getFieldValue('58440'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Disability Transferred <span style={{ color: '#A3A3A3' }}>(Line 58480)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Disability Transferred" lineNumber="58480" />
                     <span className="field-value">{formatCurrency(getFieldValue('58480'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Student Loan Interest <span style={{ color: '#A3A3A3' }}>(Line 58520)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Student Loan Interest" lineNumber="58520" />
                     <span className="field-value">{formatCurrency(getFieldValue('58520'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Tuition & Education <span style={{ color: '#A3A3A3' }}>(Line 58560)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Tuition & Education" lineNumber="58560" />
                     <span className="field-value">{formatCurrency(getFieldValue('58560'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Amounts Transferred <span style={{ color: '#A3A3A3' }}>(Line 58640)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Amounts Transferred" lineNumber="58640" />
                     <span className="field-value">{formatCurrency(getFieldValue('58640'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Medical Expenses <span style={{ color: '#A3A3A3' }}>(Line 58769)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Medical Expenses" lineNumber="58769" />
                     <span className="field-value">{formatCurrency(getFieldValue('58769'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Donations & Gifts <span style={{ color: '#A3A3A3' }}>(Line 58969)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Donations & Gifts" lineNumber="58969" />
                     <span className="field-value">{formatCurrency(getFieldValue('58969'))}</span>
                   </div>
                 </CollapsibleSection>
@@ -1804,23 +1804,23 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   fieldCodes={['63095', '63100', '63110', '63220', '63300']}
                 >
                   <div className="field-row">
-                    <span className="field-label">Ontario Seniors Care at Home Credit <span style={{ color: '#A3A3A3' }}>(Line 63095)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Seniors Care at Home Credit" lineNumber="63095" />
                     <span className="field-value">{formatCurrency(getFieldValue('63095'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Seniors Public Transit Credit <span style={{ color: '#A3A3A3' }}>(Line 63100)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Seniors Public Transit Credit" lineNumber="63100" />
                     <span className="field-value">{formatCurrency(getFieldValue('63100'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Political Contribution Credit <span style={{ color: '#A3A3A3' }}>(Line 63110)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Political Contribution Credit" lineNumber="63110" />
                     <span className="field-value">{formatCurrency(getFieldValue('63110'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Flow Through Credit <span style={{ color: '#A3A3A3' }}>(Line 63220)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Flow Through Credit" lineNumber="63220" />
                     <span className="field-value">{formatCurrency(getFieldValue('63220'))}</span>
                   </div>
                   <div className="field-row">
-                    <span className="field-label">Ontario Co-operative Education Credit <span style={{ color: '#A3A3A3' }}>(Line 63300)</span>:</span>
+                    <FieldLabelWithTooltip label="Ontario Co-operative Education Credit" lineNumber="63300" />
                     <span className="field-value">{formatCurrency(getFieldValue('63300'))}</span>
                   </div>
                 </CollapsibleSection>
