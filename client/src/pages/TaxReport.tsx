@@ -62,6 +62,23 @@ export default function TaxReport() {
     }));
   };
 
+  // State for collapsible sections in Clawback Analysis
+  const [collapsedClawbackSections, setCollapsedClawbackSections] = useState<{[key: string]: boolean}>({
+    'basic-personal-amount': true,
+    'canada-workers-benefit': true,
+    'old-age-security': true,
+    'guaranteed-income-supplement': true,
+    'child-disability-benefit': true,
+    'canada-training-credit': true,
+  });
+
+  const toggleClawbackSection = (sectionKey: string) => {
+    setCollapsedClawbackSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }));
+  };
+
   const { data: household, isLoading } = useQuery<HouseholdWithClients>({
     queryKey: ["/api/households", householdId],
     queryFn: () => HouseholdAPI.getHousehold(householdId),
@@ -4136,12 +4153,27 @@ export default function TaxReport() {
                             return sum + getFieldValue(item.line);
                           }, 0);
 
+                          const sectionKey = category.category.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '');
+                          const isCollapsed = collapsedClawbackSections[sectionKey];
+
                           return (
                             <div key={categoryIndex} className="space-y-4">
                               <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                                <h4 className="font-medium text-primary text-sm">
-                                  {category.category}
-                                </h4>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => toggleClawbackSection(sectionKey)}
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                  >
+                                    {isCollapsed ? (
+                                      <ChevronRight className="w-4 h-4" />
+                                    ) : (
+                                      <ChevronDown className="w-4 h-4" />
+                                    )}
+                                  </button>
+                                  <h4 className="font-medium text-primary text-sm">
+                                    {category.category}
+                                  </h4>
+                                </div>
                                 <span className="font-medium text-primary text-sm">
                                   {(() => {
                                     // Special handling for Basic Personal Amount clawback calculation
@@ -4173,19 +4205,38 @@ export default function TaxReport() {
                                 </span>
                               </div>
                               
-                              <div className="grid grid-cols-3 gap-6">
-                                <div className="space-y-3">
-                                  {category.items.map((item, itemIndex) => {
-                                    const amount = getFieldValue(item.line);
-                                    return (
-                                      <div key={itemIndex} className="flex justify-between text-sm">
-                                        <div className="text-gray-700">{item.name}</div>
-                                        <div className="font-medium text-gray-700">
-                                          {amount > 0 ? formatCurrency(amount) : formatCurrency(0)}
+                              {!isCollapsed && (
+                                <div className="grid grid-cols-3 gap-6">
+                                  <div className="space-y-3">
+                                    {category.items.map((item, itemIndex) => {
+                                      const amount = getFieldValue(item.line);
+                                      return (
+                                        <div key={itemIndex} className="flex items-center gap-3">
+                                          <div className="w-5 h-5 flex items-center justify-center">
+                                            {amount > 0 ? (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                ✓
+                                              </div>
+                                            ) : (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                ✗
+                                              </div>
+                                            )}
+                                          </div>
+                                          <div className="flex-1">
+                                            <div className="font-medium text-primary text-sm underline">
+                                              {item.name}
+                                            </div>
+                                            <div className="text-gray-600 text-sm">
+                                              {item.line}
+                                            </div>
+                                          </div>
+                                          <div className="text-right font-medium text-primary text-sm">
+                                            {amount > 0 ? formatCurrency(amount) : ''}
+                                          </div>
                                         </div>
-                                      </div>
-                                    );
-                                  })}
+                                      );
+                                    })}
                                 </div>
                                 
                                 <div className="col-span-2">
@@ -4279,7 +4330,8 @@ export default function TaxReport() {
                                     );
                                   })()}
                                 </div>
-                              </div>
+                                </div>
+                              )}
                             </div>
                           );
                         })}
