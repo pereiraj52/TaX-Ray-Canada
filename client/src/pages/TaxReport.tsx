@@ -3412,7 +3412,7 @@ export default function TaxReport() {
                     </CardContent>
                   </Card>
                 );
-              })();
+              });
             })()}
           </div>
         </div>
