@@ -4079,6 +4079,16 @@ export default function TaxReport() {
                                     <div className="w-5 h-5 flex items-center justify-center">
                                       {info.name === "Clawback %" ? (
                                         (() => {
+                                          const numChildren = household?.children?.length || 0;
+                                          
+                                          if (numChildren === 0) {
+                                            return (
+                                              <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                ✗
+                                              </div>
+                                            );
+                                          }
+                                          
                                           const clampedPercentage = Math.max(0, Math.min(100, clawbackPercentage));
                                           
                                           if (clampedPercentage === 0) {
@@ -4117,7 +4127,10 @@ export default function TaxReport() {
                                       </div>
                                     </div>
                                     <div className="text-right font-medium text-primary text-sm">
-                                      {hasValue ? formatValue(info.value, info.format) : ''}
+                                      {info.name === "Clawback %" && (household?.children?.length || 0) === 0 
+                                        ? 'Ineligible' 
+                                        : hasValue ? formatValue(info.value, info.format) : ''
+                                      }
                                     </div>
                                   </div>
                                 );
