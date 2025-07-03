@@ -1240,13 +1240,12 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               <h3 className="font-semibold text-yellow-800 mb-2">Deductions from Income</h3>
               <p className="text-yellow-700 text-sm">Federal and provincial deductions that reduce taxable income</p>
             </div>
-            
             <div className="space-y-4">
               {/* Retirement Plan Deductions Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
                   onClick={() => toggleSection('retirement-plan-deductions')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
                 >
                   <div className="flex items-center">
                     {collapsedSections['retirement-plan-deductions'] ? (
@@ -1261,7 +1260,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </span>
                 </button>
                 {!collapsedSections['retirement-plan-deductions'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
+                  <div className="space-y-2 p-4 border-t border-gray-200">
                     <div className="field-row">
                       <span className="field-label">Pension Adjustment (Line 20600):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('20600'))}</span>
@@ -1289,12 +1288,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                 )}
               </div>
-
               {/* Personal Deductions Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
                   onClick={() => toggleSection('personal-deductions')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
                 >
                   <div className="flex items-center">
                     {collapsedSections['personal-deductions'] ? (
@@ -1309,7 +1307,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </span>
                 </button>
                 {!collapsedSections['personal-deductions'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
+                  <div className="space-y-2 p-4 border-t border-gray-200">
                     <div className="field-row">
                       <span className="field-label">Annual Union Dues (Line 21200):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('21200'))}</span>
@@ -1345,13 +1343,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                 )}
               </div>
-
-
               {/* Employment Deductions Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
                   onClick={() => toggleSection('employment-deductions')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
                 >
                   <div className="flex items-center">
                     {collapsedSections['employment-deductions'] ? (
@@ -1366,7 +1362,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </span>
                 </button>
                 {!collapsedSections['employment-deductions'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
+                  <div className="space-y-2 p-4 border-t border-gray-200">
                     <div className="field-row">
                       <span className="field-label">CPP/QPP Self-Employed (Line 22200):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22200'))}</span>
@@ -1386,12 +1382,11 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                 )}
               </div>
-
               {/* Specialized Deductions Section */}
               <div className="border border-gray-200 rounded-lg">
                 <button
                   onClick={() => toggleSection('specialized-deductions')}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+                  className="w-full flex items-center justify-between py-3 px-4 text-left hover:bg-gray-50 rounded-t-lg"
                 >
                   <div className="flex items-center">
                     {collapsedSections['specialized-deductions'] ? (
@@ -1406,7 +1401,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </span>
                 </button>
                 {!collapsedSections['specialized-deductions'] && (
-                  <div className="p-4 border-t border-gray-200 space-y-4">
+                  <div className="space-y-2 p-4 border-t border-gray-200">
                     <div className="field-row">
                       <span className="field-label">Exploration Development (Line 22400):</span>
                       <span className="field-value">{formatCurrency(getFieldValue('22400'))}</span>
@@ -1422,17 +1417,40 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
                   </div>
                 )}
               </div>
-
-
-
               {/* Summary Section */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
-                <div className="text-center">
-                  <div className="font-semibold text-green-800 mb-2">Total Deductions</div>
-                  <div className="text-2xl font-bold text-green-600">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <div className="font-semibold text-yellow-800 mb-2">Retirement Plan</div>
+                    <div className="text-xl font-bold text-yellow-600">
+                      {formatCurrency(getSectionTotal(['20700', '20800', '20805', '20810', '21000']))}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-semibold text-yellow-800 mb-2">Personal</div>
+                    <div className="text-xl font-bold text-yellow-600">
+                      {formatCurrency(getSectionTotal(['21200', '21300', '21400', '21500', '21700', '21900', '22000', '22100']))}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-semibold text-yellow-800 mb-2">Employment</div>
+                    <div className="text-xl font-bold text-yellow-600">
+                      {formatCurrency(getSectionTotal(['22200', '22215', '22900', '23100']))}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-semibold text-yellow-800 mb-2">Specialized</div>
+                    <div className="text-xl font-bold text-yellow-600">
+                      {formatCurrency(getSectionTotal(['22400', '23200', '23500']))}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center mt-4">
+                  <div className="font-semibold text-yellow-800 mb-2">Total Deductions</div>
+                  <div className="text-2xl font-bold text-yellow-600">
                     {formatCurrency(getTotalDeductions())}
                   </div>
-                  <div className="text-sm text-green-700 mt-1">Calculated from all deduction categories</div>
+                  <div className="text-sm text-yellow-700 mt-1">Calculated from all deduction categories</div>
                 </div>
               </div>
             </div>
