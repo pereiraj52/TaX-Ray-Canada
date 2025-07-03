@@ -247,7 +247,7 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
   // Helper component for field labels with tooltips
   const FieldLabelWithTooltip = ({ label, lineNumber }: { label: string; lineNumber: string }) => (
     <span className="field-label">
-      {label}:
+      {label} <span style={{ color: '#A3A3A3' }}>(Line {lineNumber})</span>:
       <Tooltip>
         <TooltipTrigger asChild>
           <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
@@ -256,13 +256,6 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
           <p className="max-w-xs">{getTooltipText(lineNumber)}</p>
         </TooltipContent>
       </Tooltip>
-    </span>
-  );
-
-  // Helper component for field values with line numbers
-  const FieldValueWithLineNumber = ({ value, lineNumber }: { value: string; lineNumber: string }) => (
-    <span className="field-value">
-      {value} <span style={{ color: '#A3A3A3' }}>(Line {lineNumber})</span>
     </span>
   );
 
@@ -1292,27 +1285,15 @@ export default function ExtractedDataDisplay({ t1Return }: ExtractedDataDisplayP
               >
                 <div className="field-row">
                   <FieldLabelWithTooltip label="Pension Adjustment" lineNumber="20600" />
-                  <FieldValueWithLineNumber value={formatCurrency(getFieldValue('20600'))} lineNumber="20600" />
+                      <span className="field-value">{formatCurrency(getFieldValue('20600'))}</span>
                 </div>
                 <div className="field-row">
-                  <span className="field-label">
-                    Registered Pension Plan Deduction:
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 cursor-help" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="max-w-xs">{getTooltipText('20700')}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </span>
-                  <span className="field-value">
-                    {formatCurrency(getFieldValue('20700'))} <span style={{ color: '#A3A3A3' }}>(Line 20700)</span>
-                  </span>
+                  <FieldLabelWithTooltip label="Registered Pension Plan Deduction" lineNumber="20700" />
+                      <span className="field-value">{formatCurrency(getFieldValue('20700'))}</span>
                 </div>
                 <div className="field-row">
                   <FieldLabelWithTooltip label="RRSP Deduction" lineNumber="20800" />
-                  <FieldValueWithLineNumber value={formatCurrency(getFieldValue('20800'))} lineNumber="20800" />
+                      <span className="field-value">{formatCurrency(getFieldValue('20800'))}</span>
                 </div>
                 <div className="field-row">
                   <FieldLabelWithTooltip label="FHSA Deduction" lineNumber="20805" />
