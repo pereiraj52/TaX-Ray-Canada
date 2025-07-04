@@ -4683,8 +4683,9 @@ export default function TaxReport() {
                                         displayValue = `${Math.max(0, Math.min(100, clawbackPercentage)).toFixed(2)}%`;
                                         showIcon = false;
                                       } else if (item.isCalculated && item.line === "CWB-FAMILY-STATUS") {
-                                        // Family Status for Single
-                                        displayValue = "Single";
+                                        // Family Status from T1 extract
+                                        const maritalStatus = getFieldValue("marital_status");
+                                        displayValue = maritalStatus ? maritalStatus.toString() : "Single";
                                         showIcon = false;
                                       } else if (item.isCalculated && item.line === "CWB-DISABILITY") {
                                         // Check if the specific client for this card is disabled
@@ -4747,6 +4748,7 @@ export default function TaxReport() {
                                               })()
                                             ) : item.name === "Family Status" ? (
                                               (() => {
+                                                // Show green checkmark for Single, gold X for Married/Common-law (since this is the Single benefit section)
                                                 if (displayValue === "Single") {
                                                   return (
                                                     <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
