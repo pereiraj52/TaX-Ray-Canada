@@ -4550,6 +4550,8 @@ export default function TaxReport() {
                   
                   // Canada Workers Benefit
                   { category: "Canada Workers Benefit (Single)", items: [
+                    { name: "Family Status", line: "CWB-FAMILY-STATUS", isStatic: true, staticValue: 0 },
+                    { name: "Disability Supplement", line: "CWB-DISABILITY", isStatic: true, staticValue: 0 },
                     { name: "Minimum CWB (Single)", line: "CWB-MIN", isStatic: true, staticValue: 0 },
                     { name: "Maximum CWB (Single)", line: "CWB-MAX", isStatic: true, staticValue: 1590 },
                     { name: "Actual CWB (Single)", line: "45300" },
