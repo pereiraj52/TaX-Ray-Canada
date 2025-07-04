@@ -4549,7 +4549,7 @@ export default function TaxReport() {
                   ]},
                   
                   // Canada Workers Benefit
-                  { category: "Canada Workers Benefit", items: [
+                  { category: "Canada Workers Benefit (Single)", items: [
                     { name: "Minimum CWB (Single)", line: "CWB-MIN", isStatic: true, staticValue: 0 },
                     { name: "Maximum CWB (Single)", line: "CWB-MAX", isStatic: true, staticValue: 1590 },
                     { name: "Actual CWB (Single)", line: "45300" },
