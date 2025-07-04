@@ -4687,9 +4687,10 @@ export default function TaxReport() {
                                         displayValue = "Single";
                                         showIcon = false;
                                       } else if (item.isCalculated && item.line === "CWB-DISABILITY") {
-                                        // Check if either client is disabled
-                                        const isEitherClientDisabled = household?.clients?.some(client => client.disabled) || false;
-                                        displayValue = isEitherClientDisabled ? "Eligible" : "Ineligible";
+                                        // Check if the specific client for this card is disabled
+                                        const currentClient = household?.clients?.find(c => c.id === spouse.t1Return.clientId);
+                                        const isCurrentClientDisabled = currentClient?.disabled || false;
+                                        displayValue = isCurrentClientDisabled ? "Eligible" : "Ineligible";
                                         showIcon = false;
                                       } else {
                                         // Regular field value
