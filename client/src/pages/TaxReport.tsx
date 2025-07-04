@@ -4284,9 +4284,19 @@ export default function TaxReport() {
                           const isEitherClientDisabled = household?.clients?.some(client => client.disabled) || false;
                           const disabilityStatus = isEitherClientDisabled ? "Eligible" : "Ineligible";
 
+                          // Get marital status from first client's T1 extraction data
+                          const getMaritalStatus = () => {
+                            if (familyData.length > 0 && familyData[0].formFields) {
+                              const maritalStatusField = familyData[0].formFields.find(f => f.fieldCode === 'marital_status');
+                              return maritalStatusField?.fieldValue || "Single";
+                            }
+                            return "Single";
+                          };
+                          const maritalStatus = getMaritalStatus();
+
                           // Calculate family benefit information
                           const cwbBenefitInfo = [
-                            { name: "Family Status", value: "Married/Common-law", format: 'text' },
+                            { name: "Family Status", value: maritalStatus, format: 'text' },
                             { name: "Disability Supplement", value: disabilityStatus, format: 'text' },
                             { name: "Maximum CWB (Family)", value: maxCWBFamily, format: 'currency' },
                             { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
@@ -4326,7 +4336,7 @@ export default function TaxReport() {
                                           <div className="w-5 h-5 flex items-center justify-center">
                                             {info.name === "Family Status" ? (
                                               (() => {
-                                                if (info.value === "Married/Common-law") {
+                                                if (info.value === "Married" || info.value === "Living common-law") {
                                                   return (
                                                     <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                                       ✓
