@@ -4550,8 +4550,8 @@ export default function TaxReport() {
                   
                   // Canada Workers Benefit
                   { category: "Canada Workers Benefit (Single)", items: [
-                    { name: "Family Status", line: "CWB-FAMILY-STATUS", isStatic: true, staticValue: 0 },
-                    { name: "Disability Supplement", line: "CWB-DISABILITY", isStatic: true, staticValue: 0 },
+                    { name: "Family Status", line: "CWB-FAMILY-STATUS", isCalculated: true, staticValue: "Single" },
+                    { name: "Disability Supplement", line: "CWB-DISABILITY", isCalculated: true },
                     { name: "Minimum CWB (Single)", line: "CWB-MIN", isStatic: true, staticValue: 0 },
                     { name: "Maximum CWB (Single)", line: "CWB-MAX", isStatic: true, staticValue: 1590 },
                     { name: "Actual CWB (Single)", line: "45300" },
@@ -4681,6 +4681,15 @@ export default function TaxReport() {
                                         const maxBPA = 15705;
                                         const clawbackPercentage = ((maxBPA - actualAmount) / (maxBPA - minBPA)) * 100;
                                         displayValue = `${Math.max(0, Math.min(100, clawbackPercentage)).toFixed(2)}%`;
+                                        showIcon = false;
+                                      } else if (item.isCalculated && item.line === "CWB-FAMILY-STATUS") {
+                                        // Family Status for Single
+                                        displayValue = "Single";
+                                        showIcon = false;
+                                      } else if (item.isCalculated && item.line === "CWB-DISABILITY") {
+                                        // Check if either client is disabled
+                                        const isEitherClientDisabled = household?.clients?.some(client => client.disabled) || false;
+                                        displayValue = isEitherClientDisabled ? "Eligible" : "Ineligible";
                                         showIcon = false;
                                       } else {
                                         // Regular field value
