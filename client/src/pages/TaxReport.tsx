@@ -4683,9 +4683,9 @@ export default function TaxReport() {
                                         displayValue = `${Math.max(0, Math.min(100, clawbackPercentage)).toFixed(2)}%`;
                                         showIcon = false;
                                       } else if (item.isCalculated && item.line === "CWB-FAMILY-STATUS") {
-                                        // Family Status from T1 extract
-                                        const maritalStatus = getFieldValue("marital_status");
-                                        displayValue = maritalStatus ? maritalStatus.toString() : "Single";
+                                        // Family Status from T1 extract - get text value directly
+                                        const maritalStatusField = spouse.formFields.find(f => f.fieldCode === "marital_status");
+                                        displayValue = maritalStatusField?.fieldValue || "Single";
                                         showIcon = false;
                                       } else if (item.isCalculated && item.line === "CWB-DISABILITY") {
                                         // Check if the specific client for this card is disabled
