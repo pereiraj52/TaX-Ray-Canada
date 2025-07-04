@@ -4336,7 +4336,7 @@ export default function TaxReport() {
                                           <div className="w-5 h-5 flex items-center justify-center">
                                             {info.name === "Marital Status" ? (
                                               (() => {
-                                                if (info.value === "Married" || info.value === "Living common-law") {
+                                                if (info.value === "Married" || info.value === "Common-law" || info.value === "Living common-law") {
                                                   return (
                                                     <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                                       ✓
@@ -4677,7 +4677,7 @@ export default function TaxReport() {
                                       const maritalStatus = getMaritalStatus();
                                       
                                       // If married or common-law, show as ineligible
-                                      if (maritalStatus === "Married" || maritalStatus === "Living common-law") {
+                                      if (maritalStatus === "Married" || maritalStatus === "Common-law" || maritalStatus === "Living common-law") {
                                         return "Ineligible";
                                       }
                                       

@@ -841,9 +841,14 @@ class ComprehensiveT1Extractor:
             if 1900 <= year <= 2010:
                 info.date_of_birth = dob_match.group(1)
         # Extract Marital Status - line 20: "1 X Married"
-        marital_match = re.search(r'(\d+)\s+X\s+(Married|Living common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
+        marital_match = re.search(r'(\d+)\s+X\s+(Married|Living common-law|Common-law|Widowed|Divorced|Separated|Single)', text, re.IGNORECASE)
         if marital_match:
-            info.marital_status = marital_match.group(2)
+            # Normalize to standard values
+            marital_status = marital_match.group(2)
+            if marital_status.lower() == "living common-law":
+                info.marital_status = "Common-law"
+            else:
+                info.marital_status = marital_status
         # More robust address extraction
         lines = text.splitlines()
         for i, line in enumerate(lines):
