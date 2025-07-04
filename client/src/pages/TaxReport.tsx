@@ -4745,6 +4745,38 @@ export default function TaxReport() {
                                                   );
                                                 }
                                               })()
+                                            ) : item.name === "Family Status" ? (
+                                              (() => {
+                                                if (displayValue === "Single") {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                      ✓
+                                                    </div>
+                                                  );
+                                                } else {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                      ✗
+                                                    </div>
+                                                  );
+                                                }
+                                              })()
+                                            ) : item.name === "Disability Supplement" ? (
+                                              (() => {
+                                                if (displayValue === "Eligible") {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
+                                                      ✓
+                                                    </div>
+                                                  );
+                                                } else {
+                                                  return (
+                                                    <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#D4B26A' }}>
+                                                      ✗
+                                                    </div>
+                                                  );
+                                                }
+                                              })()
                                             ) : null}
                                           </div>
                                           <div className="flex-1">
