@@ -4296,7 +4296,7 @@ export default function TaxReport() {
 
                           // Calculate family benefit information
                           const cwbBenefitInfo = [
-                            { name: "Family Status", value: maritalStatus, format: 'text' },
+                            { name: "Marital Status", value: maritalStatus, format: 'text' },
                             { name: "Disability Supplement", value: disabilityStatus, format: 'text' },
                             { name: "Maximum CWB (Family)", value: maxCWBFamily, format: 'currency' },
                             { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
@@ -4330,11 +4330,11 @@ export default function TaxReport() {
                                   {/* Left 1/2 - CWB Family Details */}
                                   <div className="space-y-3">
                                     {cwbBenefitInfo.map((info, index) => {
-                                      const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Family Status" || info.name === "Disability Supplement" || info.name === "Maximum CWB (Family)" || info.name === "Actual CWB (Family)");
+                                      const hasValue = info.value !== null && info.value !== undefined && (info.value !== 0 || info.name === "Marital Status" || info.name === "Disability Supplement" || info.name === "Maximum CWB (Family)" || info.name === "Actual CWB (Family)");
                                       return (
                                         <div key={index} className="flex items-center gap-3">
                                           <div className="w-5 h-5 flex items-center justify-center">
-                                            {info.name === "Family Status" ? (
+                                            {info.name === "Marital Status" ? (
                                               (() => {
                                                 if (info.value === "Married" || info.value === "Living common-law") {
                                                   return (
@@ -4560,7 +4560,7 @@ export default function TaxReport() {
                   
                   // Canada Workers Benefit
                   { category: "Canada Workers Benefit (Single)", items: [
-                    { name: "Family Status", line: "CWB-FAMILY-STATUS", isCalculated: true, staticValue: "Single" },
+                    { name: "Marital Status", line: "CWB-FAMILY-STATUS", isCalculated: true, staticValue: "Single" },
                     { name: "Disability Supplement", line: "CWB-DISABILITY", isCalculated: true },
                     { name: "Minimum CWB (Single)", line: "CWB-MIN", isStatic: true, staticValue: 0 },
                     { name: "Maximum CWB (Single)", line: "CWB-MAX", isStatic: true, staticValue: 1590 },
@@ -4693,7 +4693,7 @@ export default function TaxReport() {
                                         displayValue = `${Math.max(0, Math.min(100, clawbackPercentage)).toFixed(2)}%`;
                                         showIcon = false;
                                       } else if (item.isCalculated && item.line === "CWB-FAMILY-STATUS") {
-                                        // Family Status from T1 extract - get text value directly
+                                        // Marital Status from T1 extract - get text value directly
                                         const maritalStatusField = spouse.formFields.find(f => f.fieldCode === "marital_status");
                                         displayValue = maritalStatusField?.fieldValue || "Single";
                                         showIcon = false;
@@ -4756,7 +4756,7 @@ export default function TaxReport() {
                                                   );
                                                 }
                                               })()
-                                            ) : item.name === "Family Status" ? (
+                                            ) : item.name === "Marital Status" ? (
                                               (() => {
                                                 // Show green checkmark for Single, gold X for Married/Common-law (since this is the Single benefit section)
                                                 if (displayValue === "Single") {
