@@ -4321,7 +4321,13 @@ export default function TaxReport() {
                                   </h4>
                                 </div>
                                 <span className="font-medium text-primary text-sm">
-                                  {`${cwbClawbackPercentage.toFixed(2)}%`}
+                                  {(() => {
+                                    // Check marital status for family benefit eligibility
+                                    if (maritalStatus !== "Married") {
+                                      return "Ineligible";
+                                    }
+                                    return `${cwbClawbackPercentage.toFixed(2)}%`;
+                                  })()}
                                 </span>
                               </button>
                               
