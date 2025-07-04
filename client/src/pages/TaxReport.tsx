@@ -4601,6 +4601,15 @@ export default function TaxReport() {
                   ]},
                 ];
 
+                // Function to get marital status from T1 extraction data
+                const getMaritalStatus = () => {
+                  if (spouse.formFields) {
+                    const maritalStatusField = spouse.formFields.find(f => f.fieldCode === 'marital_status');
+                    return maritalStatusField?.fieldValue || "Single";
+                  }
+                  return "Single";
+                };
+
                 // Calculate total benefits
                 const totalBenefits = benefits.reduce((total, category) => {
                   return total + category.items.reduce((sum, item) => {
@@ -4647,6 +4656,34 @@ export default function TaxReport() {
                                       // BPA clawback thresholds
                                       const clawbackStart = 173205;
                                       const clawbackEnd = 246752;
+                                      
+                                      // Get taxable income (Line 26000)
+                                      const taxableIncome = getFieldValue("26000");
+                                      
+                                      // Calculate clawback percentage
+                                      let clawbackPercentage = 0;
+                                      if (taxableIncome > clawbackStart) {
+                                        const excessIncome = Math.min(taxableIncome - clawbackStart, clawbackEnd - clawbackStart);
+                                        const totalClawbackRange = clawbackEnd - clawbackStart;
+                                        clawbackPercentage = (excessIncome / totalClawbackRange) * 100;
+                                      }
+                                      
+                                      return `${clawbackPercentage.toFixed(2)}%`;
+                                    }
+                                    
+                                    // Special handling for Canada Workers Benefit (Single)
+                                    if (category.category === "Canada Workers Benefit (Single)") {
+                                      // Get marital status from first client's T1 form fields
+                                      const maritalStatus = getMaritalStatus();
+                                      
+                                      // If married or common-law, show as ineligible
+                                      if (maritalStatus === "Married" || maritalStatus === "Living common-law") {
+                                        return "Ineligible";
+                                      }
+                                      
+                                      // Calculate clawback percentage for single benefit
+                                      const clawbackStart = 26149;
+                                      const clawbackEnd = 36749;
                                       
                                       // Get taxable income (Line 26000)
                                       const taxableIncome = getFieldValue("26000");
