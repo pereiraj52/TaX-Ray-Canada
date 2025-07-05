@@ -4323,7 +4323,7 @@ export default function TaxReport() {
                                 <span className="font-medium text-primary text-sm">
                                   {(() => {
                                     // Check marital status for family benefit eligibility
-                                    if (maritalStatus !== "Married") {
+                                    if (maritalStatus !== "Married" && maritalStatus !== "Common-law") {
                                       return "Ineligible";
                                     }
                                     return `${cwbClawbackPercentage.toFixed(2)}%`;
@@ -4682,8 +4682,8 @@ export default function TaxReport() {
                                       // Get marital status from first client's T1 form fields
                                       const maritalStatus = getMaritalStatus();
                                       
-                                      // If married or common-law, show as ineligible
-                                      if (maritalStatus === "Married" || maritalStatus === "Common-law" || maritalStatus === "Living common-law") {
+                                      // If not single, separated, divorced, or widowed, show as ineligible
+                                      if (maritalStatus !== "Single" && maritalStatus !== "Separated" && maritalStatus !== "Divorced" && maritalStatus !== "Widowed") {
                                         return "Ineligible";
                                       }
                                       
