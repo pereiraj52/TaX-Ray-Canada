@@ -4801,8 +4801,8 @@ export default function TaxReport() {
                                               })()
                                             ) : item.name === "Marital Status" ? (
                                               (() => {
-                                                // Show green checkmark for Single, gold X for Married/Common-law (since this is the Single benefit section)
-                                                if (displayValue === "Single") {
+                                                // Show green checkmark for Single, Separated, Divorced, or Widowed (eligible for Single benefit)
+                                                if (displayValue === "Single" || displayValue === "Separated" || displayValue === "Divorced" || displayValue === "Widowed") {
                                                   return (
                                                     <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                                       ✓
