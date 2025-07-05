@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+      - "5001:5001"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/taxray
+      - NODE_ENV=production
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+    command: sh -c "npm run db:push && npm start"
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=taxray
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
