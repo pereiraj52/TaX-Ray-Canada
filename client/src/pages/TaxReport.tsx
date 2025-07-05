@@ -4299,7 +4299,6 @@ export default function TaxReport() {
                             { name: "Marital Status", value: maritalStatus, format: 'text' },
                             { name: "Disability Supplement", value: disabilityStatus, format: 'text' },
                             { name: "Maximum CWB (Family)", value: maxCWBFamily, format: 'currency' },
-                            { name: "Adjusted Family Net Income", value: adjustedFamilyNetIncome, format: 'currency' },
                             { name: "Actual CWB (Family)", value: actualCWBFamily, format: 'currency' },
                             { name: "Clawback %", value: cwbClawbackPercentage, format: 'percentage' },
                           ];
@@ -4394,7 +4393,7 @@ export default function TaxReport() {
                                                   );
                                                 }
                                               })()
-                                            ) : (info.name === "Maximum CWB (Family)" || info.name === "Adjusted Family Net Income" || info.name === "Actual CWB (Family)") ? null : hasValue ? (
+                                            ) : (info.name === "Maximum CWB (Family)" || info.name === "Actual CWB (Family)") ? null : hasValue ? (
                                               <div className="w-4 h-4 flex items-center justify-center text-white text-xs font-bold rounded-full" style={{ backgroundColor: '#88AA73' }}>
                                                 ✓
                                               </div>
